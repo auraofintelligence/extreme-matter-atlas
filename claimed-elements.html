@@ -136,13 +136,11 @@ body[data-page="claimed"] .summary b { color: var(--accent2); }
 
 /* ---- element cards ---- */
 body[data-page="claimed"] .cards {
-  display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-}
-@media (max-width: 520px) {
-  body[data-page="claimed"] .cards { grid-template-columns: 1fr; }
+  display: grid; gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
 }
 body[data-page="claimed"] .elc {
-  scroll-margin-top: 84px;
+  min-width: 0; scroll-margin-top: 84px;
   border-radius: 20px; padding: 24px 22px;
   background: linear-gradient(165deg, var(--panel2), var(--panel));
   border: 1px solid var(--line);
@@ -167,12 +165,12 @@ body[data-page="claimed"] .elc .strap {
   font-size: 14.5px; color: var(--accent2); font-weight: 600; line-height: 1.35;
 }
 body[data-page="claimed"] .figs {
-  display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 4px;
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 4px; min-width: 0;
 }
 body[data-page="claimed"] .fig {
-  font-family: var(--font-mono); font-size: 11px; color: var(--ink);
-  border: 1px solid var(--line-bright); border-radius: 999px; padding: 3px 10px;
-  background: var(--bg2); white-space: nowrap;
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink); line-height: 1.5;
+  border: 1px solid var(--line-bright); border-radius: 14px; padding: 3px 10px;
+  background: var(--bg2); max-width: 100%; overflow-wrap: anywhere;
 }
 body[data-page="claimed"] .fig b {
   color: var(--muted); font-weight: 600; margin-right: 6px;

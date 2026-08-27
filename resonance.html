@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resonance · Extreme Matter Atlas</title>
+<meta name="description" content="Push a swing at the right moment and a small arm makes a big arc. The same trade runs from a bridge deck to a wine glass to hydrogen in a hospital magnet to the caesium atom that defines the second.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="resonance"] { --accent: #fde047; --accent2: #f472b6; }
+
+body[data-page="resonance"] .hero {
+  background-image:
+    repeating-linear-gradient(90deg, rgba(253, 224, 71, 0.07) 0 1px, transparent 1px 46px),
+    radial-gradient(circle at 78% 14%, rgba(244, 114, 182, 0.16), transparent 58%);
+}
+
+body[data-page="resonance"] .cv-caps {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 9px 8px 2px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+}
+body[data-page="resonance"] .cv-caps b { color: var(--accent); font-weight: 600; }
+
+body[data-page="resonance"] .readout {
+  font-family: var(--font-mono); font-size: 14px; color: var(--ink);
+  padding: 10px 16px; border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2); line-height: 1.7;
+}
+body[data-page="resonance"] .readout b { color: var(--accent); font-weight: 600; }
+
+body[data-page="resonance"] .preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="resonance"] .preset-row .btn { padding: 9px 15px; font-size: 13.5px; min-height: 44px; }
+body[data-page="resonance"] .control input[type="range"] { width: min(300px, 74vw); height: 8px; }
+body[data-page="resonance"] .control.wide { flex: 1 1 260px; }
+
+/* ---- the scale ladder ---- */
+body[data-page="resonance"] .ladder-scroll {
+  overflow-x: auto; overflow-y: hidden;
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg2); padding: 16px 0 10px;
+}
+body[data-page="resonance"] .ladder-axis {
+  position: relative; min-width: 900px; height: 208px; margin: 0 18px;
+}
+body[data-page="resonance"] .ladder-axis .decade {
+  position: absolute; top: 0; bottom: 46px; width: 1px;
+  background: var(--line); transform: translateX(-0.5px);
+}
+body[data-page="resonance"] .ladder-axis .decade.big { background: var(--line-bright); }
+body[data-page="resonance"] .ladder-axis .decade span {
+  position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted); white-space: nowrap;
+}
+body[data-page="resonance"] .band-strip {
+  position: absolute; left: 0; right: 0; bottom: 22px; height: 12px;
+  border-radius: 999px; overflow: hidden;
+}
+body[data-page="resonance"] .band-strip i { position: absolute; top: 0; bottom: 0; }
+body[data-page="resonance"] .rung-dot {
+  position: absolute; transform: translate(-50%, -50%);
+  width: 15px; height: 15px; border-radius: 50%; padding: 0; cursor: pointer;
+  border: 2px solid var(--accent); background: var(--bg);
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+body[data-page="resonance"] .rung-dot::after {
+  content: attr(data-lab);
+  position: absolute; left: 17px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 600;
+  letter-spacing: 0.07em; color: var(--muted);
+  white-space: nowrap; pointer-events: none;
+}
+body[data-page="resonance"] .rung-dot:hover { transform: translate(-50%, -50%) scale(1.35); }
+body[data-page="resonance"] .rung-dot:hover::after { color: var(--ink); }
+body[data-page="resonance"] .rung-dot[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-color: var(--ink);
+  transform: translate(-50%, -50%) scale(1.5);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+body[data-page="resonance"] .rung-dot[aria-pressed="true"]::after { color: var(--ink); }
+body[data-page="resonance"] .rung-dot .stem {
+  position: absolute; left: 50%; top: 50%; width: 1px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 55%, transparent), transparent);
+  transform: translateX(-0.5px); pointer-events: none;
+}
+body[data-page="resonance"] .band-key {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 14px 0 0;
+  font-size: 13px; color: var(--muted);
+}
+body[data-page="resonance"] .band-key span { display: inline-flex; align-items: center; gap: 7px; }
+body[data-page="resonance"] .band-key i { width: 16px; height: 8px; border-radius: 999px; display: inline-block; }
+
+body[data-page="resonance"] .rung-detail {
+  display: grid; grid-template-columns: minmax(180px, 250px) 1fr; gap: 20px;
+  margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+@media (max-width: 660px) {
+  body[data-page="resonance"] .rung-detail { grid-template-columns: 1fr; gap: 10px; }
+}
+body[data-page="resonance"] .rung-detail .big {
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(21px, 3.6vw, 30px);
+  line-height: 1.15;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  overflow-wrap: anywhere;
+}
+body[data-page="resonance"] .rung-detail .unit {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); margin-top: 6px; display: block;
+}
+body[data-page="resonance"] .rung-detail dt {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.11em;
+  text-transform: uppercase; color: var(--accent2); margin-top: 12px;
+}
+body[data-page="resonance"] .rung-detail dt:first-child { margin-top: 0; }
+body[data-page="resonance"] .rung-detail dd { font-size: 15px; color: var(--muted); }
+body[data-page="resonance"] .rung-detail dd strong { color: var(--ink); font-weight: 600; }
+
+/* ---- misc ---- */
+body[data-page="resonance"] .data-table td.figure { font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap; }
+body[data-page="resonance"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="resonance"] .beat {
+  border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+}
+body[data-page="resonance"] .beat .when {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent2); display: block; margin-bottom: 6px;
+}
+body[data-page="resonance"] .beat p { font-size: 15px; }
+body[data-page="resonance"] .steps { counter-reset: step; }
+body[data-page="resonance"] .step {
+  display: grid; grid-template-columns: 44px 1fr; gap: 16px;
+  padding: 16px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="resonance"] .step:last-child { border-bottom: 0; }
+body[data-page="resonance"] .step .snum {
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px; color: var(--accent);
+  padding-top: 2px;
+}
+body[data-page="resonance"] .step h3 { margin-bottom: 6px; }
+body[data-page="resonance"] .step p { font-size: 15px; color: var(--muted); }
+body[data-page="resonance"] .step p strong { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body data-page="resonance">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">One push, at the right moment</span>
+      <h1 class="display">Resonance</h1>
+      <p class="lede">Push a swing at the wrong moment and nothing happens. Push it at the right moment, over and over, and a child's arm lifts a body twice its weight into a three metre arc. <strong>Nothing about the pushes changed. Only their timing did.</strong> That trade, small effort arriving in step against large motion coming out, holds its shape all the way up the scale: a wine glass rim near 556 hertz, hydrogen inside a hospital magnet at 64 megahertz, and a caesium atom whose 9,192,631,770 beats a second are what a second now means.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">0.32 Hz</span><span class="lbl">a swing on two and a half metre ropes: one round trip every 3.2 seconds, whoever is sitting on it</span></div>
+        <div class="stat"><span class="num">556 Hz</span><span class="lbl">the rim note measured on the crystal glass an unaided singing voice broke on camera in 2005</span></div>
+        <div class="stat"><span class="num">64 MHz</span><span class="lbl">hydrogen's note in a 1.5 tesla scanner, sitting just under the bottom of the FM dial</span></div>
+        <div class="stat"><span class="num">9,192,631,770</span><span class="lbl">beats per second of caesium-133: counting them one a second would take 291 years</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The whole idea is <span class="hue">in the swing</span></h2>
+      <p>A playground swing has a rhythm of its own and will not be talked out of it. That rhythm comes from the length of the ropes and from gravity, and from almost nothing else. Two and a half metres of rope gives a round trip of about 3.2 seconds, which is 0.32 hertz, roughly a third of a trip every second. Put a heavier child on the same ropes and the rhythm does not change. Shorten the ropes and it quickens.</p>
+      <p>So the swing sets the timetable and you either meet it or you do not. Push as the seat is running away from you and your push adds to what is already there. Push as it comes back at you and you take the same amount out again. Halfway between, you do nothing at all. The strongest place to push is the bottom of the arc, where the seat is moving fastest, and that moment sits a quarter of a cycle away from the turning points at either end. <strong>Timing, not strength, is what makes the arc big.</strong></p>
+      <p>Two more things follow from the same rope. A swing does not reach its full arc on the first push: it builds, adding a little on each trip until what you put in each cycle equals what the air and the bearings take out. And when you stop, it does not halt. It keeps going, smaller each trip, for a while.</p>
+      <div class="note"><strong>Those two things are the same fact.</strong> How long a resonator keeps going after you stop is exactly what decides how fussy it is about timing, and how big an arc it can reach. Something that loses very little per cycle can go on collecting pushes for many cycles, so it climbs high, and it will only do that for a drive that stays in step for all of those cycles. A resonator is an amplifier of patience, not of effort.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Drive it <span class="hue">yourself</span></h2>
+      <p>Below is a mass on a spring whose own rhythm is one round trip a second. The top of the spring is being shaken up and down by a driver, and the two sliders set how fast the driver shakes and how much friction the rig carries. On the right, the curve is the answer the rig settles on for every drive speed at the current friction setting, drawn on a scale where each gridline is ten times the last.</p>
+      <p>The filled dot is what the rig is doing right now. The hollow ring on the curve is where it is heading. Watch the dot climb: on a low-friction setting it takes many seconds of pushing to get there, which is the build-up you feel in a swing made visible.</p>
+
+      <div class="canvas-frame">
+        <canvas id="rigCanvas" width="1000" height="400" aria-label="A mass hanging on a spring, shaken from above by a driver. Beside it, a curve of how far the mass swings against how fast the driver is shaking, with a peak near the rig's own rhythm that grows taller and narrower as friction is reduced."></canvas>
+        <div class="cv-caps">
+          <span>left: <b>the rig</b>, driver on top, mass below</span>
+          <span>right: <b>swing against drive speed</b></span>
+          <span>each gridline is <b>ten times</b> the last</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control wide">
+            <label for="freqRange">Drive speed, as a multiple of the rig's own rhythm</label>
+            <input type="range" id="freqRange" min="5" max="300" value="52" step="1" aria-describedby="rigReadout">
+          </div>
+          <div class="control wide">
+            <label for="dampRange">Friction, from barely any to a great deal</label>
+            <input type="range" id="dampRange" min="0" max="1000" value="454" step="1" aria-describedby="rigReadout">
+          </div>
+        </div>
+        <div class="readout" id="rigReadout" aria-live="polite">Driving at <b id="rOut">0.52</b> times its own rhythm. Once settled, the mass swings <b id="gOut">1.3</b> times as far as the driver moves.</div>
+
+        <div class="control" style="margin-top:18px">
+          <label id="rigPresetLabel">Try a setting</label>
+          <div class="preset-row" role="group" aria-labelledby="rigPresetLabel">
+            <button type="button" class="btn ghost" id="btnSlow">Push slowly</button>
+            <button type="button" class="btn ghost" id="btnOn">Right on its rhythm</button>
+            <button type="button" class="btn ghost" id="btnFast">Push too fast</button>
+            <button type="button" class="btn ghost" id="btnSharp">Take the friction away</button>
+            <button type="button" class="btn" id="btnDrive" aria-pressed="false">Stop pushing</button>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat"><span class="num" id="statGain">1.3&times;</span><span class="lbl">how far the mass swings for every centimetre the driver moves, once it has settled</span></div>
+          <div class="stat"><span class="num" id="statQ">6.3</span><span class="lbl">sharpness: the rig's rhythm divided by the width of the band of drive speeds it answers to</span></div>
+          <div class="stat"><span class="num" id="statRing">2 swings</span><span class="lbl">round trips it keeps after you stop pushing, before the arc is down to a third</span></div>
+          <div class="stat"><span class="num" id="statLag">28&deg;</span><span class="lbl">how far behind the driver the mass is running, a quarter cycle when it is right on the note</span></div>
+        </div>
+      </div>
+
+      <h3>Three things worth finding with the sliders</h3>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">🐢</span>
+          <h3>Slower than its rhythm</h3>
+          <p>The mass simply goes wherever the driver goes, moving together with it, arriving at the same time. There is no gain and no lag. Anything pushed far slower than its own rhythm behaves like a rigid stick.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🎯</span>
+          <h3>Right on its rhythm</h3>
+          <p>The arc climbs to many times the driver's movement, and the mass settles a quarter of a cycle behind: the driver is moving fastest exactly as the mass reaches the end of its travel. Take friction out and the peak grows taller and narrower at the same time.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🐇</span>
+          <h3>Faster than its rhythm</h3>
+          <p>The mass cannot keep up and barely moves while the driver rattles away underneath it. That is not a failure. It is how a rubber engine mount, a camera stabiliser and a seismometer all work: hang the thing you care about below its own rhythm and the shaking stops arriving.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Every resonator carries <span class="hue">a sharpness number</span></h2>
+      <p>Engineers write that number as Q, and one number settles two separate questions. Divide it into the resonator's note and you get the width of the band of frequencies it answers to. Divide it by about three and you get the number of cycles it keeps going after the pushing stops, before its swing is down to a third of what it was.</p>
+      <p>So a blunt resonator answers to a wide band and dies quickly, and a sharp one answers to a hair's breadth and rings for a very long time. There is no third option, and that is why the same number appears in the design of a car's suspension, a radio's tuning and an atomic clock.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Resonator</th><th>Sharpness</th><th>Cycles it keeps</th><th>Band it answers to</th><th>Why it sits there</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A car's suspension</td>
+              <td class="figure">about 2</td>
+              <td class="figure">under one</td>
+              <td class="figure">about half its note</td>
+              <td>set deliberately blunt: a car that kept bouncing over every bump would be unusable</td>
+            </tr>
+            <tr>
+              <td>A playground swing</td>
+              <td class="figure">tens</td>
+              <td class="figure">tens</td>
+              <td class="figure">a few per cent</td>
+              <td>rope friction and air drag, and a rider who is not trying to stop</td>
+            </tr>
+            <tr>
+              <td>A guitar string</td>
+              <td class="figure">about 1,000</td>
+              <td class="figure">a few hundred</td>
+              <td class="figure">a tenth of a per cent</td>
+              <td>most of what it loses goes into the soundboard on purpose, which is the point of a guitar</td>
+            </tr>
+            <tr>
+              <td>A crystal wine glass rim</td>
+              <td class="figure">low thousands</td>
+              <td class="figure">several hundred</td>
+              <td class="figure">under a tenth of a per cent</td>
+              <td>glass is stiff and internally quiet, so a flicked rim rings for a second or two</td>
+            </tr>
+            <tr>
+              <td>A quartz watch crystal</td>
+              <td class="figure">around 100,000</td>
+              <td class="figure">tens of thousands</td>
+              <td class="figure">a hundredth of a per cent</td>
+              <td>a tuning fork cut from a single crystal, sealed in vacuum, cut along a direction where temperature barely matters</td>
+            </tr>
+            <tr>
+              <td>A niobium accelerator cavity at 2 kelvin</td>
+              <td class="figure">3 &times; 10<sup>10</sup></td>
+              <td class="figure">10 thousand million</td>
+              <td class="figure">3 hundredths of a millionth of a per cent</td>
+              <td>superconducting walls lose almost nothing, so microwaves stored in it fade over about 3.7 seconds</td>
+            </tr>
+            <tr>
+              <td>Strontium-87's clock transition</td>
+              <td class="figure">4 &times; 10<sup>17</sup></td>
+              <td class="figure">10<sup>17</sup></td>
+              <td class="figure">a millihertz out of 429 terahertz</td>
+              <td>a transition the atom is barely allowed to make at all, so it takes its time about making it</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The last row is worth sitting with. Counting to four hundred million billion at one a second would take about 13.6 billion years, close to the age of the universe. That is the ratio between the note strontium-87 sings and the width of the note. Jonathan Muniz, Dylan Young, Jarrod Cline and James Thompson at JILA in Colorado measured that width by cavity quantum electrodynamics in 2021, resolving it to 30 millionths of a hertz.</p>
+      <p>The niobium figure comes off a production line rather than a specialist bench. Anna Grassellino and colleagues at Fermilab reported quality factors near 3 &times; 10<sup>10</sup> in 1.3 gigahertz nine-cell cavities in 2015, cavities built for the LCLS-II light source and now running there. Fill one with microwaves, switch off the source, and the energy is still measurably sloshing about three and a half seconds later, having made some four thousand million round trips.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Sixteen steps of ten, <span class="hue">one idea</span></h2>
+      <p>The ladder below runs from a tenth of a hertz, slow enough to watch with the naked eye, up to a thousand million million hertz, which is red light. Sixteen steps of ten is a long way: the same jump takes you from a grain of sand to a distance out past Neptune's orbit. Every rung on it is the same arrangement, something with a rhythm of its own being pushed at that rhythm.</p>
+
+      <div class="ladder-scroll">
+        <div class="ladder-axis" id="ladderAxis" role="group" aria-label="Frequency ladder. Use the left and right arrow keys to move between rungs."></div>
+      </div>
+      <div class="band-key" id="bandKey"></div>
+
+      <div class="panel">
+        <div class="rung-detail" id="rungDetail">
+          <div>
+            <span class="big" id="rungFreq">0.32 hertz</span>
+            <span class="unit" id="rungName">A playground swing</span>
+          </div>
+          <dl>
+            <dt>What is resonating</dt><dd id="rungWhat"></dd>
+            <dt>What it is used for</dt><dd id="rungUse"></dd>
+            <dt>For scale</dt><dd id="rungScale"></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>A glass sings <span class="hue">its own note</span></h2>
+      <p>Run a wet finger round the rim of a wine glass and it hums. What is happening is that the rim is being pulled out of round, into an oval, and springing back, four times per cycle at four points around the circle. The pitch depends on how wide the rim is, how thin the glass is and how much wine is in it: fill the glass and the note drops, because the wine has to be shoved along with the glass.</p>
+      <p>Sing that note back at the glass loudly enough and the same flexing builds. The <em>MythBusters</em> team measured a crystal glass at about 556 hertz and, in a 2005 episode, the singer and vocal coach Jaime Vendera broke one with an unamplified voice at around 105 decibels, held for two to three seconds. At 556 hertz that is roughly fourteen hundred pushes arriving in step, and the arc built until the glass could not take the strain.</p>
+      <p>It is a fussy trick, which is exactly what the sharpness number predicts. A good glass has a Q in the low thousands, so it answers to a band well under a tenth of a per cent wide: sing a semitone off, about six per cent, and nothing at all happens. The demonstration is a test of pitch accuracy first and lung power second.</p>
+      <div class="note"><strong>The nearest built thing charges by the microgram.</strong> A quartz crystal microbalance is a thin disc of quartz driven at its own note, usually near 5 or 10 megahertz. Land anything on its face, even a layer of molecules, and the note drops by an amount that depends on the added mass. Because the crystal's Q runs into the tens of thousands, a shift of a few hertz is easy to read, and that shift corresponds to a few nanograms per square centimetre. Vacuum coating plants use one to watch a film grow atom layer by atom layer while it is growing. Ultrasonic cutting works the other way round: drive a titanium blade at about 55 kilohertz and the tip travels a few tens of microns each cycle, which is enough to part tissue and seal it at the same time.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What the wind actually did at <span class="hue">Tacoma Narrows</span></h2>
+      <p>The Tacoma Narrows Bridge opened across Puget Sound on 1 July 1940 with a main span of 853 metres, at the time the third longest in the world. It was also strikingly slender: a deck about 11.9 metres wide carried on solid plate girders 2.4 metres deep, rather than the open trusses used on earlier long spans. It moved from the first day. Drivers reported the roadway rising and falling ahead of them, and it picked up a nickname.</p>
+      <p>On the morning of 7 November 1940, in a wind of about 68 kilometres an hour, the motion changed character. Instead of rippling up and down along its length, the deck began to twist, one side rising as the other fell, about one twist every five seconds. The edges of the roadway were travelling something like eight and a half metres up and down. It held that for around an hour and then came apart. Nobody was killed. A dog left in a car on the deck was.</p>
+
+      <div class="two-col">
+        <div class="beat">
+          <span class="when">The familiar telling</span>
+          <h3>A wind that kept time</h3>
+          <p>The version in a great many textbooks is that eddies peeled off the deck at a steady rate, that rate happened to match the bridge's own rhythm, and the bridge was driven in step until it tore. It is a tidy story and it uses the right idea in the wrong place.</p>
+        </div>
+        <div class="beat">
+          <span class="when">American Journal of Physics, 1991</span>
+          <h3>What the numbers say instead</h3>
+          <p>Yusuf Billah and Robert Scanlan set out the arithmetic. The eddies shed by that deck at that wind speed came off near one hertz, about five times faster than the 0.2 hertz twist. There was no drumbeat at the bridge's own rate to be in step with.</p>
+        </div>
+      </div>
+
+      <p>What happened instead has a different shape, and it is the more interesting one. Once the deck starts twisting, its blunt edges tilt into the airflow, the flow separates off them, and the pressure that comes back depends on how fast the deck is <em>already</em> twisting. Beyond a certain wind speed the air is feeding energy in faster than the steel takes it out. The system's damping, the thing that normally makes a motion die away, goes past zero and turns negative. From there the motion grows on its own, with no timekeeper involved anywhere.</p>
+      <p>Engineers call it aeroelastic flutter. <strong>It is self-feeding, not forced.</strong> The wind was not a metronome; it was a negative brake. That distinction matters because the two failures have different cures: a forced resonance is fixed by moving the structure's note away from the drive, and flutter is fixed by changing the shape of the deck so the air stops handing energy back.</p>
+
+      <div class="note"><strong>The nearest built thing is every long span since.</strong> Deck sections now go into wind tunnels at model scale before anything is poured, and the shapes that come out are open rather than solid. The Akashi Kaikyo Bridge in Japan, opened in 1998 with a 1,991 metre main span, carries a deep open truss with grating slots in the roadway so that a good part of the wind passes straight through instead of pushing on a face. Tuned mass dampers do the other half of the job. The one in Taipei 101 is a 660 tonne steel sphere, 5.5 metres across, welded up from 41 layers of 125 millimetre plate and hung on cables between the 87th and 92nd floors: about 300 utes' worth of steel, swinging deliberately out of step with the tower and cutting its movement by around 40 per cent. During Typhoon Soudelor in August 2015 it swung a metre, the largest movement recorded there.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Why soldiers <span class="hue">break step</span></h2>
+      <p>On 12 April 1831 a detachment of 74 men of the 60th Rifle Corps marched back to barracks over the Broughton Suspension Bridge at Salford, four abreast. They felt the deck bouncing in time with their feet, and some of them found it entertaining enough to whistle along. A bolt at one of the chain anchorages gave way and about forty men went into the River Irwell. Twenty were hurt, some badly. Nobody drowned. The British Army issued the order to break step on bridges afterwards, and armies have kept it since.</p>
+      <p>Nineteen years later and rather worse: on 16 April 1850 a battalion crossing the Basse-Chaine suspension bridge at Angers in France went into the Maine when the bridge failed during a thunderstorm. 226 died. The inquiry put the failure on the storm, the loading, and corroded anchor cables, with the marching one factor among several rather than the cause on its own.</p>
+      <p>The modern instance of this has no soldiers in it at all, and it taught the profession something the 1831 story does not.</p>
+
+      <div class="panel">
+        <h3>London, 10 June 2000</h3>
+        <p>The Millennium Bridge opened as a footbridge across the Thames and swayed sideways with people on it. With something like two thousand walkers on the deck, the southern span moved at about 0.8 hertz and the central span at about 0.5 hertz, with sideways movements reaching around 70 millimetres. It closed two days later.</p>
+        <p>A walking person puts a foot down about twice a second, and each footfall pushes the body sideways as well as down, so the sideways push comes at about one per second. That is near the deck's rate but not equal to it, and the arithmetic of a simple forced resonance does not close. What Pat Dallard and the Arup team found instead was a loop with people inside it. A person on a deck that is rolling underfoot adjusts their gait to keep balance, and the easiest adjustment is to fall into time with the roll. So a small movement recruits walkers, the recruited walkers make the movement bigger, and the bigger movement recruits more of them. Above a critical number of people on the deck the loop closes on itself.</p>
+        <p><strong>A feedback loop with people in it, not a crowd that happened to be in step.</strong> The crowd did not arrive marching. The bridge taught them.</p>
+        <p>The fix went in over the following year and a half: 37 viscous dampers, the kind that turn motion into warm oil, and 52 tuned mass dampers, which are weights on springs set to swing against the deck. Together they lifted the damping from about half a per cent of critical to around twenty per cent, and the bridge reopened in February 2002. It has carried crowds since without the wobble.</p>
+      </div>
+      <p>Footbridge design codes now carry a lateral pedestrian check because of it, which is the useful legacy: a class of loading that was not in anybody's calculation before 2000 is in everybody's calculation now.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>A microwave oven does not <span class="hue">hit water's note</span></h2>
+      <p>The story most of us were told is that a microwave oven runs at the resonant frequency of water, and that is why it heats food and not the plate. Everything in that sentence is right except the resonance, and the actual mechanism is a better story anyway.</p>
+      <p>A water molecule carries a lopsided charge: the oxygen end is slightly negative, the two hydrogen ends slightly positive. An electric field pointing one way pulls it round to line up. The oven's magnetron makes a field at 2.45 gigahertz, which means it reverses direction 2.45 thousand million times a second, more reversals in one second than there are seconds in a 78 year life. The molecules start to turn to follow it, collide with their neighbours before they finish turning, and pass the energy on as jostling. The jostling is the heat.</p>
+      <p>An isolated water molecule, in vapour, genuinely does have sharp rotational notes, and they are nowhere near 2.45 gigahertz. The well-known ones sit at 22.235 gigahertz, 183 gigahertz and 557 gigahertz. Radio astronomers use the 22 gigahertz line to find water in star-forming clouds, and weather satellites use the 183 gigahertz line to weigh water vapour in the atmosphere. In liquid water those sharp lines are gone, because every molecule is hydrogen-bonded to its neighbours and gets knocked before it completes a turn. What is left is a broad hump in how strongly liquid water absorbs, peaking near 20 gigahertz at room temperature. The oven runs a factor of eight below the top of that hump.</p>
+      <p>Running below it is the design choice, not an accident. At the top of the hump the energy would be swallowed in the first few millimetres and a chop would be scorched outside and cold inside. At 2.45 gigahertz the depth at which the power has dropped to about a third is roughly five to fifteen millimetres in food, depending on what the food is, how salty it is and how warm it already is. Heating still runs outside in, but far enough in to be useful. Industrial microwave lines in the United States commonly run at 915 megahertz, where the penetration is roughly three times deeper again, which is exactly the same trade made for bigger pieces. <strong>A frequency chosen for how far it reaches into a roast dinner and for what the radio rules allow, not a note the water sings.</strong></p>
+
+      <div class="note"><strong>You can measure the speed of light with chocolate.</strong> The oven's metal box is a resonant cavity, so the microwaves inside it form a standing wave with fixed hot and cold patches, and the turntable exists to drag food through them. Take the turntable out, lay a tray of chocolate on the floor of the oven, run it briefly, and the melted patches sit about 6.1 centimetres apart. That spacing is half a wavelength. Multiply it by two and by 2.45 gigahertz, the number printed on the back of the oven, and you get about 3.0 &times; 10<sup>8</sup> metres a second. The standing wave that ruins your reheating is the same pattern a <a href="cymatics.html">Chladni plate</a> draws in sand.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Nuclei that <span class="hue">sing in a magnet</span></h2>
+      <p>A hydrogen nucleus is a single proton, and it behaves like a very small magnet that is also spinning. Put it in a strong magnetic field and it does not simply swing round and point along the field, the way a compass needle does. It wheels around the field direction like a leaning spinning top, and the rate at which it wheels depends on the field strength and on what sort of nucleus it is, and on nothing else at all.</p>
+      <p>For hydrogen that rate is 42.58 megahertz for every tesla of field. Australian hospital scanners mostly run at 1.5 or 3 tesla, which puts hydrogen at 63.9 megahertz and 127.7 megahertz. Those two numbers sit either side of the FM radio band, one just below 87.5 and one just above 108. Counting the 1.5 tesla wheeling at one a second would take about two years.</p>
+      <p>Send in a radio pulse at exactly that frequency and the nuclei tip over together, in step. Little else in the body answers, because sodium, phosphorus and carbon all wheel at different rates in the same field. Switch the pulse off and the hydrogen wheels back towards the field, giving off a faint radio note at the same frequency as it goes, and how quickly that note fades depends on what the water molecule it belongs to is sitting in. Fat, muscle, grey matter and a tumour all fade differently, which is the contrast in the picture.</p>
+      <p>Turning that into an image takes one more trick. Add a small extra field that grows steadily along the length of the body, and now the note is different at every position, so the pitch of the returning signal says where it came from. That is Paul Lauterbur's step, published in <em>Nature</em> in 1973, with Peter Mansfield adding the fast readout that made scans a matter of minutes. The pair took the 2003 Nobel Prize in Physiology or Medicine for it. Raymond Damadian had reported in <em>Science</em> in 1971 that tumour tissue and normal tissue relax at measurably different rates. The physics underneath goes back to Isidor Rabi's molecular beam work in 1938 and to Felix Bloch at Stanford and Edward Purcell at Harvard, who both detected the effect in bulk matter in 1946 and shared the 1952 Nobel Prize in Physics.</p>
+
+      <div class="note"><strong>The nearest built thing is also the sharpest chemistry instrument there is.</strong> The same tipping, done at higher field on a small sample, resolves shifts of a few parts in a million in each hydrogen atom's note, and those shifts depend on which atoms are sitting nearby. Read them off and you can work out how a molecule is put together, which is how most new compounds are confirmed. Commercial spectrometers now reach 28.2 tesla, which puts hydrogen at 1.2 gigahertz, and they do it with superconducting magnets that have to hold the field steady to better than one part in a hundred million for hours.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Sound in a crystal, <span class="hue">counted</span></h2>
+      <p>A crystal is atoms sitting on a regular grid, each held to its neighbours by bonds that behave a good deal like springs. Push one atom and the push travels to the next, and to the next: that is sound, and inside a solid it moves fast. Because the grid is regular and the crystal has edges, only certain patterns of vibration fit across it, which is the guitar string rule applied in three dimensions.</p>
+      <p>Quantum mechanics adds one thing. Each of those vibration patterns can only gain or lose energy in whole steps, never a fraction of a step. It turns out to be far easier to keep track of the steps as though they were particles moving about, so that is what physicists do. <strong>A phonon is one step of one vibration pattern: a unit of sound in a solid, counted the way light gets counted in photons.</strong> Nothing is being claimed about tiny balls flying around. It is a bookkeeping choice that happens to make the sums work.</p>
+      <p>The reason to bother is heat. In a metal, most heat rides on the loose electrons, which is why a steel spoon in hot soup burns your fingers. In an insulator or a semiconductor there are few loose electrons available, so heat has to travel as vibration, which means as phonons. Diamond does this better than any other material at room temperature: about 2,000 watts per metre per kelvin, roughly five times copper, while being an electrical insulator. Carbon atoms are light and their bonds are stiff, so the vibrations run at around 14 kilometres a second averaged over the modes, some forty times the speed of sound in air, and they travel a long way before anything scatters them.</p>
+      <p>The highest note a diamond lattice will hold is about 39.9 terahertz, which chemists see as its Raman line at 1,332 reciprocal centimetres. Counting those vibrations at one a second would take 1.3 million years.</p>
+
+      <div class="note"><strong>Both directions of this are built and sold.</strong> Under a high-power radio transistor or a laser diode you will find a diamond heat spreader, doing exactly the job the number above suggests. Thermoelectric materials take the opposite trade: bismuth telluride and its relatives are deliberately made messy at the nanometre scale so that phonons scatter and heat cannot escape, while electrons still get through, which is what lets a camping fridge run off a car battery with no moving parts. And phononic crystals, patterned solids that block a whole band of vibration the way a <a href="crystal-lab.html">lattice</a> can block a band of light, are already inside every mobile phone: the acoustic wave filters that keep one network's band out of another's are resonators cut and stacked to a few micrometres.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The second <span class="hue">is a resonance</span></h2>
+      <p>A caesium-133 atom has one electron in its outermost shell, and both that electron and the nucleus behave like small magnets. The two can sit either lined up or opposed, and the energy difference between those two arrangements is very small. Shine radio waves of exactly the right frequency on the atom and it flips from one arrangement to the other. That frequency is 9,192,631,770 hertz. Counting the beats at one a second would take 291 years.</p>
+      <p>Since the 13th General Conference on Weights and Measures in 1967, that is the definition of the second: 9,192,631,770 periods of that radiation. Not a fraction of a day, because the Earth's spin wanders by a millisecond here and there. <strong>A definition, not a measurement.</strong> Caesium does not have that frequency because somebody carefully measured it. The hertz is now defined so that it does, and every other frequency in the world is compared back to it.</p>
+      <p>Louis Essen and Jack Parry built the first practical caesium standard at the National Physical Laboratory in 1955, good to roughly a second in three hundred years, which was about thirty times better than the quartz clocks of the day. A modern caesium fountain works differently: it gathers a ball of atoms, cools them with laser light until they are barely moving, tosses the ball up through a microwave cavity and catches it coming back down, so the atoms spend about a second in the field on the way through. A longer look gives a narrower answer, and the resonance comes back about a hertz wide out of 9.19 gigahertz. The evaluated uncertainty of one such fountain, NIST-F2 in Colorado, is around one part in 10<sup>16</sup>.</p>
+      <div class="note"><strong>Where this lands in an ordinary week.</strong> Satellite navigation is a timing problem wearing a positioning costume. Light travels 30 centimetres in a nanosecond, so a satellite clock that is out by ten nanoseconds puts you three metres from where you are. Every GPS satellite carries caesium or rubidium standards and gets steered against ground clocks; the receiver in a phone solves for its own clock error as a fourth unknown alongside latitude, longitude and height. Optical clocks are now a few hundred times sharper again, and the definition of the second is expected to be handed to one of them.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Light that agrees <span class="hue">with itself</span></h2>
+      <p>A laser is a resonance in a box made of mirrors. Two mirrors face each other, a material that can amplify light sits between them, and light bounces back and forth. Only the wavelengths that fit a whole number of half waves between the mirrors come back in step with themselves after a round trip and grow. Everything else cancels itself out and dies.</p>
+      <p>A helium neon tube 30 centimetres long holds about 948,000 half waves of red light between its mirrors, and the frequencies that fit are spaced 500 megahertz apart. The red line itself is at 632.8 nanometres, which is 473.8 million million hertz. Counting those crests at one a second would take 15 million years.</p>
+      <p>Two separate resonances have to agree for anything to come out. The neon atoms will only amplify a narrow set of wavelengths, set by the energy steps inside the atom. The cavity will only sustain wavelengths that fit between its mirrors. The laser runs where the two lists overlap, which is why a laser's colour is so precise and why nudging one mirror by a fraction of a wavelength changes what it does.</p>
+      <div class="note"><strong>The nearest built thing weighs a ripple in space.</strong> Each arm of a LIGO gravitational wave detector is a four kilometre resonant cavity, and the light makes hundreds of round trips before it leaves, so the effective path runs past a thousand kilometres. That stored, agreeing light is what makes a length change smaller than a proton readable. At the other end of the same idea, the reference cavities that stabilise optical clock lasers are hand-sized blocks of glass that barely change length with temperature, holding light that bounces hundreds of thousands of times. The rule that only certain waves fit in a given space is also what gives two mirrors in a vacuum the <a href="zero-point.html">measured push</a> they feel towards each other.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would move <span class="hue">the question</span></h2>
+      <p>Six measurements, each with instruments that exist and a number waiting at the end.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">👣</span>
+          <h3>Put a number on the crowd loop</h3>
+          <p>The lateral pedestrian factor in current footbridge codes rests on a small number of instrumented structures. Force plates on a deck that can be driven sideways under a paying crowd, with overhead cameras tracking gait, would return how strongly people lock on as a function of how much the deck is already moving. That curve is what the codes are approximating.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🌬️</span>
+          <h3>Check flutter at full scale</h3>
+          <p>Critical wind speeds for long spans come from deck sections tested at model scale in a tunnel. Anemometers and accelerometers left on a finished bridge for a decade would let the predicted onset speed be compared against the same deck at full size, in real turbulence, with real traffic on it.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🧊</span>
+          <h3>Cross the phonon's free path</h3>
+          <p>Measure thermal conductivity in a thin membrane as the spacing of a drilled pattern is stepped down through the distance a phonon travels between scatters. Where the curve bends tells you how much of heat flow is carried by which vibration wavelengths, which is the missing input for designing thermoelectrics on purpose rather than by trial.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⏱️</span>
+          <h3>Race the optical clocks</h3>
+          <p>Compare strontium, ytterbium and aluminium ion clocks against each other at the 10<sup>-18</sup> level over years. Each pair tests a different combination of the constants of nature, so a slow drift in any of them would show up as a ratio that will not sit still.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔍</span>
+          <h3>Watch a glass break properly</h3>
+          <p>Drive a wine glass rim to failure with a loudspeaker while a laser vibrometer maps how the whole rim is flexing and a high-speed camera runs at a hundred thousand frames a second. It would settle whether the crack starts where the flexing is greatest or at whatever flaw the glass already carried, which is the same question as fatigue in a bridge.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🥁</span>
+          <h3>Drive a resonator in its ground state</h3>
+          <p>Membranes and drums of a few micrometres have been cooled until they hold almost no vibration at all, and then driven. Doing the same with a gram-scale mirror would put an everyday object's resonance curve into the range where the measurement itself disturbs it, which is where the interesting arguments about quantum mechanics and gravity are waiting.</p>
+        </div>
+      </div>
+      <p>The pattern holds from a rope swing to a strontium atom, over sixteen steps of ten, without anyone having to change the idea. The open work is not whether resonance is real. It is that the sharpest resonators anybody has built are now sharp enough to notice things nobody has been able to look for before: whether the constants drift, whether a heavy object can be held still enough to ask quantum questions of it, and how far into a crowd or a wind or a lattice the same simple loop reaches before something else takes over.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="cymatics.html"><div class="card"><span class="card-glyph">🌀</span><h3>Cymatics</h3><p>Drive a plate at one of its own notes and sand collects along the lines that are standing still. The same standing wave that makes hot and cold patches in an oven, drawn where you can see it.</p></div></a>
+        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">💎</span><h3>Crystal Lab</h3><p>Build a lattice and shake it. Which patterns of vibration fit across a repeating grid is the question that turns into phonons, heat flow and the colour of a gemstone.</p></div></a>
+        <a class="card-link" href="zero-point.html"><div class="card"><span class="card-glyph">🌌</span><h3>Zero Point</h3><p>Only certain waves fit between two mirrors, and fewer fit inside the gap than outside it. That difference is measured in piconewtons on a bench.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>K. Y. Billah and R. H. Scanlan, "Resonance, Tacoma Narrows bridge failure, and undergraduate physics textbooks", <em>American Journal of Physics</em> 59, 118, 1991.</li>
+        <li>P. Dallard, A. J. Fitzpatrick, A. Flint, S. Le Bourva, A. Low, R. M. Ridsdill Smith and M. Willford, "The London Millennium Footbridge", <em>The Structural Engineer</em> 79 (22), 2001.</li>
+        <li><em>MythBusters</em>, "Breaking Glass", Discovery Channel, 2005, with Jaime Vendera.</li>
+        <li>Resolution 1 of the 13th General Conference on Weights and Measures, 1967, defining the second · <a href="https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1" rel="noopener">bipm.org/en/committees/cg/cgpm/13-1967/resolution-1</a></li>
+        <li>L. Essen and J. V. L. Parry, "The caesium resonator as a standard of frequency and time", <em>Philosophical Transactions of the Royal Society A</em> 250, 45, 1957 · <a href="https://royalsocietypublishing.org/doi/10.1098/rsta.1957.0010" rel="noopener">royalsocietypublishing.org/doi/10.1098/rsta.1957.0010</a></li>
+        <li>T. P. Heavner et al., "First accuracy evaluation of NIST-F2", <em>Metrologia</em> 51, 174, 2014.</li>
+        <li>J. A. Muniz, D. J. Young, J. R. K. Cline and J. K. Thompson, cavity quantum electrodynamics determination of the natural linewidth of the strontium-87 millihertz clock transition, resolved to 30 microhertz, 2020 to 2021 · <a href="https://arxiv.org/abs/2007.07220" rel="noopener">arxiv.org/abs/2007.07220</a></li>
+        <li>A. Grassellino et al., "Nitrogen-doped 9-cell cavity performance in a test cryomodule for LCLS-II", <em>Journal of Applied Physics</em> 117, 023908, 2015 · <a href="https://arxiv.org/abs/1411.1659" rel="noopener">arxiv.org/abs/1411.1659</a></li>
+        <li>I. I. Rabi, J. R. Zacharias, S. Millman and P. Kusch, "A new method of measuring nuclear magnetic moment", <em>Physical Review</em> 53, 318, 1938; F. Bloch, W. W. Hansen and M. Packard, and independently E. M. Purcell, H. C. Torrey and R. V. Pound, <em>Physical Review</em> 69 and 70, 1946.</li>
+        <li>R. Damadian, "Tumor detection by nuclear magnetic resonance", <em>Science</em> 171, 1151, 1971; P. C. Lauterbur, "Image formation by induced local interactions: examples employing nuclear magnetic resonance", <em>Nature</em> 242, 190, 1973.</li>
+        <li>W. J. Ellison, "Permittivity of pure water at standard atmospheric pressure over the frequency range 0 to 25 THz and the temperature range 0 to 100 &deg;C", <em>Journal of Physical and Chemical Reference Data</em> 36, 1, 2007.</li>
+        <li>J. Tang, "Unlocking potentials of microwaves for food safety and quality", <em>Journal of Food Science</em> 80, E1776, 2015 · penetration depths at 915 and 2,450 megahertz.</li>
+        <li>Contemporary press reports of the Broughton Suspension Bridge collapse, Salford, 12 April 1831; the French official inquiry into the Basse-Chaine bridge at Angers, 16 April 1850.</li>
+        <li>Taipei Financial Center Corporation, published specifications for the Taipei 101 tuned mass damper; Honshu-Shikoku Bridge Authority, deck design of the Akashi Kaikyo Bridge.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var css = getComputedStyle(document.body);
+  function tok(name, fallback) {
+    var v = (css.getPropertyValue(name) || "").trim();
+    return v || fallback;
+  }
+  var ACC = tok("--accent", "#fde047");
+  var ACC2 = tok("--accent2", "#f472b6");
+  var MUT = tok("--muted", "#93a3c4");
+  var INK = tok("--ink", "#f2f5ff");
+  var LINE = tok("--line", "#1e2a4a");
+  var LINEB = tok("--line-bright", "#2c3c6b");
+
+  /* =====================================================================
+     1. The driven oscillator
+     ===================================================================== */
+  (function () {
+    var cv = document.getElementById("rigCanvas");
+    var freqEl = document.getElementById("freqRange");
+    var dampEl = document.getElementById("dampRange");
+    if (!cv || !cv.getContext || !freqEl || !dampEl) return;
+    var cx = cv.getContext("2d");
+
+    var W = 0, H = 0, DPR = 1, stacked = false;
+    var rigR = { x: 0, y: 0, w: 10, h: 10 };
+    var curR = { x: 0, y: 0, w: 10, h: 10 };
+
+    var F0 = 1.0;                 /* the rig's own rhythm, one round trip a second */
+    var W0 = 2 * Math.PI * F0;
+    var Z_MIN = 0.015, Z_MAX = 0.6;
+    var st = { x: 0, v: 0, ph: 0, drive: 1, want: 1, peak: 0, scale: 8, hist: [] };
+    var raf = 0, visible = true, last = 0;
+
+    function zeta() {
+      var u = parseInt(dampEl.value, 10) / 1000;
+      return Math.pow(10, Math.log10(Z_MIN) + u * (Math.log10(Z_MAX) - Math.log10(Z_MIN)));
+    }
+    function ratio() { return parseInt(freqEl.value, 10) / 100; }
+    function zetaToSlider(z) {
+      var u = (Math.log10(z) - Math.log10(Z_MIN)) / (Math.log10(Z_MAX) - Math.log10(Z_MIN));
+      return Math.round(Math.max(0, Math.min(1, u)) * 1000);
+    }
+    /* base excitation: how far the mass moves for each unit the driver moves */
+    function gain(r, z) {
+      var num = Math.sqrt(1 + Math.pow(2 * z * r, 2));
+      var den = Math.sqrt(Math.pow(1 - r * r, 2) + Math.pow(2 * z * r, 2));
+      return num / den;
+    }
+    function lag(r, z) {
+      var d = Math.atan2(2 * z * r, 1 - r * r);
+      var n = Math.atan2(2 * z * r, 1);
+      var p = d - n;
+      if (p < 0) p += Math.PI * 2;
+      return p;
+    }
+    function sig(x, n) {
+      var s = Number(x).toPrecision(n || 3);
+      if (s.indexOf("e") >= 0) return Number(s).toString();
+      if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+      return s;
+    }
+
+    /* ---- readouts ---- */
+    var rOut = document.getElementById("rOut");
+    var gOut = document.getElementById("gOut");
+    var statGain = document.getElementById("statGain");
+    var statQ = document.getElementById("statQ");
+    var statRing = document.getElementById("statRing");
+    var statLag = document.getElementById("statLag");
+
+    function refresh() {
+      var r = ratio(), z = zeta();
+      var g = gain(r, z);
+      var q = 1 / (2 * z);
+      var rings = q / Math.PI;
+      rOut.textContent = r.toFixed(2);
+      gOut.textContent = g >= 10 ? sig(g, 3) : g.toFixed(2);
+      statGain.textContent = (g >= 10 ? sig(g, 3) : g.toFixed(2)) + "×";
+      statQ.textContent = q >= 10 ? String(Math.round(q)) : q.toFixed(1);
+      statRing.textContent = rings < 1
+        ? "under one swing"
+        : (rings < 2 ? "about one swing" : Math.round(rings) + " swings");
+      statLag.textContent = Math.round(lag(r, z) * 180 / Math.PI) + "°";
+      if (REDUCED) {
+        st.peak = g;
+        st.x = g;
+        draw(0);
+      }
+    }
+
+    /* ---- layout ---- */
+    function layout() {
+      var w = cv.clientWidth || 640;
+      stacked = w < 620;
+      var h = stacked ? 500 : Math.max(310, Math.min(400, Math.round(w * 0.40)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+      if (stacked) {
+        rigR = { x: 6, y: 8, w: w - 12, h: 226 };
+        curR = { x: 6, y: 250, w: w - 12, h: h - 258 };
+      } else {
+        var rw = Math.round(w * 0.40);
+        rigR = { x: 6, y: 8, w: rw - 12, h: h - 16 };
+        curR = { x: rw + 6, y: 8, w: w - rw - 14, h: h - 16 };
+      }
+    }
+
+    /* ---- physics ----
+       Phase is accumulated rather than recomputed from a clock, so moving the
+       frequency slider changes the rate without jumping the driver sideways. */
+    function driverPos(ph) { return st.drive * Math.sin(ph); }
+    function driverVel(ph, w) { return st.drive * w * Math.cos(ph); }
+
+    function accel(x, v, ph, z, w) {
+      return -2 * z * W0 * (v - driverVel(ph, w)) - W0 * W0 * (x - driverPos(ph));
+    }
+
+    function step(h, z, w) {
+      var x = st.x, v = st.v, p = st.ph;
+      var hw = 0.5 * h * w;
+      var a1 = accel(x, v, p, z, w);
+      var a2 = accel(x + 0.5 * h * v, v + 0.5 * h * a1, p + hw, z, w);
+      var a3 = accel(x + 0.5 * h * (v + 0.5 * h * a1), v + 0.5 * h * a2, p + hw, z, w);
+      var a4 = accel(x + h * (v + 0.5 * h * a2), v + h * a3, p + h * w, z, w);
+      st.v = v + (h / 6) * (a1 + 2 * a2 + 2 * a3 + a4);
+      st.x = x + (h / 6) * (v + 2 * (v + 0.5 * h * a1) + 2 * (v + 0.5 * h * a2) + (v + h * a3));
+      st.ph = p + h * w;
+    }
+
+    function advance(dt) {
+      var z = zeta();
+      var w = W0 * ratio();
+      st.drive += (st.want - st.drive) * Math.min(1, dt * 3.0);
+      var n = Math.max(1, Math.min(60, Math.ceil(dt / 0.0025)));
+      var h = dt / n;
+      for (var i = 0; i < n; i++) step(h, z, w);
+      if (st.ph > Math.PI * 2) st.ph -= Math.PI * 2 * Math.floor(st.ph / (Math.PI * 2));
+      if (!isFinite(st.x) || Math.abs(st.x) > 1e5) { st.x = 0; st.v = 0; st.ph = 0; }
+      var ax = Math.abs(st.x);
+      st.peak = ax > st.peak ? ax : st.peak - st.peak * Math.min(0.9, dt * 0.4);
+      st.hist.push(st.x);
+      if (st.hist.length > 30) st.hist.shift();
+    }
+
+    /* ---- drawing helpers ---- */
+    function roundRect(x, y, w, h, r) {
+      cx.beginPath();
+      cx.moveTo(x + r, y);
+      cx.lineTo(x + w - r, y);
+      cx.quadraticCurveTo(x + w, y, x + w, y + r);
+      cx.lineTo(x + w, y + h - r);
+      cx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      cx.lineTo(x + r, y + h);
+      cx.quadraticCurveTo(x, y + h, x, y + h - r);
+      cx.lineTo(x, y + r);
+      cx.quadraticCurveTo(x, y, x + r, y);
+      cx.closePath();
+    }
+
+    function coil(x, y0, y1, turns, amp) {
+      cx.beginPath();
+      var span = Math.max(6, y1 - y0);
+      var n = Math.max(40, Math.round(span / 2));
+      for (var i = 0; i <= n; i++) {
+        var f = i / n;
+        var yy = y0 + f * span;
+        var xx = x + amp * Math.sin(f * turns * Math.PI * 2);
+        if (i === 0) cx.moveTo(xx, yy); else cx.lineTo(xx, yy);
+      }
+      cx.stroke();
+    }
+
+    function bracket(x, yTop, yBot, colour, label, side) {
+      cx.strokeStyle = colour;
+      cx.lineWidth = 1.2;
+      cx.globalAlpha = 0.9;
+      cx.beginPath();
+      cx.moveTo(x, yTop); cx.lineTo(x, yBot);
+      cx.moveTo(x - 5, yTop); cx.lineTo(x + 5, yTop);
+      cx.moveTo(x - 5, yBot); cx.lineTo(x + 5, yBot);
+      cx.stroke();
+      cx.globalAlpha = 1;
+      cx.fillStyle = colour;
+      cx.font = "600 10px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = side === "left" ? "left" : "right";
+      cx.fillText(label, side === "left" ? x + 8 : x - 8, (yTop + yBot) / 2 + 3);
+      cx.textAlign = "left";
+    }
+
+    function drawRig(dt) {
+      var R = rigR;
+      var r = ratio(), z = zeta();
+      var midX = R.x + R.w * 0.52;
+      var restY = R.y + R.h * 0.63;
+      var travel = R.h * 0.29;
+
+      /* the picture rescales itself so the swing always fills the frame */
+      var want = travel / Math.max(2.0, st.peak * 1.15);
+      st.scale += (want - st.scale) * Math.min(1, dt * 1.4);
+      if (!isFinite(st.scale) || st.scale <= 0) st.scale = 8;
+      var S = st.scale;
+
+      var yOff = driverPos(st.ph) * S;
+      var barY = R.y + 22 + yOff;
+      var massC = restY + st.x * S;
+      massC = Math.max(R.y + 62, Math.min(R.y + R.h - 14, massC));
+      var massH = 30, massW = Math.min(74, R.w * 0.30);
+      var massTop = massC - massH / 2;
+      if (massTop < barY + 24) massTop = barY + 24;
+
+      /* the band the driver moves through */
+      cx.fillStyle = ACC2;
+      cx.globalAlpha = 0.13;
+      cx.fillRect(R.x + 4, restY - S, R.w - 8, 2 * S);
+      cx.globalAlpha = 1;
+      cx.strokeStyle = LINEB;
+      cx.lineWidth = 1;
+      cx.setLineDash([3, 4]);
+      cx.beginPath(); cx.moveTo(R.x + 4, restY); cx.lineTo(R.x + R.w - 4, restY); cx.stroke();
+      cx.setLineDash([]);
+
+      /* driver bar */
+      var barW = Math.min(150, R.w * 0.62);
+      cx.fillStyle = MUT;
+      roundRect(midX - barW / 2, barY, barW, 11, 4);
+      cx.fill();
+      cx.fillStyle = ACC2;
+      cx.globalAlpha = 0.75;
+      cx.fillRect(midX - barW / 2, barY + 9, barW, 2);
+      cx.globalAlpha = 1;
+      cx.fillStyle = MUT;
+      cx.font = "600 10px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "center";
+      cx.fillText("THE PUSH", midX, barY - 7);
+      cx.textAlign = "left";
+
+      /* spring */
+      cx.strokeStyle = LINEB;
+      cx.lineWidth = 2;
+      coil(midX, barY + 11, massTop, 9, Math.min(15, R.w * 0.07));
+
+      /* ghosts of where the mass has just been */
+      for (var i = 0; i < st.hist.length; i += 3) {
+        var gy = restY + st.hist[i] * S;
+        gy = Math.max(R.y + 62, Math.min(R.y + R.h - 14, gy));
+        cx.globalAlpha = 0.05 + 0.10 * (i / st.hist.length);
+        cx.fillStyle = ACC;
+        roundRect(midX - massW / 2, gy - massH / 2, massW, massH, 9);
+        cx.fill();
+      }
+      cx.globalAlpha = 1;
+
+      /* the mass */
+      var grad = cx.createLinearGradient(midX - massW / 2, massTop, midX + massW / 2, massTop + massH);
+      grad.addColorStop(0, ACC);
+      grad.addColorStop(1, ACC2);
+      cx.fillStyle = grad;
+      cx.shadowColor = ACC;
+      cx.shadowBlur = 6 + Math.min(22, Math.abs(st.x) * S * 0.25);
+      roundRect(midX - massW / 2, massTop, massW, massH, 9);
+      cx.fill();
+      cx.shadowBlur = 0;
+
+      /* brackets: how far the push moves, how far the mass swings */
+      bracket(R.x + 16, restY - S, restY + S, ACC2, "push", "left");
+      var pk = Math.max(st.peak, 0.02) * S;
+      var pkTop = Math.max(R.y + 46, restY - pk);
+      var pkBot = Math.min(R.y + R.h - 6, restY + pk);
+      bracket(R.x + R.w - 16, pkTop, pkBot, ACC, "swing", "right");
+
+      /* the ratio, written between them */
+      cx.fillStyle = INK;
+      cx.font = "700 13px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "center";
+      cx.fillText("× " + (st.peak >= 10 ? Math.round(st.peak) : st.peak.toFixed(2)), midX, R.y + R.h - 6);
+      cx.textAlign = "left";
+
+      /* a small dial: where the push is in its cycle, and where the mass is */
+      var dx = R.x + R.w - 30, dy = R.y + 30, dr = 15;
+      cx.strokeStyle = LINE;
+      cx.lineWidth = 1;
+      cx.beginPath(); cx.arc(dx, dy, dr, 0, Math.PI * 2); cx.stroke();
+      var ang = st.ph - Math.PI / 2;
+      var ph = lag(r, z);
+      cx.strokeStyle = ACC2; cx.lineWidth = 2;
+      cx.beginPath(); cx.moveTo(dx, dy);
+      cx.lineTo(dx + dr * Math.cos(ang), dy + dr * Math.sin(ang)); cx.stroke();
+      cx.strokeStyle = ACC; cx.lineWidth = 2;
+      cx.beginPath(); cx.moveTo(dx, dy);
+      cx.lineTo(dx + dr * Math.cos(ang - ph), dy + dr * Math.sin(ang - ph)); cx.stroke();
+    }
+
+    function drawCurve() {
+      var R = curR;
+      var r = ratio(), z = zeta();
+      var padL = 40, padB = 26, padT = 16, padR = 10;
+      var GLO = Math.log10(0.05), GHI = Math.log10(60);
+
+      function gx(rr) { return R.x + padL + (rr / 3) * (R.w - padL - padR); }
+      function gy(g) {
+        var f = (Math.log10(Math.max(g, 1e-4)) - GLO) / (GHI - GLO);
+        f = Math.max(-0.05, Math.min(1.05, f));
+        return R.y + R.h - padB - f * (R.h - padB - padT);
+      }
+
+      /* horizontal gridlines */
+      cx.font = "600 10px 'JetBrains Mono', Consolas, monospace";
+      var gl = [0.1, 1, 10];
+      for (var i = 0; i < gl.length; i++) {
+        var y = gy(gl[i]);
+        cx.strokeStyle = gl[i] === 1 ? LINEB : LINE;
+        cx.lineWidth = 1;
+        cx.beginPath(); cx.moveTo(R.x + padL, y); cx.lineTo(R.x + R.w - padR, y); cx.stroke();
+        cx.fillStyle = MUT;
+        cx.textAlign = "right";
+        cx.fillText((gl[i] === 1 ? "1" : (gl[i] === 10 ? "10" : "0.1")) + "×", R.x + padL - 6, y + 3);
+      }
+      cx.textAlign = "left";
+
+      /* vertical gridlines */
+      for (var k = 1; k <= 3; k++) {
+        var x = gx(k);
+        cx.strokeStyle = k === 1 ? LINEB : LINE;
+        cx.beginPath();
+        cx.moveTo(x, R.y + padT - 6); cx.lineTo(x, R.y + R.h - padB); cx.stroke();
+        cx.fillStyle = MUT;
+        cx.textAlign = "center";
+        cx.fillText(String(k), x, R.y + R.h - padB + 14);
+      }
+      cx.textAlign = "center";
+      cx.fillStyle = MUT;
+      cx.fillText("drive speed, multiples of its own rhythm", R.x + padL + (R.w - padL - padR) / 2, R.y + R.h - padB + 26);
+      cx.textAlign = "left";
+      cx.fillStyle = ACC2;
+      cx.font = "600 9.5px 'JetBrains Mono', Consolas, monospace";
+      cx.fillText("ITS OWN RHYTHM", gx(1) + 5, R.y + padT - 2);
+
+      /* faint family of curves, so the sharpening is visible */
+      var fam = [0.5, 0.18, 0.06, 0.02];
+      cx.lineWidth = 1;
+      for (var f = 0; f < fam.length; f++) {
+        cx.strokeStyle = MUT;
+        cx.globalAlpha = 0.16;
+        cx.beginPath();
+        for (var s = 0; s <= 300; s++) {
+          var rr = (s / 300) * 3;
+          var xx = gx(rr), yy = gy(gain(Math.max(rr, 0.001), fam[f]));
+          if (s === 0) cx.moveTo(xx, yy); else cx.lineTo(xx, yy);
+        }
+        cx.stroke();
+      }
+      cx.globalAlpha = 1;
+
+      /* half-power band under the live peak */
+      var peakG = gain(Math.max(Math.sqrt(Math.max(0, 1 - 2 * z * z)), 0.001), z);
+      var half = peakG / Math.SQRT2;
+      var lo = -1, hi = -1;
+      for (var s2 = 0; s2 <= 600; s2++) {
+        var rr2 = (s2 / 600) * 3;
+        var gg = gain(Math.max(rr2, 0.001), z);
+        if (gg >= half) { if (lo < 0) lo = rr2; hi = rr2; }
+      }
+      if (lo >= 0 && hi > lo) {
+        cx.fillStyle = ACC;
+        cx.globalAlpha = 0.10;
+        cx.fillRect(gx(lo), R.y + padT - 6, gx(hi) - gx(lo), R.h - padB - padT + 6);
+        cx.globalAlpha = 1;
+      }
+
+      /* the live curve */
+      cx.strokeStyle = ACC;
+      cx.lineWidth = 2.4;
+      cx.shadowColor = ACC;
+      cx.shadowBlur = 10;
+      cx.beginPath();
+      for (var s3 = 0; s3 <= 400; s3++) {
+        var rr3 = (s3 / 400) * 3;
+        var x3 = gx(rr3), y3 = gy(gain(Math.max(rr3, 0.001), z));
+        if (s3 === 0) cx.moveTo(x3, y3); else cx.lineTo(x3, y3);
+      }
+      cx.stroke();
+      cx.shadowBlur = 0;
+
+      /* where it is heading, and where it is now */
+      var gTarget = gain(r, z);
+      var gNow = Math.max(st.peak, 0.008);
+      var mx = gx(r);
+      cx.strokeStyle = MUT;
+      cx.setLineDash([3, 4]);
+      cx.lineWidth = 1;
+      cx.beginPath(); cx.moveTo(mx, gy(gTarget)); cx.lineTo(mx, gy(gNow)); cx.stroke();
+      cx.setLineDash([]);
+
+      cx.strokeStyle = ACC2;
+      cx.lineWidth = 2;
+      cx.beginPath(); cx.arc(mx, gy(gTarget), 6, 0, Math.PI * 2); cx.stroke();
+
+      cx.fillStyle = ACC;
+      cx.shadowColor = ACC;
+      cx.shadowBlur = 12;
+      cx.beginPath(); cx.arc(mx, gy(gNow), 5, 0, Math.PI * 2); cx.fill();
+      cx.shadowBlur = 0;
+    }
+
+    function draw(dt) {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+      drawRig(dt || 0);
+      drawCurve();
+    }
+
+    function loop(ts) {
+      var now = ts || 0;
+      var dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+      last = now;
+      advance(dt);
+      draw(dt);
+      if (visible && !REDUCED) raf = requestAnimationFrame(loop); else raf = 0;
+    }
+    function start() {
+      if (!raf && !REDUCED) { last = 0; raf = requestAnimationFrame(loop); }
+    }
+
+    freqEl.addEventListener("input", refresh);
+    dampEl.addEventListener("input", refresh);
+
+    function setR(v) { freqEl.value = String(Math.round(v * 100)); refresh(); }
+    var b;
+    b = document.getElementById("btnSlow");
+    if (b) b.addEventListener("click", function () { setR(0.25); });
+    b = document.getElementById("btnOn");
+    if (b) b.addEventListener("click", function () { setR(1.00); });
+    b = document.getElementById("btnFast");
+    if (b) b.addEventListener("click", function () { setR(2.40); });
+    b = document.getElementById("btnSharp");
+    if (b) b.addEventListener("click", function () {
+      dampEl.value = String(zetaToSlider(0.02)); refresh();
+    });
+    var driveBtn = document.getElementById("btnDrive");
+    if (driveBtn) driveBtn.addEventListener("click", function () {
+      st.want = st.want > 0.5 ? 0 : 1;
+      driveBtn.textContent = st.want > 0.5 ? "Stop pushing" : "Push again";
+      driveBtn.setAttribute("aria-pressed", st.want > 0.5 ? "false" : "true");
+      if (REDUCED) { st.peak = st.want > 0.5 ? gain(ratio(), zeta()) : 0; draw(0); }
+    });
+
+    layout();
+    refresh();
+    draw(0);
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible) start(); else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0.04 });
+      io.observe(cv);
+    } else {
+      start();
+    }
+    start();
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { layout(); draw(0); }, 150);
+    });
+  })();
+
+  /* =====================================================================
+     2. The scale ladder
+     ===================================================================== */
+  (function () {
+    var axis = document.getElementById("ladderAxis");
+    var keyEl = document.getElementById("bandKey");
+    if (!axis) return;
+
+    var LO = -1, SPAN = 16;   /* 0.1 Hz to 1e15 Hz */
+    function pct(f) { return 3 + ((Math.log10(f) - LO) / SPAN) * 94; }
+
+    var BANDS = [
+      { to: 20,    c: "#fb7185", name: "things you can watch move" },
+      { to: 2e4,   c: "#fbbf24", name: "sound you can hear" },
+      { to: 1e9,   c: "#a3e635", name: "radio" },
+      { to: 3e11,  c: "#2dd4bf", name: "microwave" },
+      { to: 4e14,  c: "#818cf8", name: "heat and infrared" },
+      { to: 1e15,  c: "#f472b6", name: "visible light" }
+    ];
+
+    var RUNGS = [
+      { id: "tower", f: 0.12, row: 0, lab: "TOWER",
+        name: "A tall tower swaying",
+        freq: "about 0.12 hertz",
+        what: "Half a kilometre of steel and concrete bending as one column, a full sway taking eight seconds or so. A designer's rule of thumb puts a building's sway period near a tenth of a second for each storey, which lands a 101 storey tower around ten seconds.",
+        use: "Tuned mass dampers are matched to it: Taipei 101 hangs a 660 tonne steel sphere, about 300 utes' worth, between floors 87 and 92 to swing against the tower and cut its movement by around 40 per cent.",
+        scale: "Slow enough that people inside feel it in their inner ear before they see it." },
+      { id: "deck", f: 0.2, row: 1, lab: "DECK",
+        name: "The Tacoma Narrows twist",
+        freq: "0.2 hertz",
+        what: "853 metres of roadway rotating about its own centreline, one side up as the other went down, one twist every five seconds, with the edges travelling some eight and a half metres.",
+        use: "Nothing uses it. It is the measurement that told engineers what to design against, and it is why deck sections have gone into wind tunnels ever since.",
+        scale: "The eddies coming off the deck that day were near one hertz, five times faster, which is how Billah and Scanlan showed in 1991 that this was flutter rather than a wind keeping time." },
+      { id: "swing", f: 0.32, row: 2, lab: "SWING",
+        name: "A playground swing",
+        freq: "0.32 hertz",
+        what: "A rider and a seat pivoting about the top of the ropes. Two and a half metres of rope gives a round trip of 3.2 seconds, and the rider's weight does not change it.",
+        use: "It is where nearly everybody first meets resonance, and it carries the whole idea: push in step and the arc builds, push out of step and it does not.",
+        scale: "Left alone it keeps going for tens of trips, which puts its sharpness number in the tens." },
+      { id: "wobble", f: 0.77, row: 3, lab: "WOBBLE",
+        name: "The Millennium Bridge sideways",
+        freq: "0.77 hertz",
+        what: "The southern span of a London footbridge rolling side to side under a crowd, reaching around 70 millimetres. The central span had its own sideways mode near 0.5 hertz.",
+        use: "It became the standard case for lateral pedestrian loading, which footbridge codes have checked for ever since.",
+        scale: "Fixed with 37 viscous dampers and 52 tuned mass dampers, raising the damping from about half a per cent of critical to roughly twenty." },
+      { id: "boots", f: 2, row: 2, lab: "BOOTS",
+        name: "A marching or walking step",
+        freq: "about 2 hertz",
+        what: "Two footfalls a second. Each one pushes the body sideways as well as down, so the sideways part arrives at about one per second, half the step rate.",
+        use: "It is the load case behind the order to break step on bridges, issued by the British Army after Broughton in 1831.",
+        scale: "Walkers adjust their gait to a deck that is already moving, which is what turned the Millennium Bridge into a loop rather than a simple push." },
+      { id: "string", f: 110, row: 0, lab: "STRING",
+        name: "A guitar's A string",
+        freq: "110 hertz",
+        what: "A metal string under tension, fixed at both ends, so only whole numbers of half waves fit along it. The lowest of them is the note you hear; the rest are the timbre.",
+        use: "Every stringed instrument. Tuning is nothing more than moving the resonance by changing the tension.",
+        scale: "Its sharpness runs near a thousand, and most of what it loses goes deliberately into the soundboard, which is what makes a guitar loud." },
+      { id: "glass", f: 556, row: 1, lab: "GLASS",
+        name: "A crystal wine glass rim",
+        freq: "about 556 hertz",
+        what: "The rim flexing from a circle into an oval and back, four times per cycle around the circumference. Pour wine in and the note drops, because the wine has to move too.",
+        use: "The same trick, scaled up in frequency, is a quartz crystal microbalance: a driven disc whose note drops measurably when a few nanograms land on it.",
+        scale: "A sharpness in the low thousands, so it answers to a band well under a tenth of a per cent. Sing a semitone off and nothing happens at all." },
+      { id: "watch", f: 32768, row: 2, lab: "WATCH",
+        name: "A quartz watch crystal",
+        freq: "32,768 hertz",
+        what: "A tiny tuning fork cut from a single quartz crystal, sealed in a vacuum can, flexing electrically. The number is two to the fifteenth power, so fifteen halvings give exactly one second.",
+        use: "Timekeeping in almost every watch, phone and computer made since the 1970s.",
+        scale: "A sharpness near 100,000. Cut along the right crystal direction the note barely shifts with temperature, which is why a cheap watch keeps good time." },
+      { id: "body", f: 5e6, row: 3, lab: "BODY",
+        name: "Medical ultrasound",
+        freq: "2 to 15 megahertz",
+        what: "A piezoelectric plate driven at its own thickness resonance, sending pulses into tissue and listening for the echoes off boundaries between tissues.",
+        use: "Pregnancy scans, heart imaging, guiding needles. Higher frequencies give finer detail and reach less far, which is why probes are swapped for different jobs.",
+        scale: "At 5 megahertz the wavelength in soft tissue is about 0.3 millimetres, which sets how fine the detail can get." },
+      { id: "scan", f: 6.387e7, row: 0, lab: "SCAN",
+        name: "Hydrogen in an MRI magnet",
+        freq: "63.9 megahertz at 1.5 tesla",
+        what: "Proton nuclei wheeling about the field direction at 42.58 megahertz for every tesla. At 3 tesla the same nuclei run at 127.7 megahertz.",
+        use: "Magnetic resonance imaging, and the chemistry version at higher fields where each hydrogen atom's note shifts by parts in a million according to its neighbours.",
+        scale: "The two hospital numbers sit either side of the FM radio band, one just under 87.5 and one just over 108. Counting the 1.5 tesla wheeling one a second would take about two years." },
+      { id: "oven", f: 2.45e9, row: 1, lab: "OVEN",
+        name: "A microwave oven's magnetron",
+        freq: "2.45 gigahertz",
+        what: "The magnetron itself is a resonant cavity, and the oven box is another one, which is why the standing wave inside leaves hot and cold patches about 6.1 centimetres apart.",
+        use: "Reheating dinner, and drying and curing on industrial lines, though those often run at 915 megahertz for deeper reach.",
+        scale: "More field reversals in one second than there are seconds in a 78 year life. It drags water molecules round rather than ringing them." },
+      { id: "second", f: 9.19263177e9, row: 2, lab: "SECOND",
+        name: "Caesium-133's hyperfine flip",
+        freq: "9,192,631,770 hertz",
+        what: "The outer electron's small magnet flipping from lined up with the nucleus to opposed. The energy step between those two arrangements is tiny and extremely well defined.",
+        use: "It is the definition of the second, adopted in 1967, and every clock and network on Earth is compared back to it.",
+        scale: "Counting those beats one a second would take 291 years. A caesium fountain narrows the answer to about a hertz out of 9.19 gigahertz by watching the atoms for a full second." },
+      { id: "water", f: 2e10, row: 3, lab: "WATER",
+        name: "Liquid water's absorption hump",
+        freq: "near 20 gigahertz",
+        what: "Not a sharp note. Water molecules in the liquid are hydrogen-bonded to their neighbours and get knocked before they finish turning, so what is left is a broad hump rather than a line.",
+        use: "Knowing where it sits is what sets the frequency ovens run at, and it matters for satellite radar and for how much rain blurs a microwave link.",
+        scale: "The sharp rotational lines belong to isolated water molecules in vapour, at 22.235, 183 and 557 gigahertz among others, which radio astronomers and weather satellites watch." },
+      { id: "diamond", f: 3.995e13, row: 0, lab: "DIAMOND",
+        name: "Diamond's highest lattice note",
+        freq: "39.9 terahertz",
+        what: "Neighbouring carbon atoms vibrating against each other, the fastest pattern a diamond lattice will hold. Chemists see it as the Raman line at 1,332 reciprocal centimetres.",
+        use: "It identifies diamond in seconds, and it is the reason diamond carries heat about five times better than copper: light atoms on stiff bonds move fast and travel far before scattering.",
+        scale: "Counting those vibrations one a second would take 1.3 million years. Sound crosses diamond at roughly 14 kilometres a second, some forty times its speed in air." },
+      { id: "clock", f: 4.29228e14, row: 1, lab: "CLOCK",
+        name: "Strontium-87's clock transition",
+        freq: "429,228,004,229,873 hertz",
+        what: "An electron step the atom is barely allowed to take at all, which is exactly why it is useful: a transition that takes its time gives a very narrow note.",
+        use: "Optical lattice clocks, which are a few hundred times sharper than caesium and are the likely basis of a redefined second.",
+        scale: "The note is about a millihertz wide by nature, a ratio of some 4 × 10¹⁷. Counting to that one a second would take around 13.6 billion years." },
+      { id: "laser", f: 4.7376e14, row: 3, lab: "LASER",
+        name: "A helium neon laser's red line",
+        freq: "473.8 terahertz",
+        what: "Two resonances agreeing at once: neon atoms that will amplify 632.8 nanometre light, and a mirror cavity in which that wavelength fits a whole number of half waves.",
+        use: "Alignment, surveying, interferometry and length standards. The same cavity idea, at four kilometres, is how gravitational wave detectors work.",
+        scale: "A 30 centimetre tube holds about 948,000 half waves, and the frequencies that fit sit 500 megahertz apart. Counting the crests one a second would take 15 million years." }
+    ];
+
+    /* bands */
+    var strip = document.createElement("div");
+    strip.className = "band-strip";
+    var from = 0.1;
+    BANDS.forEach(function (bd) {
+      var seg = document.createElement("i");
+      seg.style.left = pct(from) + "%";
+      seg.style.width = Math.max(0.4, pct(bd.to) - pct(from)) + "%";
+      seg.style.background = bd.c;
+      seg.style.opacity = "0.55";
+      strip.appendChild(seg);
+      from = bd.to;
+    });
+    axis.appendChild(strip);
+
+    if (keyEl) {
+      keyEl.innerHTML = BANDS.map(function (bd) {
+        return '<span><i style="background:' + bd.c + '"></i>' + bd.name + "</span>";
+      }).join("");
+    }
+
+    /* decade lines */
+    for (var d = -1; d <= 15; d++) {
+      var line = document.createElement("div");
+      line.className = "decade" + (d % 3 === 0 ? " big" : "");
+      line.style.left = pct(Math.pow(10, d)) + "%";
+      if (d % 3 === 0) {
+        var tag = document.createElement("span");
+        tag.textContent = d === 0 ? "1 Hz" : "10" + supDigits(d);
+        line.appendChild(tag);
+      }
+      axis.appendChild(line);
+    }
+
+    function supDigits(n) {
+      var sup = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³",
+                  "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+      return String(n).split("").map(function (ch) { return sup[ch] || ch; }).join("");
+    }
+
+    /* rung dots, in ascending order so tabbing walks up the ladder */
+    var ROW_Y = [26, 62, 98, 134];
+    var dots = [];
+    RUNGS.forEach(function (rg) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "rung-dot";
+      btn.setAttribute("data-lab", rg.lab);
+      btn.setAttribute("aria-pressed", "false");
+      btn.setAttribute("aria-label", rg.name + ", " + rg.freq);
+      btn.title = rg.name + " · " + rg.freq;
+      btn.style.left = pct(rg.f) + "%";
+      btn.style.top = ROW_Y[rg.row] + "px";
+      var stem = document.createElement("span");
+      stem.className = "stem";
+      stem.style.height = (162 - ROW_Y[rg.row]) + "px";
+      btn.appendChild(stem);
+      btn.addEventListener("click", function () { select(rg.id, false); });
+      axis.appendChild(btn);
+      dots.push({ rg: rg, el: btn });
+    });
+
+    var fFreq = document.getElementById("rungFreq");
+    var fName = document.getElementById("rungName");
+    var fWhat = document.getElementById("rungWhat");
+    var fUse = document.getElementById("rungUse");
+    var fScale = document.getElementById("rungScale");
+
+    function select(id, focus) {
+      dots.forEach(function (d2) {
+        var on = d2.rg.id === id;
+        d2.el.setAttribute("aria-pressed", on ? "true" : "false");
+        if (on) {
+          fFreq.textContent = d2.rg.freq;
+          fName.textContent = d2.rg.name;
+          fWhat.textContent = d2.rg.what;
+          fUse.textContent = d2.rg.use;
+          fScale.textContent = d2.rg.scale;
+          if (focus) d2.el.focus();
+        }
+      });
+    }
+
+    axis.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      var i = -1;
+      for (var k = 0; k < dots.length; k++) {
+        if (dots[k].el.getAttribute("aria-pressed") === "true") { i = k; break; }
+      }
+      if (i < 0) i = 0;
+      i += (e.key === "ArrowRight" ? 1 : -1);
+      if (i < 0) i = dots.length - 1;
+      if (i >= dots.length) i = 0;
+      e.preventDefault();
+      select(dots[i].rg.id, true);
+    });
+
+    select("swing", false);
+  })();
+})();
+</script>
+</body>
+</html>

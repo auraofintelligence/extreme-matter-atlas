@@ -928,7 +928,7 @@ body[data-page="cymatics"] .twin-note {
       var f = shape === "square" ? squareFreq(mVal, nVal) : circleFreq(mVal, nVal);
       modeOut.textContent = shape === "square"
         ? mVal + " by " + nVal
-        : mVal + " through, " + nVal + " round";
+        : mVal + (mVal === 1 ? " line, " : " lines, ") + nVal + (nVal === 1 ? " ring" : " rings");
       freqOut.textContent = freqWords(f);
       modeSay.textContent = describe();
 
