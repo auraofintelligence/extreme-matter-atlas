@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vimana · Extreme Matter Atlas</title>
-<meta name="description" content="Old sky-chariot stories read as an engineering brief, measured against today's material records.">
+<meta name="description" content="Old sky-chariot stories read as an engineering brief, priced against today's measured records on a design bench that does the sums.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -35,13 +35,34 @@ body[data-page="vimana"] .brief-req { font-weight: 600; }
   body[data-page="vimana"] .brief-item { grid-template-columns: 40px 1fr; }
   body[data-page="vimana"] .brief-item .tag { grid-column: 2; justify-self: start; }
 }
+
+/* ---- design bench ---- */
+body[data-page="vimana"] .preset-row {
+  display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 20px;
+}
+body[data-page="vimana"] .preset-row .btn { font-size: 13.5px; padding: 9px 15px; }
+body[data-page="vimana"] .preset-lbl {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  width: 100%; margin-bottom: 2px;
+}
+body[data-page="vimana"] .control select { min-width: 230px; max-width: 100%; }
+body[data-page="vimana"] .control.wide { flex: 1 1 260px; min-width: 0; }
+body[data-page="vimana"] .control.wide select { width: 100%; }
+body[data-page="vimana"] .control input[type="range"] { width: 100%; max-width: 260px; }
+body[data-page="vimana"] .control .slider-val {
+  font-family: var(--font-mono); font-size: 13px; color: var(--accent);
+  font-weight: 600;
+}
+
 body[data-page="vimana"] .spec-grid {
   display: grid; gap: 14px; margin: 20px 0;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
 }
 body[data-page="vimana"] .spec-block {
   border: 1px solid var(--line); border-radius: 14px; padding: 18px;
   background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+  min-width: 0;
 }
 body[data-page="vimana"] .spec-block h4 {
   font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
@@ -50,24 +71,86 @@ body[data-page="vimana"] .spec-block h4 {
 }
 body[data-page="vimana"] .spec-block .pick {
   font-family: var(--font-display); font-weight: 500; font-size: 16px;
-  display: block; margin-bottom: 10px;
+  display: block; margin-bottom: 12px; line-height: 1.25;
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
+body[data-page="vimana"] .fig {
+  display: grid; grid-template-columns: 1fr auto; gap: 10px;
+  padding: 6px 0; border-bottom: 1px dashed var(--line);
+  font-size: 13px; color: var(--muted); align-items: baseline;
+}
+body[data-page="vimana"] .fig:last-of-type { border-bottom: 0; margin-bottom: 10px; }
+body[data-page="vimana"] .fig b {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 600;
+  color: var(--ink); text-align: right; white-space: nowrap;
+}
 body[data-page="vimana"] .spec-block p { font-size: 14px; color: var(--muted); }
+body[data-page="vimana"] .spec-block p + p { margin-top: 9px; }
 body[data-page="vimana"] .spec-block p strong { color: var(--ink); font-weight: 600; }
-body[data-page="vimana"] .spec-block p + p { margin-top: 10px; }
-body[data-page="vimana"] .spec-summary {
-  border-left: 3px solid var(--accent2);
-  background: color-mix(in srgb, var(--accent2) 7%, var(--panel));
-  border-radius: 0 14px 14px 0; padding: 16px 20px; margin-top: 20px;
-  font-size: 15px;
+
+body[data-page="vimana"] .readout-row {
+  display: grid; gap: 12px; margin: 24px 0 6px;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+}
+body[data-page="vimana"] .readout {
+  border: 1px solid var(--line); border-radius: 16px; padding: 16px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  min-width: 0;
+}
+body[data-page="vimana"] .readout .cap {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 8px;
+}
+body[data-page="vimana"] .readout .big {
+  display: block; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(19px, 2.6vw, 26px); line-height: 1.12;
+  overflow-wrap: anywhere;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="vimana"] .readout .sub {
+  display: block; font-size: 12.5px; color: var(--muted);
+  line-height: 1.4; margin-top: 7px;
 }
 body[data-page="vimana"] .gap-caption {
   font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--muted); margin: 18px 0 8px;
+  text-transform: uppercase; color: var(--muted); margin: 22px 0 10px;
 }
-body[data-page="vimana"] .control select { min-width: 230px; }
+body[data-page="vimana"] .bar.warm {
+  background: linear-gradient(90deg, var(--accent2), #fb7185);
+  box-shadow: 0 0 14px -2px color-mix(in srgb, var(--accent2) 60%, transparent);
+}
+body[data-page="vimana"] .closing {
+  border-left: 3px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 8%, var(--panel));
+  border-radius: 0 14px 14px 0; padding: 16px 20px; margin-top: 22px;
+  font-size: 15px;
+}
+body[data-page="vimana"] .closing strong { color: var(--ink); }
+body[data-page="vimana"] .closing .verdict-word {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+  display: block; margin-bottom: 6px;
+}
+body[data-page="vimana"] .sum-steps { list-style: none; margin: 12px 0 0; }
+body[data-page="vimana"] .sum-steps li {
+  font-size: 14px; color: var(--muted);
+  padding: 8px 0 8px 30px; position: relative;
+  border-bottom: 1px dashed var(--line);
+}
+body[data-page="vimana"] .sum-steps li:last-child { border-bottom: 0; }
+body[data-page="vimana"] .sum-steps li::before {
+  content: counter(step); counter-increment: step;
+  position: absolute; left: 0; top: 8px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent);
+}
+body[data-page="vimana"] .sum-steps { counter-reset: step; }
+@media (max-width: 460px) {
+  body[data-page="vimana"] .control select { min-width: 0; width: 100%; }
+  body[data-page="vimana"] .control { width: 100%; }
+}
 </style>
 </head>
 <body data-page="vimana">
@@ -175,7 +258,7 @@ body[data-page="vimana"] .control select { min-width: 230px; }
         <div class="card reveal">
           <span class="card-glyph">🕸️</span>
           <h3>Metamaterial lattices</h3>
-          <p>A metamaterial is a material whose trick is its shape, not its chemistry. Built as a fine lattice, an ordinary substance can steer sound or light in ways no plain block of the same stuff can.</p>
+          <p>A metamaterial is a material whose trick is its shape, not its chemistry. Built as a fine lattice, an ordinary substance can steer sound or light in ways no plain block of the same stuff can. <a href="metamaterials.html">See how that works</a>.</p>
         </div>
       </div>
     </div>
@@ -190,18 +273,18 @@ body[data-page="vimana"] .control select { min-width: 230px; }
       <div class="grid">
         <div class="card reveal">
           <h3>Metallic hydrogen</h3>
-          <p>Squeeze hydrogen hard enough and the prediction, first made in 1935, is that it would turn into a shiny metal. Labs press samples between two shaped diamonds, point to point; one group reports a reflective sample at pressures beyond the centre of the Earth, like parking two thousand utes on a space the size of a fingernail, held for moments. If it could be kept stable at everyday pressure, and no lab has shown that so far, predictions say it could carry current without loss and pack several times the energy of petrol into each kilogram.</p>
+          <p>Squeeze hydrogen hard enough and the prediction, first made in 1935, is that it would turn into a shiny metal. Labs press samples between two shaped diamonds, point to point. Ranga Dias and Isaac Silvera at Harvard reported a reflective sample at 495 gigapascals in Science in 2017, a squeeze beyond the pressure at the centre of the Earth, like parking two thousand utes on a space the size of a fingernail. The sample was lost when a diamond shattered during a follow-up measurement, other groups have questioned how the pressure was worked out, and nobody has repeated it. If it could be kept stable at everyday pressure, predictions say it would carry current without loss and hold about twenty times the energy of the fuel a Space Shuttle main engine burned.</p>
         </div>
         <div class="card reveal">
-          <h3>Room-temperature superconductor <span class="tag tier-1">T1 · measured limits</span></h3>
+          <h3>Room-temperature superconductor</h3>
           <p>A superconductor carries electric current without losing any of it as heat. The warmest confirmed one at everyday pressure works near minus 140 degrees, colder than the coldest outdoor air ever recorded on Earth. Under crushing pressure, hydrogen-rich compounds are reported superconducting near minus 20 degrees, close to a kitchen freezer. A superconductor happy in a warm room at everyday pressure would let a craft's wiring and magnets run without waste; none is confirmed so far.</p>
         </div>
         <div class="card reveal">
-          <h3>Orbit-grown single crystals <span class="tag tier-1">T1 · measured</span></h3>
+          <h3>Orbit-grown single crystals</h3>
           <p>Labs aboard the space station grow crystals in free fall, and many come back more even than the same recipe grown on the ground; reports describe fewer flaws. Today's best space-grown pieces sit closer to a sugar grain than a brick. A hull grown as one flawless piece would need that process scaled up millions of times, which nobody has attempted.</p>
         </div>
         <div class="card reveal">
-          <h3>Lattices thinner than soap film <span class="tag tier-1">T1 · measured</span></h3>
+          <h3>Lattices thinner than soap film</h3>
           <p>Graphene is a sheet of carbon one atom thick; a stack of three hundred thousand sheets would be about as thick as a page of a book, and each sheet is far thinner than the wall of a soap bubble. Tiny flawless pieces measure stronger for their weight than any steel. A hull skin assembled layer by chosen layer would be a material with no catalogue entry yet.</p>
         </div>
       </div>
@@ -212,60 +295,86 @@ body[data-page="vimana"] .control select { min-width: 230px; }
 
   <section>
     <div class="wrap">
-      <h2>The <span class="hue">spec builder</span></h2>
-      <p>Pick a hull, a power source and a lift idea. Under each pick sits the real record it would lean on, and the size of the gap between that record and the brief. Each record is measured today; the craft is still a wish.</p>
+      <h2>The <span class="hue">design bench</span></h2>
+      <p>A wish list is cheap. A sum is not. So here is the brief turned into a bench: eight hulls, eight ways of carrying power, eight ways of pushing against the world. Every option names something built or measured, with its figures attached, and nothing here swaps the story for a nicer story. Pick three, set the craft's size and what it carries, and the bench works the arithmetic all the way to the closing question: <strong>can the power plant hold up its own weight, and everything else with it?</strong></p>
+      <p>Most combinations do not close. That is the interesting part, and it is a result, not a failure. When a design runs away, the bench says by how much and which line is doing it.</p>
 
       <div class="panel reveal">
+        <div class="preset-row">
+          <span class="preset-lbl">Start somewhere</span>
+          <button class="btn" type="button" data-preset="poem">The poem's brief</button>
+          <button class="btn ghost" type="button" data-preset="today">Closest to buildable today</button>
+          <button class="btn ghost" type="button" data-preset="brute">Brute force</button>
+          <button class="btn ghost" type="button" data-preset="feather">Featherweight</button>
+        </div>
+
         <div class="control-row">
-          <div class="control">
+          <div class="control wide">
             <label for="sel-hull">Hull</label>
-            <select id="sel-hull">
-              <option value="ti">Titanium alloy</option>
-              <option value="uhtc">Ultra-high-temperature ceramic</option>
-              <option value="graphene">Layered graphene laminate</option>
-              <option value="orbit">Orbit-grown single crystal</option>
-            </select>
+            <select id="sel-hull"></select>
           </div>
-          <div class="control">
+          <div class="control wide">
             <label for="sel-power">Power</label>
-            <select id="sel-power">
-              <option value="battery">Lithium battery pack</option>
-              <option value="fuelcell">Hydrogen fuel cell</option>
-              <option value="rtg">Radioisotope generator</option>
-              <option value="methyd">Metallic hydrogen cell</option>
-            </select>
+            <select id="sel-power"></select>
           </div>
-          <div class="control">
-            <label for="sel-lift">Lift idea</label>
-            <select id="sel-lift">
-              <option value="rotors">Ducted rotors</option>
-              <option value="ionwind">Ion wind</option>
-              <option value="maglev">Magnetic levitation</option>
-              <option value="mystery">A push with no exhaust</option>
-            </select>
+          <div class="control wide">
+            <label for="sel-lift">Lift</label>
+            <select id="sel-lift"></select>
           </div>
         </div>
 
-        <div id="spec-result" aria-live="polite"></div>
+        <div class="control-row">
+          <div class="control wide">
+            <label for="rng-dia">Across the craft · <span class="slider-val" id="val-dia">12 m</span></label>
+            <input type="range" id="rng-dia" min="3" max="30" step="1" value="12">
+          </div>
+          <div class="control wide">
+            <label for="rng-pay">Crew and cargo · <span class="slider-val" id="val-pay">400 kg</span></label>
+            <input type="range" id="rng-pay" min="80" max="4000" step="20" value="400">
+          </div>
+        </div>
+
+        <div id="bench-out" aria-live="polite"></div>
+      </div>
+
+      <div class="note reveal">
+        <strong>How the sum is done.</strong> The hull is taken as a saucer: a circular floor plan with a shallow dome above and below, plus a rim around the edge, which works out at about two and a half times the area of the circle it covers.
+        <ol class="sum-steps">
+          <li>Hull mass: the skin's mass per square metre, times that skin area.</li>
+          <li>Lift-off weight: everything the craft carries, times 9.81, the pull of gravity at ground level.</li>
+          <li>Power to hover: that weight divided by the lift method's newtons per kilowatt.</li>
+          <li>Power plant mass: that power divided by the source's watts per kilogram.</li>
+          <li>The closing test: the plant just added has to be lifted too, so the sum runs round again. It settles only if each kilogram of power plant can hold up more than a kilogram. If it cannot, the craft grows without end and the bench says by what factor.</li>
+        </ol>
       </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="note reveal"><strong>Limits.</strong> The poems are poems; no physical vimana has been measured, recovered or catalogued. Every number here comes from a present-day record. The craft itself has no measurement behind it, only a wish. If a workshop somewhere ever does produce a silent, wingless, heat-shrugging palace, the shelf it shops from will be the same 118 elements on the classroom wall.</div>
+      <div class="note reveal"><strong>Limits.</strong> The poems are poems; no physical vimana has been measured, recovered or catalogued. Every figure on the bench comes from a present-day record or from arithmetic done on one, and where a number is worked out rather than measured the option says so. The craft itself has no measurement behind it, only a wish. If a workshop somewhere ever does produce a silent, wingless, heat-shrugging palace, the shelf it shops from will be the same 118 elements on the classroom wall.</div>
 
       <h2>Keep <span class="hue">wandering</span></h2>
       <div class="grid">
         <a class="card-link" href="anomalous-materials.html"><div class="card reveal">
           <span class="card-glyph">🧪</span>
           <h3>Samples</h3>
-          <p>Claimed and alleged samples, what was measured, and how strong each claim runs.</p>
+          <p>Claimed and alleged samples, what was measured, and what the instruments returned.</p>
         </div></a>
         <a class="card-link" href="metamaterials.html"><div class="card reveal">
           <span class="card-glyph">🕸️</span>
           <h3>Metamaterials</h3>
           <p>Where shape beats chemistry: lattices that steer sound, light and load.</p>
+        </div></a>
+        <a class="card-link" href="zero-point.html"><div class="card reveal">
+          <span class="card-glyph">🌌</span>
+          <h3>Zero point</h3>
+          <p>The Casimir force is measured. What a machine would have to do with it is the open part.</p>
+        </div></a>
+        <a class="card-link" href="sci-fi-lab.html"><div class="card reveal">
+          <span class="card-glyph">🚀</span>
+          <h3>Sci-fi lab</h3>
+          <p>Named fictional technology, given a spec sheet and a price in real units.</p>
         </div></a>
         <a class="card-link" href="frontiers.html"><div class="card reveal">
           <span class="card-glyph">🧭</span>
@@ -281,147 +390,535 @@ body[data-page="vimana"] .control select { min-width: 230px; }
 <script src="assets/nav.js"></script>
 <script>
 (function () {
-  var SPEC = {
-    hull: {
-      ti: {
-        name: "Titanium alloy",
-        leans: "Airliner parts and artificial hips are titanium today; it is light, tough and shrugs off rust.",
-        gap: "It loses its strength well below the heat a returning capsule's skin cops, so the calm unscorched palace of the stories would need a separate shield to do the suffering for it.",
-        score: 55
-      },
-      uhtc: {
-        name: "Ultra-high-temperature ceramic",
-        leans: "Hafnium carbide, a fired material like pottery's far tougher cousin, stays solid to about 3,900 degrees: roughly two thirds of the way to the temperature of the Sun's surface.",
-        gap: "Ceramics crack rather than bend. A hull that banked hard would ask for a toughness no ceramic has shown; the brief wants a dinner plate that bounces.",
-        score: 45
-      },
-      graphene: {
-        name: "Layered graphene laminate",
-        leans: "Graphene is a sheet of carbon one atom thick, and tiny flawless pieces measure stronger for their weight than any steel.",
-        gap: "Flawless pieces top out around fingernail size. A hull would want flawless sheets closer to the size of a driveway, and stacked by the hundred thousand.",
-        score: 70
-      },
-      orbit: {
-        name: "Orbit-grown single crystal",
-        leans: "Labs on the space station grow crystals in free fall, and many come back with fewer flaws than ground-grown ones.",
-        gap: "Today's best space-grown pieces sit nearer a sugar grain than a brick; a one-piece hull would be a scale-up of millions of times.",
-        score: 80
-      }
-    },
-    power: {
-      battery: {
-        name: "Lithium battery pack",
-        leans: "Batteries run phones, power tools and whole suburbs' worth of storage right now.",
-        gap: "A phone battery holds less energy than a teaspoon of petrol. Today's battery drones hover for about twenty to thirty minutes; the stories read like hours aloft, unhurried.",
-        score: 65
-      },
-      fuelcell: {
-        name: "Hydrogen fuel cell",
-        leans: "A small number of fuel-cell cars drive on Australian roads now, and kilogram for kilogram hydrogen carries about three times the energy of petrol.",
-        gap: "The tank outweighs the fuel it holds many times over. The slim hull in the poems would leave nowhere to hide a heavy tank.",
-        score: 50
-      },
-      rtg: {
-        name: "Radioisotope generator",
-        leans: "A slug of warm metal that turns its own heat into electricity: the deep-space probes launched in the 1970s still phone home on these, decades on, with no moving parts.",
-        gap: "Output is a few hundred watts, a fraction of one kitchen kettle. Hovering would want thousands of kettles' worth, so this pick would keep the lights on and nothing else.",
-        score: 75
-      },
-      methyd: {
-        name: "Metallic hydrogen cell",
-        leans: "Labs report squeezing hydrogen towards a shiny metal between two diamonds, at pressures beyond the centre of the Earth, held for moments.",
-        gap: "No lab has shown it holding together at everyday pressure. If it did, the prediction is a fuel several times denser than petrol; that if is the largest one in the cabinet.",
-        score: 95
-      }
-    },
-    lift: {
-      rotors: {
-        name: "Ducted rotors",
-        leans: "Delivery drones and rescue helicopters fly on pushed air every day of the week.",
-        gap: "Pushed air is loud; a drone up close runs about as loud as a blender at arm's length, and the stories describe silence.",
-        score: 40
-      },
-      ionwind: {
-        name: "Ion wind",
-        leans: "In 2018 an experimental aeroplane with no moving parts, lifted by charged air, flew about the length of an Olympic pool indoors, close to silent.",
-        gap: "The push is gentle, about the weight of a few sheets of paper per engine. Lifting a person this way would ask for thousands of times more shove.",
-        score: 70
-      },
-      maglev: {
-        name: "Magnetic levitation",
-        leans: "Maglev trains carry paying passengers at over 400 km/h, floating on magnets, quietly.",
-        gap: "They float over a prepared track laid centimetres below. The craft in the poems would cross open sky with nothing underneath to push on.",
-        score: 60
-      },
-      mystery: {
-        name: "A push with no exhaust",
-        leans: "No measured record backs this pick; every push measured so far moves something the other way.",
-        gap: "This choice would sit outside the current record books entirely. If it existed, it would be bigger news than the craft itself.",
-        score: 100
-      }
-    }
+  "use strict";
+
+  var G = 9.81;          // metres per second squared
+  var RHO = 1.225;       // air density at sea level, kg per cubic metre
+  var CLIGHT = 299792458;
+
+  /* ---------------- the option space ---------------- */
+
+  var HULL = [
+    { id: "sx", name: "Single-crystal superalloy", areal: 26.1, arealNote: "worked from 8.7 g/cm3 at 3 mm", tmax: 1100,
+      figs: [["Skin mass", "26.1 kg/m2"], ["Holds shape to", "about 1,100 °C"]],
+      leans: "Grown as one piece with no grain boundaries, which are the seams between crystal grains where hot metal creeps and cracks. Turbine blades in jet engines are made this way, each blade pulled slowly from the melt so the whole thing is a single crystal, and they run red hot for thousands of hours.",
+      buys: "It would hold its shape at heat that would slump ordinary alloy, and it is the one hull here you could order today. It is also the heaviest metal skin on the list." },
+
+    { id: "bmg", name: "Bulk metallic glass", areal: 18.3, arealNote: "worked from 6.1 g/cm3 at 3 mm", tmax: 350,
+      figs: [["Skin mass", "18.3 kg/m2"], ["Softens near", "about 350 °C"]],
+      leans: "An alloy cooled so fast the atoms never get time to line up into grains, so it sets as a glass that happens to be metal. Zirconium-titanium-copper-nickel-beryllium glass springs back from about ten times the bend an ordinary metal takes before it stays bent. It has been sold as golf club heads and watch cases, and NASA has run gearboxes cut from it.",
+      buys: "A skin that dents less and rings back into shape, at two thirds the weight of the superalloy. It gives up at a temperature an oven can reach." },
+
+    { id: "quasi", name: "Quasicrystal-coated skin", areal: 13.8, arealNote: "titanium at 3 mm plus a 0.1 mm coating", tmax: 500,
+      figs: [["Skin mass", "13.8 kg/m2"], ["Holds shape to", "about 500 °C"]],
+      leans: "In 1982 Dan Shechtman photographed a diffraction pattern with five-fold symmetry, an arrangement of atoms that repeats without ever quite repeating. It was thought impossible, and he was told to leave his research group over it. He won the 2011 Nobel Prize in Chemistry for it. Sprayed on as a coating, aluminium-copper-iron quasicrystals are slippery, hard and slow to pass heat; they have been sold on frying pans.",
+      buys: "A slippery, heat-shy outer face on a titanium shell. The coating is a fraction of a millimetre, so the metal underneath sets the temperature limit." },
+
+    { id: "bnnt", name: "Boron nitride nanotube weave", areal: 3.0, arealNote: "worked from 1.5 g/cm3 at 2 mm", tmax: 900,
+      figs: [["Skin mass", "3.0 kg/m2"], ["Holds up in air to", "about 900 °C"]],
+      leans: "Carbon nanotubes are famously strong and famously flammable: in open air they start burning off a few hundred degrees in. Swap the carbon for alternating boron and nitrogen atoms and the tube keeps its strength while staying put in air to around 900 degrees. NASA Langley has been making them by the gram for years.",
+      buys: "The lightest skin here that also takes real heat. The tubes hold; whatever glues them into a sheet would have to hold with them, and that is the part still being worked out." },
+
+    { id: "grin", name: "Gradient-index metamaterial shell", areal: 4.0, arealNote: "estimated for a 20 mm lattice at 0.2 g/cm3", tmax: 300,
+      figs: [["Skin mass", "about 4 kg/m2"], ["Holds shape to", "about 300 °C"]],
+      leans: "A lattice whose spacing changes across the shell, so a wave passing through is bent gradually and flows around what is inside instead of bouncing off it. Duke University steered microwaves around a copper cylinder this way in 2006. It works at the band of wavelengths the lattice was cut for, and only there.",
+      buys: "A shell that could be quiet on radar or sonar in a chosen band. A cloak for one band, not a cloak. The skin mass is an estimate from the lattice's density, not a measured panel." },
+
+    { id: "transp", name: "Transpiration-cooled skin", areal: 15.0, arealNote: "porous nickel alloy at 3 mm plus plumbing", tmax: 2000,
+      figs: [["Skin mass", "15.0 kg/m2"], ["Gas side takes", "about 2,000 °C"]],
+      leans: "A wall full of fine pores that sweats coolant out through itself, so the hot gas never touches bare metal. Rocket engines have used the trick since the 1960s: the Saturn V's F-1 engine bled fuel-rich gas along its nozzle wall, and porous-wall chambers have run in test stands for decades.",
+      buys: "The gas outside can run far hotter than the metal ever does, because the coolant carries the heat away before it arrives. The catch is that the coolant is spent: the craft carries a tank and the tank empties." },
+
+    { id: "healing", name: "Self-healing metal", areal: 64.4, arealNote: "worked from platinum at 21.45 g/cm3, 3 mm", tmax: 1000,
+      figs: [["Skin mass", "64.4 kg/m2"], ["Holds shape to", "about 1,000 °C"]],
+      leans: "In 2023 a team at Sandia National Laboratories and Texas A&M was cycling a thin piece of platinum to failure under an electron microscope and watched a fatigue crack close up and weld itself shut. Nobody had asked it to. The metal was fine-grained enough that the two faces of the crack cold-welded where they touched.",
+      buys: "A skin that mends its own cracks would change how often anything gets inspected. It was seen in platinum, which is one of the heaviest metals there is, so the skin mass here is the price of the demonstration rather than the price of the idea." },
+
+    { id: "aerogel", name: "Aerogel-cored sandwich", areal: 3.0, arealNote: "20 mm aerogel core plus two 0.3 mm carbon faces", tmax: 650,
+      figs: [["Skin mass", "3.0 kg/m2"], ["Holds shape to", "about 650 °C"]],
+      leans: "Aerogel is a gel with the liquid taken out and the structure left standing, so it is mostly air held in a scaffold of silica. Commercial blanket runs near a tenth the density of water; the lightest ever made, a graphene aerogel from Zhejiang University in 2013, came in lighter than dry air. NASA has flown silica aerogel to catch comet dust.",
+      buys: "The lightest skin on the bench that also insulates, sandwiched between two thin carbon faces to give it something to push against. It is a poor choice for anything that gets hit." }
+  ];
+
+  var POWER = [
+    { id: "liion", name: "Lithium-ion pack", wkg: 1000, whkg: 235,
+      figs: [["Specific power", "1,000 W/kg"], ["Specific energy", "235 Wh/kg"]],
+      leans: "The baseline everything else has to beat. Joby Aviation's air-taxi pack turns 288 watt-hours per kilogram of cell into 235 at pack level; a high-power A123 cell can dump over 2,600 watts per kilogram in a ten-second burst. An electric aircraft pumping hard enough to hover draws about a kilowatt per kilogram.",
+      buys: "It works today, on shelves, at that price. Drawing a kilowatt from every kilogram empties a 235 watt-hour kilogram in about fourteen minutes, which is roughly how long a heavy drone actually hovers." },
+
+    { id: "rtg", name: "Radioisotope units", wkg: 5.2, whkg: 790000,
+      figs: [["Specific power", "5.2 W/kg"], ["Specific energy", "about 790,000 Wh/kg"]],
+      leans: "A brick of plutonium-238 warm from its own decay, wrapped in thermocouples that turn the temperature difference straight into current. The general-purpose units on Cassini and New Horizons each gave about 300 watts from 57 kilograms. Voyager's have been running since 1977 and are still talking.",
+      buys: "Feeble power, endless patience. Per kilogram it makes about a two-hundredth of what a lithium pack makes, and it keeps making it for decades, so over a twenty-year run it delivers thousands of times more energy per kilogram than any battery." },
+
+    { id: "laser", name: "Beamed by laser", wkg: 218, whkg: null,
+      figs: [["Receiver specific power", "218 W/kg"], ["Carried fuel", "none"]],
+      leans: "Leave the power plant on the ground and send the energy up as light. In May 2025 a DARPA test at White Sands delivered more than 800 watts over 8.6 kilometres and moved more than a megajoule across the campaign, with a receiver over 20 per cent efficient. NASA flew a small aeroplane on nothing but a beam back in 2003.",
+      buys: "Nothing to carry but the receiver, so the fuel weight goes to zero and the craft flies as long as the beam holds. The figure used here is the measured one for a roll-out space solar array under one sun; a laser receiver sees far more light per square metre than that, so treat 218 as a floor and not a ceiling. A published mass for a laser receiver is the number nobody has printed yet." },
+
+    { id: "nthermal", name: "Nuclear thermal", wkg: 3000, whkg: null,
+      figs: [["Specific power", "about 3,000 W/kg"], ["Reactor heat", "62.8 kW per kg"]],
+      leans: "This one was really built and really lit. Through the 1960s the NERVA programme fired nuclear rocket engines at Jackass Flats in Nevada. NRX-A6 ran for 3,623 seconds straight in 1967. XE-Prime, the flight-shaped one, made 1,140 megawatts of heat from 18 tonnes of engine and was started 24 times.",
+      buys: "Heat by the megawatt from a machine that has actually run. The figure here is worked, not measured: NERVA made 63 kilowatts of heat per kilogram, and turning heat into shaft power at about a quarter, with machinery several times the reactor's own mass, lands near 3,000 watts per kilogram." },
+
+    { id: "methyd", name: "Metallic hydrogen", wkg: 7000, whkg: 60000,
+      figs: [["Specific power", "about 7,000 W/kg"], ["Specific energy", "60,000 Wh/kg"]],
+      leans: "Squeezed between diamond points, hydrogen is predicted to turn metal, and predicted to stay metal if you let the pressure off gently. Isaac Silvera and John Cole worked out in 2010 what that would be worth as a fuel: 216 megajoules per kilogram, more than twenty times what a Space Shuttle main engine burned. The same stuff is predicted to carry current without loss, so it could be tank, wiring and fuel at once.",
+      buys: "Fuel and structure in one, at about eight times the energy per kilogram of petrol. The specific power here is a real turboshaft's, around 7,000 watts per kilogram, standing in for an engine nobody has built. A prediction with arithmetic behind it, not a fuel anyone has poured." },
+
+    { id: "fusion", name: "Proton-boron fusion", wkg: 1000, whkg: null,
+      figs: [["Specific power", "about 1,000 W/kg"], ["Needs", "about a billion degrees"]],
+      leans: "Fuse a proton into boron-11 and it splits into three helium nuclei and 8.7 million electronvolts of motion, with no neutrons in the main channel, which means no wall of shielding. In 2023 a team at Japan's Large Helical Device, working with TAE Technologies, detected proton-boron fusion inside a magnetically held plasma for the first time. Australia's HB11 Energy is chasing it with lasers.",
+      buys: "Clean, dense power with no neutron bath around the crew. Nothing anywhere has yet got more energy out than in, and it wants about ten times the temperature deuterium fusion does. The 1,000 watts per kilogram used here is borrowed from published fusion propulsion concepts, so it is a projection, not a reading off a machine." },
+
+    { id: "anti", name: "Antimatter", wkg: 1000, whkg: null,
+      figs: [["Specific power", "about 1,000 W/kg"], ["Fuel energy", "50 billion kWh/kg"]],
+      leans: "Real, made and held. CERN's ALPHA experiment first trapped antihydrogen in 2010 and held 309 atoms for over sixteen minutes in 2011; recent runs have made over two million atoms. Annihilation turns every gram fully into energy, which is as dense as energy gets.",
+      buys: "The densest fuel physics allows. Everything ever made adds up to somewhere between about 10 and 20 nanograms, less than a speck of dust, and a 1999 NASA Marshall study put the cost at US$62.5 trillion a gram in 1999 dollars: about A$87 trillion at A$1 to US$0.7172 on 28 August 2026, or roughly seven months of everything everyone on Earth earns. The specific power is a projection; no antimatter engine exists to measure." },
+
+    { id: "zpe", name: "Vacuum and Casimir extraction", wkg: null, whkg: null,
+      figs: [["Specific power", "no measured figure"], ["Casimir force", "measured to 5 per cent"]],
+      leans: "Empty space is not still. Put two mirrors a fraction of a hair apart and fewer wave patterns fit between them than outside, so the outside pushes them together. Steve Lamoreaux measured that push at the University of Washington in 1997, at separations from 0.6 to 6 micrometres, and it matched theory to about five per cent with nothing fitted.",
+      buys: "The force is real and repeatable. The engineering obstacle is the cycle: the plates give up energy coming together and take the same energy back to prise apart, plus every loss on the way, and at those gaps they stick and cold-weld. Nobody has run a loop that comes out ahead. <a href=\"zero-point.html\">The measurements, and what a machine would need</a>." }
+  ];
+
+  var LIFT = [
+    { id: "diamag", name: "Diamagnetic levitation", npkw: 0.000059, npkwNote: "a 30 g frog against a magnet of several thousand kilowatts",
+      ceil: { kind: "mass", v: 0.030, what: "about 30 grams, the frog" },
+      needs: "a magnet big enough to hold the craft inside it, made off board",
+      figs: [["Thrust to power", "0.000059 N/kW"], ["Lifts today", "a frog"]],
+      leans: "In 1997 at the High Field Magnet Laboratory in Nijmegen, a live frog floated in mid-air inside the 32 millimetre bore of a 16 tesla magnet, and hopped away afterwards none the worse. Water is faintly diamagnetic, meaning a magnetic field pushes it away rather than pulling it in, and a living thing is mostly water. NASA's Jet Propulsion Laboratory floated a mouse the same way in a 17 tesla magnet in 2009. Bismuth, the most diamagnetic metal on the shelf, floats over a strong enough magnet with no trickery at all.",
+      buys: "It looks exactly like the thing the stories describe, and it is completely real. Two problems: the field has to be made off board, because a magnet and the thing it repels sitting in the same craft just push on each other and cancel; and the frog floated inside the magnet, so the craft would have to fit in its own bore. <a href=\"claimed-elements.html\">Bismuth and the rest of the named metals</a>." },
+
+    { id: "ionwind", name: "Ionic wind", npkw: 110, npkwNote: "measured at MIT in 2013",
+      ceil: { kind: "area", v: 3.3, what: "3.3 newtons per square metre of craft" },
+      needs: null,
+      figs: [["Thrust to power", "110 N/kW"], ["Push per square metre", "3.3 N"]],
+      leans: "Charge a thin wire hard enough and it strips electrons off the air around it; the charged air drifts to a second electrode, dragging ordinary air with it, and out the back comes a breeze with nothing moving but the air itself. In 2018 a team at MIT led by Steven Barrett flew an aeroplane on it, five metres of wingspan and two and a half kilograms, the length of a gymnasium, with no propeller, no turbine and no moving part in the drive. It was close to silent. Measured at MIT in 2013, ionic wind returns about 110 newtons of push per kilowatt, against a jet engine's two.",
+      buys: "This is the payload for silent lift, and by far the most efficient push on the bench. The catch is not the power bill, it is how thinly the push spreads: about 3.3 newtons on every square metre, a bit less than a full can of soft drink pressing down. Cover a whole saucer in it and the total is still small." },
+
+    { id: "fluxpin", name: "Superconducting flux pinning", npkw: 2450, npkwNote: "estimated: a 1 kW cryocooler holding up a 250 kg module",
+      ceil: { kind: "area", v: 100000, what: "10 newtons per square centimetre over the track" },
+      needs: "a magnet track underneath the whole flight path",
+      figs: [["Thrust to power", "about 2,450 N/kW"], ["Holds", "10 N per cm2"]],
+      leans: "Chill a disc of yttrium-barium-copper oxide below about minus 196 degrees over a magnet and the field threads through it in fixed lines and stays put. The disc then hangs at the height it was cooled at, sideways as easily as upright, and shoves back if you push it. Melt-grown discs 30 millimetres across hold about 10 to 16 newtons per square centimetre. The German SupraTrans test vehicle rides on modules like these, a quarter of a tonne each, on one fill of liquid nitrogen a day.",
+      buys: "It is the most dramatic thing on the list to watch and it costs almost nothing to hold station, because the pinning itself draws no power and only the cooling does. It also has to be over a magnet track, so it is a railway rather than a sky. The power figure is an estimate: a kilowatt of cryocooler holding a module of that size." },
+
+    { id: "mhd", name: "Magnetohydrodynamic thrust", npkw: 4, npkwNote: "worked from Yamato-1's thrusters and generators",
+      ceil: null,
+      needs: "a fluid that conducts electricity; ordinary air does not",
+      figs: [["Thrust to power", "about 4 N/kW"], ["Built", "Yamato-1, 1992"]],
+      leans: "Run a current through a fluid that conducts, cross it with a magnetic field, and the fluid gets pushed. Nothing turns. In June 1992 the Yamato-1 carried ten people around Kobe harbour at eight knots on exactly this: two ducts with 4 tesla superconducting magnets, seawater in the front and out the back, fed by two 2,000 kilowatt generators, no propeller anywhere on the ship.",
+      buys: "A real ship really moved this way, silently, with no moving part in the drive. Its whole trick depends on seawater carrying current. Air does not, unless it is heated or charged first, which costs more than the push returns." },
+
+    { id: "rotors", name: "Ducted rotors", npkw: null, npkwNote: "worked live from the saucer's own diameter",
+      ceil: null,
+      needs: null,
+      figs: [["Thrust to power", "set by the disc"], ["Reference", "75 N/kW on an R22"]],
+      leans: "The baseline that already flies. A Robinson R22 at its 621 kilogram limit hangs off a rotor disc of 46 square metres and hovers on roughly 75 kilowatts, which is about 75 newtons of lift for every kilowatt. Every delivery drone and rescue helicopter in the country works this way.",
+      buys: "It flies, today, for money. This is also the only pick whose figure moves with the design: a wider disc pushes a bigger, slower column of air and hovers for less, so the bench reworks the number from the saucer's own diameter each time. What it will not do is be quiet." },
+
+    { id: "acoustic", name: "Acoustic levitation", npkw: 1.39, npkwNote: "estimated: 2.84 g held on roughly 20 W of ultrasound",
+      ceil: { kind: "mass", v: 0.00284, what: "2.84 grams, the record" },
+      needs: "a standing wave, so the craft has to sit inside the sound",
+      figs: [["Thrust to power", "about 1.4 N/kW"], ["Record lift", "2.84 g"]],
+      leans: "Aim two ultrasonic emitters at each other and the sound waves stack into a standing pattern with still points every half wavelength. Small things sit in the still points and hang there. In 2002 Wenjun Xie, Chuanjun Cao, Yajun Lü and Bingbo Wei levitated a four-millimetre iridium sphere weighing 2.84 grams, the densest solid there is, and reported it in Physical Review Letters.",
+      buys: "Contactless handling that laboratories use every week for droplets and protein crystals. It does not scale: the still points are half a wavelength apart, so at 40 kilohertz the object has to be smaller than about a centimetre, and the record load is under three grams." },
+
+    { id: "photon", name: "Photon drive", npkw: 1000 / 299792458, npkwNote: "power divided by the speed of light",
+      ceil: null,
+      needs: null,
+      figs: [["Thrust to power", "0.0000033 N/kW"], ["Per gigawatt", "3.34 N"]],
+      leans: "Light carries momentum, so a torch pushes back. The arithmetic is not in dispute and it is not kind: divide the power by the speed of light and you have the thrust. A gigawatt of light, about twice a large power station unit, returns 3.34 newtons, which is roughly the weight of a full can of soft drink. Solar sails run on this and really do work, over months, in space, where there is nothing else pulling.",
+      buys: "It needs no propellant at all and it works in vacuum. It is the least forgiving line on the bench: holding up one adult would take about two hundred gigawatts of light, several times everything Australia generates." },
+
+    { id: "warp", name: "A warp metric", npkw: null, npkwNote: null,
+      ceil: null,
+      needs: "a solution to general relativity that nobody has built hardware for",
+      figs: [["Thrust to power", "not that kind of push"], ["Energy asked for", "see below"]],
+      leans: "In 1994 Miguel Alcubierre published a real solution to Einstein's equations in which space contracts ahead of a craft and stretches behind it. Nothing moves through space faster than light; the patch of space carries the craft. Michael Pfenning and Larry Ford worked out in 1997 what it would cost and got a negative energy about ten billion times the mass of everything visible in the universe. Harold White cut that to around 700 kilograms of mass-energy in 2011 by reshaping the bubble, and in 2024 Jared Fuchs and colleagues published a slower-than-light version that needs no negative energy at all, just a shell of ordinary matter.",
+      buys: "A published piece of general relativity with thirty years of working on it, not a device. It does not push, so newtons per kilowatt is the wrong question to ask it, and the bench says so rather than inventing an answer. <a href=\"sci-fi-lab.html\">Named fictional drives, given spec sheets</a>." }
+  ];
+
+  var PRESETS = {
+    poem:    { hull: "grin",    power: "laser",    lift: "ionwind", dia: 12, pay: 400 },
+    today:   { hull: "bmg",     power: "liion",    lift: "rotors",  dia: 6,  pay: 200 },
+    brute:   { hull: "sx",      power: "anti",     lift: "photon",  dia: 20, pay: 2000 },
+    feather: { hull: "aerogel", power: "laser",    lift: "rotors",  dia: 16, pay: 120 }
   };
 
-  var LABELS = { hull: "Hull", power: "Power", lift: "Lift" };
+  /* ---------------- geometry and sums ---------------- */
 
-  function gapWord(s) {
-    if (s <= 45) return "wide";
-    if (s <= 65) return "very wide";
-    if (s <= 85) return "vast";
-    return "off the chart";
+  function skinArea(d) { var r = d / 2; return 2.5 * Math.PI * r * r; }
+  function planArea(d) { var r = d / 2; return Math.PI * r * r; }
+
+  // ducted rotors: momentum theory, with an overall efficiency of 0.55.
+  // That reproduces the R22's real hover power to within a couple of per cent.
+  function rotorNpkW(d, thrustN) {
+    return 0.55 * Math.sqrt(2 * RHO * planArea(d) / thrustN) * 1000;
   }
 
-  function summarise(avg) {
-    if (avg <= 55) {
-      return "This build would lean mostly on hardware that already flies, floats or drives. The brief would still outrun it on silence, stamina and heat, but most of its parts have a measured record to point at.";
-    }
-    if (avg <= 75) {
-      return "This build would mix real records with real gaps. The parts exist as measurements; the distance from each measurement to the brief would be counted in thousands of times, not in percent.";
-    }
-    return "This build would rest on the cabinet's biggest ifs. If even one of them landed as a measurement, it would be larger news than any flying palace.";
+  function byId(list, id) {
+    for (var i = 0; i < list.length; i++) { if (list[i].id === id) return list[i]; }
+    return list[0];
   }
 
-  var out = document.getElementById("spec-result");
-  var sels = {
+  function solve(hull, power, lift, d, pay) {
+    var out = {
+      skin: skinArea(d), plan: planArea(d),
+      hullMass: hull.areal * skinArea(d)
+    };
+    out.dry = out.hullMass + pay;
+
+    if (lift.npkw === null && lift.id === "warp") { out.mode = "no-thrust"; return out; }
+    if (power.wkg === null) { out.mode = "no-source"; }
+
+    // the lift figure, which for rotors depends on how heavy the craft turns out
+    var s = power.wkg;
+    var npkw, alpha, total, i, next;
+
+    if (lift.id === "rotors") {
+      total = out.dry;
+      npkw = rotorNpkW(d, total * G);
+      if (s !== null) {
+        for (i = 0; i < 400; i++) {
+          npkw = rotorNpkW(d, total * G);
+          alpha = G / ((npkw / 1000) * s);
+          if (alpha >= 1) break;
+          next = out.dry / (1 - alpha);
+          if (Math.abs(next - total) < 1e-7) { total = next; break; }
+          total = next;
+          if (total > 1e12) break;
+        }
+      }
+    } else {
+      npkw = lift.npkw;
+    }
+    out.npkw = npkw;
+
+    if (s === null) {
+      // no measured watts per kilogram: work out the figure a plant would have to reach
+      out.needWkg = G / (npkw / 1000);
+      out.dryWeight = out.dry * G;
+      out.dryPower = out.dryWeight / (npkw / 1000);
+      out.mode = "no-source";
+      return out;
+    }
+
+    alpha = G / ((npkw / 1000) * s);
+    out.alpha = alpha;
+    out.closesOnPower = alpha < 1;
+
+    if (out.closesOnPower) {
+      out.total = (lift.id === "rotors") ? total : out.dry / (1 - alpha);
+      // rotors: alpha was worked at the settled mass, so recompute cleanly
+      if (lift.id === "rotors") {
+        out.npkw = rotorNpkW(d, out.total * G);
+        out.alpha = G / ((out.npkw / 1000) * s);
+      }
+    } else {
+      // no settled answer: show the first pass, sized for hull and crew alone
+      out.total = out.dry * (1 + alpha);
+    }
+
+    out.weight = out.total * G;
+    out.power = out.weight / (out.npkw / 1000);   // watts
+    out.plant = out.power / s;
+
+    // what the lift method can actually hold up at this size
+    if (lift.ceil === null) {
+      out.ceiling = null;
+    } else if (lift.ceil.kind === "area") {
+      out.ceiling = lift.ceil.v * out.plan;
+    } else {
+      out.ceiling = lift.ceil.v * G;
+    }
+    out.ceilFactor = (out.ceiling === null) ? null : out.ceiling / out.weight;
+    out.mode = "full";
+    return out;
+  }
+
+  /* ---------------- number wording ---------------- */
+
+  function commas(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+  function sig(n, places) {
+    if (!isFinite(n)) return "beyond counting";
+    var p = places === undefined ? 3 : places;
+    if (n === 0) return "0";
+    var mag = Math.floor(Math.log10(Math.abs(n)));
+    if (mag >= 15 || mag <= -5) {
+      return n.toExponential(1).replace("e+", " times ten to the ").replace("e-", " times ten to the minus ");
+    }
+    var r = Number(n.toPrecision(p));
+    if (Math.abs(r) >= 1000) return commas(Math.round(r));
+    if (Math.abs(r) >= 10) return String(Math.round(r * 10) / 10);
+    return String(Math.round(r * 100) / 100);
+  }
+
+  function bigTimes(n) {
+    if (!isFinite(n)) return "beyond counting";
+    if (n < 1000) return sig(n) + " times";
+    if (n < 1e6) return commas(Math.round(n)) + " times";
+    if (n < 1e9) return sig(n / 1e6) + " million times";
+    if (n < 1e12) return sig(n / 1e9) + " billion times";
+    if (n < 1e15) return sig(n / 1e12) + " trillion times";
+    return "more than a thousand trillion times";
+  }
+
+  function mass(kg) {
+    if (!isFinite(kg)) return "no settled figure";
+    if (kg < 1) return sig(kg * 1000) + " g";
+    if (kg < 1000) return sig(kg) + " kg";
+    if (kg < 1e6) return sig(kg / 1000) + " t";
+    if (kg < 1e9) return sig(kg / 1e6) + " thousand t";
+    return sig(kg / 1e9) + " million t";
+  }
+
+  function massLike(kg) {
+    if (!isFinite(kg)) return "";
+    if (kg < 0.02) return "lighter than a teaspoon of water";
+    if (kg < 1) return "about a mug of tea";
+    if (kg < 90) return "about a large dog";
+    if (kg < 400) return "about a heavy motorbike";
+    if (kg < 2600) return "about " + sig(kg / 1300) + " small cars";
+    if (kg < 60000) return "about " + sig(kg / 2100) + " utes";
+    if (kg < 2e6) return "about " + sig(kg / 40000) + " loaded semi-trailers";
+    return "about " + sig(kg / 4e5) + " fully loaded jumbo jets";
+  }
+
+  function force(n) {
+    if (!isFinite(n)) return "no settled figure";
+    if (n < 1000) return sig(n) + " N";
+    if (n < 1e6) return sig(n / 1000) + " kN";
+    if (n < 1e9) return sig(n / 1e6) + " MN";
+    return sig(n / 1e9) + " GN";
+  }
+
+  function power(w) {
+    if (!isFinite(w)) return "no settled figure";
+    if (w < 1000) return sig(w) + " W";
+    if (w < 1e6) return sig(w / 1000) + " kW";
+    if (w < 1e9) return sig(w / 1e6) + " MW";
+    if (w < 1e12) return sig(w / 1e9) + " GW";
+    if (w < 1e15) return sig(w / 1e12) + " TW";
+    return sig(w / 1e12) + " TW";
+  }
+
+  function powerLike(w) {
+    if (!isFinite(w)) return "";
+    var kettles = w / 2000;              // a kitchen kettle, about 2 kW
+    var homes = w / 700;                 // an Australian home, averaged across a day
+    var units = w / 5e8;                 // a large generating unit, about 500 MW
+    var worldElec = w / 3.4e12;          // all the world's electricity, averaged
+    if (kettles < 4000) return "about " + sig(kettles) + " kettles boiling at once";
+    if (homes < 5e5) return "about " + commas(Math.round(homes)) + " homes' average draw";
+    if (units < 400) return "about " + sig(units) + " large power station units";
+    if (worldElec < 1) return "about " + sig(worldElec * 100) + " per cent of all the electricity on Earth";
+    return bigTimes(worldElec) + " all the electricity on Earth";
+  }
+
+  /* ---------------- rendering ---------------- */
+
+  var els = {
     hull: document.getElementById("sel-hull"),
     power: document.getElementById("sel-power"),
-    lift: document.getElementById("sel-lift")
+    lift: document.getElementById("sel-lift"),
+    dia: document.getElementById("rng-dia"),
+    pay: document.getElementById("rng-pay"),
+    diaVal: document.getElementById("val-dia"),
+    payVal: document.getElementById("val-pay"),
+    out: document.getElementById("bench-out")
   };
 
-  function render() {
-    var keys = ["hull", "power", "lift"];
-    var blocks = "";
-    var bars = "";
-    var total = 0;
-    keys.forEach(function (k) {
-      var o = SPEC[k][sels[k].value];
-      total += o.score;
-      blocks +=
-        '<div class="spec-block">' +
-        "<h4>" + LABELS[k] + "</h4>" +
-        '<span class="pick">' + o.name + "</span>" +
-        "<p><strong>Leans on:</strong> " + o.leans + "</p>" +
-        "<p><strong>The gap:</strong> " + o.gap + "</p>" +
-        "</div>";
-      bars +=
-        '<div class="bar-row">' +
-        '<span class="who">' + LABELS[k] + "</span>" +
-        '<div class="bar" style="width:' + o.score + '%"></div>' +
-        '<span class="val">' + gapWord(o.score) + "</span>" +
-        "</div>";
-    });
-    var avg = total / keys.length;
-    out.innerHTML =
-      '<div class="spec-grid">' + blocks + "</div>" +
-      '<p class="gap-caption">Distance from the brief · longer bar, wider gap</p>' +
-      bars +
-      '<p class="spec-summary">' + summarise(avg) + "</p>";
+  function fillSelect(sel, list) {
+    var html = "";
+    for (var i = 0; i < list.length; i++) {
+      html += '<option value="' + list[i].id + '">' + list[i].name + "</option>";
+    }
+    sel.innerHTML = html;
+  }
+  fillSelect(els.hull, HULL);
+  fillSelect(els.power, POWER);
+  fillSelect(els.lift, LIFT);
+
+  function figRows(pairs) {
+    var h = "";
+    for (var i = 0; i < pairs.length; i++) {
+      h += '<div class="fig"><span>' + pairs[i][0] + "</span><b>" + pairs[i][1] + "</b></div>";
+    }
+    return h;
   }
 
-  Object.keys(sels).forEach(function (k) {
-    sels[k].addEventListener("change", render);
+  function card(label, o, extraFigs) {
+    var figs = (extraFigs || []).concat(o.figs);
+    return '<div class="spec-block">' +
+      "<h4>" + label + "</h4>" +
+      '<span class="pick">' + o.name + "</span>" +
+      figRows(figs) +
+      "<p><strong>Leans on:</strong> " + o.leans + "</p>" +
+      "<p><strong>What it would buy:</strong> " + o.buys + "</p>" +
+      "</div>";
+  }
+
+  function readout(cap, big, sub) {
+    return '<div class="readout"><span class="cap">' + cap + "</span>" +
+      '<span class="big">' + big + "</span>" +
+      '<span class="sub">' + sub + "</span></div>";
+  }
+
+  function barRow(who, val, pct, warm) {
+    return '<div class="bar-row"><span class="who">' + who + "</span>" +
+      '<div class="bar' + (warm ? " warm" : "") + '" style="width:' + Math.max(1, Math.min(100, pct)) + '%"></div>' +
+      '<span class="val">' + val + "</span></div>";
+  }
+
+  function render() {
+    var hull = byId(HULL, els.hull.value);
+    var pwr = byId(POWER, els.power.value);
+    var lft = byId(LIFT, els.lift.value);
+    var d = Number(els.dia.value);
+    var pay = Number(els.pay.value);
+
+    els.diaVal.textContent = d + " m";
+    els.payVal.textContent = commas(pay) + " kg";
+
+    var r = solve(hull, pwr, lft, d, pay);
+
+    var liftFigs = [];
+    if (lft.id === "rotors" && r.npkw) {
+      liftFigs.push(["At this diameter", sig(r.npkw) + " N/kW"]);
+    }
+
+    var cards = '<div class="spec-grid">' +
+      card("Hull", hull, [["Skin area at " + d + " m", sig(r.skin) + " m2"]]) +
+      card("Power", pwr, []) +
+      card("Lift", lft, liftFigs) +
+      "</div>";
+
+    var reads = "", bars = "", closing = "";
+
+    if (r.mode === "no-thrust") {
+      reads = '<div class="readout-row">' +
+        readout("Hull mass", mass(r.hullMass), "Skin of " + sig(r.skin) + " square metres at " + sig(hull.areal) + " kilograms each. " + massLike(r.hullMass) + ".") +
+        readout("Lift-off weight", force((r.hullMass + pay) * G), "Hull and crew together, times 9.81.") +
+        readout("Power to hover", "no figure", "A warp metric does not push against anything, so newtons per kilowatt is the wrong question.") +
+        readout("Power plant mass", "no figure", "There is nothing to size it against yet.") +
+        "</div>";
+      closing = '<p class="closing"><span class="verdict-word">Held open</span>' +
+        "<strong>The bench stops here on purpose.</strong> Alcubierre's 1994 paper is a real solution to Einstein's equations, and thirty years of work has cut the price hard: from a negative energy about ten billion times the mass of the visible universe, to around 700 kilograms of mass-energy in Harold White's 2011 reshaping, to a 2024 slower-than-light version by Jared Fuchs and colleagues that needs no negative energy at all. " +
+        "What the numbers describe is a geometry, and geometry does not come with a thrust rating. The figure worth watching is the energy the shell would ask for, and it is still falling. " +
+        '<a href="sci-fi-lab.html">The spec sheets for named fictional drives</a>.</p>';
+      els.out.innerHTML = cards + reads + closing;
+      return;
+    }
+
+    if (r.mode === "no-source") {
+      reads = '<div class="readout-row">' +
+        readout("Hull mass", mass(r.hullMass), "Skin of " + sig(r.skin) + " square metres at " + sig(hull.areal) + " kilograms each. " + massLike(r.hullMass) + ".") +
+        readout("Lift-off weight", force(r.dryWeight), "Hull and crew, times 9.81. That is " + mass(r.dry) + " held up, " + massLike(r.dry) + ".") +
+        readout("Power to hover", power(r.dryPower), "Before any power plant is added: " + powerLike(r.dryPower) + ".") +
+        readout("What a plant would need", sig(r.needWkg) + " W/kg", "Below that figure a plant cannot even hold up its own weight, so the craft grows without end.") +
+        "</div>";
+      closing = '<p class="closing"><span class="verdict-word">Open question</span>' +
+        "<strong>No measured watts per kilogram exists for this source, so the bench turns the question around.</strong> " +
+        "With " + lft.name.toLowerCase() + " under it, a vacuum tap would have to deliver more than <strong>" + sig(r.needWkg) + " watts for every kilogram of machine</strong> before the craft settles at any size. " +
+        "For scale, a lithium pack already gives about a thousand. So the bar is not the hard part; the cycle is. The Casimir force is measured to about five per cent and nobody disputes it. What nobody has is a loop that comes back around with more than it started with. " +
+        '<a href="zero-point.html">What such a machine would have to do</a>.</p>';
+      els.out.innerHTML = cards + reads + closing;
+      return;
+    }
+
+    // full sum
+    var plantShare = r.alpha * 100;
+    reads = '<div class="readout-row">' +
+      readout("Hull mass", mass(r.hullMass),
+        "Skin of " + sig(r.skin) + " square metres at " + sig(hull.areal) + " kilograms each. " + massLike(r.hullMass) + ".") +
+      readout("Lift-off weight", force(r.weight),
+        mass(r.total) + " held up against gravity, " + massLike(r.total) + ".") +
+      readout("Power to hover", power(r.power),
+        powerLike(r.power) + ".") +
+      readout("Power plant mass", mass(r.plant),
+        r.closesOnPower
+          ? sig(plantShare) + " per cent of everything that leaves the ground."
+          : "Sized for the hull and crew alone, before it starts lifting itself.") +
+      "</div>";
+
+    // bars: what it weighs against what the lift can hold
+    var capacity = (r.ceiling === null) ? r.weight : r.ceiling;
+    var top = Math.max(capacity, r.weight);
+    bars = '<p class="gap-caption">Mass budget against lift capacity</p>' +
+      barRow("What it weighs", force(r.weight), 100 * r.weight / top, true) +
+      barRow("What lift offers", (r.ceiling === null ? force(r.weight) + " (no ceiling)" : force(r.ceiling)), 100 * capacity / top, false);
+
+    // the closing sentence: which line binds
+    var word, body;
+    if (!r.closesOnPower) {
+      word = "Runs away";
+      body = "<strong>The power plant is the binding constraint.</strong> " +
+        "At " + sig(r.npkw) + " newtons per kilowatt from " + lft.name.toLowerCase() + " and " + commas(pwr.wkg) + " watts per kilogram from " + pwr.name.toLowerCase() + ", " +
+        "the plant needed to hover the hull and crew already weighs <strong>" + bigTimes(r.alpha) + "</strong> what it was meant to lift. " +
+        "Add plant to carry the plant and the sum climbs instead of settling, so there is no size at which this build flies. " +
+        "The way out is not a bigger saucer: it is either a lift method that returns more push per kilowatt, or a source that gives more watts per kilogram.";
+    } else if (r.ceiling !== null && r.ceilFactor < 1) {
+      word = "Short on push";
+      body = "<strong>The lift method is the binding constraint, and it is not the power bill.</strong> " +
+        "The sum settles: the plant comes to " + sig(plantShare) + " per cent of lift-off mass, which is fine. " +
+        "But " + lft.name.toLowerCase() + " can only offer " + lft.ceil.what + ", which at this size is <strong>" + force(r.ceiling) + "</strong> against a weight of " + force(r.weight) + ". " +
+        "It falls short by <strong>" + bigTimes(1 / r.ceilFactor) + "</strong>. " +
+        (lft.needs ? "It would also want " + lft.needs + ". " : "") +
+        "Growing the saucer does not fix it, because the weight grows with the area just as the push does.";
+    } else {
+      word = "It closes";
+      body = "<strong>This one settles.</strong> " +
+        "Each kilogram of " + pwr.name.toLowerCase() + " holds up about " + sig(1 / r.alpha) + " kilograms of craft, so the plant comes to " + sig(plantShare) + " per cent of lift-off mass and the sum stops climbing. " +
+        (r.ceiling === null
+          ? "Nothing in the lift method caps the push at this size, so the binding constraint is the power bill: " + power(r.power) + ", " + powerLike(r.power) + ". "
+          : "The lift can offer " + force(r.ceiling) + " against a weight of " + force(r.weight) + ", " + sig(r.ceilFactor) + " times over. ") +
+        (pwr.whkg !== null
+          ? "On one load it would stay up for about " + endurance(pwr) + ". "
+          : "") +
+        (lft.needs ? "It would still want " + lft.needs + ". " : "") +
+        "A sum that balances, not a craft anyone has flown.";
+    }
+    closing = '<p class="closing"><span class="verdict-word">' + word + "</span>" + body + "</p>";
+
+    els.out.innerHTML = cards + reads + bars + closing;
+  }
+
+  function endurance(pwr) {
+    var hours = pwr.whkg / pwr.wkg;
+    if (hours < 1) return Math.round(hours * 60) + " minutes";
+    if (hours < 48) return sig(hours) + " hours";
+    if (hours < 8760) return sig(hours / 24) + " days";
+    return sig(hours / 8760) + " years";
+  }
+
+  function applyPreset(key) {
+    var p = PRESETS[key];
+    if (!p) return;
+    els.hull.value = p.hull;
+    els.power.value = p.power;
+    els.lift.value = p.lift;
+    els.dia.value = p.dia;
+    els.pay.value = p.pay;
+    render();
+  }
+
+  var buttons = document.querySelectorAll("[data-preset]");
+  for (var b = 0; b < buttons.length; b++) {
+    buttons[b].addEventListener("click", function (e) {
+      applyPreset(e.currentTarget.getAttribute("data-preset"));
+    });
+  }
+
+  ["hull", "power", "lift"].forEach(function (k) {
+    els[k].addEventListener("change", render);
   });
-  render();
+  els.dia.addEventListener("input", render);
+  els.pay.addEventListener("input", render);
+
+  applyPreset("today");
 })();
 </script>
 </body>
