@@ -319,7 +319,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       <p>Here is the one that changed engineering. Push a whole plane of atoms across the plane beneath it and you would have to break every bond along it at the same instant. Work that out for copper and the stress comes to something near 4.5 gigapascals. Then take a soft copper wire and pull it: it gives way at around 10 megapascals, a few hundred times less. For thirty years that gap was the loudest unanswered question in the study of metals.</p>
       <p>In 1934 Geoffrey Taylor in Cambridge, Egon Orowan in Berlin and Michael Polanyi in Berlin published the same answer separately within months of each other. The plane does not move all at once. An extra half-plane of atoms is wedged in from one side, and the wedge travels, one column of bonds at a time, like a rumple travelling under a rug you are straightening with your foot. You never lift the rug. You only ever move the rumple.</p>
       <p>Choose <strong>Line of mismatch</strong> above and slide it across, or press <strong>Bend the metal</strong> and watch it go. Count the columns above the dashed line and below it: there is one more above. When the wedge reaches the far edge, the top half of the crystal has slipped exactly one atom's width over the bottom half, and the crystal has a step on its side. Stack a few million of those steps and you have bent a paperclip.</p>
-      <p>For twenty-two years it stayed an idea on paper. Then in 1956, at the Cavendish Laboratory in Cambridge, Peter Hirsch, Robert Horne and Michael Whelan had a foil of aluminium in a Siemens electron microscope when the condenser aperture came out. The extra flood of electrons warmed the foil, dislocations started to move, and they filmed them. The paper went into <em>Philosophical Magazine</em> that year with the pictures in it.</p>
+      <p>For twenty-two years it stayed an idea on paper. Then in 1956, at the Cavendish Laboratory in Cambridge, Peter Hirsch, Robert Horne and Michael Whelan had a foil of aluminium in a Siemens electron microscope when the condenser aperture came out. The extra flood of electrons warmed the foil, the lines of mismatch, which metallurgists call dislocations, started to move, and they filmed them. The paper went into <em>Philosophical Magazine</em> that year with the pictures in it.</p>
       <p>The lines are dense. Soft annealed metal carries roughly ten thousand million of them crossing every square metre, which works out at about ten kilometres of line packed into a single cubic centimetre. Work that metal hard, hammer it or roll it or bend it back and forth, and the count climbs a hundred thousand times: about a million kilometres of line in that same cubic centimetre, two and a half times the distance to the Moon. They tangle, and tangled lines cannot move, and a metal whose lines cannot move is a hard metal. That is the whole of work hardening, and it is why a paperclip snaps on the fourth bend instead of the first.</p>
 
       <h3>A stray atom, put there on purpose</h3>
@@ -1303,7 +1303,8 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
     function slideLabel() {
       var v = core;
       var t = v <= -NX ? "out the left side" : v >= NX + 1 ? "out the right side"
-        : Math.abs(v) < 0.6 ? "middle" : v.toFixed(1) + " columns across";
+        : Math.abs(v) < 0.6 ? "middle"
+        : Math.abs(v).toFixed(1) + " columns " + (v < 0 ? "left of centre" : "right of centre");
       slideVv.textContent = t;
     }
 

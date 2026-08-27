@@ -861,7 +861,13 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
 
     // the closing sentence: which line binds
     var body;
-    if (!r.closesOnPower) {
+    if (!r.closesOnPower && lft.id === "rotors") {
+      body = "<strong>This one does not settle, and the disc is the line doing it.</strong> " +
+        "Sized for the hull and crew alone, a " + d + " metre disc returns " + sig(r.npkw) + " newtons per kilowatt, so the plant to hold up " + mass(r.total) + " comes to " + mass(r.plant) + ", " +
+        (r.alpha < 1 ? sig(plantShare) + " per cent of" : "<strong>" + bigTimes(r.alpha) + "</strong>") + " the load it was asked to lift. " +
+        "Put that plant on board and the disc has to push harder, which drops the newtons per kilowatt again, so each round asks for more than the one before and the sum climbs instead of settling. " +
+        "The way out is more disc or less mass: a wider disc moves a bigger, slower column of air and hovers for less, a lighter hull or a smaller crew asks for less to begin with, and a source with more watts per kilogram works the same seam from the other end.";
+    } else if (!r.closesOnPower) {
       body = "<strong>This one does not settle, and the power plant is the line doing it.</strong> " +
         "At " + sig(r.npkw) + " newtons per kilowatt from " + lft.name.toLowerCase() + " and " + commas(pwr.wkg) + " watts per kilogram from " + pwr.name.toLowerCase() + ", " +
         "the plant needed to hover the hull and crew already weighs <strong>" + bigTimes(r.alpha) + "</strong> what it was meant to lift. " +
