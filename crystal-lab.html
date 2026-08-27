@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Crystal Lab · Extreme Matter Atlas</title>
-<meta name="description" content="A playable lattice sketchpad: stack squares, triangles, honeycomb and kagome patterns, shift them like graphite, and twist them to the magic angle.">
+<meta name="description" content="A playable lattice bench: stack and twist patterns, set them vibrating, break them on purpose, read the symmetry back off them, and pack spheres four ways in three dimensions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@ body[data-page="crystal"] .seg button {
   font-family: var(--font-mono); font-size: 12.5px; font-weight: 600;
   letter-spacing: 0.04em; padding: 8px 14px; border-radius: 999px;
   border: 1px solid var(--line-bright); background: var(--panel2);
-  color: var(--muted); cursor: pointer;
+  color: var(--muted); cursor: pointer; min-height: 38px;
   transition: color .15s ease, border-color .15s ease, background .15s ease;
 }
 body[data-page="crystal"] .seg button:hover { color: var(--ink); border-color: var(--accent); }
@@ -29,14 +29,58 @@ body[data-page="crystal"] .control .vv {
   color: var(--accent); text-transform: none; letter-spacing: 0; margin-left: 5px;
 }
 body[data-page="crystal"] .control.off { opacity: 0.35; }
-body[data-page="crystal"] #lab-canvas { cursor: grab; }
-body[data-page="crystal"] #lab-canvas.dragging { cursor: grabbing; }
+body[data-page="crystal"] #lab-canvas,
+body[data-page="crystal"] #cell-canvas { cursor: grab; }
+body[data-page="crystal"] #lab-canvas.dragging,
+body[data-page="crystal"] #cell-canvas.dragging { cursor: grabbing; }
 body[data-page="crystal"] .canvas-cap {
   display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
   padding: 10px 4px 0; font-family: var(--font-mono); font-size: 12px; color: var(--muted);
 }
+body[data-page="crystal"] .canvas-cap b { color: var(--accent); font-weight: 600; }
 body[data-page="crystal"] .preset-row .btn { padding: 9px 16px; font-size: 13.5px; }
 body[data-page="crystal"] .lab-controls { margin-top: 8px; }
+
+body[data-page="crystal"] .readout {
+  font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; color: var(--ink);
+  padding: 12px 16px; border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2); margin: 8px 0;
+}
+body[data-page="crystal"] .readout b { color: var(--accent); font-weight: 600; }
+body[data-page="crystal"] .readout .r2 { color: var(--muted); }
+
+body[data-page="crystal"] .chk {
+  display: inline-flex; align-items: center; gap: 9px;
+  min-height: 42px; padding: 6px 15px 6px 12px; border-radius: 12px;
+  border: 1px solid var(--line-bright); background: var(--panel2);
+  font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer;
+}
+body[data-page="crystal"] .chk:hover { color: var(--ink); border-color: var(--accent); }
+body[data-page="crystal"] .chk input { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; }
+
+body[data-page="crystal"] .sym-key {
+  display: flex; flex-wrap: wrap; gap: 9px 20px; margin: 14px 0 0; padding: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted); list-style: none;
+}
+body[data-page="crystal"] .sym-key li { display: flex; align-items: center; gap: 8px; }
+body[data-page="crystal"] .sym-key i {
+  width: 13px; height: 13px; display: inline-block; background: var(--accent); flex: none;
+}
+body[data-page="crystal"] .sym-key i.k2 { border-radius: 50% 6% 50% 6%; }
+body[data-page="crystal"] .sym-key i.k3 { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+body[data-page="crystal"] .sym-key i.k4 { background: var(--accent2); }
+body[data-page="crystal"] .sym-key i.k5 { background: #fbbf24; clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%); }
+body[data-page="crystal"] .sym-key i.k6 { background: var(--accent2); clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+body[data-page="crystal"] .sym-key i.km { background: none; border-top: 2px dashed #fbbf24; height: 0; width: 22px; }
+
+body[data-page="crystal"] .bar-row.on .who { color: var(--accent); }
+body[data-page="crystal"] .bar-row.dim .bar { opacity: 0.3; box-shadow: none; }
+body[data-page="crystal"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns: 1.35fr 1fr; align-items: start; }
+@media (max-width: 900px) { body[data-page="crystal"] .lay { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  body[data-page="crystal"] .control input[type="range"] { width: min(280px, 74vw); }
+}
 </style>
 </head>
 <body data-page="crystal">
@@ -47,12 +91,13 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
     <div class="orbs"><div class="orb3"></div></div>
     <div class="wrap">
       <span class="kicker">Crystal Lab</span>
-      <h1 class="display">Stack it, shift it, give it a twist</h1>
-      <p class="lede">Salt grains are tiny cubes. Most snowflakes grow six arms. Honeycomb carries a heavy load with walls thinner than paper. Under each one sits the same quiet idea: a <strong>lattice</strong>, which is just a repeating arrangement of points. On the bench below you can pick a pattern, stack it four layers high, slide it half a step, and twist it until something strange appears.</p>
+      <h1 class="display">Stack it, shift it, shake it, break it</h1>
+      <p class="lede">Salt grains are tiny cubes. Most snowflakes grow six arms. Honeycomb carries a heavy load with walls thinner than paper. Under each one sits the same quiet idea: a <strong>lattice</strong>, which is just a repeating arrangement of points. On the benches below you can pick a pattern, stack it four layers high, twist it until something strange appears, set it ringing like a struck rail, put faults into it on purpose, and read its symmetry straight back off the screen.</p>
       <div class="stat-row">
         <div class="stat reveal"><span class="num">6</span><span class="lbl">arms on most snowflakes</span></div>
-        <div class="stat reveal"><span class="num">1 atom</span><span class="lbl">the thickness of a single graphite sheet</span></div>
-        <div class="stat reveal"><span class="num">1.1°</span><span class="lbl">the twist at which cold graphene carries current with no measured loss</span></div>
+        <div class="stat reveal"><span class="num">1.1&deg;</span><span class="lbl">the twist at which chilled graphene carries current with no measured loss</span></div>
+        <div class="stat reveal"><span class="num">74%</span><span class="lbl">the most space equal spheres can fill, in a fruit crate or in a metal</span></div>
+        <div class="stat reveal"><span class="num">1982</span><span class="lbl">the year a solid returned a five-fold pattern no repeating lattice can hold</span></div>
       </div>
     </div>
   </section>
@@ -62,22 +107,22 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
       <h2>Patterns you <span class="hue">already own</span></h2>
       <div class="grid">
         <div class="card reveal">
-          <span class="card-glyph">🧂</span>
+          <span class="card-glyph">&#129474;</span>
           <h3>The cube in your shaker</h3>
           <p>Tip salt onto a dark plate and look closely: each grain is a tiny box with flat faces. Sodium and chlorine atoms take turns on a grid of little cubes, and the grid shows up at a size you can see with a magnifying glass.</p>
         </div>
         <div class="card reveal">
-          <span class="card-glyph">❄️</span>
+          <span class="card-glyph">&#10052;&#65039;</span>
           <h3>Six arms on the windscreen</h3>
           <p>Water molecules settle into rings of six as they freeze, so most snowflakes branch in sixes. The shape of one ring, far too small to see, sets the shape of the whole flake on your sleeve.</p>
         </div>
         <div class="card reveal">
-          <span class="card-glyph">🍯</span>
+          <span class="card-glyph">&#127855;</span>
           <h3>The strong room made of wax</h3>
           <p>Bees build six-sided cells with walls thinner than a sheet of paper, and the comb still holds kilograms of honey. The pattern does the heavy lifting, not the material.</p>
         </div>
       </div>
-      <p style="margin-top: 26px;">The pencil in your drawer holds the star of this page. Its lead is graphite: sheets of carbon arranged in a honeycomb pattern, stacked like pages, each sheet one atom thick. A million of those sheets piled up would stand about as tall as three pages of a paperback. Each stroke you make shears tiny stacks of them onto the paper.</p>
+      <p style="margin-top: 26px;">The pencil in your drawer holds the star of the show. Its lead is graphite: sheets of carbon arranged in a honeycomb pattern, stacked like pages, each sheet one atom thick. The sheets sit 0.335 nanometres apart, about three million of them to a millimetre, and a million piled up would stand about as tall as three pages of a paperback. Each stroke you make shears tiny stacks of them onto the paper.</p>
     </div>
   </section>
 
@@ -86,12 +131,14 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
   <section>
     <div class="wrap">
       <h2>The <span class="hue">sketchpad</span></h2>
-      <p>Four patterns sit on the bench: the square, the triangle, the honeycomb, and the kagome, a weave of triangles and six-sided holes borrowed from Japanese basketry. Choose one and set how far apart the points sit, then stack up to four layers. <strong>AA</strong> places each layer directly on top of the last. <strong>AB</strong> slides every second layer half a step across, the way graphite stacks in your pencil. <strong>Twist</strong> turns each new layer by a small angle, and that is where things get strange.</p>
+      <p>Five patterns sit on the bench: the square, the triangle, the honeycomb, the kagome, a weave of triangles and six-sided holes borrowed from Japanese basketry, and a five-fold pattern built from two diamond shapes that never repeats. Choose one and set how far apart the points sit, then stack up to four layers. <strong>AA</strong> places each layer directly on top of the last. <strong>AB</strong> slides every second layer half a step across, the way graphite stacks in your pencil. <strong>Twist</strong> turns each new layer by a small angle, and that is where things get strange. The Motion controls send a wave through the whole thing.</p>
 
       <div class="control-row preset-row">
         <button class="btn" id="preset-graphite" type="button">Graphite stack</button>
         <button class="btn ghost" id="preset-kagome" type="button">Kagome weave</button>
         <button class="btn ghost" id="preset-magic" type="button">Magic angle</button>
+        <button class="btn ghost" id="preset-sound" type="button">Sound wave</button>
+        <button class="btn ghost" id="preset-five" type="button">Five-fold</button>
       </div>
 
       <div class="control-row lab-controls">
@@ -102,6 +149,7 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
             <button type="button" data-lat="tri">Triangle</button>
             <button type="button" data-lat="honeycomb" class="on">Honeycomb</button>
             <button type="button" data-lat="kagome">Kagome</button>
+            <button type="button" data-lat="penrose">Five-fold</button>
           </div>
         </div>
         <div class="control">
@@ -116,8 +164,8 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
         <div class="control">
           <label for="stack-sel">Stacking</label>
           <select id="stack-sel">
-            <option value="aa">AA · directly on top</option>
-            <option value="ab">AB · shifted like graphite</option>
+            <option value="aa">AA &middot; directly on top</option>
+            <option value="ab">AB &middot; shifted like graphite</option>
             <option value="twist" selected>Twist</option>
           </select>
         </div>
@@ -133,22 +181,49 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
           <input type="range" id="node-size" min="2" max="10" step="0.5" value="4">
         </div>
         <div class="control" id="twist-ctrl">
-          <label for="twist">Twist <span class="vv" id="twist-vv">5.0°</span></label>
+          <label for="twist">Twist <span class="vv" id="twist-vv">5.0&deg;</span></label>
           <input type="range" id="twist" min="0" max="15" step="0.1" value="5">
         </div>
         <div class="control">
-          <label for="tilt">Tilt <span class="vv" id="tilt-vv">0°</span></label>
+          <label for="tilt">Tilt <span class="vv" id="tilt-vv">0&deg;</span></label>
           <input type="range" id="tilt" min="0" max="80" step="1" value="0">
         </div>
       </div>
 
+      <div class="control-row">
+        <div class="control">
+          <label for="motion-sel">Motion</label>
+          <select id="motion-sel">
+            <option value="still" selected>Still</option>
+            <option value="long">Along the wave</option>
+            <option value="trans">Across the wave</option>
+          </select>
+        </div>
+        <div class="control" id="wavelen-ctrl">
+          <label for="wavelen">Wavelength <span class="vv" id="wavelen-vv">6 spacings</span></label>
+          <input type="range" id="wavelen" min="2" max="24" step="0.5" value="6">
+        </div>
+        <div class="control" id="swing-ctrl">
+          <label for="swing">Swing <span class="vv" id="swing-vv">30%</span></label>
+          <input type="range" id="swing" min="0" max="60" step="1" value="30">
+        </div>
+        <div class="control" id="play-ctrl">
+          <label for="play-btn">Run the wave</label>
+          <button class="btn ghost" id="play-btn" type="button" aria-pressed="false">Play</button>
+        </div>
+        <div class="control" id="phase-ctrl">
+          <label for="phase">Where in the swing <span class="vv" id="phase-vv">0%</span></label>
+          <input type="range" id="phase" min="0" max="100" step="1" value="0">
+        </div>
+      </div>
+
       <div class="canvas-frame">
-        <canvas id="lab-canvas" aria-label="Lattice sketchpad: stacked layers of repeating points"></canvas>
+        <canvas id="lab-canvas" aria-label="Lattice sketchpad: stacked layers of repeating points, with an optional travelling wave running through them"></canvas>
         <noscript><p style="padding: 20px;">The sketchpad needs JavaScript switched on.</p></noscript>
         <div class="canvas-cap"><span id="cap-left"></span><span id="cap-right"></span></div>
       </div>
 
-      <div class="note"><strong>Drag the picture</strong> to spin the stack and lean it over; the Tilt slider does the same by numbers. The Twist slider wakes up when Stacking is set to Twist. Each layer wears its own colour, and deeper layers sit dimmer.</div>
+      <div class="note"><strong>Drag the picture</strong> to spin the stack and lean it over; the Tilt slider does the same by numbers. The Twist slider wakes up when Stacking is set to Twist, and the wave controls wake up when Motion leaves Still. Each layer wears its own colour, and deeper layers sit dimmer.</div>
     </div>
   </section>
 
@@ -160,16 +235,12 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
       <div class="two-col">
         <div>
           <p>Lay one flyscreen on top of another and turn the top one a little. Large, slow ripples drift across the mesh, patterns far bigger than any single wire. That ghost pattern is called a <strong>moire</strong> (say mwah-ray): the big pattern two fine patterns make when they overlap slightly out of step. Two kitchen sieves held up to a window do it too.</p>
-          <p>The same trick works at the scale of atoms, and there it does more than look good. Graphene is a single sheet of pencil graphite, carbon in a honeycomb one atom thick. In physics labs, two graphene sheets twisted to about 1.1 degrees, roughly the angle a clock's minute hand sweeps in eleven seconds, carry electric current with no measured resistance once they are chilled below about minus 271 degrees Celsius, colder than the space between the stars. That is a measured result, first reported in 2018 and repeated in labs since.</p>
+          <p>The same trick works at the scale of atoms, and there it does more than look good. Graphene is a single sheet of pencil graphite, carbon in a honeycomb one atom thick. Yuan Cao and colleagues at the Massachusetts Institute of Technology reported in <em>Nature</em> in April 2018 that two graphene sheets twisted to about 1.1 degrees, roughly the angle a clock's minute hand sweeps in eleven seconds, carry electric current with no measured resistance once they are chilled below about minus 271 degrees Celsius, colder than the space between the stars. Other laboratories have built the same stacks since and read the same result.</p>
         </div>
         <div>
           <p>The twist builds a moire pattern into the pair of sheets, a repeating landscape hundreds of times wider than the gap between atoms. Electrons slow right down inside that landscape, and in the slow crowd they pair up and flow without loss. Why the pairing happens is still being worked out, which is part of why so many labs keep building these little twisted stacks.</p>
           <p>Press the <strong>Magic angle</strong> button in the sketchpad and look for the broad bright patch in the middle of the circle: that is the moire, drawn in points. Nudge the twist up to five degrees and the patches shrink into a pinwheel. Two flyscreens, two sieves, two sheets of carbon: same trick.</p>
-          <h3>Sources</h3>
-          <ul class="src-list">
-            <li>Current with no measured resistance in two graphene sheets twisted near 1.1 degrees: peer-reviewed measurement, first reported in Nature in 2018, repeated by other labs since.</li>
-            <li>Graphite sheets sit 0.335 nanometres apart, about three million sheets to a millimetre: peer-reviewed measurement.</li>
-          </ul>
+          <p>Twist is not the only way in. Two patterns with slightly different spacings do it as well, which is why a photograph of a laptop screen comes back covered in bands: the camera's grid of sensors and the screen's grid of pixels are two lattices a whisker out of step.</p>
         </div>
       </div>
     </div>
@@ -179,10 +250,223 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
 
   <section>
     <div class="wrap">
+      <h2>When the lattice <span class="hue">starts to sing</span></h2>
+      <p>Nothing in a solid sits still. In a steel rail on a cold morning every atom is jiggling about its place, and the jiggles are not random: they travel. Nudge one atom and its neighbours feel it a moment later, and the disturbance runs off through the pattern as a wave. Set <strong>Motion</strong> on the sketchpad to <strong>Along the wave</strong> and the points shuffle back and forth in the direction the wave is heading, bunching and thinning like a slinky given a shove. Set it to <strong>Across the wave</strong> and they swing sideways instead, like a skipping rope flicked at one end. A solid carries both. Air only carries the first, because air has nothing to hold a sideways swing against.</p>
+      <p>You can feel the difference in an earthquake. Two waves leave the same rupture at the same instant. The along-the-wave one runs through crust at roughly six kilometres a second; the across-the-wave one manages about three and a half. A hundred kilometres from the source they arrive about twelve seconds apart: the first is the jolt, the second is the roll. Richard Oldham noticed in 1906 that the second arrival goes missing on the far side of the planet, and that absence is how the Earth's outer core was read as liquid. A sideways swing has nothing to grip in a liquid, so it simply stops.</p>
+      <p>Physicists count these waves the way they count light. One wave of a given note, carrying a fixed parcel of energy, gets handled as a single countable thing and given a name: a <strong>phonon</strong>, which is a sound wave in a crystal counted like a particle. The word is a nod to the photon, and the trick is the same trick.</p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>What the waves carry: sound</h3>
+          <p>Tap a steel rail and the note runs along it at about 5,900 metres a second, roughly 21,000 kilometres an hour, about seventeen times its speed through the air above it. Sound in a solid is nothing more than these waves passing through, and the speed is set by how stiff the bonds are against how heavy the atoms are: stiff and light goes fast, floppy and heavy goes slow.</p>
+        </div>
+        <div class="panel">
+          <h3>What the waves carry: heat</h3>
+          <p>In a copper wire most of the heat rides on the loose electrons. In diamond, glass, brick and plastic there are almost no loose electrons, and the lattice waves carry nearly all of it. Diamond does that better than anything else on the bench: it moves about five and a half times as much heat as copper for the same push, entirely by vibration. That is why diamond is cut into heat spreaders for high-power chips, and why a diamond feels cold on the lip.</p>
+        </div>
+      </div>
+
+      <p>There is a shortest wave the pattern can hold, and the sketchpad shows it. Slide <strong>Wavelength</strong> down to two spacings and neighbouring atoms swing in exact opposition, one up while the next goes down. Ask for anything shorter and there are no atoms in between to carry it. That floor puts a ceiling on the highest note a crystal can ring at. In silicon the ceiling lands near 15.6 million million wobbles a second, read straight off the sharp line at 520.7 wavenumbers that a laser instrument returns from a clean wafer. The highest note a person can hear is about 20,000 wobbles a second, so a silicon crystal tops out around 800 million times higher than your ears do.</p>
+
+      <div class="note"><strong>The same rule, three benches.</strong> A wave that has to fit a fixed space can only take certain shapes: that is what a lattice does to a vibration, what a plate does to sand scattered on it, and what a guitar string does to a pluck. <a href="cymatics.html">Cymatics</a> drives the plate and photographs the answer. <a href="resonance.html">Resonance</a> follows the rule from a tuning fork all the way down to an atom. The sketchpad is the same argument drawn in points.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>Nothing is perfect, and that is <span class="hue">mostly the point</span></h2>
+      <p>A drawn lattice repeats forever without a slip. A real crystal never does, and the faults are where most of the useful behaviour lives. The bench below holds one square sheet of atoms and lets you put four kinds of fault into it.</p>
+
+      <div class="control-row">
+        <div class="control">
+          <label id="def-label">Fault</label>
+          <div class="seg" id="def-seg" role="group" aria-labelledby="def-label">
+            <button type="button" data-def="perfect" class="on">Perfect</button>
+            <button type="button" data-def="vacancy">Missing atom</button>
+            <button type="button" data-def="inter">Squeezed-in atom</button>
+            <button type="button" data-def="dopant">Stray atom</button>
+            <button type="button" data-def="edge">Line of mismatch</button>
+          </div>
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control" id="def-slide-ctrl">
+          <label for="def-slide">Where the line sits <span class="vv" id="def-slide-vv">middle</span></label>
+          <input type="range" id="def-slide" min="-11" max="11" step="0.1" value="0">
+        </div>
+        <div class="control" id="def-run-ctrl">
+          <label for="def-run">Push it through</label>
+          <button class="btn ghost" id="def-run" type="button">Bend the metal</button>
+        </div>
+      </div>
+
+      <div class="canvas-frame">
+        <canvas id="def-canvas" aria-label="A square sheet of atoms with a chosen fault drawn into it: a missing atom, a squeezed-in atom, a stray atom of another kind, or a line of mismatch that can be slid across the sheet"></canvas>
+        <div class="canvas-cap"><span id="def-cap"></span></div>
+      </div>
+      <div class="readout" id="def-read" aria-live="polite"></div>
+
+      <h3>A missing atom</h3>
+      <p>The simplest fault is an empty site: somewhere the pattern says an atom belongs and there is none. They are not rare, and they are not damage. Heat a metal and the count climbs steeply, because at any temperature above absolute zero there is a bargain to be struck between the energy an empty site costs and the disorder it buys. Careful dilatometry on aluminium, comparing how much a bar grows against how much its lattice spacing grows, puts the count near one site in ten thousand empty right at the melting point of 660 degrees Celsius. One in ten thousand is a full stadium of fifty thousand people with five seats spare.</p>
+      <p>In a piece of aluminium the size of a pinhead, one cubic millimetre, one in ten thousand comes to about six thousand million million empty sites: roughly 750,000 vacancies for every person alive. Those empty sites are how atoms move through a solid at all. An atom cannot walk through a full lattice, but it can step sideways into a hole, and the hole steps the other way. That shuffle is how heat treatment works, how two metals weld without melting, and how salt slowly finds its way through a glaze.</p>
+
+      <h3>A squeezed-in atom</h3>
+      <p>Next is the opposite: an extra atom shoved into a space the pattern never left for it. It costs more energy than an empty site, so at rest there are fewer of them, but they arrive in pairs the moment something energetic passes through. Knock an atom off its site and you have made a hole and a squeezed-in atom in one stroke. That pair is the first page of radiation damage, in the wall of a reactor, in the sensor of a satellite, in a chip flown at altitude. Watch the drawn sheet bulge around it: the strain reaches several atoms out in every direction, which is why one extra atom is felt by thousands.</p>
+
+      <h3>A line of mismatch, which is why metal bends</h3>
+      <p>Here is the one that changed engineering. Push a whole plane of atoms across the plane beneath it and you would have to break every bond along it at the same instant. Work that out for copper and the stress comes to something near 4.5 gigapascals. Then take a soft copper wire and pull it: it gives way at around 10 megapascals, a few hundred times less. For thirty years that gap was the loudest unanswered question in the study of metals.</p>
+      <p>In 1934 Geoffrey Taylor in Cambridge, Egon Orowan in Berlin and Michael Polanyi in Berlin published the same answer separately within months of each other. The plane does not move all at once. An extra half-plane of atoms is wedged in from one side, and the wedge travels, one column of bonds at a time, like a rumple travelling under a rug you are straightening with your foot. You never lift the rug. You only ever move the rumple.</p>
+      <p>Choose <strong>Line of mismatch</strong> above and slide it across, or press <strong>Bend the metal</strong> and watch it go. Count the columns above the dashed line and below it: there is one more above. When the wedge reaches the far edge, the top half of the crystal has slipped exactly one atom's width over the bottom half, and the crystal has a step on its side. Stack a few million of those steps and you have bent a paperclip.</p>
+      <p>For twenty-two years it stayed an idea on paper. Then in 1956, at the Cavendish Laboratory in Cambridge, Peter Hirsch, Robert Horne and Michael Whelan had a foil of aluminium in a Siemens electron microscope when the condenser aperture came out. The extra flood of electrons warmed the foil, dislocations started to move, and they filmed them. The paper went into <em>Philosophical Magazine</em> that year with the pictures in it.</p>
+      <p>The lines are dense. Soft annealed metal carries roughly ten thousand million of them crossing every square metre, which works out at about ten kilometres of line packed into a single cubic centimetre. Work that metal hard, hammer it or roll it or bend it back and forth, and the count climbs a hundred thousand times: about a million kilometres of line in that same cubic centimetre, two and a half times the distance to the Moon. They tangle, and tangled lines cannot move, and a metal whose lines cannot move is a hard metal. That is the whole of work hardening, and it is why a paperclip snaps on the fourth bend instead of the first.</p>
+
+      <h3>A stray atom, put there on purpose</h3>
+      <p>The last fault is the deliberate one, and a whole industry rests on it. Pure silicon is a mediocre conductor. Swap out one silicon atom for a boron atom or a phosphorus atom here and there and it becomes a material whose conductivity you can switch with a voltage. The doses run from about one stray atom in a thousand million at the lightest to about one in five hundred at the heaviest; a typical device body sits near one in five million, which is one odd person out in a crowd the size of Greater Sydney, which passed 5.4 million in 2024.</p>
+      <p>For that one-in-five-million to mean anything, everything else has to be cleaner still. Electronic-grade silicon is refined until unwanted atoms sit below one in a thousand million, then the wanted ones are put back in by hand. A cubic centimetre of it holds about fifty thousand million million million atoms; if each were a grain of rice the pile would bury the whole of Australia 130 metres deep. Out of that pile, one grain in every five million is the one put there on purpose, and those are the grains the switching runs on.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The turns a repeating pattern <span class="hue">is allowed</span></h2>
+      <p>Every pattern on the bench has two kinds of hidden move in it. A <strong>mirror line</strong> is a line you could fold the pattern along and have both halves land on each other. A <strong>rotation centre</strong> is a pin you could stick through the pattern and spin it by some fraction of a full turn and have it land on itself. The viewer below finds both by trying: it takes the pattern, applies the move, and checks whether every point has landed on a point. Nothing is asserted, and nothing is looked up.</p>
+
+      <div class="control-row">
+        <div class="control">
+          <label id="sym-label">Pattern</label>
+          <div class="seg" id="sym-seg" role="group" aria-labelledby="sym-label">
+            <button type="button" data-lat="square" class="on">Square</button>
+            <button type="button" data-lat="tri">Triangle</button>
+            <button type="button" data-lat="honeycomb">Honeycomb</button>
+            <button type="button" data-lat="kagome">Kagome</button>
+            <button type="button" data-lat="penrose">Five-fold</button>
+          </div>
+        </div>
+      </div>
+      <div class="control-row">
+        <label class="chk"><input type="checkbox" id="sym-rot" checked> <span>Rotation centres</span></label>
+        <label class="chk"><input type="checkbox" id="sym-mir" checked> <span>Mirror lines</span></label>
+        <label class="chk"><input type="checkbox" id="sym-cell" checked> <span>The smallest repeat</span></label>
+      </div>
+
+      <div class="canvas-frame">
+        <canvas id="sym-canvas" aria-label="A lattice with its mirror lines drawn as dashed lines, its rotation centres marked with shapes whose number of sides matches the rotation order, and the smallest repeating tile shaded"></canvas>
+        <div class="canvas-cap"><span id="sym-cap">Working the moves out.</span></div>
+      </div>
+      <ul class="sym-key">
+        <li><i class="k2"></i> half turn</li>
+        <li><i class="k3"></i> third of a turn</li>
+        <li><i class="k4"></i> quarter turn</li>
+        <li><i class="k5"></i> fifth of a turn</li>
+        <li><i class="k6"></i> sixth of a turn</li>
+        <li><i class="km"></i> mirror line</li>
+      </ul>
+      <div class="readout" id="sym-read" aria-live="polite"></div>
+
+      <p>Work through the four repeating patterns and a short list comes back every time: half turns, third turns, quarter turns, sixth turns. Never a fifth. Never a seventh. That is not a shortage of imagination on the part of the tool, and it is not a shortage of clever tilers either. It is arithmetic, and it has been known since the nineteenth century. Evgraf Fedorov in Russia and Arthur Schoenflies in Germany both finished the count in 1891: there are exactly seventeen ways to repeat a pattern across a flat surface, and 230 ways to repeat one through a solid. Every wallpaper in every shop, every tiled floor in every station, every crystal in every rock: seventeen and 230, and no more.</p>
+
+      <div class="lay">
+        <div>
+          <h3>Why five is the one that will not fit</h3>
+          <p>Try it with pentagons and the gap is easy to see. A regular pentagon has corners of 108 degrees. Put two together at a point and 144 degrees of the circle are still bare. Put three and you are down to a 36 degree wedge, too narrow for a fourth. Push a fourth in anyway and it has to overlap the first by 72 degrees. There is no whole number of pentagons that closes a circle, because 360 does not divide by 108.</p>
+          <p>The deeper reason is about repeating rather than about pentagons. Suppose a pattern repeated across a surface and also had a fifth-turn centre. Take the shortest step that carries the pattern onto itself, spin that step by a fifth of a turn about a centre, and you can build a shorter step out of the two. But you started with the shortest one. The assumption breaks itself. The same argument leaves half, third, quarter and sixth turns standing, and kills everything else.</p>
+        </div>
+        <div>
+          <div class="control-row" style="margin-top:0;">
+            <div class="control">
+              <label for="pent-n">Pentagons round the point <span class="vv" id="pent-vv">3</span></label>
+              <input type="range" id="pent-n" min="1" max="4" step="1" value="3">
+            </div>
+          </div>
+          <div class="canvas-frame">
+            <canvas id="pent-canvas" aria-label="Regular pentagons placed around a shared corner, with the leftover wedge of the circle shaded and its angle labelled"></canvas>
+            <div class="canvas-cap"><span id="pent-cap"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Then a solid did it anyway</h3>
+      <p>On 8 April 1982, at what was then the National Bureau of Standards in Gaithersburg, Maryland, Dan Shechtman of the Technion put a fast-cooled alloy of aluminium and manganese, 86 atoms of aluminium to every 14 of manganese, in front of an electron beam. Shooting electrons through a crystal and catching what comes out the far side gives a pattern of bright spots whose symmetry is the crystal's symmetry, which is the everyday way of reading a structure. What came back had ten-fold symmetry. He wrote in his notebook beside sample 1725: ten fold, with three question marks.</p>
+      <p>The reaction was hard. He was asked to leave his research group. Linus Pauling, twice a Nobel laureate and the most respected structural chemist alive, said in public: "There is no such thing as quasicrystals, only quasi-scientists." The measurement did not change. Shechtman published with Ilan Blech, Denis Gratias and John Cahn in <em>Physical Review Letters</em> in November 1984, other laboratories grew the same phases, and in 2011 he was given the Nobel Prize in Chemistry on his own.</p>
+      <p>Here is the part worth being precise about, because it is easy to tell wrong. The tiling rule did not fall over. Five-fold rotation really is impossible in a pattern that repeats. What fell over was the older assumption underneath it: that an ordered solid has to repeat at all. A <strong>quasicrystal</strong> is a solid whose atoms sit in a strict, completely determined order that never comes back to the same arrangement twice, no matter how far you walk. It has the order without the repeat, and once you drop the repeat the fifth turn is allowed.</p>
+      <p>Press <strong>Five-fold</strong> in the viewer above and watch what the tool returns. One fifth-turn centre, in the middle, and five mirrors through it. Then the last line: no repeat found. Slide that pattern over itself by any distance in any direction and it never lands back on itself. It is built from two diamond shapes, a fat one and a thin one, in a scheme Roger Penrose set out in 1974 and Nicolaas de Bruijn gave a clean recipe for in 1981; the version drawn here is built by de Bruijn's method, five families of parallel lines crossed at 72 degrees and turned inside out.</p>
+      <p>The definition of a crystal had to be rewritten to hold it. In 1992 the International Union of Crystallography's commission on aperiodic crystals settled on a new one: a crystal is any solid whose diffraction pattern comes back as sharp separate spots. Ordered, not repeating. That sentence is what a measurement did to a definition.</p>
+
+      <div class="note"><strong>The nearest built thing is older than the argument.</strong> Peter Lu and Paul Steinhardt reported in <em>Science</em> in February 2007 that the tilework on the Darb-i Imam shrine in Isfahan, finished in 1453, is laid out with a small set of decorated tiles that generate a nearly perfect five-fold non-repeating pattern, five centuries before Penrose. And the phase Shechtman made is not only made: Luca Bindi and Paul Steinhardt reported a natural one in 2009, a grain of aluminium, copper and iron in a meteorite from the Koryak Mountains in far eastern Russia. Quasicrystals have since been put to work as low-friction coatings and as a hardening ingredient in some stainless steels, which is a very ordinary job for something that started an argument that size.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>Into the <span class="hue">third dimension</span></h2>
+      <p>Flat patterns are half the story. A real crystal fills space, and the smallest block you can copy in all three directions to build the whole thing is called its <strong>unit cell</strong>. Four cells cover most of the metals in a hardware shop, and the difference between them comes down to one question: how do you stack balls in a box?</p>
+      <p>Johannes Kepler asked exactly that in 1611, in a short book he wrote as a New Year's gift about why snowflakes have six arms. In the same few pages he looked at how greengrocers pile cannonballs and fruit, said the way they do it is the tightest possible, and moved on. Nobody could prove him right for 387 years. Thomas Hales announced a proof in 1998 that leaned on a great deal of computer checking; a version checked all the way down by machine was finished in 2014 and published in 2017. The answer is 74.05 per cent full, and a quarter of any crate of oranges is air.</p>
+
+      <div class="control-row">
+        <div class="control">
+          <label id="cell-label">Unit cell</label>
+          <div class="seg" id="cell-seg" role="group" aria-labelledby="cell-label">
+            <button type="button" data-cell="sc">Simple cubic</button>
+            <button type="button" data-cell="bcc">Body-centred</button>
+            <button type="button" data-cell="fcc" class="on">Face-centred</button>
+            <button type="button" data-cell="hcp">Hexagonal</button>
+          </div>
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control">
+          <label for="cell-fill">Ball size <span class="vv" id="cell-fill-vv">100% (touching)</span></label>
+          <input type="range" id="cell-fill" min="20" max="100" step="1" value="100">
+        </div>
+        <div class="control">
+          <label for="cell-spin">Spin <span class="vv" id="cell-spin-vv">28&deg;</span></label>
+          <input type="range" id="cell-spin" min="0" max="360" step="1" value="28">
+        </div>
+        <div class="control">
+          <label for="cell-lean">Lean <span class="vv" id="cell-lean-vv">62&deg;</span></label>
+          <input type="range" id="cell-lean" min="0" max="88" step="1" value="62">
+        </div>
+        <div class="control">
+          <label for="cell-auto">Turntable</label>
+          <button class="btn ghost" id="cell-auto" type="button" aria-pressed="false">Spin it</button>
+        </div>
+      </div>
+
+      <div class="canvas-frame">
+        <canvas id="cell-canvas" aria-label="One unit cell drawn in three dimensions with its atoms as balls, leaning and spinning to order"></canvas>
+        <div class="canvas-cap"><span id="cell-cap-left"></span><span id="cell-cap-right"></span></div>
+      </div>
+      <div class="note" style="margin-top:14px;"><strong>Drag the cell</strong> to spin and lean it, the same way the sketchpad works. Pull <strong>Ball size</strong> down to see where the centres sit; push it to 100 per cent and the balls touch their nearest neighbours, which is what the packing figure is measuring.</div>
+
+      <div class="stat-row">
+        <div class="stat"><span class="num" id="cell-pack">74.05%</span><span class="lbl" id="cell-pack-lbl">of the box is metal; the rest is gap</span></div>
+        <div class="stat"><span class="num" id="cell-coord">12</span><span class="lbl">nearest neighbours each atom touches</span></div>
+        <div class="stat"><span class="num" id="cell-count">4</span><span class="lbl" id="cell-count-lbl">atoms' worth of material in one cell</span></div>
+      </div>
+
+      <h3>How full each box is</h3>
+      <div id="cell-bars"></div>
+      <p class="note metal-note" id="cell-metals"></p>
+
+      <p>Two of the four hit exactly the same number, 74.05 per cent, and they are not the same arrangement. Face-centred cubic stacks its close-packed sheets in a three-step cycle before repeating; hexagonal close packed uses a two-step cycle. Same density, different order, and the difference shows up in how the metal behaves under a hammer. Face-centred metals have plenty of directions for a line of mismatch to slide along, so aluminium and copper draw into wire and fold into cans. Hexagonal metals have far fewer, so magnesium and zinc will take a bend and then crack, and titanium sheet has to be worked warm.</p>
+      <p>Iron does something better than pick one. Below about 912 degrees Celsius its atoms sit body-centred; heat it past that and they rearrange themselves into face-centred; cool it and they go back. Carbon dissolves far more easily in the face-centred form than the body-centred one, so heating steel, then cooling it at a chosen rate, traps the carbon in ways that make the same bar soft or hard to order. Every blacksmith who ever quenched a blade was using a change of unit cell, several thousand years before anyone could name it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
       <h2>What the sketchpad <span class="hue">draws</span> and what it leaves out</h2>
-      <p>The sketchpad draws geometry and nothing else. It places points, joins near neighbours, and colours the layers. It does not weigh a single force or energy, so it cannot tell you whether a stack would hold together, conduct, insulate or fall apart; that depends on which atoms sit on the points and what their electrons do.</p>
-      <p>Real crystal prediction adds physics maths on top of the geometry. For each candidate arrangement, a computer works out how comfortably the electrons would settle in; arrangements that settle into low energy are the ones that could survive as real crystals. GNoME, a crystal-hunting program built at Google DeepMind, ran that maths across millions of candidate arrangements and reported about 380,000 that look stable enough to be worth making. Cooking one a day, and cooking is lab talk for making the real crystal in a furnace, would keep a kitchen busy for more than a thousand years. Each of those candidates began the way your sketch did: as a guessed arrangement of points.</p>
-      <p>So have a guess. Stack a kagome AB. Twist a square by nine degrees. Lean a four-layer triangle right over and look along the rows. Some of the shapes worth cooking may be ones nobody has drawn yet. The sketchpad will not tell you whether your shape holds together; it hands you the part a crystal starts with, the pattern.</p>
+      <p>The benches above draw geometry. They place points, join near neighbours, colour the layers, apply a wave, insert a fault and test for symmetry. Not one of them weighs a force or an energy, so none of them can tell you whether a stack would hold together, conduct, insulate or fall apart. That depends on which atoms sit on the points and what their electrons do, and it is a different and much heavier calculation.</p>
+      <p>Real crystal prediction adds that calculation on top of the geometry. For each candidate arrangement, a computer works out how comfortably the electrons would settle in; arrangements that settle into low energy are the ones that could survive as real crystals. GNoME, a crystal-hunting program built at Google DeepMind, ran that maths across millions of candidate arrangements, and Amil Merchant and colleagues reported in <em>Nature</em> in December 2023 that about 380,000 of them look stable enough to be worth making. Cooking one a day, and cooking is lab talk for making the real crystal in a furnace, would keep a kitchen busy for more than a thousand years. Each of those candidates began the way your sketch did: as a guessed arrangement of points.</p>
+      <p>So have a guess. Stack a kagome AB. Twist a square by nine degrees. Run a wave two spacings long through a four-layer triangle and lean it right over. Put a line of mismatch through a square sheet and push it out the far side. Some of the shapes worth cooking may be ones nobody has drawn yet. The bench will not tell you whether your shape holds together; it hands you the part a crystal starts with, which is the pattern.</p>
     </div>
   </section>
 
@@ -190,21 +474,57 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
     <div class="wrap">
       <h2>Keep <span class="hue">going</span></h2>
       <div class="grid">
+        <a class="card-link reveal" href="cymatics.html">
+          <div class="card">
+            <span class="card-glyph">&#12316;</span>
+            <h3>Cymatics</h3>
+            <p>The same standing-wave rule on a metal plate, where sand collects on the lines that stay still. Drive it and watch the pattern jump between notes.</p>
+          </div>
+        </a>
+        <a class="card-link reveal" href="resonance.html">
+          <div class="card">
+            <span class="card-glyph">&#128251;</span>
+            <h3>Resonance</h3>
+            <p>Why only certain waves fit a given space, followed from a tuning fork down to an atom. It is the rule that puts a ceiling on a crystal's highest note.</p>
+          </div>
+        </a>
         <a class="card-link reveal" href="metamaterials.html">
           <div class="card">
-            <span class="card-glyph">🕸️</span>
+            <span class="card-glyph">&#128376;&#65039;</span>
             <h3>Metamaterials</h3>
             <p>The honeycomb hint, taken seriously: printed shapes that carry load, steer sound and spring back, where the pattern, not the ingredient, does the heavy lifting.</p>
           </div>
         </a>
         <a class="card-link reveal" href="gnome.html">
           <div class="card">
-            <span class="card-glyph">💎</span>
+            <span class="card-glyph">&#128142;</span>
             <h3>GNoME</h3>
             <p>The crystal hunt at full scale: the predicted recipes, the reported numbers, and the road from a guessed pattern to a real material.</p>
           </div>
         </a>
       </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>Y. Cao, V. Fatemi, S. Fang, K. Watanabe, T. Taniguchi, E. Kaxiras and P. Jarillo-Herrero, "Unconventional superconductivity in magic-angle graphene superlattices", <em>Nature</em> 556, 43, April 2018 &middot; <a href="https://arxiv.org/abs/1803.02342" rel="noopener">arxiv.org/abs/1803.02342</a></li>
+        <li>D. Shechtman, I. Blech, D. Gratias and J. W. Cahn, "Metallic phase with long-range orientational order and no translational symmetry", <em>Physical Review Letters</em> 53, 1951, November 1984 &middot; <a href="https://link.aps.org/doi/10.1103/PhysRevLett.53.1951" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.53.1951</a></li>
+        <li>The Nobel Prize in Chemistry 2011, awarded to Dan Shechtman for the discovery of quasicrystals; the notebook entry of 8 April 1982 and the alloy composition are held by the National Institute of Standards and Technology &middot; <a href="https://www.nist.gov/nist-and-nobel/dan-shechtman/nobel-moment-dan-shechtman" rel="noopener">nist.gov/nist-and-nobel/dan-shechtman</a></li>
+        <li>R. Penrose, "The role of aesthetics in pure and applied mathematical research", <em>Bulletin of the Institute of Mathematics and its Applications</em> 10, 266, 1974; and N. G. de Bruijn, "Algebraic theory of Penrose's non-periodic tilings of the plane", <em>Indagationes Mathematicae</em> 43, 39, 1981, which is the recipe the five-fold pattern here is built from.</li>
+        <li>P. J. Lu and P. J. Steinhardt, "Decagonal and quasi-crystalline tilings in medieval Islamic architecture", <em>Science</em> 315, 1106, February 2007 &middot; <a href="https://www.science.org/doi/10.1126/science.1135491" rel="noopener">science.org/doi/10.1126/science.1135491</a></li>
+        <li>L. Bindi, P. J. Steinhardt, N. Yao and P. J. Lu, "Natural quasicrystals", <em>Science</em> 324, 1306, June 2009.</li>
+        <li>International Union of Crystallography, Commission on Aperiodic Crystals, report of 1992, which replaced the repeating-lattice definition of a crystal with a diffraction one.</li>
+        <li>G. I. Taylor, "The mechanism of plastic deformation of crystals", <em>Proceedings of the Royal Society A</em> 145, 362, 1934; E. Orowan, <em>Zeitschrift f&uuml;r Physik</em> 89, 634, 1934; M. Polanyi, <em>Zeitschrift f&uuml;r Physik</em> 89, 660, 1934. Three separate papers in one year, each proposing the same travelling wedge.</li>
+        <li>P. B. Hirsch, R. W. Horne and M. J. Whelan, "Direct observations of the arrangement and motion of dislocations in aluminium", <em>Philosophical Magazine</em> 1, 677, 1956, from the Cavendish Laboratory in Cambridge.</li>
+        <li>J. Kepler, <em>Strena Seu de Nive Sexangula</em> (On the Six-Cornered Snowflake), 1611, where the sphere-packing guess first appears; T. C. Hales and colleagues, "A formal proof of the Kepler conjecture", <em>Forum of Mathematics Pi</em> 5, e2, 2017 &middot; <a href="https://www.cambridge.org/core/journals/forum-of-mathematics-pi/article/formal-proof-of-the-kepler-conjecture/78FBD5E1A3D1BCDE2751261CD7BBA9E4" rel="noopener">cambridge.org, Forum of Mathematics Pi 5, e2</a></li>
+        <li>A. Merchant, S. Batzner, S. S. Schoenholz, M. Aykol, G. Cheon and E. D. Cubuk, "Scaling deep learning for materials discovery", <em>Nature</em> 624, 80, December 2023, the GNoME paper &middot; <a href="https://www.nature.com/articles/s41586-023-06735-9" rel="noopener">nature.com/articles/s41586-023-06735-9</a></li>
+        <li>Equilibrium vacancy counts in aluminium near melting, from differential dilatometry, which compares the growth of a bar against the growth of its lattice spacing; and room-temperature thermal conductivity figures for natural single-crystal diamond of 2,000 to 2,200 watts per metre per kelvin against copper's 400.</li>
+      </ul>
     </div>
   </section>
 
@@ -216,32 +536,104 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
   "use strict";
   var TAU = Math.PI * 2;
   var DEG = Math.PI / 180;
-  var canvas = document.getElementById("lab-canvas");
-  if (!canvas || !canvas.getContext) return;
-  var ctx = canvas.getContext("2d");
-  var dpr = Math.min(2, window.devicePixelRatio || 1);
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DPR = Math.min(2, window.devicePixelRatio || 1);
 
-  var state = {
-    lattice: "honeycomb",
-    spacing: 22,
-    node: 4,
-    layers: 2,
-    stack: "twist",
-    twist: 5,
-    tilt: 0,
-    yaw: 0
+  function css(name, fallback) {
+    var v = getComputedStyle(document.body).getPropertyValue(name);
+    return (v && v.trim()) || fallback;
+  }
+  var ACC = css("--accent", "#a3e635");
+  var ACC2 = css("--accent2", "#2dd4bf");
+  var MUT = css("--muted", "#93a3c4");
+  var LINE = css("--line-bright", "#2c3c6b");
+  var GOLD = "#fbbf24";
+  var ROSE = "#fb7185";
+
+  function fmtNum(n) {
+    if (window.EMA && window.EMA.fmt) return window.EMA.fmt(n);
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  /* run a draw callback when the canvas is on screen, stop when it leaves */
+  function visibility(el, onIn, onOut) {
+    if (!("IntersectionObserver" in window)) { onIn(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) onIn(); else onOut(); });
+    }, { threshold: 0.02 });
+    io.observe(el);
+  }
+
+  function fitCanvas(cv, ratio, minH, maxH) {
+    var w = cv.clientWidth || 900;
+    var h = Math.max(minH, Math.min(maxH, Math.round(w * ratio)));
+    cv.width = Math.round(w * DPR);
+    cv.height = Math.round(h * DPR);
+    cv.style.height = h + "px";
+    return { w: w, h: h };
+  }
+
+  function segSync(segId, attr, value) {
+    var btns = document.querySelectorAll("#" + segId + " button");
+    [].forEach.call(btns, function (b) {
+      var on = b.getAttribute(attr) === String(value);
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  /* ==================================================================
+     shared geometry: the five patterns
+     ================================================================== */
+
+  var LAT_NAMES = {
+    square: "square", tri: "triangle", honeycomb: "honeycomb",
+    kagome: "kagome", penrose: "five-fold"
   };
 
-  var LAT_NAMES = { square: "square", tri: "triangle", honeycomb: "honeycomb", kagome: "kagome" };
-
-  var W = 0, H = 0, R = 0;
-  var base = { xy: [], blen: 1 };
-  var bonds = [];
-  var px = new Float32Array(0), py = new Float32Array(0);
-
-  /* ---------- geometry ---------- */
+  function penrosePoints(scale, radius) {
+    var e = [], gam = [], j;
+    for (j = 0; j < 5; j++) {
+      e.push([Math.cos(j * TAU / 5), Math.sin(j * TAU / 5)]);
+      gam.push(0.5);
+    }
+    var K = Math.ceil(radius / scale) + 2;
+    var seen = Object.create(null);
+    var pts = [];
+    var R2 = radius * radius;
+    for (var r = 0; r < 5; r++) {
+      for (var s = r + 1; s < 5; s++) {
+        var det = e[r][0] * e[s][1] - e[r][1] * e[s][0];
+        if (Math.abs(det) < 1e-9) continue;
+        for (var kr = -K; kr <= K; kr++) {
+          for (var ks = -K; ks <= K; ks++) {
+            var cr = kr - gam[r], cs = ks - gam[s];
+            var qx = (e[s][1] * cr - e[r][1] * cs) / det;
+            var qy = (-e[s][0] * cr + e[r][0] * cs) / det;
+            if (qx * qx + qy * qy > (K + 1) * (K + 1)) continue;
+            var ux = 0, uy = 0;
+            for (var m = 0; m < 5; m++) {
+              var km;
+              if (m === r) km = kr;
+              else if (m === s) km = ks;
+              else km = Math.ceil(qx * e[m][0] + qy * e[m][1] + gam[m]);
+              ux += km * e[m][0]; uy += km * e[m][1];
+            }
+            var key = Math.round(ux * 512) + "|" + Math.round(uy * 512);
+            if (seen[key]) continue;
+            seen[key] = 1;
+            var vx = ux * scale, vy = uy * scale;
+            if (vx * vx + vy * vy > R2) continue;
+            pts.push(vx, vy);
+          }
+        }
+      }
+    }
+    return { xy: pts, blen: scale, bmin: scale * 0.86 };
+  }
 
   function genPoints(lat, a, radius) {
+    if (lat === "penrose") return penrosePoints(a, radius);
     var pts = [], HF = Math.sqrt(3) / 2, R2 = radius * radius;
     function push(x, y) { if (x * x + y * y <= R2) { pts.push(x, y); } }
     if (lat === "square") {
@@ -249,7 +641,7 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
       for (var j = -N; j <= N; j++) {
         for (var i = -N; i <= N; i++) push(i * a, j * a);
       }
-      return { xy: pts, blen: a };
+      return { xy: pts, blen: a, bmin: 0 };
     }
     var basis, blen;
     if (lat === "tri") {
@@ -268,11 +660,11 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
         for (var b = 0; b < basis.length; b++) push(cx + basis[b][0], y0 + basis[b][1]);
       }
     }
-    return { xy: pts, blen: blen };
+    return { xy: pts, blen: blen, bmin: 0 };
   }
 
-  function buildBonds(xy, cutoff) {
-    var n = xy.length / 2, c2 = cutoff * cutoff, out = [];
+  function buildBonds(xy, cutoff, minCut) {
+    var n = xy.length / 2, c2 = cutoff * cutoff, m2 = (minCut || 0) * (minCut || 0), out = [];
     var map = new Map();
     var i, cx, cy, key, arr;
     for (i = 0; i < n; i++) {
@@ -293,7 +685,8 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
             var j = arr[t];
             if (j <= i) continue;
             var ddx = xy[2 * j] - x, ddy = xy[2 * j + 1] - y;
-            if (ddx * ddx + ddy * ddy <= c2) out.push(i, j);
+            var d2 = ddx * ddx + ddy * ddy;
+            if (d2 <= c2 && d2 >= m2) out.push(i, j);
           }
         }
       }
@@ -301,261 +694,1487 @@ body[data-page="crystal"] .lab-controls { margin-top: 8px; }
     return out;
   }
 
-  function shiftFor(lat, a) {
-    if (lat === "square") return [a / 2, a / 2];
-    if (lat === "kagome") return [a / 2, 0];
-    return [a / 2, a / (2 * Math.sqrt(3))];
-  }
+  /* ==================================================================
+     1. the sketchpad
+     ================================================================== */
 
-  function palette(L) {
-    var A = [163, 230, 53], B = [45, 212, 191], out = [], k, t;
-    if (L === 1) return ["rgb(163,230,53)"];
-    for (k = 0; k < L; k++) {
-      t = k / (L - 1);
-      out.push("rgb(" +
-        Math.round(A[0] + (B[0] - A[0]) * t) + "," +
-        Math.round(A[1] + (B[1] - A[1]) * t) + "," +
-        Math.round(A[2] + (B[2] - A[2]) * t) + ")");
+  (function sketchpad() {
+    var canvas = document.getElementById("lab-canvas");
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+
+    var state = {
+      lattice: "honeycomb", spacing: 22, node: 4, layers: 2,
+      stack: "twist", twist: 5, tilt: 0, yaw: 0,
+      motion: "still", wavelen: 6, swing: 30, phase: 0, playing: false
+    };
+
+    var W = 0, H = 0, R = 0;
+    var base = { xy: [], blen: 1, bmin: 0 };
+    var bonds = [];
+    var px = new Float32Array(0), py = new Float32Array(0);
+
+    function shiftFor(lat, a) {
+      if (lat === "square") return [a / 2, a / 2];
+      if (lat === "kagome") return [a / 2, 0];
+      if (lat === "penrose") return [a * 0.5, a * 0.31];
+      return [a / 2, a / (2 * Math.sqrt(3))];
     }
-    return out;
-  }
 
-  /* ---------- sizing and rebuild ---------- */
-
-  function sizeCanvas() {
-    W = canvas.clientWidth || 900;
-    H = Math.max(340, Math.min(640, Math.round(W * 0.62)));
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-  }
-
-  function rebuild() {
-    R = Math.min(W, H) * 0.48;
-    base = genPoints(state.lattice, state.spacing, R);
-    bonds = buildBonds(base.xy, base.blen * 1.2);
-    var n = base.xy.length / 2;
-    if (px.length < n) { px = new Float32Array(n); py = new Float32Array(n); }
-  }
-
-  /* ---------- drawing ---------- */
-
-  function draw() {
-    var n = base.xy.length / 2, L = state.layers;
-    ctx.setTransform(dpr, 0, 0, dpr, W * 0.5 * dpr, H * 0.5 * dpr);
-    ctx.clearRect(-W / 2, -H / 2, W, H);
-    ctx.globalCompositeOperation = "lighter";
-    var cols = palette(L);
-    var t = state.tilt * DEG, cosT = Math.cos(t), sinT = Math.sin(t);
-    var gap = state.spacing * 0.9;
-    var sh = shiftFor(state.lattice, state.spacing);
-    var xy = base.xy;
-    for (var k = 0; k < L; k++) {
-      var rot = state.stack === "twist" ? k * state.twist * DEG : 0;
-      var ang = rot + state.yaw, cA = Math.cos(ang), sA = Math.sin(ang);
-      var ox = 0, oy = 0;
-      if (state.stack === "ab" && k % 2 === 1) {
-        var cy0 = Math.cos(state.yaw), sy0 = Math.sin(state.yaw);
-        ox = sh[0] * cy0 - sh[1] * sy0;
-        oy = sh[0] * sy0 + sh[1] * cy0;
+    function palette(L) {
+      var A = [163, 230, 53], B = [45, 212, 191], out = [], k, t;
+      if (L === 1) return ["rgb(163,230,53)"];
+      for (k = 0; k < L; k++) {
+        t = k / (L - 1);
+        out.push("rgb(" +
+          Math.round(A[0] + (B[0] - A[0]) * t) + "," +
+          Math.round(A[1] + (B[1] - A[1]) * t) + "," +
+          Math.round(A[2] + (B[2] - A[2]) * t) + ")");
       }
-      var z = (k - (L - 1) / 2) * gap, zs = -z * sinT;
-      for (var i = 0; i < n; i++) {
-        var x = xy[2 * i], y = xy[2 * i + 1];
-        px[i] = x * cA - y * sA + ox;
-        py[i] = (x * sA + y * cA + oy) * cosT + zs;
+      return out;
+    }
+
+    function sizeCanvas() {
+      var d = fitCanvas(canvas, 0.62, 340, 640);
+      W = d.w; H = d.h;
+    }
+
+    function rebuild() {
+      R = Math.min(W, H) * 0.48;
+      base = genPoints(state.lattice, state.spacing, R);
+      bonds = buildBonds(base.xy, base.blen * 1.2, base.bmin);
+      var n = base.xy.length / 2;
+      if (px.length < n) { px = new Float32Array(n); py = new Float32Array(n); }
+    }
+
+    function draw() {
+      var n = base.xy.length / 2, L = state.layers;
+      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.5 * DPR);
+      ctx.clearRect(-W / 2, -H / 2, W, H);
+      ctx.globalCompositeOperation = "lighter";
+      var cols = palette(L);
+      var t = state.tilt * DEG, cosT = Math.cos(t), sinT = Math.sin(t);
+      var gap = state.spacing * 0.9;
+      var sh = shiftFor(state.lattice, state.spacing);
+      var xy = base.xy;
+      var lam = state.wavelen * state.spacing;
+      var kw = TAU / lam;
+      var amp = (state.swing / 100) * state.spacing;
+      var ph = state.phase * TAU;
+      var moving = state.motion !== "still" && amp > 0;
+
+      for (var k = 0; k < L; k++) {
+        var rot = state.stack === "twist" ? k * state.twist * DEG : 0;
+        var ang = rot + state.yaw, cA = Math.cos(ang), sA = Math.sin(ang);
+        var ox = 0, oy = 0;
+        if (state.stack === "ab" && k % 2 === 1) {
+          var cy0 = Math.cos(state.yaw), sy0 = Math.sin(state.yaw);
+          ox = sh[0] * cy0 - sh[1] * sy0;
+          oy = sh[0] * sy0 + sh[1] * cy0;
+        }
+        var z = (k - (L - 1) / 2) * gap, zs = -z * sinT;
+        for (var i = 0; i < n; i++) {
+          var x = xy[2 * i], y = xy[2 * i + 1];
+          if (moving) {
+            var u = amp * Math.sin(kw * x - ph);
+            if (state.motion === "long") x += u; else y += u;
+          }
+          px[i] = x * cA - y * sA + ox;
+          py[i] = (x * sA + y * cA + oy) * cosT + zs;
+        }
+        var alpha = L === 1 ? 1 : 0.38 + 0.62 * k / (L - 1);
+        ctx.strokeStyle = cols[k];
+        ctx.globalAlpha = alpha * 0.5;
+        ctx.lineWidth = Math.max(0.8, state.node * 0.3);
+        ctx.beginPath();
+        for (var b = 0; b < bonds.length; b += 2) {
+          var i1 = bonds[b], i2 = bonds[b + 1];
+          ctx.moveTo(px[i1], py[i1]);
+          ctx.lineTo(px[i2], py[i2]);
+        }
+        ctx.stroke();
+        ctx.fillStyle = cols[k];
+        ctx.globalAlpha = Math.min(1, alpha);
+        var r = state.node;
+        ctx.beginPath();
+        for (i = 0; i < n; i++) {
+          ctx.moveTo(px[i] + r, py[i]);
+          ctx.arc(px[i], py[i], r, 0, TAU);
+        }
+        ctx.fill();
       }
-      var alpha = L === 1 ? 1 : 0.38 + 0.62 * k / (L - 1);
-      ctx.strokeStyle = cols[k];
-      ctx.globalAlpha = alpha * 0.5;
-      ctx.lineWidth = Math.max(0.8, state.node * 0.3);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+
+      if (moving) drawRuler(lam, cosT);
+      updateCaption(n);
+    }
+
+    /* one wavelength, measured along the direction the wave travels */
+    function drawRuler(lam, cosT) {
+      var cA = Math.cos(state.yaw), sA = Math.sin(state.yaw);
+      var vx = lam * cA, vy = lam * sA * cosT;
+      var len = Math.sqrt(vx * vx + vy * vy);
+      if (len < 12 || len > W - 40) return;
+      var x0 = -W / 2 + 22, y0 = H / 2 - 26;
+      ctx.strokeStyle = GOLD;
+      ctx.fillStyle = GOLD;
+      ctx.globalAlpha = 0.9;
+      ctx.lineWidth = 1.4;
       ctx.beginPath();
-      for (var b = 0; b < bonds.length; b += 2) {
-        var i1 = bonds[b], i2 = bonds[b + 1];
-        ctx.moveTo(px[i1], py[i1]);
-        ctx.lineTo(px[i2], py[i2]);
-      }
+      ctx.moveTo(x0, y0); ctx.lineTo(x0 + vx, y0 + vy);
+      var nx = -vy / len * 5, ny = vx / len * 5;
+      ctx.moveTo(x0 - nx, y0 - ny); ctx.lineTo(x0 + nx, y0 + ny);
+      ctx.moveTo(x0 + vx - nx, y0 + vy - ny); ctx.lineTo(x0 + vx + nx, y0 + vy + ny);
       ctx.stroke();
-      ctx.fillStyle = cols[k];
-      ctx.globalAlpha = Math.min(1, alpha);
-      var r = state.node;
-      ctx.beginPath();
-      for (i = 0; i < n; i++) {
-        ctx.moveTo(px[i] + r, py[i]);
-        ctx.arc(px[i], py[i], r, 0, TAU);
-      }
-      ctx.fill();
+      ctx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+      ctx.textAlign = "left";
+      ctx.fillText("one wavelength", x0, y0 + 16);
+      ctx.globalAlpha = 1;
     }
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
-    updateCaption(n);
-  }
 
-  var drawQueued = false;
-  function requestDraw() {
-    if (drawQueued) return;
-    drawQueued = true;
-    requestAnimationFrame(function () { drawQueued = false; draw(); });
-  }
+    function updateCaption(n) {
+      var L = state.layers;
+      var left = fmtNum(n) + " points · " + fmtNum(bonds.length / 2) +
+        " links each layer · " + L + (L === 1 ? " layer" : " layers");
+      var mode = state.stack === "twist" ? "twist " + state.twist.toFixed(1) + "°"
+        : state.stack === "ab" ? "AB" : "AA";
+      var right = LAT_NAMES[state.lattice] + " · " + mode + " · tilt " + Math.round(state.tilt) + "°";
+      if (state.motion !== "still") {
+        right += " · " + (state.motion === "long" ? "along" : "across") +
+          ", " + state.wavelen + " spacings";
+      }
+      document.getElementById("cap-left").textContent = left;
+      document.getElementById("cap-right").textContent = right;
+    }
 
-  function fmtNum(n) {
-    if (window.EMA && window.EMA.fmt) return window.EMA.fmt(n);
-    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+    var drawQueued = false;
+    function requestDraw() {
+      if (drawQueued) return;
+      drawQueued = true;
+      requestAnimationFrame(function () { drawQueued = false; draw(); });
+    }
 
-  function updateCaption(n) {
-    var L = state.layers;
-    var left = fmtNum(n) + " points · " + fmtNum(bonds.length / 2) +
-      " bonds each layer · " + L + (L === 1 ? " layer" : " layers");
-    var mode = state.stack === "twist" ? "twist " + state.twist.toFixed(1) + "°"
-      : state.stack === "ab" ? "AB" : "AA";
-    var right = LAT_NAMES[state.lattice] + " · " + mode + " · tilt " + Math.round(state.tilt) + "°";
-    document.getElementById("cap-left").textContent = left;
-    document.getElementById("cap-right").textContent = right;
-  }
+    /* ---- animation loop ---- */
+    var raf = 0, visible = true, last = 0;
+    function loop(ts) {
+      raf = 0;
+      if (!state.playing || !visible || state.motion === "still") return;
+      var dt = last ? Math.min(60, ts - last) : 16;
+      last = ts;
+      state.phase = (state.phase + dt / 1400) % 1;
+      phaseEl.value = Math.round(state.phase * 100);
+      document.getElementById("phase-vv").textContent = Math.round(state.phase * 100) + "%";
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    function startLoop() {
+      if (raf || !state.playing || !visible || state.motion === "still") return;
+      last = 0;
+      raf = requestAnimationFrame(loop);
+    }
+    function stopLoop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
 
-  /* ---------- controls ---------- */
+    /* ---- controls ---- */
+    var spacingEl = document.getElementById("spacing");
+    var nodeEl = document.getElementById("node-size");
+    var twistEl = document.getElementById("twist");
+    var tiltEl = document.getElementById("tilt");
+    var stackEl = document.getElementById("stack-sel");
+    var twistCtrl = document.getElementById("twist-ctrl");
+    var motionEl = document.getElementById("motion-sel");
+    var wavelenEl = document.getElementById("wavelen");
+    var swingEl = document.getElementById("swing");
+    var phaseEl = document.getElementById("phase");
+    var playBtn = document.getElementById("play-btn");
+    var waveCtrls = [
+      document.getElementById("wavelen-ctrl"),
+      document.getElementById("swing-ctrl"),
+      document.getElementById("play-ctrl")
+    ];
+    var phaseCtrl = document.getElementById("phase-ctrl");
 
-  var spacingEl = document.getElementById("spacing");
-  var nodeEl = document.getElementById("node-size");
-  var twistEl = document.getElementById("twist");
-  var tiltEl = document.getElementById("tilt");
-  var stackEl = document.getElementById("stack-sel");
-  var twistCtrl = document.getElementById("twist-ctrl");
+    function syncWave() {
+      var on = state.motion !== "still";
+      waveCtrls.forEach(function (c) { if (c) c.classList.toggle("off", !on); });
+      wavelenEl.disabled = !on;
+      swingEl.disabled = !on;
+      playBtn.disabled = !on;
+      if (!on && state.playing) { state.playing = false; stopLoop(); }
+      playBtn.textContent = state.playing ? "Pause" : "Play";
+      playBtn.setAttribute("aria-pressed", state.playing ? "true" : "false");
+      var scrub = on && !state.playing;
+      phaseEl.disabled = !scrub;
+      phaseCtrl.classList.toggle("off", !scrub);
+    }
 
-  function segSync(segId, attr, value) {
-    var btns = document.querySelectorAll("#" + segId + " button");
-    btns.forEach(function (b) {
-      var on = b.getAttribute(attr) === String(value);
-      b.classList.toggle("on", on);
-      b.setAttribute("aria-pressed", on ? "true" : "false");
-    });
-  }
-
-  function syncUI() {
-    segSync("lat-seg", "data-lat", state.lattice);
-    segSync("lay-seg", "data-n", state.layers);
-    spacingEl.value = state.spacing;
-    nodeEl.value = state.node;
-    twistEl.value = state.twist;
-    tiltEl.value = state.tilt;
-    stackEl.value = state.stack;
-    document.getElementById("spacing-vv").textContent = state.spacing + " px";
-    document.getElementById("node-vv").textContent = String(state.node);
-    document.getElementById("twist-vv").textContent = state.twist.toFixed(1) + "°";
-    document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
-    var twistOn = state.stack === "twist";
-    twistEl.disabled = !twistOn;
-    twistCtrl.classList.toggle("off", !twistOn);
-  }
-
-  document.querySelectorAll("#lat-seg button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      state.lattice = b.getAttribute("data-lat");
+    function syncUI() {
       segSync("lat-seg", "data-lat", state.lattice);
+      segSync("lay-seg", "data-n", state.layers);
+      spacingEl.value = state.spacing;
+      nodeEl.value = state.node;
+      twistEl.value = state.twist;
+      tiltEl.value = state.tilt;
+      stackEl.value = state.stack;
+      motionEl.value = state.motion;
+      wavelenEl.value = state.wavelen;
+      swingEl.value = state.swing;
+      phaseEl.value = Math.round(state.phase * 100);
+      document.getElementById("spacing-vv").textContent = state.spacing + " px";
+      document.getElementById("node-vv").textContent = String(state.node);
+      document.getElementById("twist-vv").textContent = state.twist.toFixed(1) + "°";
+      document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
+      document.getElementById("swing-vv").textContent = state.swing + "%";
+      document.getElementById("phase-vv").textContent = Math.round(state.phase * 100) + "%";
+      setWavelenLabel();
+      var twistOn = state.stack === "twist";
+      twistEl.disabled = !twistOn;
+      twistCtrl.classList.toggle("off", !twistOn);
+      syncWave();
+    }
+
+    function setWavelenLabel() {
+      var v = state.wavelen;
+      var txt = v + " spacings";
+      if (v <= 2) txt = "2 spacings, the shortest the pattern holds";
+      document.getElementById("wavelen-vv").textContent = txt;
+    }
+
+    [].forEach.call(document.querySelectorAll("#lat-seg button"), function (b) {
+      b.addEventListener("click", function () {
+        state.lattice = b.getAttribute("data-lat");
+        segSync("lat-seg", "data-lat", state.lattice);
+        rebuild(); requestDraw();
+      });
+    });
+
+    [].forEach.call(document.querySelectorAll("#lay-seg button"), function (b) {
+      b.addEventListener("click", function () {
+        state.layers = parseInt(b.getAttribute("data-n"), 10);
+        segSync("lay-seg", "data-n", state.layers);
+        requestDraw();
+      });
+    });
+
+    spacingEl.addEventListener("input", function () {
+      state.spacing = parseFloat(spacingEl.value);
+      document.getElementById("spacing-vv").textContent = state.spacing + " px";
       rebuild(); requestDraw();
     });
-  });
-
-  document.querySelectorAll("#lay-seg button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      state.layers = parseInt(b.getAttribute("data-n"), 10);
-      segSync("lay-seg", "data-n", state.layers);
+    nodeEl.addEventListener("input", function () {
+      state.node = parseFloat(nodeEl.value);
+      document.getElementById("node-vv").textContent = String(state.node);
       requestDraw();
     });
-  });
-
-  spacingEl.addEventListener("input", function () {
-    state.spacing = parseFloat(spacingEl.value);
-    document.getElementById("spacing-vv").textContent = state.spacing + " px";
-    rebuild(); requestDraw();
-  });
-
-  nodeEl.addEventListener("input", function () {
-    state.node = parseFloat(nodeEl.value);
-    document.getElementById("node-vv").textContent = String(state.node);
-    requestDraw();
-  });
-
-  twistEl.addEventListener("input", function () {
-    state.twist = parseFloat(twistEl.value);
-    document.getElementById("twist-vv").textContent = state.twist.toFixed(1) + "°";
-    requestDraw();
-  });
-
-  tiltEl.addEventListener("input", function () {
-    state.tilt = parseFloat(tiltEl.value);
-    document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
-    requestDraw();
-  });
-
-  stackEl.addEventListener("change", function () {
-    state.stack = stackEl.value;
-    var twistOn = state.stack === "twist";
-    twistEl.disabled = !twistOn;
-    twistCtrl.classList.toggle("off", !twistOn);
-    requestDraw();
-  });
-
-  /* ---------- presets ---------- */
-
-  function applyPreset(p) {
-    Object.assign(state, p);
-    syncUI();
-    rebuild();
-    requestDraw();
-  }
-
-  document.getElementById("preset-graphite").addEventListener("click", function () {
-    applyPreset({ lattice: "honeycomb", spacing: 30, node: 5, layers: 3, stack: "ab", tilt: 55 });
-  });
-  document.getElementById("preset-kagome").addEventListener("click", function () {
-    applyPreset({ lattice: "kagome", spacing: 34, node: 5, layers: 1, stack: "aa", tilt: 0 });
-  });
-  document.getElementById("preset-magic").addEventListener("click", function () {
-    applyPreset({ lattice: "honeycomb", spacing: 10, node: 2.5, layers: 2, stack: "twist", twist: 1.1, tilt: 0 });
-  });
-
-  /* ---------- drag to rotate ---------- */
-
-  var drag = null;
-  canvas.addEventListener("pointerdown", function (e) {
-    drag = { x: e.clientX, y: e.clientY };
-    canvas.classList.add("dragging");
-    if (canvas.setPointerCapture) { try { canvas.setPointerCapture(e.pointerId); } catch (err) {} }
-    e.preventDefault();
-  });
-  canvas.addEventListener("pointermove", function (e) {
-    if (!drag) return;
-    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    drag.x = e.clientX; drag.y = e.clientY;
-    state.yaw += dx * 0.006;
-    state.tilt = Math.max(0, Math.min(80, state.tilt + dy * 0.25));
-    tiltEl.value = state.tilt;
-    document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
-    requestDraw();
-  });
-  function endDrag() { drag = null; canvas.classList.remove("dragging"); }
-  canvas.addEventListener("pointerup", endDrag);
-  canvas.addEventListener("pointercancel", endDrag);
-
-  /* ---------- resize ---------- */
-
-  var resizeTimer = null;
-  window.addEventListener("resize", function () {
-    if (resizeTimer) clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      sizeCanvas();
-      rebuild();
+    twistEl.addEventListener("input", function () {
+      state.twist = parseFloat(twistEl.value);
+      document.getElementById("twist-vv").textContent = state.twist.toFixed(1) + "°";
       requestDraw();
-    }, 150);
-  });
+    });
+    tiltEl.addEventListener("input", function () {
+      state.tilt = parseFloat(tiltEl.value);
+      document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
+      requestDraw();
+    });
+    stackEl.addEventListener("change", function () {
+      state.stack = stackEl.value;
+      var twistOn = state.stack === "twist";
+      twistEl.disabled = !twistOn;
+      twistCtrl.classList.toggle("off", !twistOn);
+      requestDraw();
+    });
+    motionEl.addEventListener("change", function () {
+      state.motion = motionEl.value;
+      if (state.motion !== "still" && !REDUCED && !state.playing) {
+        state.playing = true;
+      }
+      syncWave();
+      startLoop();
+      requestDraw();
+    });
+    wavelenEl.addEventListener("input", function () {
+      state.wavelen = parseFloat(wavelenEl.value);
+      setWavelenLabel();
+      requestDraw();
+    });
+    swingEl.addEventListener("input", function () {
+      state.swing = parseFloat(swingEl.value);
+      document.getElementById("swing-vv").textContent = state.swing + "%";
+      requestDraw();
+    });
+    phaseEl.addEventListener("input", function () {
+      state.phase = parseFloat(phaseEl.value) / 100;
+      document.getElementById("phase-vv").textContent = Math.round(state.phase * 100) + "%";
+      requestDraw();
+    });
+    playBtn.addEventListener("click", function () {
+      state.playing = !state.playing;
+      syncWave();
+      if (state.playing) startLoop(); else { stopLoop(); requestDraw(); }
+    });
 
-  /* ---------- go ---------- */
+    /* ---- presets ---- */
+    function applyPreset(p) {
+      Object.assign(state, p);
+      syncUI();
+      rebuild();
+      if (state.playing) startLoop(); else stopLoop();
+      requestDraw();
+    }
+    document.getElementById("preset-graphite").addEventListener("click", function () {
+      applyPreset({ lattice: "honeycomb", spacing: 30, node: 5, layers: 3, stack: "ab", tilt: 55, motion: "still", playing: false });
+    });
+    document.getElementById("preset-kagome").addEventListener("click", function () {
+      applyPreset({ lattice: "kagome", spacing: 34, node: 5, layers: 1, stack: "aa", tilt: 0, motion: "still", playing: false });
+    });
+    document.getElementById("preset-magic").addEventListener("click", function () {
+      applyPreset({ lattice: "honeycomb", spacing: 10, node: 2.5, layers: 2, stack: "twist", twist: 1.1, tilt: 0, motion: "still", playing: false });
+    });
+    document.getElementById("preset-sound").addEventListener("click", function () {
+      applyPreset({
+        lattice: "square", spacing: 30, node: 5, layers: 1, stack: "aa", tilt: 0, yaw: 0,
+        motion: "long", wavelen: 8, swing: 34, playing: !REDUCED
+      });
+    });
+    document.getElementById("preset-five").addEventListener("click", function () {
+      applyPreset({ lattice: "penrose", spacing: 34, node: 4, layers: 1, stack: "aa", tilt: 0, yaw: 0, motion: "still", playing: false });
+    });
 
-  sizeCanvas();
-  rebuild();
-  syncUI();
-  draw();
+    /* ---- drag to rotate ---- */
+    var drag = null;
+    canvas.addEventListener("pointerdown", function (e) {
+      drag = { x: e.clientX, y: e.clientY };
+      canvas.classList.add("dragging");
+      if (canvas.setPointerCapture) { try { canvas.setPointerCapture(e.pointerId); } catch (err) {} }
+      e.preventDefault();
+    });
+    canvas.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      drag.x = e.clientX; drag.y = e.clientY;
+      state.yaw += dx * 0.006;
+      state.tilt = Math.max(0, Math.min(80, state.tilt + dy * 0.25));
+      tiltEl.value = state.tilt;
+      document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
+      requestDraw();
+    });
+    function endDrag() { drag = null; canvas.classList.remove("dragging"); }
+    canvas.addEventListener("pointerup", endDrag);
+    canvas.addEventListener("pointercancel", endDrag);
+
+    var resizeTimer = null;
+    window.addEventListener("resize", function () {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { sizeCanvas(); rebuild(); requestDraw(); }, 150);
+    });
+
+    visibility(canvas,
+      function () { visible = true; startLoop(); },
+      function () { visible = false; stopLoop(); });
+
+    sizeCanvas();
+    rebuild();
+    syncUI();
+    draw();
+  })();
+
+  /* ==================================================================
+     2. the defect bench
+     ================================================================== */
+
+  (function defects() {
+    var cv = document.getElementById("def-canvas");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d");
+    var capEl = document.getElementById("def-cap");
+    var readEl = document.getElementById("def-read");
+    var slideEl = document.getElementById("def-slide");
+    var slideCtrl = document.getElementById("def-slide-ctrl");
+    var runCtrl = document.getElementById("def-run-ctrl");
+    var runBtn = document.getElementById("def-run");
+    var slideVv = document.getElementById("def-slide-vv");
+
+    var NX = 9, NY = 5;
+    var W = 0, H = 0, S = 30;
+    var mode = "perfect";
+    var core = 0;
+    var raf = 0, visible = true;
+
+    var TEXT = {
+      perfect: ["A sheet with nothing wrong with it.",
+        "<b>Every site filled, every link the same length.</b> <span class=\"r2\">No real crystal is this clean above absolute zero, and a crystal this clean would be a poor conductor, a poor semiconductor and impossible to bend.</span>"],
+      vacancy: ["One site left empty. The neighbours lean in.",
+        "<b>A missing atom, about one site in ten thousand near melting.</b> <span class=\"r2\">Empty sites are how atoms travel through a solid: an atom steps into the hole and the hole steps the other way.</span>"],
+      inter: ["One extra atom pushed into a space the pattern did not leave.",
+        "<b>A squeezed-in atom, and the strain reaches several atoms out.</b> <span class=\"r2\">Radiation makes these in pairs with an empty site, which is the first page of damage in a reactor wall or a satellite chip.</span>"],
+      dopant: ["One atom swapped for a different kind, drawn larger and in gold.",
+        "<b>A stray atom, put there on purpose at about one in five million.</b> <span class=\"r2\">This is what turns a mediocre conductor into a switch, and the whole logic industry rests on placing them.</span>"],
+      edge: ["An extra half-column of atoms wedged in from the top. Slide it across.",
+        "<b>Count the columns: one more above the dashed line than below.</b> <span class=\"r2\">Push the wedge out the far side and the top half has slipped one atom's width. That is one step of bending, and it never needed the whole plane to move at once.</span>"]
+    };
+
+    function size() {
+      var d = fitCanvas(cv, 0.5, 280, 460);
+      W = d.w; H = d.h;
+      S = Math.min(W / (2 * NX + 4), H / (2 * NY + 3));
+    }
+
+    function sech2(u) { var c = Math.cosh(u); return 1 / (c * c); }
+
+    /* build the atom list and the links between them */
+    function build() {
+      var atoms = [], links = [], i, j;
+      if (mode === "edge") {
+        var upper = {}, lower = {};
+        for (j = 0; j <= NY; j++) {
+          var w = 1.1 + 0.55 * j;
+          for (i = -NX; i <= NX + 1; i++) {
+            var th = Math.tanh((i - core) / w);
+            var x = i * S - (S / 2) * (1 + th);
+            var y = -j * S - 0.13 * S * sech2((i - core) / w) * Math.exp(-j / 3.2);
+            upper[j + ":" + i] = atoms.length;
+            atoms.push({ x: x, y: y, kind: "n" });
+          }
+        }
+        for (j = 1; j <= NY; j++) {
+          var wl = 1.1 + 0.55 * j;
+          var c = 0.22 * S * Math.exp(-j / 2.5);
+          for (i = -NX; i <= NX; i++) {
+            var thl = Math.tanh((i - core) / wl);
+            lower[j + ":" + i] = atoms.length;
+            atoms.push({ x: i * S + c * thl, y: j * S, kind: "n" });
+          }
+        }
+        for (j = 0; j <= NY; j++) {
+          for (i = -NX; i <= NX + 1; i++) {
+            if (i < NX + 1) links.push(upper[j + ":" + i], upper[j + ":" + (i + 1)]);
+            if (j < NY) links.push(upper[j + ":" + i], upper[(j + 1) + ":" + i]);
+          }
+        }
+        for (j = 1; j <= NY; j++) {
+          for (i = -NX; i <= NX; i++) {
+            if (i < NX) links.push(lower[j + ":" + i], lower[j + ":" + (i + 1)]);
+            if (j < NY) links.push(lower[j + ":" + i], lower[(j + 1) + ":" + i]);
+          }
+        }
+        /* links crossing the glide plane: each lower atom joins its nearest upper one */
+        for (i = -NX; i <= NX; i++) {
+          var lo = lower["1:" + i], bestI = -1, bestD = 1e9;
+          for (var q = -NX; q <= NX + 1; q++) {
+            var up = upper["0:" + q];
+            var d = Math.abs(atoms[up].x - atoms[lo].x);
+            if (d < bestD) { bestD = d; bestI = up; }
+          }
+          if (bestI >= 0) links.push(lo, bestI);
+        }
+        return { atoms: atoms, links: links, extra: upper };
+      }
+
+      var idx = {};
+      for (j = -NY; j <= NY; j++) {
+        for (i = -NX; i <= NX; i++) {
+          if (mode === "vacancy" && i === 0 && j === 0) { idx[j + ":" + i] = -1; continue; }
+          idx[j + ":" + i] = atoms.length;
+          atoms.push({ x: i * S, y: j * S, kind: (mode === "dopant" && i === 0 && j === 0) ? "d" : "n" });
+        }
+      }
+      if (mode === "inter") atoms.push({ x: S * 0.5, y: S * 0.5, kind: "x" });
+
+      var k = mode === "vacancy" ? -0.30 : mode === "inter" ? 0.34 : mode === "dopant" ? 0.16 : 0;
+      var cxp = mode === "inter" ? S * 0.5 : 0, cyp = mode === "inter" ? S * 0.5 : 0;
+      if (k !== 0) {
+        for (i = 0; i < atoms.length; i++) {
+          var dx = atoms[i].x - cxp, dy = atoms[i].y - cyp;
+          var r2 = dx * dx + dy * dy;
+          if (r2 < 1e-6) continue;
+          var r = Math.sqrt(r2);
+          var mag = k * S * (S * S) / (r2 + 0.6 * S * S);
+          atoms[i].x += mag * dx / r;
+          atoms[i].y += mag * dy / r;
+        }
+      }
+      for (j = -NY; j <= NY; j++) {
+        for (i = -NX; i <= NX; i++) {
+          var a = idx[j + ":" + i];
+          if (a < 0) continue;
+          if (i < NX) { var b = idx[j + ":" + (i + 1)]; if (b >= 0) links.push(a, b); }
+          if (j < NY) { var c2 = idx[(j + 1) + ":" + i]; if (c2 >= 0) links.push(a, c2); }
+        }
+      }
+      return { atoms: atoms, links: links, extra: null };
+    }
+
+    function draw() {
+      var m = build();
+      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.5 * DPR);
+      ctx.clearRect(-W / 2, -H / 2, W, H);
+
+      if (mode === "edge") {
+        ctx.strokeStyle = GOLD;
+        ctx.globalAlpha = 0.45;
+        ctx.setLineDash([6, 6]);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(-W / 2 + 8, S * 0.5); ctx.lineTo(W / 2 - 8, S * 0.5);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.strokeStyle = ACC2;
+      ctx.globalAlpha = 0.42;
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      for (var b = 0; b < m.links.length; b += 2) {
+        var p = m.atoms[m.links[b]], q = m.atoms[m.links[b + 1]];
+        ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      /* the extra half-column, and the wedge mark under it */
+      if (mode === "edge") {
+        var ci = Math.round(core);
+        ci = Math.max(-NX, Math.min(NX + 1, ci));
+        ctx.strokeStyle = ROSE;
+        ctx.lineWidth = 2.4;
+        ctx.globalAlpha = 0.95;
+        ctx.beginPath();
+        for (var j = 0; j < NY; j++) {
+          var a1 = m.extra[j + ":" + ci], a2 = m.extra[(j + 1) + ":" + ci];
+          if (a1 === undefined || a2 === undefined) continue;
+          ctx.moveTo(m.atoms[a1].x, m.atoms[a1].y);
+          ctx.lineTo(m.atoms[a2].x, m.atoms[a2].y);
+        }
+        ctx.stroke();
+        var head = m.extra["0:" + ci];
+        if (head !== undefined) {
+          var hx = m.atoms[head].x, hy = m.atoms[head].y;
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.moveTo(hx, hy - S * 0.34); ctx.lineTo(hx, hy + S * 0.16);
+          ctx.moveTo(hx - S * 0.26, hy + S * 0.16); ctx.lineTo(hx + S * 0.26, hy + S * 0.16);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      for (var i = 0; i < m.atoms.length; i++) {
+        var at = m.atoms[i];
+        var r = at.kind === "d" ? S * 0.24 : at.kind === "x" ? S * 0.21 : S * 0.17;
+        ctx.fillStyle = at.kind === "d" ? GOLD : at.kind === "x" ? ROSE : ACC;
+        ctx.beginPath();
+        ctx.arc(at.x, at.y, r, 0, TAU);
+        ctx.fill();
+      }
+
+      if (mode === "vacancy") {
+        ctx.strokeStyle = ROSE;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.arc(0, 0, S * 0.26, 0, TAU);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      capEl.textContent = TEXT[mode][0];
+    }
+
+    var queued = false;
+    function requestDraw() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }
+
+    function setMode(m) {
+      mode = m;
+      segSync("def-seg", "data-def", mode);
+      var isEdge = mode === "edge";
+      slideEl.disabled = !isEdge;
+      runBtn.disabled = !isEdge;
+      slideCtrl.classList.toggle("off", !isEdge);
+      runCtrl.classList.toggle("off", !isEdge);
+      readEl.innerHTML = TEXT[mode][1];
+      requestDraw();
+    }
+
+    function slideLabel() {
+      var v = core;
+      var t = v <= -NX ? "out the left side" : v >= NX + 1 ? "out the right side"
+        : Math.abs(v) < 0.6 ? "middle" : v.toFixed(1) + " columns across";
+      slideVv.textContent = t;
+    }
+
+    [].forEach.call(document.querySelectorAll("#def-seg button"), function (b) {
+      b.addEventListener("click", function () { setMode(b.getAttribute("data-def")); });
+    });
+
+    slideEl.addEventListener("input", function () {
+      core = parseFloat(slideEl.value);
+      slideLabel();
+      requestDraw();
+    });
+
+    runBtn.addEventListener("click", function () {
+      if (mode !== "edge") setMode("edge");
+      if (REDUCED) {
+        core = core >= NX ? -NX - 1 : NX + 1;
+        slideEl.value = core; slideLabel(); requestDraw();
+        return;
+      }
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      var from = -NX - 1, to = NX + 1, t0 = 0;
+      core = from;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var f = Math.min(1, (ts - t0) / 4200);
+        core = from + (to - from) * f;
+        slideEl.value = core;
+        slideLabel();
+        draw();
+        if (f < 1 && visible) raf = requestAnimationFrame(step); else raf = 0;
+      }
+      raf = requestAnimationFrame(step);
+    });
+
+    visibility(cv,
+      function () { visible = true; },
+      function () { visible = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } });
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { size(); requestDraw(); }, 150);
+    });
+
+    size();
+    slideLabel();
+    setMode("perfect");
+  })();
+
+  /* ==================================================================
+     3. the symmetry viewer: every move is tried, not looked up
+     ================================================================== */
+
+  (function symmetry() {
+    var cv = document.getElementById("sym-canvas");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d");
+    var capEl = document.getElementById("sym-cap");
+    var readEl = document.getElementById("sym-read");
+    var rotChk = document.getElementById("sym-rot");
+    var mirChk = document.getElementById("sym-mir");
+    var cellChk = document.getElementById("sym-cell");
+
+    var lat = "square";
+    var W = 0, H = 0, R = 0, SP = 34;
+    var set = { xy: [], blen: 1, bmin: 0 };
+    var links = [];
+    var found = { centres: [], mirrors: [], v1: null, v2: null, anchor: [0, 0] };
+
+    function size() {
+      var d = fitCanvas(cv, 0.6, 320, 520);
+      W = d.w; H = d.h;
+      R = Math.min(W, H) * 0.47;
+      SP = Math.max(16, Math.min(56, Math.min(W, H) / 15));
+    }
+
+    /* --- membership test over a spatial hash --- */
+    function makeIndex(xy, cell) {
+      var map = new Map(), n = xy.length / 2, i;
+      for (i = 0; i < n; i++) {
+        var k = Math.floor(xy[2 * i] / cell) * 100003 + Math.floor(xy[2 * i + 1] / cell);
+        var a = map.get(k);
+        if (!a) { a = []; map.set(k, a); }
+        a.push(i);
+      }
+      return function (x, y, tol) {
+        var t2 = tol * tol;
+        var cx = Math.floor(x / cell), cy = Math.floor(y / cell);
+        for (var dx = -1; dx <= 1; dx++) {
+          for (var dy = -1; dy <= 1; dy++) {
+            var arr = map.get((cx + dx) * 100003 + (cy + dy));
+            if (!arr) continue;
+            for (var t = 0; t < arr.length; t++) {
+              var j = arr[t];
+              var ddx = xy[2 * j] - x, ddy = xy[2 * j + 1] - y;
+              if (ddx * ddx + ddy * ddy <= t2) return true;
+            }
+          }
+        }
+        return false;
+      };
+    }
+
+    function thin(xy, maxN) {
+      var m = xy.length / 2;
+      if (m <= maxN) return xy.slice(0);
+      var step = m / maxN, out = [];
+      for (var k = 0; k < maxN; k++) {
+        var i = Math.floor(k * step);
+        out.push(xy[2 * i], xy[2 * i + 1]);
+      }
+      return out;
+    }
+
+    function analyse() {
+      var xy = set.xy, blen = set.blen;
+      var has = makeIndex(xy, blen);
+      var tol = blen * 0.15;
+      var samples = thin(xy, 620);
+      var n = xy.length / 2, i;
+
+      /* anchor: the point closest to the middle */
+      var ax = 0, ay = 0, best = 1e9;
+      for (i = 0; i < n; i++) {
+        var d2 = xy[2 * i] * xy[2 * i] + xy[2 * i + 1] * xy[2 * i + 1];
+        if (d2 < best) { best = d2; ax = xy[2 * i]; ay = xy[2 * i + 1]; }
+      }
+
+      /* ---- translations ---- */
+      function testTrans(vx, vy) {
+        var Rt = R * 0.9 - Math.sqrt(vx * vx + vy * vy);
+        if (Rt < blen * 2.5) return false;
+        var Rt2 = Rt * Rt, cnt = 0;
+        for (var s = 0; s < samples.length; s += 2) {
+          var x = samples[s], y = samples[s + 1];
+          if (x * x + y * y > Rt2) continue;
+          cnt++;
+          if (!has(x + vx, y + vy, tol)) return false;
+        }
+        return cnt >= 14;
+      }
+
+      var cands = [];
+      for (i = 0; i < n; i++) {
+        var vx = xy[2 * i] - ax, vy = xy[2 * i + 1] - ay;
+        var L = Math.sqrt(vx * vx + vy * vy);
+        if (L < blen * 0.4 || L > blen * 2.7) continue;
+        cands.push({ x: vx, y: vy, L: L });
+      }
+      cands.sort(function (p, q) { return p.L - q.L; });
+      var v1 = null, v2 = null;
+      for (i = 0; i < cands.length && !v2; i++) {
+        var c = cands[i];
+        if (v1) {
+          var cross = Math.abs(v1.x * c.y - v1.y * c.x);
+          if (cross < 0.25 * v1.L * c.L) continue;
+        }
+        if (!testTrans(c.x, c.y)) continue;
+        if (!v1) v1 = c; else v2 = c;
+      }
+
+      /* ---- rotation centres ---- */
+      function testRot(cx, cy, order) {
+        var d = Math.sqrt(cx * cx + cy * cy);
+        var Rs = Math.min(blen * 6, R * 0.9 - d);
+        if (Rs < blen * 2.5) return false;
+        var Rs2 = Rs * Rs;
+        var ang = TAU / order, ca = Math.cos(ang), sa = Math.sin(ang);
+        var cnt = 0;
+        for (var s = 0; s < samples.length; s += 2) {
+          var dx = samples[s] - cx, dy = samples[s + 1] - cy;
+          if (dx * dx + dy * dy > Rs2) continue;
+          cnt++;
+          if (!has(cx + dx * ca - dy * sa, cy + dx * sa + dy * ca, tol)) return false;
+        }
+        return cnt >= 14;
+      }
+
+      var grid = [];
+      if (v1 && v2) {
+        for (var s1 = 0; s1 < 12; s1++) {
+          for (var t1 = 0; t1 < 12; t1++) {
+            grid.push([ax + (s1 / 12) * v1.x + (t1 / 12) * v2.x,
+                       ay + (s1 / 12) * v1.y + (t1 / 12) * v2.y]);
+          }
+        }
+      } else {
+        var step = blen / 3, lim = blen * 2.6;
+        for (var gx = -lim; gx <= lim; gx += step) {
+          for (var gy = -lim; gy <= lim; gy += step) {
+            if (gx * gx + gy * gy <= lim * lim) grid.push([gx, gy]);
+          }
+        }
+        grid.push([0, 0]);
+      }
+
+      var centres = [];
+      var ORDERS = [6, 5, 4, 3, 2];
+      for (i = 0; i < grid.length; i++) {
+        for (var o = 0; o < ORDERS.length; o++) {
+          if (testRot(grid[i][0], grid[i][1], ORDERS[o])) {
+            centres.push({ x: grid[i][0], y: grid[i][1], order: ORDERS[o] });
+            break;
+          }
+        }
+      }
+      /* keep the strongest of any cluster */
+      centres.sort(function (p, q) { return q.order - p.order; });
+      var keep = [];
+      for (i = 0; i < centres.length; i++) {
+        var dup = false;
+        for (var j = 0; j < keep.length; j++) {
+          var ddx = keep[j].x - centres[i].x, ddy = keep[j].y - centres[i].y;
+          if (ddx * ddx + ddy * ddy < (blen * 0.28) * (blen * 0.28)) { dup = true; break; }
+        }
+        if (!dup) keep.push(centres[i]);
+      }
+
+      /* ---- mirror lines ---- */
+      function testMirror(theta, off) {
+        var nx = -Math.sin(theta), ny = Math.cos(theta);
+        /* a reflection can throw a point up to twice the offset further out */
+        var Rm = R * 0.9 - 2 * Math.abs(off);
+        if (Rm < blen * 2.2) return false;
+        var Rm2 = Rm * Rm, cnt = 0;
+        for (var s = 0; s < samples.length; s += 2) {
+          var x = samples[s], y = samples[s + 1];
+          if (x * x + y * y > Rm2) continue;
+          cnt++;
+          var d = x * nx + y * ny - off;
+          if (!has(x - 2 * d * nx, y - 2 * d * ny, tol)) return false;
+        }
+        return cnt >= 14;
+      }
+
+      var dirsDeg = [], seenD = {};
+      for (i = 0; i < 12; i++) { var a1 = i * 15; if (!seenD[a1]) { seenD[a1] = 1; dirsDeg.push(a1); } }
+      for (i = 0; i < 10; i++) { var a2 = i * 18; if (!seenD[a2]) { seenD[a2] = 1; dirsDeg.push(a2); } }
+      dirsDeg.sort(function (p, q) { return p - q; });
+
+      var mirrors = [];
+      for (i = 0; i < dirsDeg.length; i++) {
+        var th = dirsDeg[i] * DEG;
+        var hits = [], stepO = blen / 16;
+        for (var off = -blen * 1.75; off <= blen * 1.75; off += stepO) {
+          if (testMirror(th, off)) hits.push(off);
+        }
+        if (!hits.length) continue;
+        var groups = [], run = [hits[0]];
+        for (var q2 = 1; q2 < hits.length; q2++) {
+          if (hits[q2] - hits[q2 - 1] <= blen * 0.14) run.push(hits[q2]);
+          else { groups.push(run); run = [hits[q2]]; }
+        }
+        groups.push(run);
+        var offs = groups.map(function (g) {
+          var sum = 0; g.forEach(function (v) { sum += v; }); return sum / g.length;
+        });
+        var sp = 0;
+        if (offs.length >= 2) {
+          sp = 1e9;
+          for (var q3 = 1; q3 < offs.length; q3++) sp = Math.min(sp, offs[q3] - offs[q3 - 1]);
+          if (sp < blen * 0.2) sp = 0;
+        }
+        mirrors.push({ theta: th, deg: dirsDeg[i], offs: offs, spacing: sp });
+      }
+
+      found = { centres: keep, mirrors: mirrors, v1: v1, v2: v2, anchor: [ax, ay] };
+    }
+
+    /* --- markers --- */
+    function marker(x, y, order) {
+      var r = order === 2 ? 5.4 : 6.6;
+      ctx.beginPath();
+      if (order === 2) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(Math.PI / 4);
+        ctx.ellipse(0, 0, r * 1.35, r * 0.6, 0, 0, TAU);
+        ctx.restore();
+      } else {
+        var sides = order === 3 ? 3 : order === 4 ? 4 : order === 5 ? 5 : 6;
+        var rot = order === 4 ? Math.PI / 4 : -Math.PI / 2;
+        for (var k = 0; k <= sides; k++) {
+          var a = rot + k * TAU / sides;
+          var px = x + r * Math.cos(a), py = y + r * Math.sin(a);
+          if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+      }
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    function markerColour(order) {
+      if (order === 5) return GOLD;
+      if (order === 4 || order === 6) return ACC2;
+      return ACC;
+    }
+
+    function draw() {
+      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.5 * DPR);
+      ctx.clearRect(-W / 2, -H / 2, W, H);
+      var xy = set.xy, n = xy.length / 2, i;
+
+      /* the repeating tile */
+      if (cellChk.checked && found.v1 && found.v2) {
+        var a = found.anchor, v1 = found.v1, v2 = found.v2;
+        ctx.fillStyle = ACC2;
+        ctx.globalAlpha = 0.13;
+        ctx.beginPath();
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(a[0] + v1.x, a[1] + v1.y);
+        ctx.lineTo(a[0] + v1.x + v2.x, a[1] + v1.y + v2.y);
+        ctx.lineTo(a[0] + v2.x, a[1] + v2.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = ACC2;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      /* links then points */
+      ctx.strokeStyle = MUT;
+      ctx.globalAlpha = 0.3;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (var b = 0; b < links.length; b += 2) {
+        var i1 = links[b], i2 = links[b + 1];
+        ctx.moveTo(xy[2 * i1], xy[2 * i1 + 1]);
+        ctx.lineTo(xy[2 * i2], xy[2 * i2 + 1]);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = "#f2f5ff";
+      ctx.beginPath();
+      for (i = 0; i < n; i++) {
+        ctx.moveTo(xy[2 * i] + 2.6, xy[2 * i + 1]);
+        ctx.arc(xy[2 * i], xy[2 * i + 1], 2.6, 0, TAU);
+      }
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      var clip = R * 1.05;
+
+      /* mirror lines */
+      if (mirChk.checked) {
+        ctx.strokeStyle = GOLD;
+        ctx.globalAlpha = 0.5;
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([7, 6]);
+        ctx.beginPath();
+        for (i = 0; i < found.mirrors.length; i++) {
+          var m = found.mirrors[i];
+          var nx = -Math.sin(m.theta), ny = Math.cos(m.theta);
+          var ux = Math.cos(m.theta), uy = Math.sin(m.theta);
+          var list = [];
+          if (m.spacing > 0) {
+            var base0 = m.offs[0];
+            var kmin = Math.ceil((-clip - base0) / m.spacing);
+            var kmax = Math.floor((clip - base0) / m.spacing);
+            if (kmax - kmin > 240) kmax = kmin + 240;
+            for (var k = kmin; k <= kmax; k++) list.push(base0 + k * m.spacing);
+          } else {
+            list = m.offs;
+          }
+          for (var q = 0; q < list.length; q++) {
+            var d = list[q];
+            if (Math.abs(d) > clip) continue;
+            var half = Math.sqrt(Math.max(0, clip * clip - d * d));
+            ctx.moveTo(nx * d - ux * half, ny * d - uy * half);
+            ctx.lineTo(nx * d + ux * half, ny * d + uy * half);
+          }
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+      }
+
+      /* rotation centres, repeated across the view */
+      if (rotChk.checked) {
+        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = "#04060c";
+        var reps = [[0, 0]];
+        if (found.v1 && found.v2) {
+          reps = [];
+          var span = Math.ceil(clip / Math.min(found.v1.L, found.v2.L)) + 1;
+          span = Math.min(span, 26);
+          for (var m1 = -span; m1 <= span; m1++) {
+            for (var m2 = -span; m2 <= span; m2++) {
+              reps.push([m1 * found.v1.x + m2 * found.v2.x, m1 * found.v1.y + m2 * found.v2.y]);
+            }
+          }
+        }
+        for (i = 0; i < found.centres.length; i++) {
+          var c = found.centres[i];
+          ctx.fillStyle = markerColour(c.order);
+          for (var rp = 0; rp < reps.length; rp++) {
+            var X = c.x + reps[rp][0], Y = c.y + reps[rp][1];
+            if (X * X + Y * Y > clip * clip) continue;
+            marker(X, Y, c.order);
+          }
+        }
+      }
+    }
+
+    function report() {
+      var orders = {}, i;
+      for (i = 0; i < found.centres.length; i++) orders[found.centres[i].order] = 1;
+      var list = Object.keys(orders).map(Number).sort(function (p, q) { return q - p; });
+      var WORDS = { 2: "half turns", 3: "third turns", 4: "quarter turns", 5: "fifth turns", 6: "sixth turns" };
+      var rotTxt = list.length ? list.map(function (o) { return WORDS[o]; }).join(", ") : "none found";
+      var mirTxt = found.mirrors.length ? found.mirrors.length + " direction" +
+        (found.mirrors.length === 1 ? "" : "s") + " (" +
+        found.mirrors.map(function (m) { return m.deg + "°"; }).join(", ") + ")" : "none found";
+      var repTxt;
+      if (found.v1 && found.v2) {
+        repTxt = Math.round(found.v1.L) + " px by " + Math.round(found.v2.L) + " px, at " +
+          Math.round(Math.abs(Math.atan2(found.v1.x * found.v2.y - found.v1.y * found.v2.x,
+            found.v1.x * found.v2.x + found.v1.y * found.v2.y) / DEG)) + "° to each other";
+      } else {
+        repTxt = "none found, at any distance tried";
+      }
+      var tail;
+      if (!found.v1 || !found.v2) {
+        tail = "Order without repeat: the pattern lands on itself when turned, and never when slid.";
+      } else if (list.indexOf(6) >= 0) {
+        tail = "Sixth turns are the most a repeating pattern can hold, and this one holds them.";
+      } else if (list.indexOf(4) >= 0) {
+        tail = "Quarter turns and sixth turns cannot share a pattern, so a square grid never gets six.";
+      } else {
+        tail = "Whatever the count, a fifth turn is not on the list.";
+      }
+      readEl.innerHTML =
+        "Rotation centres found: <b>" + rotTxt + "</b><br>" +
+        "Mirror lines found: <b>" + mirTxt + "</b><br>" +
+        "Smallest repeat: <b>" + repTxt + "</b><br>" +
+        "<span class=\"r2\">" + tail + "</span>";
+      capEl.textContent = fmtNum(set.xy.length / 2) + " points tested · " +
+        found.centres.length + " kinds of centre · " + LAT_NAMES[lat];
+    }
+
+    var pending = false;
+    function rebuild() {
+      set = genPoints(lat, SP, R);
+      links = buildBonds(set.xy, set.blen * 1.2, set.bmin);
+      found = { centres: [], mirrors: [], v1: null, v2: null, anchor: [0, 0] };
+      capEl.textContent = "Trying every move on " + fmtNum(set.xy.length / 2) + " points.";
+      draw();
+      if (pending) return;
+      pending = true;
+      /* let the caption paint before the search runs */
+      setTimeout(function () {
+        pending = false;
+        analyse();
+        draw();
+        report();
+      }, 30);
+    }
+
+    [].forEach.call(document.querySelectorAll("#sym-seg button"), function (b) {
+      b.addEventListener("click", function () {
+        lat = b.getAttribute("data-lat");
+        segSync("sym-seg", "data-lat", lat);
+        rebuild();
+      });
+    });
+    [rotChk, mirChk, cellChk].forEach(function (c) {
+      c.addEventListener("change", draw);
+    });
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { size(); rebuild(); }, 220);
+    });
+
+    size();
+    rebuild();
+  })();
+
+  /* ==================================================================
+     4. pentagons round a point
+     ================================================================== */
+
+  (function pentagons() {
+    var cv = document.getElementById("pent-canvas");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d");
+    var nEl = document.getElementById("pent-n");
+    var vv = document.getElementById("pent-vv");
+    var cap = document.getElementById("pent-cap");
+    var W = 0, H = 0;
+
+    function size() { var d = fitCanvas(cv, 0.86, 240, 380); W = d.w; H = d.h; }
+
+    function pentPath(theta0, L) {
+      var pts = [[0, 0]], x = 0, y = 0, dir = theta0;
+      for (var k = 0; k < 5; k++) {
+        x += L * Math.cos(dir); y += L * Math.sin(dir);
+        pts.push([x, y]);
+        dir += 72 * DEG;
+      }
+      return pts;
+    }
+
+    function draw() {
+      var n = parseInt(nEl.value, 10);
+      var L = Math.min(W, H) * 0.3;
+      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.56 * DPR);
+      ctx.clearRect(-W / 2, -H, W, H * 2);
+      var start = (90 - n * 54) * DEG;
+
+      var left = 360 - 108 * n;
+      /* the leftover wedge, or the overlap when a fourth is forced in */
+      var wedgeFrom = start + n * 108 * DEG;
+      var wedgeTo = start + 360 * DEG;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      if (left >= 0) {
+        ctx.arc(0, 0, L * 0.92, wedgeFrom, wedgeTo, false);
+        ctx.closePath();
+        ctx.fillStyle = GOLD;
+        ctx.globalAlpha = 0.22;
+      } else {
+        ctx.arc(0, 0, L * 0.92, wedgeTo, wedgeFrom, false);
+        ctx.closePath();
+        ctx.fillStyle = ROSE;
+        ctx.globalAlpha = 0.3;
+      }
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      for (var i = 0; i < n; i++) {
+        var pts = pentPath(start + i * 108 * DEG, L);
+        ctx.beginPath();
+        for (var k = 0; k < pts.length; k++) {
+          if (k === 0) ctx.moveTo(pts[k][0], pts[k][1]); else ctx.lineTo(pts[k][0], pts[k][1]);
+        }
+        ctx.closePath();
+        ctx.fillStyle = i % 2 ? ACC2 : ACC;
+        ctx.globalAlpha = 0.24;
+        ctx.fill();
+        ctx.globalAlpha = 0.95;
+        ctx.strokeStyle = i % 2 ? ACC2 : ACC;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      ctx.fillStyle = "#f2f5ff";
+      ctx.beginPath(); ctx.arc(0, 0, 4, 0, TAU); ctx.fill();
+
+      ctx.font = "600 13px 'JetBrains Mono', Consolas, monospace";
+      ctx.textAlign = "center";
+      if (left > 0) {
+        ctx.fillStyle = GOLD;
+        var mid = (wedgeFrom + wedgeTo) / 2;
+        ctx.fillText(left + "° bare", Math.cos(mid) * L * 0.55, Math.sin(mid) * L * 0.55 + 4);
+      } else if (left === 0) {
+        ctx.fillStyle = ACC;
+        ctx.fillText("closed", 0, -L * 0.2);
+      } else {
+        ctx.fillStyle = ROSE;
+        var mid2 = (wedgeFrom + wedgeTo) / 2;
+        ctx.fillText((-left) + "° over", Math.cos(mid2) * L * 0.55, Math.sin(mid2) * L * 0.55 + 4);
+      }
+      ctx.textAlign = "left";
+
+      vv.textContent = String(n);
+      cap.textContent = n + " × 108° = " + (108 * n) + "° of the 360° round the point" +
+        (left > 0 ? ", leaving " + left + "° bare" : left === 0 ? "" : ", overlapping by " + (-left) + "°");
+    }
+
+    nEl.addEventListener("input", draw);
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { size(); draw(); }, 150);
+    });
+    size();
+    draw();
+  })();
+
+  /* ==================================================================
+     5. the unit cell, in three dimensions
+     ================================================================== */
+
+  (function cells() {
+    var cv = document.getElementById("cell-canvas");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d");
+
+    var SQ3 = Math.sqrt(3), SQ2 = Math.sqrt(2);
+    var CA = Math.sqrt(8 / 3);
+
+    function cube(extra, r) {
+      var atoms = [], edges = [], s, i, j, k;
+      var c = [];
+      for (i = 0; i < 2; i++) for (j = 0; j < 2; j++) for (k = 0; k < 2; k++) {
+        c.push([i - 0.5, j - 0.5, k - 0.5]);
+      }
+      c.forEach(function (p) { atoms.push({ p: p, role: "corner" }); });
+      for (i = 0; i < c.length; i++) {
+        for (j = i + 1; j < c.length; j++) {
+          var d = Math.abs(c[i][0] - c[j][0]) + Math.abs(c[i][1] - c[j][1]) + Math.abs(c[i][2] - c[j][2]);
+          if (Math.abs(d - 1) < 1e-6) edges.push([c[i], c[j]]);
+        }
+      }
+      extra.forEach(function (p) { atoms.push({ p: p, role: "inner" }); });
+      /* fit is the bounding radius: the far corner plus one ball */
+      return { atoms: atoms, edges: edges, r: r, fit: Math.sqrt(3) / 2 + r };
+    }
+
+    function hcpCell() {
+      var atoms = [], edges = [], k;
+      var top = [], bot = [];
+      for (k = 0; k < 6; k++) {
+        var a = k * 60 * DEG;
+        var x = Math.cos(a), y = Math.sin(a);
+        bot.push([x, y, -CA / 2]);
+        top.push([x, y, CA / 2]);
+      }
+      bot.forEach(function (p) { atoms.push({ p: p, role: "corner" }); });
+      top.forEach(function (p) { atoms.push({ p: p, role: "corner" }); });
+      atoms.push({ p: [0, 0, -CA / 2], role: "inner" });
+      atoms.push({ p: [0, 0, CA / 2], role: "inner" });
+      for (k = 0; k < 3; k++) {
+        var b = (30 + k * 120) * DEG;
+        atoms.push({ p: [Math.cos(b) / SQ3, Math.sin(b) / SQ3, 0], role: "inner" });
+      }
+      for (k = 0; k < 6; k++) {
+        edges.push([bot[k], bot[(k + 1) % 6]]);
+        edges.push([top[k], top[(k + 1) % 6]]);
+        edges.push([bot[k], top[k]]);
+      }
+      return { atoms: atoms, edges: edges, r: 0.5, fit: Math.sqrt(1 + CA * CA / 4) + 0.5 };
+    }
+
+    var CELLS = {
+      sc: {
+        label: "Simple cubic", geo: null, pack: Math.PI / 6, coord: 6, per: 1,
+        metals: "<strong>Almost nothing picks it.</strong> Polonium is the one element that takes this arrangement at ordinary conditions, and the reason is in the number above: nearly half the box is gap, so the atoms are giving up bonds for nothing."
+      },
+      bcc: {
+        label: "Body-centred cubic", geo: null, pack: SQ3 * Math.PI / 8, coord: 8, per: 2,
+        metals: "<strong>The iron in a nail, a beam or a frypan at room temperature,</strong> along with chromium, tungsten, molybdenum and vanadium. Body-centred metals are strong and stiff, and they turn brittle when they get cold, which is a property with a long and expensive history in ships and pipelines."
+      },
+      fcc: {
+        label: "Face-centred cubic", geo: null, pack: Math.PI / (3 * SQ2), coord: 12, per: 4,
+        metals: "<strong>Aluminium in a drink can and a window frame,</strong> copper in the wiring behind the wall, plus gold, silver, nickel, lead and the stainless steel in a kitchen sink. These are the metals that draw into wire and fold into shape without cracking, and they stay ductile in the cold."
+      },
+      hcp: {
+        label: "Hexagonal close packed", geo: null, pack: Math.PI / (3 * SQ2), coord: 12, per: 6,
+        metals: "<strong>Magnesium in a light bike frame or a laptop shell,</strong> zinc on a galvanised roof, titanium below about 882 degrees Celsius, cobalt and zirconium. Just as tightly packed as face-centred, but with far fewer directions for a line of mismatch to slide along, so these take a bend and then crack."
+      }
+    };
+    CELLS.sc.geo = cube([], 0.5);
+    CELLS.bcc.geo = cube([[0, 0, 0]], SQ3 / 4);
+    CELLS.fcc.geo = cube([
+      [0.5, 0, 0], [-0.5, 0, 0], [0, 0.5, 0], [0, -0.5, 0], [0, 0, 0.5], [0, 0, -0.5]
+    ], SQ2 / 4);
+    CELLS.hcp.geo = hcpCell();
+
+    var key = "fcc";
+    var W = 0, H = 0, scale = 60;
+    var yaw = 28 * DEG, lean = 62 * DEG, fill = 1;
+    var spinning = false, raf = 0, visible = true, last = 0;
+
+    var fillEl = document.getElementById("cell-fill");
+    var spinEl = document.getElementById("cell-spin");
+    var leanEl = document.getElementById("cell-lean");
+    var autoBtn = document.getElementById("cell-auto");
+
+    function size() {
+      var d = fitCanvas(cv, 0.58, 300, 480);
+      W = d.w; H = d.h;
+      scale = Math.min(W, H) * 0.44 / CELLS[key].geo.fit;
+    }
+
+    function project(p) {
+      var cy = Math.cos(yaw), sy = Math.sin(yaw);
+      var ct = Math.cos(lean), st = Math.sin(lean);
+      var x1 = p[0] * cy - p[1] * sy;
+      var y1 = p[0] * sy + p[1] * cy;
+      return {
+        x: x1 * scale,
+        y: (y1 * ct - p[2] * st) * scale,
+        d: y1 * st + p[2] * ct
+      };
+    }
+
+    function draw() {
+      var C = CELLS[key], g = C.geo;
+      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.5 * DPR);
+      ctx.clearRect(-W / 2, -H / 2, W, H);
+
+      ctx.strokeStyle = LINE;
+      ctx.globalAlpha = 0.95;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      for (var e = 0; e < g.edges.length; e++) {
+        var a = project(g.edges[e][0]), b = project(g.edges[e][1]);
+        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      var list = g.atoms.map(function (at) {
+        var s = project(at.p);
+        return { x: s.x, y: s.y, d: s.d, role: at.role };
+      });
+      list.sort(function (p, q) { return p.d - q.d; });
+
+      var rr = g.r * fill * scale;
+      for (var i = 0; i < list.length; i++) {
+        var a2 = list[i];
+        var base = a2.role === "corner" ? ACC : ACC2;
+        var gr = ctx.createRadialGradient(a2.x - rr * 0.34, a2.y - rr * 0.38, rr * 0.08,
+                                          a2.x, a2.y, rr);
+        gr.addColorStop(0, "#ffffff");
+        gr.addColorStop(0.32, base);
+        gr.addColorStop(1, "rgba(4,6,12,0.92)");
+        ctx.fillStyle = gr;
+        ctx.beginPath();
+        ctx.arc(a2.x, a2.y, rr, 0, TAU);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(4,6,12,0.85)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      document.getElementById("cell-cap-left").textContent =
+        C.label + " · " + g.atoms.length + " balls drawn";
+      document.getElementById("cell-cap-right").textContent =
+        "spin " + (Math.round(yaw / DEG) % 360 + 360) % 360 + "° · lean " + Math.round(lean / DEG) + "°" +
+        (fill >= 0.995 ? " · touching" : " · balls at " + Math.round(fill * 100) + "%");
+    }
+
+    var queued = false;
+    function requestDraw() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }
+
+    function loop(ts) {
+      raf = 0;
+      if (!spinning || !visible) return;
+      var dt = last ? Math.min(60, ts - last) : 16;
+      last = ts;
+      yaw += dt * 0.00028 * TAU / 2;
+      spinEl.value = Math.round((yaw / DEG) % 360 + 360) % 360;
+      document.getElementById("cell-spin-vv").textContent =
+        (Math.round((yaw / DEG) % 360 + 360) % 360) + "°";
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    function startSpin() { if (!raf && spinning && visible && !REDUCED) { last = 0; raf = requestAnimationFrame(loop); } }
+    function stopSpin() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+
+    var BAR_ORDER = ["sc", "bcc", "fcc", "hcp"];
+    var BAR_NAMES = { sc: "Simple cubic", bcc: "Body-centred", fcc: "Face-centred", hcp: "Hexagonal" };
+    function buildBars() {
+      var host = document.getElementById("cell-bars");
+      if (!host) return;
+      host.innerHTML = BAR_ORDER.map(function (k) {
+        var pct = CELLS[k].pack * 100;
+        return '<div class="bar-row" data-k="' + k + '">' +
+          '<span class="who">' + BAR_NAMES[k] + '</span>' +
+          '<div><div class="bar" style="width:' + pct.toFixed(1) + '%"></div></div>' +
+          '<span class="val">' + pct.toFixed(1) + '%</span></div>';
+      }).join("");
+    }
+
+    function syncBars() {
+      [].forEach.call(document.querySelectorAll("#cell-bars .bar-row"), function (row) {
+        var on = row.getAttribute("data-k") === key;
+        row.classList.toggle("on", on);
+        row.classList.toggle("dim", !on);
+      });
+    }
+
+    function setCell(k) {
+      key = k;
+      segSync("cell-seg", "data-cell", key);
+      var C = CELLS[key];
+      var pct = C.pack * 100;
+      document.getElementById("cell-pack").textContent = pct.toFixed(2) + "%";
+      document.getElementById("cell-pack-lbl").textContent =
+        "of the box is metal; the other " + (100 - pct).toFixed(2) + " per cent is gap";
+      document.getElementById("cell-coord").textContent = String(C.coord);
+      document.getElementById("cell-count").textContent = String(C.per);
+      document.getElementById("cell-count-lbl").textContent =
+        key === "hcp"
+          ? "atoms' worth of material in the hexagonal block drawn"
+          : "atoms' worth of material in one cube, once the shared corners are split up";
+      document.getElementById("cell-metals").innerHTML = C.metals;
+      syncBars();
+      size();
+      requestDraw();
+    }
+
+    [].forEach.call(document.querySelectorAll("#cell-seg button"), function (b) {
+      b.addEventListener("click", function () { setCell(b.getAttribute("data-cell")); });
+    });
+
+    fillEl.addEventListener("input", function () {
+      fill = parseFloat(fillEl.value) / 100;
+      document.getElementById("cell-fill-vv").textContent =
+        fill >= 0.995 ? "100% (touching)" : Math.round(fill * 100) + "%";
+      requestDraw();
+    });
+    spinEl.addEventListener("input", function () {
+      yaw = parseFloat(spinEl.value) * DEG;
+      document.getElementById("cell-spin-vv").textContent = Math.round(parseFloat(spinEl.value)) + "°";
+      requestDraw();
+    });
+    leanEl.addEventListener("input", function () {
+      lean = parseFloat(leanEl.value) * DEG;
+      document.getElementById("cell-lean-vv").textContent = Math.round(parseFloat(leanEl.value)) + "°";
+      requestDraw();
+    });
+    autoBtn.addEventListener("click", function () {
+      spinning = !spinning;
+      autoBtn.textContent = spinning ? "Hold it" : "Spin it";
+      autoBtn.setAttribute("aria-pressed", spinning ? "true" : "false");
+      if (spinning) startSpin(); else stopSpin();
+    });
+    if (REDUCED) autoBtn.disabled = true;
+
+    var drag = null;
+    cv.addEventListener("pointerdown", function (e) {
+      drag = { x: e.clientX, y: e.clientY };
+      cv.classList.add("dragging");
+      if (cv.setPointerCapture) { try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
+      e.preventDefault();
+    });
+    cv.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      drag.x = e.clientX; drag.y = e.clientY;
+      yaw += dx * 0.008;
+      lean = Math.max(0, Math.min(88 * DEG, lean + dy * 0.004));
+      spinEl.value = Math.round((yaw / DEG) % 360 + 360) % 360;
+      leanEl.value = Math.round(lean / DEG);
+      document.getElementById("cell-spin-vv").textContent = spinEl.value + "°";
+      document.getElementById("cell-lean-vv").textContent = leanEl.value + "°";
+      requestDraw();
+    });
+    function endDrag() { drag = null; cv.classList.remove("dragging"); }
+    cv.addEventListener("pointerup", endDrag);
+    cv.addEventListener("pointercancel", endDrag);
+
+    visibility(cv,
+      function () { visible = true; startSpin(); },
+      function () { visible = false; stopSpin(); });
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { size(); requestDraw(); }, 150);
+    });
+
+    buildBars();
+    size();
+    setCell("fcc");
+  })();
+
 })();
 </script>
 </body>
