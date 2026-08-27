@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cymatics · Extreme Matter Atlas</title>
+<meta name="description" content="Sand on a bowed brass plate finds the lines that hold still. Drive a Chladni plate yourself, watch two dippers interfere, and follow the same shapes out to electron shells.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="cymatics"] { --accent: #22d3ee; --accent2: #fbbf24; --sand: #fcd34d; }
+
+body[data-page="cymatics"] .hero {
+  background-image:
+    repeating-linear-gradient(58deg, rgba(34, 211, 238, 0.055) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(-58deg, rgba(251, 191, 36, 0.05) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(0deg, rgba(34, 211, 238, 0.035) 0 1px, transparent 1px 92px);
+}
+
+/* shape toggle and preset rows */
+body[data-page="cymatics"] .pick-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="cymatics"] .pick {
+  min-height: 44px; padding: 9px 18px; border-radius: 12px; cursor: pointer;
+  font-family: var(--font-body); font-size: 14.5px; font-weight: 600;
+  background: var(--panel2); border: 1px solid var(--line-bright); color: var(--muted);
+  transition: all .16s ease;
+}
+body[data-page="cymatics"] .pick:hover { border-color: var(--accent); color: var(--ink); }
+body[data-page="cymatics"] .pick[aria-pressed="true"] {
+  color: #04060c; border-color: transparent;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 20px -4px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+body[data-page="cymatics"] .preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="cymatics"] .preset-row .btn { padding: 9px 15px; font-size: 13.5px; min-height: 44px; }
+
+body[data-page="cymatics"] .control input[type="range"] { width: min(300px, 74vw); }
+body[data-page="cymatics"] .control input[type="range"]:disabled { opacity: 0.4; cursor: not-allowed; }
+body[data-page="cymatics"] .control.wide input[type="range"] { width: min(560px, 78vw); }
+
+body[data-page="cymatics"] .readout {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--ink);
+  padding: 10px 16px; border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2); line-height: 1.5;
+}
+body[data-page="cymatics"] .readout b { color: var(--accent); font-weight: 600; }
+body[data-page="cymatics"] .readout i { color: var(--accent2); font-style: normal; font-weight: 600; }
+
+body[data-page="cymatics"] .say {
+  font-size: 15.5px; color: var(--muted); margin-top: 4px;
+  min-height: 3.2em;
+}
+body[data-page="cymatics"] .say strong { color: var(--ink); font-weight: 600; }
+
+body[data-page="cymatics"] .cv-caps {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 10px 8px 2px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+}
+body[data-page="cymatics"] .cv-caps b { color: var(--accent); font-weight: 600; }
+body[data-page="cymatics"] .cv-caps i { color: var(--sand); font-style: normal; font-weight: 600; }
+
+/* the numbered brief */
+body[data-page="cymatics"] .ladder {
+  display: grid; grid-template-columns: 46px 1fr; gap: 16px;
+  padding: 16px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="cymatics"] .ladder:last-child { border-bottom: 0; }
+body[data-page="cymatics"] .ladder .lnum {
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px; color: var(--accent);
+  padding-top: 2px;
+}
+body[data-page="cymatics"] .ladder h3 { margin-bottom: 6px; }
+body[data-page="cymatics"] .ladder p { font-size: 15px; color: var(--muted); }
+body[data-page="cymatics"] .ladder p strong { color: var(--ink); font-weight: 600; }
+
+/* bench blocks */
+body[data-page="cymatics"] .bench {
+  border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+}
+body[data-page="cymatics"] .bench .when {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent2); display: block; margin-bottom: 6px;
+}
+body[data-page="cymatics"] .bench p { font-size: 15px; }
+body[data-page="cymatics"] .bench dl { margin-top: 14px; font-size: 14px; }
+body[data-page="cymatics"] .bench dt {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-top: 10px;
+}
+body[data-page="cymatics"] .bench dd { color: var(--ink); }
+
+/* rung list */
+body[data-page="cymatics"] .scalebar { display: grid; gap: 10px; margin: 22px 0; }
+body[data-page="cymatics"] .scalebar .rung {
+  display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: baseline;
+  padding: 12px 16px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--panel);
+}
+body[data-page="cymatics"] .scalebar .rung .lab {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--accent);
+}
+body[data-page="cymatics"] .scalebar .rung .txt { font-size: 14.5px; color: var(--muted); }
+body[data-page="cymatics"] .scalebar .rung .txt strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="cymatics"] .scalebar .rung { grid-template-columns: 1fr; gap: 4px; }
+}
+
+body[data-page="cymatics"] .data-table td.figure {
+  font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap;
+}
+body[data-page="cymatics"] .src-list a { overflow-wrap: anywhere; }
+
+body[data-page="cymatics"] .twin-note {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+  padding-top: 4px;
+}
+</style>
+</head>
+<body data-page="cymatics">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Chladni plates · standing waves · nodal lines</span>
+      <h1 class="display">Cymatics</h1>
+      <p class="lede">Scatter sand on a brass plate, draw a violin bow down its edge, and the grains stop being scattered. They slide off everywhere the plate is moving and <strong>pile up along the lines that hold still</strong>. Change the note and the figure changes with it. Ernst Chladni published the drawings in Leipzig in 1787, and the same shapes turn up two hundred years later in a bridge that had to be closed, a violin maker's workshop, and a photograph of a hydrogen atom's nodes.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">1787</span><span class="lbl">the year Chladni published the plate figures, with a bow, a handful of sand and no theory of why</span></div>
+        <div class="stat"><span class="num">890 Hz</span><span class="lbl">the note an empty wine glass sings, measured by holography at the École Polytechnique with the ANU</span></div>
+        <div class="stat"><span class="num">3,000</span><span class="lbl">stones picked up at L'Aigle in 1803, nine years after Chladni argued rocks could fall from the sky</span></div>
+        <div class="stat"><span class="num">48 atoms</span><span class="lbl">the iron ring IBM built in 1993, inside which the electron standing wave was photographed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Three things that <span class="hue">already do this</span></h2>
+      <p>Nothing here needs a laboratory to start with. All three sit in an ordinary kitchen.</p>
+
+      <p><strong>A drum skin.</strong> Hit it in the middle and the whole membrane bulges and dips together. Hit it near the rim and it splits: half goes up while half goes down, and the line between them barely moves at all. That still line is a <em>node</em>, and it is the whole idea. A drum has a family of these patterns, one for each way the skin can divide itself, and each one rings at its own pitch. The ratios between those pitches are not the neat whole numbers a guitar string gives. For an ideal circular skin they run 1, 1.59, 2.14, 2.30, 2.65, which is why a bare drum reads as a thud rather than a note. Kettledrum makers get a pitch back by loading the skin with the air in the bowl, which drags four of those numbers close to 1, 1.5, 2 and 2.5 and hands the ear something it can name.</p>
+
+      <p><strong>A wine glass.</strong> Wet a finger, run it round the rim, and the glass sings. The finger is not sliding smoothly: it grips and slips, grips and slips, hundreds of times a second, and the glass answers at the frequency it likes. What the glass is doing is squeezing from round to oval and back, so four points around the rim hold still while four bulge. Gregor Jundt and colleagues at the École Polytechnique, with Neville Fletcher at the Australian National University, photographed exactly that with holographic interferometry and published it in the <em>Journal of the Acoustical Society of America</em> in June 2006. Their empty glass sang at about 890 hertz. Pour in ten centimetres of water and the same pattern drops to about 410 hertz, a shade over an octave lower, because the water has to be shoved along with the glass wall.</p>
+
+      <div class="note"><strong>The detail worth keeping from that paper.</strong> The oval can squash along one pair of axes or along the pair at right angles to it, and on a perfect glass those two would ring at exactly the same pitch. On a real glass they came in <strong>4 hertz apart</strong>, because the wall is a fraction thicker on one side than the other. A 4 hertz gap out of 890 is a wall-thickness difference no eye would catch. The glass hears it. And when the glass is full, that gap closes and the two go back to being the same note.</p></div>
+
+      <p><strong>Sand on a speaker.</strong> Lay a stiff plate on a loudspeaker, sprinkle it with dry sand or table salt, and sweep the frequency. Most of the time the sand just shuffles. Then at particular frequencies the plate leaps into a pattern, and within a second the grains have found the still lines and are sitting on them in sharp ridges. It is the Chladni demonstration, running in school labs with a signal generator instead of a bow.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>A bow, a brass plate, <span class="hue">and a handful of sand</span></h2>
+      <p>Robert Hooke got there first, in a way. In 1680 he ran a bow along the edge of a glass plate dusted with flour and noticed the flour arranging itself. He wrote it down and moved on.</p>
+      <p>Ernst Chladni did not move on. Trained in law, working as a travelling lecturer, he spent years on it. He clamped brass and glass plates at a point, bowed their edges at different places, damped them with a fingertip at different places, and drew what the sand did. In 1787 he published the drawings as <em>Entdeckungen über die Theorie des Klanges</em>, discoveries in the theory of sound. He had no equation for a vibrating plate. He had a bow, a plate, sand and patience, and he wrote down what came out.</p>
+      <p>Then he took the plates on the road. In 1809 he set them going in Paris in front of Napoleon, who was impressed enough to put up <strong>3,000 francs</strong> for whoever could produce the mathematics behind them. Sophie Germain took the prize in 1816, on her third attempt, having taught herself the calculus from books she was not meant to have.</p>
+
+      <div class="note"><strong>The same man made a second claim, and it was the harder one.</strong> In 1794 Chladni published a short book arguing that the lumps of nickel-iron people kept digging up had fallen from space. At the time that was close to unsayable: rocks did not fall from the sky, and nothing small was thought to exist out past the Moon. He gave the claim checkable edges anyway. The masses carry nickel that local ores do not. The finds line up with fireball sightings in place and in time. A body arriving fast would melt its own skin, which is why the crust is dark and glassy and the inside is not. On 26 April 1803 about three thousand stones fell on L'Aigle in Normandy, Jean-Baptiste Biot went out for the Institut de France to collect them and the eyewitness accounts, and the list came back checked. The man drawing sand figures and the man arguing for meteorites are the same man, nine years apart, working the same way both times. That method is set out on <a href="beyond.html">We Go Beyond</a>.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Why the sand goes <span class="hue">where it goes</span></h2>
+      <p>A plate that is being driven at one of its own frequencies does not slosh about randomly. It settles into a <em>standing wave</em>: a pattern that stays put while the whole thing swings up and down through it, like a skipping rope held at both ends. Some places on the plate travel the full swing. Others sit on the boundary between a part going up and a part going down, and those places barely move at all.</p>
+      <p>Drop a grain of sand on a part that is moving and it gets thrown, lands somewhere else, gets thrown again. Drop it on a still line and nothing happens to it. So the sand is not being attracted to the lines. It is being <strong>evicted from everywhere else</strong> and the lines are the only places left. Given a second or two of shaking, every grain that starts anywhere ends up on a node, which is why the figure appears so suddenly and so cleanly.</p>
+
+      <h3>The plate sets the spacing, not the sound in the air</h3>
+      <p>An easy assumption is that the figure is a picture of the sound wave. It is not. The wave that matters is running <em>through the metal</em>, as a bending ripple, and metal is far stiffer than air, so at the same frequency the two wavelengths are nothing alike. On a brass plate a millimetre thick, a bending wave at 890 hertz has a wavelength of about <strong>86 millimetres</strong>, a bit under the long side of a credit card. The sound wave at the same 890 hertz in the air above it is <strong>385 millimetres</strong>, longer than a school ruler and a half. The figure is a readout of the plate, not a shadow of the sound.</p>
+      <p>Which also means the plate's own dimensions set where every figure lands on the dial. Two rules fall out of the arithmetic and both are easy to test:</p>
+      <div class="scalebar">
+        <div class="rung"><span class="lab">Halve the thickness</span><span class="txt">and every figure drops <strong>an octave</strong>. A brass plate 20 centimetres square and a millimetre thick has its first free pattern near 57 hertz; at half a millimetre it lands near 28.</span></div>
+        <div class="rung"><span class="lab">Double the width</span><span class="txt">and every figure drops <strong>two octaves</strong>. The same brass at 40 centimetres square starts near 14 hertz, below what most people hear as a pitch at all.</span></div>
+        <div class="rung"><span class="lab">Swap the metal</span><span class="txt">and the pitch follows the stiffness against the weight. This is the same sum a luthier is doing by <strong>tapping a spruce top and listening</strong>, long before any of it was written down.</span></div>
+      </div>
+      <p class="twin-note">Figures worked for brass at 100 gigapascals of stiffness and 8,500 kilograms per cubic metre, with the plate free at its edges. Numbers to show which way each knob turns, not a specification for any particular plate.</p>
+
+      <h3>Fine powder does the opposite, and Faraday found out why</h3>
+      <p>Sprinkle something much lighter than sand on the same plate: lycopodium spores, talc, fine flour. It goes to the wrong places. Instead of gathering on the still lines it gathers in the middle of the moving regions, at the <em>antinodes</em>, drawing the photographic negative of the sand figure.</p>
+      <p>Michael Faraday worked out the reason and published it in the <em>Philosophical Transactions</em> in 1831. A plate flapping up and down does not only move itself; it stirs the air above it into slow circulating currents, and a particle light enough to be carried by air rather than thrown by the plate goes wherever the air goes, which is towards the antinodes. Sand is too heavy to care about the air. Spores are not. Faraday's paper on this went to the Royal Society a month before he induced electricity from a moving magnet.</p>
+      <p>The condition on it got sharper much later. Martin van Gerner and colleagues, working across Twente and Eindhoven, reported in <em>Physical Review E</em> in 2010 that the switch is not really about how light the particle is: it is about how hard the plate is shaking. Once the plate's acceleration drops below the acceleration of gravity, the grains stop being thrown clear at all, and the air currents get to decide. Turn the amplifier down far enough and even ordinary sand will run the pattern backwards.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Drive the plate <span class="hue">yourself</span></h2>
+      <p>A square plate and a round one, several thousand grains of sand, and the two numbers that pick the pattern. Move a slider and watch the grains leave wherever the plate has started moving and settle on wherever it has stopped. It takes them a second or so, the same as on a bench.</p>
+
+      <div class="canvas-frame">
+        <canvas id="plateCanvas" width="1000" height="620" aria-label="A vibrating plate seen from above. Bright lines mark where the plate holds still, and several thousand sand grains migrate onto those lines whenever the mode changes."></canvas>
+        <div class="cv-caps">
+          <span>bright lines: <b>the plate holds still</b></span>
+          <span>dark ground: <b>the plate is moving</b></span>
+          <span>grains: <i id="grainCount">3,600 of them</i></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control">
+          <label id="shapeLabel">Plate shape</label>
+          <div class="pick-row" role="group" aria-labelledby="shapeLabel">
+            <button type="button" class="pick" id="shapeSquare" aria-pressed="true">Square</button>
+            <button type="button" class="pick" id="shapeCircle" aria-pressed="false">Circle</button>
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="control">
+            <label for="mRange" id="mLabel">Lines across <span class="mono">(m)</span></label>
+            <input type="range" id="mRange" min="1" max="8" value="2" step="1" aria-describedby="modeReadout">
+          </div>
+          <div class="control">
+            <label for="nRange" id="nLabel">Lines down <span class="mono">(n)</span></label>
+            <input type="range" id="nRange" min="1" max="8" value="3" step="1" aria-describedby="modeReadout">
+          </div>
+          <div class="control">
+            <label for="twistRange" id="twistLabel">Blend the two twin patterns</label>
+            <input type="range" id="twistRange" min="-100" max="100" value="-100" step="1" aria-describedby="twinNote">
+          </div>
+        </div>
+
+        <div class="control wide">
+          <label for="freqRange">Sweep the dial, low note to high</label>
+          <input type="range" id="freqRange" min="0" max="10" value="0" step="1" aria-describedby="modeReadout">
+        </div>
+
+        <div class="control-row">
+          <div class="readout" id="modeReadout" aria-live="polite">
+            Mode <b id="modeOut">2 by 3</b> · about <i id="freqOut">540 Hz</i> on a brass plate 20 centimetres square and a millimetre thick
+          </div>
+        </div>
+
+        <p class="say" id="modeSay">Two lines one way and three the other, crossing into a lattice. The sand is finding all of them.</p>
+
+        <div class="control">
+          <label id="presetLabel">Jump to a figure</label>
+          <div class="preset-row" role="group" aria-labelledby="presetLabel">
+            <button type="button" class="btn ghost" data-shape="square" data-m="1" data-n="2">The cross</button>
+            <button type="button" class="btn ghost" data-shape="square" data-m="2" data-n="3">The lattice</button>
+            <button type="button" class="btn ghost" data-shape="square" data-m="4" data-n="5">The weave</button>
+            <button type="button" class="btn ghost" data-shape="circle" data-m="0" data-n="2">Rings</button>
+            <button type="button" class="btn ghost" data-shape="circle" data-m="3" data-n="0">Six-petal star</button>
+            <button type="button" class="btn ghost" data-shape="circle" data-m="5" data-n="2">Rose window</button>
+          </div>
+        </div>
+
+        <p class="note" id="twinNote"><strong>Why the blend slider is there.</strong> On a square plate, two lines across with three down rings at exactly the same pitch as three across with two down. The plate cannot tell them apart, so what actually appears is whatever mixture the bowing and the damping fingers happen to set up. Slide the blend and the figure walks from one twin, through a plain grid, to the other, without the pitch changing at all. On the round plate the same slider turns the figure, because there the two twins differ by a rotation. This is a real thing about vibrating plates, not a drawing option: it is why two people bowing identical plates at the same note can get different figures.</p>
+
+        <p class="note">The still lines here are drawn from the standing-wave shapes for a plate: crossed cosines on the square, Bessel functions on the round one. Close relatives of a real bowed brass plate, not a solution of the full plate equation, which is fourth order and does not have a tidy answer with free edges. About 3,600 grains are drawn. A teaspoon of fine beach sand holds roughly seven hundred thousand.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The word, and <span class="hue">the man who made it</span></h2>
+      <p>Hans Jenny was a Swiss physician who spent the last fifteen years of his life photographing what vibration does to matter. He drove metal plates and stretched membranes with crystal oscillators, sprinkled them with sand, iron filings, lycopodium, glycerine, water and pastes, and shot the results in close-up. In 1967 the Basilius Presse in Basel published the first volume, in German and English, under the title he coined for the field: <em>Kymatik</em>, from the Greek <em>kyma</em>, a wave. A second volume followed. Those photographs are why most people meet the subject at all.</p>
+      <p>One thing in the pictures is worth separating out, because it is a different piece of physics wearing the same clothes. The still, ridged figures in dry powder are Chladni's: the powder is finding the places the plate is not moving. The churning, hexagonal, endlessly reorganising patterns in shallow liquid are not. Those are Faraday waves, named for the same 1831 paper, and they have a peculiar signature: the liquid surface oscillates at <strong>half</strong> the frequency driving the dish. Drive at 60 hertz and the pattern beats at 30. It is a different mechanism under the same lens, not the same figure in a wetter material, and the half-frequency is how you tell in a second which one you are looking at.</p>
+      <p>The other thing worth saying is what a figure is and is not. A Chladni figure is a readout of one mode of one plate: it tells you the shape the plate has chosen, at that frequency, with that thickness, clamped at that point. It is not a picture of the sound in the air, and it does not carry over to a different plate. Change the plate and the same note draws something else. That is not a limitation on the demonstration; it is the useful part, because it means the figure is <strong>a measurement of the object</strong>, and objects are exactly what people want measured.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The same sums, <span class="hue">on the payroll</span></h2>
+      <p>Reading an object's shapes off its ringing has a name in engineering, modal analysis, and it is ordinary paid work. Tap a thing, record the ring with accelerometers or a laser that watches the surface without touching it, and the spectrum hands back the frequency of every mode the object has. Then you check whether any of them sits where something is going to push.</p>
+
+      <div class="two-col">
+        <div class="bench">
+          <span class="when">London · June 2000 to February 2002</span>
+          <h3>A bridge that found its own mode</h3>
+          <p>The Millennium Bridge over the Thames opened on 10 June 2000. About 80,000 people crossed it that day, with as many as 2,000 on the deck at once, and it began to sway sideways. Not much: a few centimetres. Enough that people widened their stance, and that is where it went wrong. Walking on a swaying deck, people unconsciously step in time with the sway, and stepping in time pushes it harder, which makes more people step in time. The engineers named it synchronous lateral excitation.</p>
+          <p>The bridge was closed after two days and stayed shut for almost two years. The cure was not more steel. It was <strong>37 fluid viscous dampers and 52 tuned mass dampers</strong>, bolted underneath to bleed energy out of the sideways modes faster than the crowd could feed it in. Arup checked it in January 2002 by walking about 2,000 monitored people across, and it reopened that February.</p>
+          <dl>
+            <dt>What was measured</dt><dd>deck acceleration and displacement, against pedestrian numbers</dd>
+            <dt>The mechanism</dt><dd>a feedback loop between crowd and structure, not a resonance with a fixed outside push</dd>
+            <dt>The fix</dt><dd>damping, which changes how fast a mode gives up energy without changing its frequency</dd>
+          </dl>
+        </div>
+        <div class="bench">
+          <span class="when">New Jersey · from 1962</span>
+          <h3>Chladni figures in a violin workshop</h3>
+          <p>Carleen Hutchins spent decades putting violin plates on a speaker and sprinkling them with glitter before the top and back were ever joined. A free violin plate has a handful of modes a maker cares about, and their frequencies and figures say whether the wood has been carved thin enough in the right places. Wood is not uniform, so no two blanks want the same cut.</p>
+          <p>She published the method in <em>Scientific American</em> in October 1981, having written an earlier version in 1962. It was translated into Chinese, Italian, French and German, and makers in a number of countries picked it up. The instrument is a loudspeaker, a signal generator and some glitter. What it replaces is a decade of somebody's ear.</p>
+          <dl>
+            <dt>What is measured</dt><dd>the frequency and the nodal figure of each free-plate mode, before assembly</dd>
+            <dt>What it changes</dt><dd>where the next few tenths of a millimetre of wood come off</dd>
+            <dt>Why it caught on</dt><dd>it turns a judgement that took years to acquire into a reading anyone can take</dd>
+          </dl>
+        </div>
+      </div>
+
+      <p>The same procedure runs on turbine blades. A blade is tapped or shaken, its modes are recorded, and each one is plotted against the shaft speeds at which a once-per-revolution disturbance would land on it. Where a mode line and a speed line cross, the blade would be fed energy every revolution, and the design either moves the mode or the engine is not allowed to dwell at that speed. A cracked blade shows up in the same test, because a crack softens the part and the ring drops in pitch.</p>
+
+      <div class="note"><strong>The nearest built thing, and it is a manipulator.</strong> Quan Zhou, Veikko Sariola, Kourosh Latifi and Ville Liimatainen at Aalto University in Finland published a result in <em>Nature Communications</em> in September 2016 that reads the Chladni plate the other way round. The standing assumption had been that a particle's motion away from the nodal lines is random and so cannot be steered. They measured it, found it regular enough to model statistically, and built a control loop: a camera watches the objects, a computer picks the next note from a database, the plate plays it, everything shifts a little, repeat. With that they moved <strong>up to six objects independently at once</strong>, each to its own target, using a single vibrating plate and one actuator underneath. The things they moved include electronic components, water droplets on carriers, plant seeds, candy balls and metal parts. Two hundred and twenty-nine years after Chladni watched sand collect, the sand takes instructions.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Two sources, <span class="hue">one tray of water</span></h2>
+      <p>Before the leap to atoms there is one more picture to have, and it is the oldest demonstration in the book. Put two dippers in a shallow tray and bob them up and down together. Two sets of circular ripples spread out and cross. Wherever a crest from one arrives with a crest from the other the water heaves twice as high. Wherever a crest meets a trough, the water sits flat and stays flat, and those flat places join into curved lines running out across the tray.</p>
+      <p>Those lines are the same still lines the sand was finding, made by two sources instead of by a boundary. Everything downstream is this picture: the moiré fringes in <a href="metamaterials.html">metamaterials</a>, the spots in a diffraction pattern in the <a href="crystal-lab.html">crystal lab</a>, and the shells further down this page.</p>
+
+      <div class="canvas-frame">
+        <canvas id="rippleCanvas" width="1000" height="470" aria-label="A shallow tray seen from above with two dippers bobbing. Circular ripples spread from each and cross, and gold lines mark the curves where the water stays flat."></canvas>
+        <div class="cv-caps">
+          <span>cyan and indigo: <b>crest and trough</b></span>
+          <span>gold curves: <i>the water stays flat</i></span>
+          <span>tray: <b>30 cm across</b></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="sepRange">Distance between the two dippers</label>
+            <input type="range" id="sepRange" min="10" max="140" value="60" step="1" aria-describedby="rippleReadout">
+          </div>
+          <div class="control">
+            <label for="lamRange">Wavelength of the ripples</label>
+            <input type="range" id="lamRange" min="6" max="70" value="22" step="1" aria-describedby="rippleReadout">
+          </div>
+        </div>
+        <div class="control-row">
+          <div class="readout" id="rippleReadout" aria-live="polite">
+            Dippers <b id="sepOut">6.0 cm</b> apart · wavelength <b id="lamOut">2.2 cm</b> · <i id="linesOut">5 flat curves each side</i>
+          </div>
+        </div>
+        <p class="say" id="rippleSay">The dippers are about three wavelengths apart, so the tray fills with flat curves fanning out from the middle.</p>
+        <p class="note">Bring the dippers closer together than half a wavelength and every flat curve disappears: there is nowhere left in the tray where the two arrivals can be a full half-cycle out of step. Two sources that close behave as one. That threshold is the whole reason a wave cannot resolve detail finer than about half its own wavelength, and it is the constraint every lens, every sonar, every ultrasound scan and every <a href="metamaterials.html">metamaterial</a> is built around.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The leap: an electron shell is <span class="hue">a standing wave too</span></h2>
+      <p>In 1924 Louis de Broglie proposed in his doctoral thesis that a moving particle carries a wavelength. Two years later Erwin Schrödinger wrote an equation for what that wave does around a nucleus, and the answer turned out to be the same kind of answer the plate gives: only certain shapes fit, each shape has nodes, and each shape carries its own energy. The circling electron picture went away and a set of standing patterns took its place.</p>
+      <p>The rhyme is worth spelling out, because it is closer than an analogy.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>On a round plate</th><th>In an atom</th><th>What both are counting</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="figure">m lines through the middle</td>
+              <td class="figure">l angular nodes</td>
+              <td>how many times the pattern changes sign as you walk around</td>
+            </tr>
+            <tr>
+              <td class="figure">n rings</td>
+              <td class="figure">n − l − 1 radial nodes</td>
+              <td>how many times it changes sign as you walk outward</td>
+            </tr>
+            <tr>
+              <td class="figure">Bessel function times cos mθ</td>
+              <td class="figure">radial function times a spherical harmonic</td>
+              <td>a shape in the radius multiplied by a shape in the angle</td>
+            </tr>
+            <tr>
+              <td class="figure">the figure the sand draws</td>
+              <td class="figure">the shape of the orbital</td>
+              <td>where the wave is zero, which is what gives it its outline</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The dumbbell shape of a p orbital is one flat sheet of zero cutting through the middle: one angular node, exactly like one line through the middle of a Chladni disc. The four-lobed clover of a d orbital is two such sheets crossing. Every hydrogen state carries <strong>n − 1 nodes in total</strong>, split between the angular kind and the ringed radial kind, and that split is the same bookkeeping a plate uses to say how many lines and how many rings.</p>
+      <p>What the two do not share is the equation. A plate obeys a fourth-order bending law and an electron obeys the second-order Schrödinger equation, so the frequencies come out differently, and the plate's energy goes as the square of the mode number where the atom's goes as the inverse square. The same family of solutions, not the same equation. What carries across is the structure: a wave, a boundary, a discrete set of shapes that fit, and node counts that label them.</p>
+
+      <div class="two-col">
+        <div class="bench">
+          <span class="when">IBM Almaden · Science, October 1993</span>
+          <h3>A Chladni plate made of 48 atoms</h3>
+          <p>Michael Crommie, Christopher Lutz and Donald Eigler pushed iron atoms one at a time across a copper surface with the tip of a scanning tunnelling microscope held at 4 kelvin, and arranged 48 of them into a ring of radius 7.13 nanometres. Copper's surface carries electrons that are free to roam in two dimensions, and the ring of iron atoms is a fence they scatter off.</p>
+          <p>The picture that came back shows concentric ripples inside the fence: the standing wave of the trapped electrons, with its nodes and antinodes laid out exactly as a round two-dimensional box says they should be. Tunnelling spectroscopy inside the ring returned a series of separate resonances, the fence's own set of allowed notes.</p>
+          <dl>
+            <dt>Ring diameter</dt><dd>14.26 nanometres, so about 4,900 of them would sit side by side across one human hair</dd>
+            <dt>What is in the image</dt><dd>the density of electron states, ring by ring, which is the square of the standing wave</dd>
+            <dt>Why it reads as a plate</dt><dd>a wave in a round enclosure, whatever the wave is made of, gives rings and diameters</dd>
+          </dl>
+        </div>
+        <div class="bench">
+          <span class="when">Amsterdam and Lyon · Physical Review Letters, May 2013</span>
+          <h3>The nodes of a hydrogen atom, photographed</h3>
+          <p>Aneta Stodolna, Marc Vrakking and colleagues built what they called a photoionisation microscope. Hydrogen atoms sit in a steady electric field of 808 volts per centimetre, lasers lift an electron into a stretched state, the field peels it away, and an electrostatic lens magnifies where it lands onto a detector.</p>
+          <p>Hydrogen in a steady field is the one case where the maths separates cleanly, and that separation means the pattern of nodes in the wave near the atom is carried out unchanged to the pattern on the detector. The rings on the screen are the atom's nodes, counted. Predictions made three decades earlier came back matching.</p>
+          <dl>
+            <dt>Field strength</dt><dd>808 volts per centimetre</dd>
+            <dt>What the image shows</dt><dd>the node pattern of the state, magnified onto a detector</dd>
+            <dt>Worth holding onto</dt><dd>a photograph of nodes, not a photograph of an electron: what is recorded is where the wave is zero</dd>
+          </dl>
+        </div>
+      </div>
+
+      <p>Set those two beside a plate of sand and the arrangement is the same each time. Something is waving. Something bounds it. Only certain patterns survive, and each one is labelled by where it holds still. Chladni had brass, a bow and grains you can see from across a room. IBM had a needle, 48 atoms and a current. The bookkeeping does not change.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What a figure <span class="hue">does not tell you</span></h2>
+      <p>Run the demonstration the other way and a real difficulty appears. Given a shape, the modes can be worked out. Given the modes, can the shape be worked back?</p>
+      <p>Marc Kac put the question in 1966 in a paper titled "Can one hear the shape of a drum?", and it stayed open for twenty-six years. In 1992 Carolyn Gordon, David Webb and Scott Wolpert built two flat drums with different outlines that ring at exactly the same set of frequencies, all the way up. The answer is no. A spectrum pins a shape down a long way, but not all the way, and two genuinely different objects can sound identical.</p>
+      <p>That result is not a curiosity off to one side. It is the same difficulty that sits under every attempt to read a structure off its scattering. An X-ray pattern from a crystal gives the strength of each reflection and throws away the timing, so the structure has to be reconstructed rather than read; a seismic record gives the ringing of a planet and not a cross-section of it; a modal test on a bridge gives frequencies that several different damage patterns would share. In every case the forward direction is arithmetic and the backward direction is an argument. <a href="crystal-lab.html">The crystal lab</a> is the same problem with atoms as the sources.</p>
+      <p>Which puts the sand in a particular light. A Chladni figure gives away more than a spectrum does, because it hands over the <em>shape</em> of the mode and not just its pitch, and shape is what the backward direction is short of. Two drums that ring identically do not draw identically.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would move <span class="hue">the question</span></h2>
+      <p>Six things with instruments attached, all of which exist.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">📷</span>
+          <h3>Photograph the whole plate, not the sand</h3>
+          <p>A scanning laser vibrometer reads the velocity of a surface point by point without touching it, so the full motion of a plate can be mapped at every frequency rather than inferred from where grains end up. Run it against the sand figures on the same plate and the gap between what the sand shows and what the plate does becomes a number.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔄</span>
+          <h3>Push the manipulator to a useful job</h3>
+          <p>Six independent objects on one plate with one actuator is where the Aalto work stopped in 2016. The open questions are how many, how small, how fast, and whether the same control loop works in liquid, where the drag rather than the throw does the moving. Every one of those is a bench measurement.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🎻</span>
+          <h3>Follow the plates into the finished instrument</h3>
+          <p>Plate tuning changes the free top and back. What a listener hears is the assembled box, with a soundpost, a bass bar and enclosed air all coupling the modes together. Tracking the same instrument from free plates through assembly, with the modes measured at each step, would say how much of the finished sound the free-plate figure actually predicts.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🌊</span>
+          <h3>Settle the crossover on the same rig</h3>
+          <p>Sand goes to the still lines, fine powder goes to the moving parts, and the switch is governed by how hard the plate is shaking. One plate, one powder, a swept drive amplitude and a high-speed camera would give the crossover as a curve rather than as two separate observations.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🧊</span>
+          <h3>Take the figure into three dimensions</h3>
+          <p>Acoustic levitation already parks small objects at the nodes of a standing wave in mid-air, which is a Chladni figure with the plate taken away. Mapping those nodes in a volume with an optical scan, and driving them to move an object along a path, is the same problem the plate solved in two dimensions.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚛️</span>
+          <h3>Build bigger corrals and count the notes</h3>
+          <p>The 1993 ring was circular. Fences of other outlines trap the same surface electrons into other patterns, and a fence built in the shape of one of the two drums that ring alike would put the 1992 mathematics on a copper surface at 4 kelvin, where the notes can be counted with a tunnelling tip.</p>
+        </div>
+      </div>
+      <p>Chladni's whole apparatus was a plate, a bow and something to sprinkle. What it returns is the list of shapes an object has agreed to hold, which is a thing worth knowing about a bridge, a blade, a violin top and an atom alike. The open work is not whether the figures are real. It is how much can be read back out of them.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="resonance.html"><div class="card"><span class="card-glyph">〰️</span><h3>Resonance</h3><p>Why only certain waves fit in a given space, from a tuning fork to an atom, and what happens when a push arrives in time with one.</p></div></a>
+        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">🔷</span><h3>Crystal Lab</h3><p>Build a lattice, twist it, put defects in it and set it vibrating. The same node counting, with atoms on the grid points.</p></div></a>
+        <a class="card-link" href="beyond.html"><div class="card"><span class="card-glyph">🪜</span><h3>We Go Beyond</h3><p>The method Chladni was running twice: story, spec, physics, the nearest built thing, the conditions, the measurement.</p></div></a>
+        <a class="card-link" href="metamaterials.html"><div class="card"><span class="card-glyph">🕸️</span><h3>Metamaterials</h3><p>Geometry doing the work of chemistry, built out of the half-wavelength limit the ripple tray runs into.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>E. F. F. Chladni, <em>Entdeckungen über die Theorie des Klanges</em>, Leipzig, 1787.</li>
+        <li>E. F. F. Chladni, <em>Über den Ursprung der von Pallas gefundenen und anderer ihr ähnlicher Eisenmassen</em>, Riga, 1794; and U. B. Marvin, "Ernst Florens Friedrich Chladni (1756 to 1827) and the origins of modern meteorite research", <em>Meteoritics &amp; Planetary Science</em> 31, 545, 1996.</li>
+        <li>J.-B. Biot, report to the Institut de France on the fall of stones at L'Aigle, 1803.</li>
+        <li>M. Faraday, "On a peculiar class of acoustical figures; and on certain forms assumed by groups of particles upon vibrating elastic surfaces", <em>Philosophical Transactions of the Royal Society of London</em> 121, 299, 1831 · <a href="https://royalsocietypublishing.org/doi/10.1098/rstl.1831.0018" rel="noopener">royalsocietypublishing.org/doi/10.1098/rstl.1831.0018</a></li>
+        <li>H. Jenny, <em>Kymatik: Wellen und Schwingungen mit ihrer Struktur und Dynamik / Cymatics: The Structure and Dynamics of Waves and Vibrations</em>, Basilius Presse, Basel, 1967; second volume 1972.</li>
+        <li>A. W. Leissa, <em>Vibration of Plates</em>, NASA SP-160, 1969, for the free-plate frequency parameters used in the scaling figures.</li>
+        <li>G. Jundt, A. Radu, E. Fort, J. Duda, H. Vach and N. H. Fletcher, "Vibrational modes of partly filled wine glasses", <em>Journal of the Acoustical Society of America</em> 119, 3793, June 2006 · <a href="https://phys.unsw.edu.au/music/people/publications/Jundtetal2006.pdf" rel="noopener">phys.unsw.edu.au/music/people/publications/Jundtetal2006.pdf</a></li>
+        <li>C. M. Hutchins, "The acoustics of violin plates", <em>Scientific American</em> 245, October 1981 · <a href="https://www.scientificamerican.com/article/the-acoustics-of-violin-plates/" rel="noopener">scientificamerican.com/article/the-acoustics-of-violin-plates</a></li>
+        <li>P. Dallard, A. J. Fitzpatrick, A. Flint, S. Le Bourva, A. Low, R. M. Ridsdill Smith and M. Willford, "The London Millennium Footbridge", <em>The Structural Engineer</em> 79, 22, November 2001; retrofit details in Taylor Devices, "Damper retrofit of the London Millennium Footbridge" · <a href="https://www.taylordevices.com/wp-content/uploads/66-Damper-Retrofit-of-London.pdf" rel="noopener">taylordevices.com/wp-content/uploads/66-Damper-Retrofit-of-London.pdf</a></li>
+        <li>M. J. van Gerner, M. A. van der Hoef, D. van der Meer and K. van der Weele, "Inversion of Chladni patterns by tuning the vibrational acceleration", <em>Physical Review E</em> 82, 012301, 2010 · <a href="https://doi.org/10.1103/PhysRevE.82.012301" rel="noopener">doi.org/10.1103/PhysRevE.82.012301</a></li>
+        <li>Q. Zhou, V. Sariola, K. Latifi and V. Liimatainen, "Controlling the motion of multiple objects on a Chladni plate", <em>Nature Communications</em> 7, 12764, September 2016 · <a href="https://www.nature.com/articles/ncomms12764" rel="noopener">nature.com/articles/ncomms12764</a></li>
+        <li>M. F. Crommie, C. P. Lutz and D. M. Eigler, "Confinement of electrons to quantum corrals on a metal surface", <em>Science</em> 262, 218, October 1993 · <a href="https://www.science.org/doi/10.1126/science.262.5131.218" rel="noopener">science.org/doi/10.1126/science.262.5131.218</a></li>
+        <li>A. S. Stodolna, A. Rouzée, F. Lépine, S. Cohen, F. Robicheaux, A. Gijsbertsen, J. H. Jungmann, C. Bordas and M. J. J. Vrakking, "Hydrogen atoms under magnification: direct observation of the nodal structure of Stark states", <em>Physical Review Letters</em> 110, 213001, May 2013 · <a href="https://link.aps.org/doi/10.1103/PhysRevLett.110.213001" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.110.213001</a></li>
+        <li>M. Kac, "Can one hear the shape of a drum?", <em>American Mathematical Monthly</em> 73, 1, 1966; C. Gordon, D. L. Webb and S. Wolpert, "One cannot hear the shape of a drum", <em>Bulletin of the American Mathematical Society</em> 27, 134, 1992.</li>
+        <li>T. D. Rossing, <em>The Science of Percussion Instruments</em>, World Scientific, 2000, for the kettledrum mode ratios.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fmt = (window.EMA && window.EMA.fmt) || function (n) { return String(n); };
+
+  function css(name, fallback) {
+    var v = getComputedStyle(document.body).getPropertyValue(name);
+    return (v && v.trim()) || fallback;
+  }
+  function hexToRgb(h) {
+    h = h.replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  var ACC = hexToRgb(css("--accent", "#22d3ee"));
+  var ACC2 = hexToRgb(css("--accent2", "#fbbf24"));
+  var SAND = css("--sand", "#fcd34d");
+
+  /* ================================================================
+     Bessel functions of the first kind, and their zeros.
+     Power series, plenty of accuracy for the arguments used here.
+     ================================================================ */
+  function besselJ(order, x) {
+    var half = x / 2;
+    var term = 1;
+    var i;
+    for (i = 1; i <= order; i++) term *= half / i;
+    var sum = term;
+    var xsq = half * half;
+    for (var k = 1; k < 80; k++) {
+      term *= -xsq / (k * (k + order));
+      sum += term;
+      if (Math.abs(term) < 1e-15 * (Math.abs(sum) + 1e-12)) break;
+    }
+    return sum;
+  }
+
+  /* zeros[order] = ascending list of positive zeros of J_order */
+  var BESSEL_ZEROS = (function () {
+    var table = [];
+    for (var order = 0; order <= 8; order++) {
+      var found = [];
+      var prevX = 0.0001;
+      var prevV = besselJ(order, prevX);
+      for (var x = 0.05; x < 40 && found.length < 8; x += 0.05) {
+        var v = besselJ(order, x);
+        if (prevV === 0) { found.push(prevX); }
+        else if ((prevV < 0) !== (v < 0)) {
+          var lo = prevX, hi = x, flo = prevV;
+          for (var it = 0; it < 60; it++) {
+            var mid = (lo + hi) / 2;
+            var fm = besselJ(order, mid);
+            if ((flo < 0) !== (fm < 0)) { hi = mid; } else { lo = mid; flo = fm; }
+          }
+          found.push((lo + hi) / 2);
+        }
+        prevX = x; prevV = v;
+      }
+      table.push(found);
+    }
+    return table;
+  })();
+
+  /* ================================================================
+     INTERACTIVE 1 · the Chladni plate
+     ================================================================ */
+  (function chladni() {
+    var cv = document.getElementById("plateCanvas");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d");
+
+    var N = 200;                 /* field grid resolution, N by N */
+    var field = new Float32Array(N * N);   /* |W|, normalised 0..1 */
+    var gradX = new Float32Array(N * N);
+    var gradY = new Float32Array(N * N);
+    var inside = new Uint8Array(N * N);
+
+    var fieldCv = document.createElement("canvas");
+    fieldCv.width = N; fieldCv.height = N;
+    var fieldCtx = fieldCv.getContext("2d");
+    var fieldImg = fieldCtx.createImageData(N, N);
+
+    var shape = "square";
+    var mVal = 2, nVal = 3, twist = -1;
+
+    /* plate constants: brass, 20 cm across, 1 mm thick */
+    var PLATE_C = 1.0529;        /* sqrt(bending stiffness / areal mass), m^2 per s */
+    var SIDE = 0.20;             /* metres */
+    var RADIUS = 0.10;           /* metres */
+
+    function squareFreq(m, n) {
+      return Math.PI * (m * m + n * n) * PLATE_C / (2 * SIDE * SIDE);
+    }
+    function circleFreq(m, n) {
+      var lam = BESSEL_ZEROS[m][n];
+      return lam * lam * PLATE_C / (2 * Math.PI * RADIUS * RADIUS);
+    }
+
+    /* ordered mode lists, used by the frequency sweep slider */
+    function buildModes(which) {
+      var list = [], m, n;
+      if (which === "square") {
+        for (m = 1; m <= 8; m++) {
+          for (n = m; n <= 8; n++) list.push({ m: m, n: n, f: squareFreq(m, n) });
+        }
+      } else {
+        for (m = 0; m <= 6; m++) {
+          for (n = 0; n <= 4; n++) list.push({ m: m, n: n, f: circleFreq(m, n) });
+        }
+      }
+      list.sort(function (a, b) { return a.f - b.f; });
+      return list;
+    }
+    var MODES = { square: buildModes("square"), circle: buildModes("circle") };
+
+    /* ---------- build the field for the current mode ---------- */
+    var radialLut = new Float32Array(600);
+
+    function computeField() {
+      var i, j, idx, w, maxAbs = 0;
+      var raw = new Float32Array(N * N);
+
+      if (shape === "square") {
+        var cm = new Float32Array(N), cn = new Float32Array(N);
+        for (i = 0; i < N; i++) {
+          var t = i / (N - 1);
+          cm[i] = Math.cos(mVal * Math.PI * t);
+          cn[i] = Math.cos(nVal * Math.PI * t);
+        }
+        var b = (mVal === nVal) ? 0 : twist;
+        for (j = 0; j < N; j++) {
+          for (i = 0; i < N; i++) {
+            idx = j * N + i;
+            w = cm[i] * cn[j] + b * cn[i] * cm[j];
+            raw[idx] = w;
+            inside[idx] = 1;
+            if (Math.abs(w) > maxAbs) maxAbs = Math.abs(w);
+          }
+        }
+      } else {
+        var lam = BESSEL_ZEROS[mVal][nVal];
+        for (i = 0; i < radialLut.length; i++) {
+          radialLut[i] = besselJ(mVal, lam * (i / (radialLut.length - 1)));
+        }
+        var phi = (mVal === 0) ? 0 : ((twist + 1) / 2) * Math.PI / Math.max(1, mVal);
+        for (j = 0; j < N; j++) {
+          var v = (j / (N - 1)) * 2 - 1;
+          for (i = 0; i < N; i++) {
+            idx = j * N + i;
+            var u = (i / (N - 1)) * 2 - 1;
+            var r = Math.sqrt(u * u + v * v);
+            if (r > 1) { raw[idx] = 0; inside[idx] = 0; continue; }
+            inside[idx] = 1;
+            var pos = r * (radialLut.length - 1);
+            var p0 = pos | 0, fr = pos - p0;
+            var jr = radialLut[p0] + (radialLut[Math.min(p0 + 1, radialLut.length - 1)] - radialLut[p0]) * fr;
+            var th = Math.atan2(v, u);
+            w = jr * Math.cos(mVal * th - phi);
+            raw[idx] = w;
+            if (Math.abs(w) > maxAbs) maxAbs = Math.abs(w);
+          }
+        }
+      }
+
+      if (maxAbs < 1e-9) maxAbs = 1;
+      for (idx = 0; idx < N * N; idx++) field[idx] = Math.abs(raw[idx]) / maxAbs;
+
+      /* gradient of the amplitude, central differences */
+      for (j = 0; j < N; j++) {
+        for (i = 0; i < N; i++) {
+          idx = j * N + i;
+          var iL = i > 0 ? idx - 1 : idx, iR = i < N - 1 ? idx + 1 : idx;
+          var jU = j > 0 ? idx - N : idx, jD = j < N - 1 ? idx + N : idx;
+          gradX[idx] = (field[iR] - field[iL]) * 0.5 * (N - 1);
+          gradY[idx] = (field[jD] - field[jU]) * 0.5 * (N - 1);
+        }
+      }
+
+      paintField();
+    }
+
+    function paintField() {
+      var d = fieldImg.data;
+      var bg = [8, 13, 28];
+      var deep = [40, 34, 96];
+      for (var idx = 0; idx < N * N; idx++) {
+        var o = idx * 4;
+        if (!inside[idx]) { d[o] = 0; d[o + 1] = 0; d[o + 2] = 0; d[o + 3] = 0; continue; }
+        var a = field[idx];
+        var g = Math.exp(-(a / 0.055) * (a / 0.055));   /* nodal glow */
+        var s = Math.pow(a, 0.75);
+        for (var c = 0; c < 3; c++) {
+          var base = bg[c] + s * 0.55 * (deep[c] - bg[c]);
+          d[o + c] = Math.round(base + g * (ACC[c] - base));
+        }
+        d[o + 3] = 255;
+      }
+      fieldCtx.putImageData(fieldImg, 0, 0);
+    }
+
+    /* ---------- sand grains ---------- */
+    var grains = null, grainCount = 0;
+
+    function seedGrains(count) {
+      grainCount = count;
+      grains = new Float32Array(count * 2);
+      var seed = 20250828;
+      function rnd() { seed = (seed * 48271) % 2147483647; return seed / 2147483647; }
+      for (var i = 0; i < count; i++) {
+        if (shape === "circle") {
+          var r = Math.sqrt(rnd()) * 0.98, th = rnd() * Math.PI * 2;
+          grains[i * 2] = 0.5 + r * Math.cos(th) * 0.5;
+          grains[i * 2 + 1] = 0.5 + r * Math.sin(th) * 0.5;
+        } else {
+          grains[i * 2] = 0.02 + rnd() * 0.96;
+          grains[i * 2 + 1] = 0.02 + rnd() * 0.96;
+        }
+      }
+    }
+
+    function sampleGrad(u, v, out) {
+      var fx = Math.min(N - 1.001, Math.max(0, u * (N - 1)));
+      var fy = Math.min(N - 1.001, Math.max(0, v * (N - 1)));
+      var i0 = fx | 0, j0 = fy | 0;
+      var tx = fx - i0, ty = fy - j0;
+      var a = j0 * N + i0, b = a + 1, c = a + N, e = c + 1;
+      var w00 = (1 - tx) * (1 - ty), w10 = tx * (1 - ty), w01 = (1 - tx) * ty, w11 = tx * ty;
+      out[0] = gradX[a] * w00 + gradX[b] * w10 + gradX[c] * w01 + gradX[e] * w11;
+      out[1] = gradY[a] * w00 + gradY[b] * w10 + gradY[c] * w01 + gradY[e] * w11;
+      out[2] = field[a] * w00 + field[b] * w10 + field[c] * w01 + field[e] * w11;
+    }
+
+    var samp = [0, 0, 0];
+    var rndSeed = 7654321;
+    function frand() { rndSeed = (rndSeed * 48271) % 2147483647; return rndSeed / 2147483647; }
+
+    function stepGrains(dt) {
+      var SPEED = 0.75, NOISE = 0.55;
+      var sq = Math.sqrt(dt);
+      for (var i = 0; i < grainCount; i++) {
+        var u = grains[i * 2], v = grains[i * 2 + 1];
+        sampleGrad(u, v, samp);
+        var gx = samp[0], gy = samp[1], a = samp[2];
+        var mag = Math.sqrt(gx * gx + gy * gy) + 1e-6;
+        var drive = 0.22 + 0.78 * a;
+        u -= (gx / mag) * SPEED * drive * dt;
+        v -= (gy / mag) * SPEED * drive * dt;
+        u += (frand() - 0.5) * NOISE * a * sq;
+        v += (frand() - 0.5) * NOISE * a * sq;
+
+        if (shape === "circle") {
+          var du = u - 0.5, dv = v - 0.5;
+          var r = Math.sqrt(du * du + dv * dv);
+          if (r > 0.487) { u = 0.5 + du / r * 0.487; v = 0.5 + dv / r * 0.487; }
+        } else {
+          if (u < 0.004) u = 0.004; else if (u > 0.996) u = 0.996;
+          if (v < 0.004) v = 0.004; else if (v > 0.996) v = 0.996;
+        }
+        grains[i * 2] = u; grains[i * 2 + 1] = v;
+      }
+    }
+
+    /* ---------- drawing ---------- */
+    var W = 0, H = 0, DPR = 1, plateSize = 0, offX = 0, offY = 0;
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 700;
+      var h = Math.max(340, Math.min(620, Math.round(w * 0.62)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+      plateSize = Math.min(W - 40, H - 40);
+      offX = (W - plateSize) / 2;
+      offY = (H - plateSize) / 2;
+
+      var target = Math.round(2600 + plateSize * 3.2);
+      target = Math.max(1900, Math.min(5200, target));
+      if (!grains || Math.abs(target - grainCount) > 400) {
+        seedGrains(target);
+        var gc = document.getElementById("grainCount");
+        if (gc) gc.textContent = fmt(target) + " of them";
+      }
+    }
+
+    function draw() {
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      ctx.save();
+      if (shape === "circle") {
+        ctx.beginPath();
+        ctx.arc(offX + plateSize / 2, offY + plateSize / 2, plateSize / 2, 0, Math.PI * 2);
+        ctx.clip();
+      }
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(fieldCv, offX, offY, plateSize, plateSize);
+      ctx.restore();
+
+      /* plate edge */
+      ctx.strokeStyle = "rgba(147,163,196,0.55)";
+      ctx.lineWidth = 2;
+      if (shape === "circle") {
+        ctx.beginPath();
+        ctx.arc(offX + plateSize / 2, offY + plateSize / 2, plateSize / 2, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        ctx.strokeRect(offX, offY, plateSize, plateSize);
+      }
+
+      /* the sand */
+      var gs = plateSize > 460 ? 1.9 : 1.5;
+      ctx.fillStyle = SAND;
+      ctx.globalAlpha = 0.92;
+      ctx.beginPath();
+      for (var i = 0; i < grainCount; i++) {
+        var x = offX + grains[i * 2] * plateSize;
+        var y = offY + grains[i * 2 + 1] * plateSize;
+        ctx.rect(x, y, gs, gs);
+      }
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      /* corner label */
+      ctx.fillStyle = "rgba(147,163,196,0.9)";
+      ctx.font = "600 12px 'JetBrains Mono', Consolas, monospace";
+      ctx.textAlign = "left";
+      ctx.fillText(shape === "square" ? "square plate, clamped at the centre"
+                                      : "round plate, clamped at the centre", 14, H - 12);
+      ctx.textAlign = "right";
+      ctx.fillText(labelFor(), W - 14, H - 12);
+      ctx.textAlign = "left";
+    }
+
+    function labelFor() {
+      if (shape === "square") return "m " + mVal + " · n " + nVal;
+      return mVal + (mVal === 1 ? " line" : " lines") + " · " + nVal + (nVal === 1 ? " ring" : " rings");
+    }
+
+    /* ---------- controls ---------- */
+    var mRange = document.getElementById("mRange");
+    var nRange = document.getElementById("nRange");
+    var twistRange = document.getElementById("twistRange");
+    var freqRange = document.getElementById("freqRange");
+    var mLabel = document.getElementById("mLabel");
+    var nLabel = document.getElementById("nLabel");
+    var twistLabel = document.getElementById("twistLabel");
+    var modeOut = document.getElementById("modeOut");
+    var freqOut = document.getElementById("freqOut");
+    var modeSay = document.getElementById("modeSay");
+    var btnSquare = document.getElementById("shapeSquare");
+    var btnCircle = document.getElementById("shapeCircle");
+
+    function freqWords(f) {
+      if (f >= 1000) return (f / 1000).toFixed(f >= 10000 ? 0 : 2).replace(/\.?0+$/, "") + " kHz";
+      return Math.round(f) + " Hz";
+    }
+
+    function describe() {
+      if (shape === "square") {
+        if (mVal === nVal) {
+          return "Equal numbers both ways, so the twins cancel and what is left is a plain grid: " +
+                 mVal + " still lines across and " + nVal + " down, boxing the plate into squares.";
+        }
+        var mix = Math.abs(twist);
+        var lead = mix > 0.75
+          ? "Almost all of one twin, which is the figure a bowed plate usually settles into."
+          : (mix > 0.25
+              ? "A working mixture of both twins, so the lines bend rather than run straight."
+              : "The twins in balance, which flattens the figure back towards a plain grid.");
+        return lead + " Mode " + mVal + " by " + nVal + ": the sand leaves everywhere the metal is flexing and lines up on what is left.";
+      }
+      var dia = mVal === 0 ? "No line through the middle" :
+                (mVal === 1 ? "One line through the middle" : mVal + " lines through the middle");
+      var rings = nVal === 0 ? "no rings" : (nVal === 1 ? "one ring" : nVal + " rings");
+      var tail = (mVal === 0 && nVal === 0)
+        ? " The whole disc rises and falls together, so the only still place is the rim and the sand slides to the edge."
+        : " The sand finds every one of them, which is what the figure is.";
+      return dia + " and " + rings + "." + tail;
+    }
+
+    function syncFreqSlider() {
+      var list = MODES[shape];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].m === mVal && list[i].n === nVal) { freqRange.value = i; return; }
+      }
+    }
+
+    function refresh(fromFreq) {
+      if (fromFreq) {
+        var pick = MODES[shape][parseInt(freqRange.value, 10)];
+        mVal = pick.m; nVal = pick.n;
+        mRange.value = mVal; nRange.value = nVal;
+      } else {
+        mVal = parseInt(mRange.value, 10);
+        nVal = parseInt(nRange.value, 10);
+        syncFreqSlider();
+      }
+      twist = parseInt(twistRange.value, 10) / 100;
+
+      var f = shape === "square" ? squareFreq(mVal, nVal) : circleFreq(mVal, nVal);
+      modeOut.textContent = shape === "square"
+        ? mVal + " by " + nVal
+        : mVal + " through, " + nVal + " round";
+      freqOut.textContent = "about " + freqWords(f);
+      modeSay.textContent = describe();
+
+      var twinsExist = shape === "square" ? (mVal !== nVal) : (mVal > 0);
+      twistRange.disabled = !twinsExist;
+
+      computeField();
+      if (REDUCED) { settle(); draw(); }
+    }
+
+    function settle() {
+      for (var i = 0; i < 90; i++) stepGrains(1 / 40);
+    }
+
+    function setShape(next) {
+      if (next === shape) return;
+      shape = next;
+      btnSquare.setAttribute("aria-pressed", shape === "square" ? "true" : "false");
+      btnCircle.setAttribute("aria-pressed", shape === "circle" ? "true" : "false");
+      if (shape === "square") {
+        mRange.min = 1; mRange.max = 8;
+        nRange.min = 1; nRange.max = 8;
+        mLabel.innerHTML = 'Lines across <span class="mono">(m)</span>';
+        nLabel.innerHTML = 'Lines down <span class="mono">(n)</span>';
+        twistLabel.textContent = "Blend the two twin patterns";
+        if (mVal < 1) mVal = 1;
+        if (nVal < 1) nVal = 2;
+      } else {
+        mRange.min = 0; mRange.max = 6;
+        nRange.min = 0; nRange.max = 4;
+        mLabel.innerHTML = 'Lines through the middle <span class="mono">(m)</span>';
+        nLabel.innerHTML = 'Rings <span class="mono">(n)</span>';
+        twistLabel.textContent = "Turn the figure";
+        if (mVal > 6) mVal = 6;
+        if (nVal > 4) nVal = 4;
+      }
+      mRange.value = mVal; nRange.value = nVal;
+      freqRange.max = MODES[shape].length - 1;
+      seedGrains(grainCount || 3600);
+      refresh(false);
+    }
+
+    freqRange.max = MODES.square.length - 1;
+
+    mRange.addEventListener("input", function () { refresh(false); });
+    nRange.addEventListener("input", function () { refresh(false); });
+    twistRange.addEventListener("input", function () { refresh(false); });
+    freqRange.addEventListener("input", function () { refresh(true); });
+    btnSquare.addEventListener("click", function () { setShape("square"); });
+    btnCircle.addEventListener("click", function () { setShape("circle"); });
+
+    [].slice.call(document.querySelectorAll(".preset-row .btn")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var s = b.getAttribute("data-shape");
+        if (s !== shape) setShape(s);
+        mVal = parseInt(b.getAttribute("data-m"), 10);
+        nVal = parseInt(b.getAttribute("data-n"), 10);
+        mRange.value = mVal; nRange.value = nVal;
+        twistRange.value = shape === "square" ? -100 : 0;
+        refresh(false);
+      });
+    });
+
+    /* ---------- loop ---------- */
+    var raf = 0, visible = true, last = 0;
+
+    function loop(ts) {
+      var dt = last ? Math.min(0.05, (ts - last) / 1000) : 1 / 60;
+      last = ts;
+      stepGrains(dt);
+      draw();
+      raf = visible && !REDUCED ? requestAnimationFrame(loop) : 0;
+    }
+    function start() {
+      if (!raf && !REDUCED) { last = 0; raf = requestAnimationFrame(loop); }
+    }
+
+    sizeCanvas();
+    refresh(false);
+    settle();
+    draw();
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible) start();
+          else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0.04 });
+      io.observe(cv);
+    } else {
+      start();
+    }
+    if (!REDUCED) start();
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeCanvas(); settle(); draw(); }, 160);
+    });
+  })();
+
+  /* ================================================================
+     INTERACTIVE 2 · two dippers in a tray
+     ================================================================ */
+  (function ripple() {
+    var cv = document.getElementById("rippleCanvas");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d");
+
+    var sepRange = document.getElementById("sepRange");
+    var lamRange = document.getElementById("lamRange");
+    var sepOut = document.getElementById("sepOut");
+    var lamOut = document.getElementById("lamOut");
+    var linesOut = document.getElementById("linesOut");
+    var rippleSay = document.getElementById("rippleSay");
+
+    var TRAY_CM = 30;            /* the tray is 30 centimetres across */
+    var W = 0, H = 0, DPR = 1;
+    var RW = 0, RH = 0;          /* render buffer, half resolution */
+    var img = null, buf32 = null;
+    var p1 = null, p2 = null, a1 = null, a2 = null, still = null;
+    var dirty = true;
+
+    /* sine lookup */
+    var LUT_N = 4096, LUT_MASK = LUT_N - 1;
+    var SIN = new Float32Array(LUT_N);
+    for (var i = 0; i < LUT_N; i++) SIN[i] = Math.sin((i / LUT_N) * Math.PI * 2);
+    var TO_LUT = LUT_N / (Math.PI * 2);
+
+    /* colour palette: trough indigo, flat dark, crest cyan */
+    var PAL = new Uint32Array(512);
+    (function buildPalette() {
+      for (var k = 0; k < 512; k++) {
+        var t = (k / 511) * 2 - 1;              /* -1 .. 1 */
+        var mag = Math.abs(t);
+        var r, g, b;
+        if (t >= 0) {
+          r = Math.round(6 + mag * (ACC[0] - 6));
+          g = Math.round(10 + mag * (ACC[1] - 10));
+          b = Math.round(24 + mag * (ACC[2] - 24));
+        } else {
+          r = Math.round(6 + mag * (118 - 6));
+          g = Math.round(10 + mag * (58 - 10));
+          b = Math.round(24 + mag * (190 - 24));
+        }
+        PAL[k] = (255 << 24) | (b << 16) | (g << 8) | r;
+      }
+    })();
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 700;
+      var h = Math.max(280, Math.min(470, Math.round(w * 0.47)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+      RW = Math.max(120, Math.round(w / 2));
+      RH = Math.max(80, Math.round(h / 2));
+      img = ctx.createImageData(RW, RH);
+      buf32 = new Uint32Array(img.data.buffer);
+      p1 = new Float32Array(RW * RH);
+      p2 = new Float32Array(RW * RH);
+      a1 = new Float32Array(RW * RH);
+      a2 = new Float32Array(RW * RH);
+      still = new Float32Array(RW * RH);
+      dirty = true;
+    }
+
+    function sepCm() { return parseInt(sepRange.value, 10) / 10; }
+    function lamCm() { return parseInt(lamRange.value, 10) / 10; }
+
+    function rebuild() {
+      var d = sepCm(), lam = lamCm();
+      var cmPerPx = TRAY_CM / RW;
+      var cx = RW / 2, cy = RH * 0.5;
+      var halfPx = (d / 2) / cmPerPx;
+      var k = 2 * Math.PI / lam;
+      for (var j = 0; j < RH; j++) {
+        for (var i = 0; i < RW; i++) {
+          var idx = j * RW + i;
+          var dx1 = (i - (cx - halfPx)) * cmPerPx, dy = (j - cy) * cmPerPx;
+          var dx2 = (i - (cx + halfPx)) * cmPerPx;
+          var r1 = Math.sqrt(dx1 * dx1 + dy * dy);
+          var r2 = Math.sqrt(dx2 * dx2 + dy * dy);
+          p1[idx] = k * r1;
+          p2[idx] = k * r2;
+          a1[idx] = 1 / Math.sqrt(1 + r1 / lam);
+          a2[idx] = 1 / Math.sqrt(1 + r2 / lam);
+          var q = (p1[idx] - p2[idx]) / (2 * Math.PI);
+          var fr = q - Math.floor(q);
+          var dist = Math.abs(fr - 0.5);
+          still[idx] = Math.exp(-(dist / 0.028) * (dist / 0.028));
+        }
+      }
+      dirty = false;
+    }
+
+    function render(t) {
+      if (dirty) rebuild();
+      var wt = t * 2 * Math.PI * 1.6;   /* the dippers bob 1.6 times a second */
+      var gr = ACC2[0], gg = ACC2[1], gb = ACC2[2];
+      for (var idx = 0; idx < RW * RH; idx++) {
+        var s1 = SIN[(((p1[idx] - wt) * TO_LUT) | 0) & LUT_MASK] * a1[idx];
+        var s2 = SIN[(((p2[idx] - wt) * TO_LUT) | 0) & LUT_MASK] * a2[idx];
+        var v = (s1 + s2) * 0.5;
+        var pi = ((v + 1) * 255.5) | 0;
+        if (pi < 0) pi = 0; else if (pi > 511) pi = 511;
+        var c = PAL[pi];
+        var st = still[idx];
+        if (st > 0.01) {
+          var r = (c & 255), g = (c >> 8) & 255, b = (c >> 16) & 255;
+          r = r + st * (gr - r); g = g + st * (gg - g); b = b + st * (gb - b);
+          c = (255 << 24) | ((b | 0) << 16) | ((g | 0) << 8) | (r | 0);
+        }
+        buf32[idx] = c;
+      }
+      ctx.putImageData(img, 0, 0);
+
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(cv, 0, 0, RW, RH, 0, 0, W, H);
+
+      /* the two dippers */
+      var cmPerPxFull = TRAY_CM / W;
+      var halfFull = (sepCm() / 2) / cmPerPxFull;
+      var yc = H * 0.5;
+      [W / 2 - halfFull, W / 2 + halfFull].forEach(function (x) {
+        ctx.beginPath();
+        ctx.arc(x, yc, 5.5, 0, Math.PI * 2);
+        ctx.fillStyle = "#f2f5ff";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, yc, 10, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(242,245,255,0.5)";
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      });
+
+      ctx.fillStyle = "rgba(147,163,196,0.9)";
+      ctx.font = "600 12px 'JetBrains Mono', Consolas, monospace";
+      ctx.textAlign = "left";
+      ctx.fillText("30 cm of tray, left to right", 14, H - 12);
+      ctx.textAlign = "right";
+      ctx.fillText(sepCm().toFixed(1) + " cm apart · " + lamCm().toFixed(1) + " cm waves", W - 14, H - 12);
+      ctx.textAlign = "left";
+    }
+
+    function updateWords() {
+      var d = sepCm(), lam = lamCm();
+      var ratio = d / lam;
+      var lines = Math.floor(ratio + 0.5);
+      sepOut.textContent = d.toFixed(1) + " cm";
+      lamOut.textContent = lam.toFixed(1) + " cm";
+      if (lines < 1) {
+        linesOut.textContent = "no flat curves at all";
+        rippleSay.textContent = "The dippers sit closer together than half a wavelength, so nowhere in the tray do the two arrivals fall a full half-cycle out of step. Nothing cancels; the pair behaves as one source. This is the limit every lens and every scanner runs into.";
+      } else {
+        var firstAngle = Math.asin(Math.min(1, 0.5 * lam / d)) * 180 / Math.PI;
+        linesOut.textContent = lines + (lines === 1 ? " flat curve" : " flat curves") + " each side";
+        rippleSay.textContent = "The dippers are about " + ratio.toFixed(1) +
+          " wavelengths apart, so " + lines + (lines === 1 ? " curve" : " curves") +
+          " of flat water fan out on each side of the middle. The first one leaves the centre line at about " +
+          Math.round(firstAngle) + " degrees. Spread the dippers and the fan tightens; stretch the wavelength and it opens out.";
+      }
+    }
+
+    function onInput() { dirty = true; updateWords(); if (REDUCED) render(0); }
+    sepRange.addEventListener("input", onInput);
+    lamRange.addEventListener("input", onInput);
+
+    var raf = 0, visible = true, t0 = 0;
+    function loop(ts) {
+      if (!t0) t0 = ts;
+      render((ts - t0) / 1000);
+      raf = visible && !REDUCED ? requestAnimationFrame(loop) : 0;
+    }
+    function start() { if (!raf && !REDUCED) { t0 = 0; raf = requestAnimationFrame(loop); } }
+
+    sizeCanvas();
+    updateWords();
+    render(0);
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible) start();
+          else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0.04 });
+      io.observe(cv);
+    } else {
+      start();
+    }
+    if (!REDUCED) start();
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeCanvas(); render(0); }, 160);
+    });
+  })();
+})();
+</script>
+</body>
+</html>
