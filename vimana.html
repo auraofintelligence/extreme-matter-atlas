@@ -469,7 +469,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
     { id: "anti", name: "Antimatter", wkg: 1000, whkg: null,
       figs: [["Specific power", "about 1,000 W/kg"], ["Fuel energy", "50 billion kWh/kg"]],
       leans: "Real, made and held. CERN's ALPHA experiment first trapped antihydrogen in 2010 and held 309 atoms for over sixteen minutes in 2011; recent runs have made over two million atoms. Annihilation turns every gram fully into energy, which is as dense as energy gets.",
-      buys: "The densest fuel physics allows. Everything ever made adds up to somewhere between about 10 and 20 nanograms, less than a speck of dust, and a 1999 NASA Marshall study put the cost at US$62.5 trillion a gram in 1999 dollars: about A$87 trillion at A$1 to US$0.7172 on 28 August 2026, or roughly seven months of everything everyone on Earth earns. The specific power is a projection; no antimatter engine exists to measure." },
+      buys: "The densest fuel physics allows. Everything ever made adds up to under 10 nanograms, less than a speck of dust, and a 1999 NASA Marshall study put the cost at US$62.5 trillion a gram in 1999 dollars: about A$87 trillion at A$1 to US$0.7172 on 28 August 2026, or roughly seven months of everything everyone on Earth earns. The specific power is a projection; no antimatter engine exists to measure." },
 
     { id: "zpe", name: "Vacuum and Casimir extraction", wkg: null, whkg: null,
       figs: [["Specific power", "no measured figure"], ["Casimir force", "measured to 5 per cent"]],
@@ -510,7 +510,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       ceil: null,
       needs: null,
       figs: [["Thrust to power", "set by the disc"], ["Reference", "75 N/kW on an R22"]],
-      leans: "The baseline that already flies. A Robinson R22 at its 621 kilogram limit hangs off a rotor disc of 46 square metres and hovers on roughly 75 kilowatts, which is about 75 newtons of lift for every kilowatt. Every delivery drone and rescue helicopter in the country works this way.",
+      leans: "The baseline that already flies. A Robinson R22 at its 621 kilogram limit hangs off a rotor disc of 46 square metres and hovers on roughly 81 kilowatts, which is about 75 newtons of lift for every kilowatt. Every delivery drone and rescue helicopter in the country works this way.",
       buys: "It flies, today, for money. This is also the only pick whose figure moves with the design: a wider disc pushes a bigger, slower column of air and hovers for less, so the bench reworks the number from the saucer's own diameter each time. What it will not do is be quiet." },
 
     { id: "acoustic", name: "Acoustic levitation", npkw: 1.39, npkwNote: "estimated: 2.84 g held on roughly 20 W of ultrasound",
@@ -804,8 +804,8 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
         readout("Power to hover", "no figure", "A warp bubble does not push against anything, so newtons per kilowatt is the wrong question.") +
         readout("Power plant mass", "no figure", "There is nothing to size it against yet.") +
         "</div>";
-      closing = '<p class="closing"><span class="verdict-word">Held open</span>' +
-        "<strong>The bench stops here on purpose.</strong> Alcubierre's 1994 paper is a real solution to Einstein's equations, and thirty years of work has cut the price hard: from a negative energy about ten billion times the mass of the visible universe, to around 700 kilograms of mass-energy in Harold White's 2011 reshaping, to a 2024 slower-than-light version by Jared Fuchs and colleagues that needs no negative energy at all. " +
+      closing = '<p class="closing">' +
+        "<strong>The bench stops here on purpose, with the question still open.</strong> Alcubierre's 1994 paper is a real solution to Einstein's equations, and thirty years of work has cut the price hard: from a negative energy about ten billion times the mass of the visible universe, to around 700 kilograms of mass-energy in Harold White's 2011 reshaping, to a 2024 slower-than-light version by Jared Fuchs and colleagues that needs no negative energy at all. " +
         "What the numbers describe is a geometry, and geometry does not come with a thrust rating. The figure worth watching is the energy the shell would ask for, and it is still falling. " +
         '<a href="sci-fi-lab.html">The spec sheets for named fictional drives</a>.</p>';
       els.out.innerHTML = cards + reads + closing;
@@ -819,10 +819,13 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
         readout("Power to hover", power(r.dryPower), "Before any power plant is added: " + powerLike(r.dryPower) + ".") +
         readout("What a plant would need", sig(r.needWkg) + " W/kg", "Below that figure a plant cannot even hold up its own weight, so the craft grows without end.") +
         "</div>";
-      closing = '<p class="closing"><span class="verdict-word">Open question</span>' +
+      closing = '<p class="closing">' +
         "<strong>No measured watts per kilogram exists for this source, so the bench turns the question around.</strong> " +
         "With " + lft.name.toLowerCase() + " under it, a vacuum tap would have to deliver more than <strong>" + sig(r.needWkg) + " watts for every kilogram of machine</strong> before the craft settles at any size. " +
-        "For scale, a lithium pack already gives about a thousand. So the bar is not the hard part; the cycle is. The Casimir force is measured to about five per cent and nobody disputes it. What nobody has is a loop that comes back around with more than it started with. " +
+        (r.needWkg < 1000
+          ? "For scale, a lithium pack already gives about a thousand, so the bar itself is not the hard part; the cycle is. "
+          : "For scale, a lithium pack, the one source here you can buy today, gives about a thousand, so this lift method asks for " + bigTimes(r.needWkg / 1000) + " that, before the cycle problem is reached at all. ") +
+        "The Casimir force is measured to about five per cent and nobody disputes it. What nobody has is a loop that comes back around with more than it started with. " +
         '<a href="zero-point.html">What such a machine would have to do</a>.</p>';
       els.out.innerHTML = cards + reads + closing;
       return;
@@ -851,24 +854,21 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       barRow("What lift offers", (r.ceiling === null ? force(r.weight) + " (no ceiling)" : force(r.ceiling)), 100 * capacity / top, false);
 
     // the closing sentence: which line binds
-    var word, body;
+    var body;
     if (!r.closesOnPower) {
-      word = "Runs away";
-      body = "<strong>The power plant is the binding constraint.</strong> " +
+      body = "<strong>This one does not settle, and the power plant is the line doing it.</strong> " +
         "At " + sig(r.npkw) + " newtons per kilowatt from " + lft.name.toLowerCase() + " and " + commas(pwr.wkg) + " watts per kilogram from " + pwr.name.toLowerCase() + ", " +
         "the plant needed to hover the hull and crew already weighs <strong>" + bigTimes(r.alpha) + "</strong> what it was meant to lift. " +
         "Add plant to carry the plant and the sum climbs instead of settling, so there is no size at which this build flies. " +
         "The way out is not a bigger saucer: it is either a lift method that returns more push per kilowatt, or a source that gives more watts per kilogram.";
     } else if (r.ceiling !== null && r.ceilFactor < 1) {
-      word = "Short on push";
-      body = "<strong>The lift method is the binding constraint, and it is not the power bill.</strong> " +
+      body = "<strong>This one runs out of push before it runs out of power.</strong> " +
         "The sum settles: the plant comes to " + sig(plantShare) + " per cent of lift-off mass, which is fine. " +
         "But " + lft.name.toLowerCase() + " can only offer " + lft.ceil.what + ", which at this size is <strong>" + force(r.ceiling) + "</strong> against a weight of " + force(r.weight) + ". " +
         "It falls short by <strong>" + bigTimes(1 / r.ceilFactor) + "</strong>. " +
         (lft.needs ? "It would also want " + lft.needs + ". " : "") +
         "Growing the saucer does not fix it, because the weight grows with the area just as the push does.";
     } else {
-      word = "It closes";
       body = "<strong>This one settles.</strong> " +
         "Each kilogram of " + pwr.name.toLowerCase() + " holds up about " + sig(1 / r.alpha) + " kilograms of craft, so the plant comes to " + sig(plantShare) + " per cent of lift-off mass and the sum stops climbing. " +
         (r.ceiling === null
@@ -880,7 +880,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
         (lft.needs ? "It would still want " + lft.needs + ". " : "") +
         "A sum that balances, not a craft anyone has flown.";
     }
-    closing = '<p class="closing"><span class="verdict-word">' + word + "</span>" + body + "</p>";
+    closing = '<p class="closing">' + body + "</p>";
 
     els.out.innerHTML = cards + reads + bars + closing;
   }
