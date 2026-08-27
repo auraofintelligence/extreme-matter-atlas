@@ -996,7 +996,8 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
     el.spec.innerHTML = pow(t.spec);
     el.built.innerHTML = pow(t.built);
     el.phys.innerHTML = pow(t.phys);
-    el.gap.innerHTML = "Short by about " + factorWords(t.gap) + " on " + esc(t.gapWhat) + ". " + t.gapLine;
+    el.gap.innerHTML = "Short by about " + factorWords(t.gap) + " on " + esc(t.gapWhat) + ". " +
+      t.gapLine.replace(/10\^(-?\d+)/g, "10<sup>$1</sup>");
     el.bar.style.width = Math.max(3, Math.min(100, (Math.log10(t.gap) / MAXLOG) * 100)) + "%";
     el.next.innerHTML = pow(NEXT[t.key] || "");
     el.link.setAttribute("href", t.href);
