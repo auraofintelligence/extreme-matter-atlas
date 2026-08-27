@@ -430,7 +430,8 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
       if (startYear >= 1564 && startYear <= 1616) return "back in Shakespeare's lifetime";
       if (startYear >= 1213 && startYear <= 1233) return "back around the time the Magna Carta was signed";
       if (startYear >= 2014) return "less than a decade back";
-      if (startYear >= 1900) return "back in the " + (Math.floor(startYear / 10) * 10) + "s";
+      if (startYear >= 1910) return "back in the " + (Math.floor(startYear / 10) * 10) + "s";
+      if (startYear >= 1907) return "back in the years before the First World War";
       return "back in the " + (Math.floor(startYear / 100) * 100) + "s";
     }
 
