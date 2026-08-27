@@ -908,8 +908,15 @@ body[data-page="cymatics"] .twin-note {
 
     function syncFreqSlider() {
       var list = MODES[shape];
+      /* squareFreq is symmetric in m and n and the list only holds n >= m,
+         so a square mode matches on the unordered pair. The circle list is a
+         full grid and circleFreq is not symmetric, so it matches exactly. */
+      var lo = Math.min(mVal, nVal), hi = Math.max(mVal, nVal);
       for (var i = 0; i < list.length; i++) {
-        if (list[i].m === mVal && list[i].n === nVal) { freqRange.value = i; return; }
+        var hit = shape === "square"
+          ? (Math.min(list[i].m, list[i].n) === lo && Math.max(list[i].m, list[i].n) === hi)
+          : (list[i].m === mVal && list[i].n === nVal);
+        if (hit) { freqRange.value = i; return; }
       }
     }
 
@@ -1195,8 +1202,9 @@ body[data-page="cymatics"] .twin-note {
         var firstAngle = Math.asin(Math.min(1, 0.5 * lam / d)) * 180 / Math.PI;
         linesOut.textContent = lines + (lines === 1 ? " flat curve" : " flat curves") + " each side";
         rippleSay.textContent = "The dippers are about " + ratio.toFixed(1) +
-          " wavelengths apart, so " + lines + (lines === 1 ? " curve" : " curves") +
-          " of flat water fan out on each side of the middle. The first one leaves the centre line at about " +
+          " wavelengths apart, so " + lines +
+          (lines === 1 ? " curve of flat water fans out" : " curves of flat water fan out") +
+          " on each side of the middle. The first one leaves the centre line at about " +
           Math.round(firstAngle) + " degrees. Spread the dippers and the fan tightens; stretch the wavelength and it opens out.";
       }
     }

@@ -753,6 +753,8 @@ body[data-page="elements115"] .ask li b { color: var(--ink); }
   /* Z, A, half-life in seconds, decay mode, year first made or observed.
      Decay modes: a alpha, b beta minus, ec electron capture, sf spontaneous fission. */
   var ISO = [
+    [89, 225, 9.92 * D, "a", null], [89, 227, 21.772 * YR, "b", null],
+    [89, 228, 6.15 * H, "b", null],
     [90, 228, 1.9116 * YR, "a", null], [90, 229, 7917 * YR, "a", null],
     [90, 230, 75400 * YR, "a", null], [90, 232, 1.405e10 * YR, "a", null],
     [90, 234, 24.1 * D, "b", null],
@@ -888,7 +890,7 @@ body[data-page="elements115"] .ask li b { color: var(--ink); }
     var gapLine = document.getElementById("gapLine");
     var legend = document.getElementById("chartLegend");
 
-    var NMIN = 136, NMAX = 196, ZMIN = 89, ZMAX = 127;
+    var NMIN = 136, NMAX = 196, ZMIN = 89, ZMAX = 126;
     var COLS = NMAX - NMIN + 1, ROWS = ZMAX - ZMIN + 1;
     var padL = 44, padR = 14, padT = 20, padB = 30;
     var W = 0, Hh = 0, cell = 12, DPR = 1;
@@ -1119,10 +1121,15 @@ body[data-page="elements115"] .ask li b { color: var(--ink); }
               ", lasting " + fmtHalf(near[2])],
             ["Status", "empty ground on the chart"]
           ]);
-        } else {
+        } else if (curZ > 118) {
           isoFacts.innerHTML = rowsHtml([
             ["Half-life", "element " + curZ + " has not been made by anyone"],
             ["Name", el[1] + " is the placeholder name, the kind element 115 wore until 2016"],
+            ["Status", "empty ground on the chart"]
+          ]);
+        } else {
+          isoFacts.innerHTML = rowsHtml([
+            ["Half-life", "no isotope of element " + curZ + " is plotted here"],
             ["Status", "empty ground on the chart"]
           ]);
         }
