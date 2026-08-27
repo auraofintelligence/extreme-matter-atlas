@@ -272,7 +272,7 @@ body[data-page="table"] .drawer .drawer-note {
     <div class="wrap">
       <h2><span class="hue">Limits</span></h2>
       <div class="panel">
-        <p>Figures on a card describe the element in its ordinary form, near room temperature, with gases measured at normal air pressure. Squeeze an element, chill it, or catch it in a different form, and the numbers move. Carbon is the clearest example: at normal air pressure it goes straight from solid to vapour instead of melting, so the melting figure listed for it comes from work done under pressure.</p>
+        <p>Figures on a card describe the element in its ordinary form, near room temperature, with gases measured at normal air pressure. Squeeze an element, chill it, or catch it in a different form, and the numbers move. Carbon is the clearest example: at normal air pressure it goes straight from solid to vapour instead of melting, so the melting figure listed for it comes from work done under pressure. Helium is the other way round, staying liquid down to the coldest temperatures unless it is squeezed, so its melting figure comes from pressure too.</p>
         <p>A dashed <span class="tag est">est.</span> tag beside a figure means it was worked out from theory rather than weighed at a bench. Those cluster among the heaviest boxes, where only a handful of atoms have ever existed and each one fell apart in a moment. Nobody has held a gram of hassium to put on a scale.</p>
         <p>Crustal shares vary between surveys, since the crust is not the same everywhere you drill. Read them as a good guide to the order of size rather than to the last digit. Sizes on the cards are covalent radii: how far the middle of an atom sits from the middle of a partner it is bonded to. Measure an atom another way and you get a different number for the same element.</p>
         <p>Records listed on a card are measured records held under ordinary conditions. Change the conditions and some of them change hands.</p>
@@ -416,11 +416,11 @@ body[data-page="table"] .drawer .drawer-note {
     { key: "melt", label: "Melting point",
       note: "The temperature where a solid gives up and turns liquid. Ice does it at 273 K; caesium melts in a warm hand; carbon holds out past 3,800 K.",
       tile: function (v) { return fmt(v, 0); },
-      end: function (v) { return fmt(v, v < 100 ? 1 : 0) + " K"; } },
+      end: function (v) { return fmt(v, v < 10 ? 2 : v < 100 ? 1 : 0) + " K"; } },
     { key: "boil", label: "Boiling point",
       note: "The temperature where a liquid turns to vapour. A kettle gets water there at 373 K. Helium turns to vapour at 4 K, barely above the background chill of deep space; rhenium holds out to 5,869 K.",
       tile: function (v) { return fmt(v, 0); },
-      end: function (v) { return fmt(v, v < 100 ? 1 : 0) + " K"; } },
+      end: function (v) { return fmt(v, v < 10 ? 2 : v < 100 ? 1 : 0) + " K"; } },
     { key: "en", label: "Pull on shared electrons",
       note: "When two atoms share electrons, one usually pulls harder. That tug is scored on the Pauling scale, from 0.7 for caesium up to 3.98 for fluorine. Eighteen boxes hold no score, because they hardly share at all.",
       tile: function (v) { return trim(v); },
