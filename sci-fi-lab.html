@@ -1022,11 +1022,17 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
     var INK = (css.getPropertyValue("--ink") || "#f2f5ff").trim();
     var W = 0, H = 0, DPR = 1, PADL = 26, PADR = 26;
     var visible = true, raf = 0;
-    var LANES = [84, 56, 28];
+    var LANES = [88, 68, 48, 28];
+
+    /* lane by position along the axis, so close neighbours never share a height */
+    var order = TECH.map(function (t, i) { return i; })
+      .sort(function (a, b) { return TECH[a].gap - TECH[b].gap; });
+    var laneOf = [];
+    order.forEach(function (idx, rank) { laneOf[idx] = LANES[rank % LANES.length]; });
 
     function sizeCanvas() {
       var w = cv.clientWidth || 640;
-      var h = Math.max(200, Math.min(250, Math.round(w * 0.24)));
+      var h = Math.max(210, Math.min(256, Math.round(w * 0.24)));
       DPR = Math.min(window.devicePixelRatio || 1, 2);
       W = w; H = h;
       cv.width = Math.round(w * DPR);
@@ -1117,7 +1123,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
       for (var i = 0; i < TECH.length; i++) {
         var tech = TECH[i];
         var lx = xOf(Math.log10(tech.gap));
-        var lane = LANES[i % LANES.length];
+        var lane = laneOf[i];
         var on = i === current;
         var topY = baseY - (on ? lane + 14 : lane);
 
@@ -1155,7 +1161,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
       cx.fillStyle = INK;
       cx.font = "700 13px 'Inter', sans-serif";
       cx.textAlign = align;
-      cx.fillText(sel2.name, selX, 17);
+      cx.fillText(sel2.name, selX, 15);
       cx.fillStyle = sel2.h;
       cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
       if (sel2.gap >= 10000) {
@@ -1166,13 +1172,13 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
         var wHead = cx.measureText("10").width + cx.measureText(expo).width * 0.72;
         var startX = align === "right" ? selX - (wHead + wTail)
                    : (align === "left" ? selX : selX - (wHead + wTail) / 2);
-        var used = drawPower(startX, 33, expo, 11, "left");
+        var used = drawPower(startX, 30, expo, 11, "left");
         cx.textAlign = "left";
         cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
-        cx.fillText(tail, startX + used, 33);
+        cx.fillText(tail, startX + used, 30);
       } else {
         cx.textAlign = align;
-        cx.fillText(Math.round(sel2.gap).toLocaleString("en-AU") + " times short", selX, 33);
+        cx.fillText(Math.round(sel2.gap).toLocaleString("en-AU") + " times short", selX, 30);
       }
       cx.textAlign = "left";
     }
