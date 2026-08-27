@@ -50,9 +50,11 @@ share the same drawers on purpose: that arrangement is the argument. Nav groups 
   Olympic pool, a footy field).
 - Bridge from finished products people own (phone screen, knife, fridge magnet, bike
   frame) back to the material, never raw-material-first.
-- Tense: real measured facts in present tense. Anything unbuilt, predicted, claimed or
-  imagined in conditional voice (would, could, the claim is). Claims wear "claimed",
-  "alleged" or "reported" naturally.
+- Tense: real measured facts in present tense. Conditional voice (would, could) belongs to
+  **the engineering exercise**: what a builder today would have to achieve, what a predicted
+  material could do if made. It does NOT belong to whether something existed or happened,
+  which is not ours to rule on: see section 3d. Report who said what, where and when as
+  plain information.
 - Never mention on a page: how it was made, research, drafts, sources-gathering, AI, or
   the site's own machinery ("this page lets you"). No design chatter.
 - Never announce honesty, transparency or accuracy. No sections, headings or labels named
