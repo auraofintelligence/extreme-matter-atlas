@@ -517,7 +517,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.abundCrust; },
       est: function () { return false; },
       fmt: perTonne,
-      gloss: "Read as weight in a tonne of crust, which is about a ute tray piled with ordinary rock. The top of the board is measured in kilograms per tonne; the bottom runs down to picograms, which is millionths of a millionth of a gram. Thirty elements are so scarce or so short-lived that no crust figure is listed for them at all."
+      plain: "Weight in a tonne of crust, which is about a ute tray piled with ordinary rock.",
+      gloss: "Read this as weight in a tonne of crust, which is about a ute tray piled with ordinary rock. The top of the board is measured in kilograms per tonne; the bottom runs down to picograms, which are millionths of a millionth of a gram. Thirty elements are so scarce or so short-lived that no crust figure is listed for them at all."
     },
     {
       id: "abundUni", chip: "How much in the universe", title: "Most of the universe",
@@ -525,7 +526,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.abundUni; },
       est: function () { return false; },
       fmt: perTonne,
-      gloss: "The same reading, applied to a tonne of the universe's ordinary matter. Two elements take about 980 kilograms of that tonne between them, and everything else shares what is left."
+      plain: "Weight in a tonne of the universe's ordinary matter, read the same way as the crust figure.",
+      gloss: "The same reading again, applied to a tonne of the universe's ordinary matter. Two elements take about 980 kilograms of that tonne between them, and everything else in existence shares what is left."
     },
     {
       id: "ratio", chip: "Piled up on Earth", title: "Most concentrated by Earth",
@@ -535,8 +537,9 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
         return e.abundCrust / e.abundUni;
       },
       est: function () { return false; },
-      fmt: function (v) { return (v >= 1 ? num(v, 0) : num(v, 3)) + "×"; },
-      gloss: "How many times richer the crust is in an element than the universe as a whole. Rock-forming elements settle into a young planet and stay; light gases mostly drift away. Both sets of figures are rounded, so this one shows a pattern rather than an exact order."
+      fmt: function (v) { return v >= 1 ? num(v, 0) + "×" : "1 in " + compact(1 / v); },
+      plain: "How many times richer the crust is in an element than the universe as a whole.",
+      gloss: "How many times richer the crust is in an element than the universe as a whole. Rock-forming elements settle into a young planet and stay; the light gases mostly drift away, which is why they fill the other end of this board. Both sets of figures are rounded, so this one shows a pattern rather than an exact order."
     },
     {
       id: "discovered", chip: "Year first identified", title: "Most recently identified",
@@ -545,7 +548,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       est: function () { return false; },
       fmt: function (v) { return v === 0 ? "ancient" : String(v); },
       spread: true,
-      gloss: "The year an element was first picked out as its own substance. Ten of them, including gold, iron and sulfur, were worked long before anyone recorded a date, so they simply read as ancient. At the other end, the newest arrivals were confirmed within living memory."
+      plain: "The year an element was first picked out as its own substance.",
+      gloss: "The year an element was first picked out as its own substance. Ten of them, gold, silver, iron, copper, tin, lead, mercury, carbon, sulfur and antimony, were worked long before anyone wrote a date down, so they simply read as ancient. At the other end, the newest arrivals were confirmed within living memory."
     }
   ];
 
@@ -710,13 +714,12 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       dir = "hi"; settledOnly = false;
       var top1 = ranked(p)[0];
       dir = saveDir; settledOnly = saveSettled;
-      var plain = p.gloss.split(". ")[0].replace(/^[^:]*: /, "");
-      plain = plain.charAt(0).toUpperCase() + plain.slice(1);
       return "<tr>" +
         '<td class="lead">' + p.chip + "</td>" +
-        "<td>" + plain + ".</td>" +
+        "<td>" + p.plain + "</td>" +
         '<td class="mono-cell">' + p.sub + "</td>" +
-        '<td class="mono-cell">' + (top1 ? top1.e.name + " · " + p.fmt(top1.v) : "–") + "</td>" +
+        '<td class="mono-cell">' + (top1 ? top1.e.name + " · " + p.fmt(top1.v) +
+          (top1.est ? ' <span class="tag est">est.</span>' : "") : "not listed") + "</td>" +
         "</tr>";
     }).join("");
   }
