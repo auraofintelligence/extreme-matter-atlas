@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crystal Lab · Extreme Matter Atlas</title>
+<meta name="description" content="A playable lattice sketchpad: stack squares, triangles, honeycomb and kagome patterns, shift them like graphite, and twist them to the magic angle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+body[data-page="crystal"] .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+body[data-page="crystal"] .seg button {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 600;
+  letter-spacing: 0.04em; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--line-bright); background: var(--panel2);
+  color: var(--muted); cursor: pointer;
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+body[data-page="crystal"] .seg button:hover { color: var(--ink); border-color: var(--accent); }
+body[data-page="crystal"] .seg button.on {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #04060c; border-color: transparent;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+body[data-page="crystal"] .control .vv {
+  color: var(--accent); text-transform: none; letter-spacing: 0; margin-left: 5px;
+}
+body[data-page="crystal"] .control.off { opacity: 0.35; }
+body[data-page="crystal"] #lab-canvas { cursor: grab; }
+body[data-page="crystal"] #lab-canvas.dragging { cursor: grabbing; }
+body[data-page="crystal"] .canvas-cap {
+  display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  padding: 10px 4px 0; font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+body[data-page="crystal"] .preset-row .btn { padding: 9px 16px; font-size: 13.5px; }
+body[data-page="crystal"] .lab-controls { margin-top: 8px; }
+</style>
+</head>
+<body data-page="crystal">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><div class="orb3"></div></div>
+    <div class="wrap">
+      <span class="kicker">Crystal Lab</span>
+      <h1 class="display">Stack it, shift it, give it a twist</h1>
+      <p class="lede">Salt grains are tiny cubes. Most snowflakes grow six arms. Honeycomb carries a heavy load with walls thinner than paper. Under each one sits the same quiet idea: a <strong>lattice</strong>, which is just a repeating arrangement of points. On the bench below you can pick a pattern, stack it four layers high, slide it half a step, and twist it until something strange appears.</p>
+      <div class="stat-row">
+        <div class="stat reveal"><span class="num">6</span><span class="lbl">arms on most snowflakes</span></div>
+        <div class="stat reveal"><span class="num">1 atom</span><span class="lbl">the thickness of a single graphite sheet</span></div>
+        <div class="stat reveal"><span class="num">1.1°</span><span class="lbl">the twist at which cold graphene carries current with no measured loss</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Patterns you <span class="hue">already own</span></h2>
+      <div class="grid">
+        <div class="card reveal">
+          <span class="card-glyph">🧂</span>
+          <h3>The cube in your shaker</h3>
+          <p>Tip salt onto a dark plate and look closely: each grain is a tiny box with flat faces. Sodium and chlorine atoms take turns on a grid of little cubes, and the grid shows up at a size you can see with a magnifying glass.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">❄️</span>
+          <h3>Six arms on the windscreen</h3>
+          <p>Water molecules settle into rings of six as they freeze, so most snowflakes branch in sixes. The shape of one ring, far too small to see, sets the shape of the whole flake on your sleeve.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🍯</span>
+          <h3>The strong room made of wax</h3>
+          <p>Bees build six-sided cells with walls thinner than a sheet of paper, and the comb still holds kilograms of honey. The pattern does the heavy lifting, not the material.</p>
+        </div>
+      </div>
+      <p style="margin-top: 26px;">The pencil in your drawer holds the star of this page. Its lead is graphite: sheets of carbon arranged in a honeycomb pattern, stacked like pages, each sheet one atom thick. A million of those sheets piled up would stand about as tall as three pages of a paperback. Each stroke you make shears tiny stacks of them onto the paper.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">sketchpad</span></h2>
+      <p>Four patterns sit on the bench: the square, the triangle, the honeycomb, and the kagome, a weave of triangles and six-sided holes borrowed from Japanese basketry. Choose one and set how far apart the points sit, then stack up to four layers. <strong>AA</strong> places each layer directly on top of the last. <strong>AB</strong> slides every second layer half a step across, the way graphite stacks in your pencil. <strong>Twist</strong> turns each new layer by a small angle, and that is where things get strange.</p>
+
+      <div class="control-row preset-row">
+        <button class="btn" id="preset-graphite" type="button">Graphite stack</button>
+        <button class="btn ghost" id="preset-kagome" type="button">Kagome weave</button>
+        <button class="btn ghost" id="preset-magic" type="button">Magic angle</button>
+      </div>
+
+      <div class="control-row lab-controls">
+        <div class="control">
+          <label id="lat-label">Pattern</label>
+          <div class="seg" id="lat-seg" role="group" aria-labelledby="lat-label">
+            <button type="button" data-lat="square">Square</button>
+            <button type="button" data-lat="tri">Triangle</button>
+            <button type="button" data-lat="honeycomb" class="on">Honeycomb</button>
+            <button type="button" data-lat="kagome">Kagome</button>
+          </div>
+        </div>
+        <div class="control">
+          <label id="lay-label">Layers</label>
+          <div class="seg" id="lay-seg" role="group" aria-labelledby="lay-label">
+            <button type="button" data-n="1">1</button>
+            <button type="button" data-n="2" class="on">2</button>
+            <button type="button" data-n="3">3</button>
+            <button type="button" data-n="4">4</button>
+          </div>
+        </div>
+        <div class="control">
+          <label for="stack-sel">Stacking</label>
+          <select id="stack-sel">
+            <option value="aa">AA · directly on top</option>
+            <option value="ab">AB · shifted like graphite</option>
+            <option value="twist" selected>Twist</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <div class="control">
+          <label for="spacing">Spacing <span class="vv" id="spacing-vv">22 px</span></label>
+          <input type="range" id="spacing" min="10" max="64" step="1" value="22">
+        </div>
+        <div class="control">
+          <label for="node-size">Node size <span class="vv" id="node-vv">4</span></label>
+          <input type="range" id="node-size" min="2" max="10" step="0.5" value="4">
+        </div>
+        <div class="control" id="twist-ctrl">
+          <label for="twist">Twist <span class="vv" id="twist-vv">5.0°</span></label>
+          <input type="range" id="twist" min="0" max="15" step="0.1" value="5">
+        </div>
+        <div class="control">
+          <label for="tilt">Tilt <span class="vv" id="tilt-vv">0°</span></label>
+          <input type="range" id="tilt" min="0" max="80" step="1" value="0">
+        </div>
+      </div>
+
+      <div class="canvas-frame">
+        <canvas id="lab-canvas" aria-label="Lattice sketchpad: stacked layers of repeating points"></canvas>
+        <noscript><p style="padding: 20px;">The sketchpad needs JavaScript switched on.</p></noscript>
+        <div class="canvas-cap"><span id="cap-left"></span><span id="cap-right"></span></div>
+      </div>
+
+      <div class="note"><strong>Drag the picture</strong> to spin the stack and lean it over; the Tilt slider does the same by numbers. The Twist slider wakes up when Stacking is set to Twist. Each layer wears its own colour, and deeper layers sit dimmer.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">flyscreen</span> trick</h2>
+      <div class="two-col">
+        <div>
+          <p>Lay one flyscreen on top of another and turn the top one a little. Large, slow ripples drift across the mesh, patterns far bigger than any single wire. That ghost pattern is called a <strong>moire</strong> (say mwah-ray): the big pattern two fine patterns make when they overlap slightly out of step. Two kitchen sieves held up to a window do it too.</p>
+          <p>The same trick works at the scale of atoms, and there it does more than look good. Graphene is a single sheet of pencil graphite, carbon in a honeycomb one atom thick. In physics labs, two graphene sheets twisted to about 1.1 degrees, roughly the angle a clock's minute hand sweeps in eleven seconds, carry electric current with no measured resistance once they are chilled below about minus 271 degrees Celsius, colder than the space between the stars. That is a measured result, first reported in 2018 and repeated in labs since.</p>
+        </div>
+        <div>
+          <p>The twist builds a moire pattern into the pair of sheets, a repeating landscape hundreds of times wider than the gap between atoms. Electrons slow right down inside that landscape, and in the slow crowd they pair up and flow without loss. Why the pairing happens is still being worked out, which is part of why so many labs keep building these little twisted stacks.</p>
+          <p>Press the <strong>Magic angle</strong> button in the sketchpad and look for the broad bright patch in the middle of the circle: that is the moire, drawn in points. Nudge the twist up to five degrees and the patches shrink into a pinwheel. Two flyscreens, two sieves, two sheets of carbon: same trick.</p>
+          <h3>Sources</h3>
+          <ul class="src-list">
+            <li><span class="tag tier-1">T1</span> Current with no measured resistance in two graphene sheets twisted near 1.1 degrees: peer-reviewed measurement, first reported in Nature in 2018, repeated by other labs since.</li>
+            <li><span class="tag tier-1">T1</span> Graphite sheets sit 0.335 nanometres apart, about three million sheets to a millimetre: peer-reviewed measurement.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>What the sketchpad <span class="hue">draws</span> and what it leaves out</h2>
+      <p>The sketchpad draws geometry and nothing else. It places points, joins near neighbours, and colours the layers. It does not weigh a single force or energy, so it cannot tell you whether a stack would hold together, conduct, insulate or fall apart; that depends on which atoms sit on the points and what their electrons do.</p>
+      <p>Real crystal prediction adds physics maths on top of the geometry. For each candidate arrangement, a computer works out how comfortably the electrons would settle in; arrangements that settle into low energy are the ones that could survive as real crystals. GNoME, a crystal-hunting program built at Google DeepMind, ran that maths across millions of candidate arrangements and reported about 380,000 that look stable enough to be worth making <span class="tag tier-1">T1</span>. Cooking one a day, and cooking is lab talk for making the real crystal in a furnace, would keep a kitchen busy for more than a thousand years. Each of those candidates began the way your sketch did: as a guessed arrangement of points.</p>
+      <p>So have a guess. Stack a kagome AB. Twist a square by nine degrees. Lean a four-layer triangle right over and look along the rows. Some of the shapes worth cooking may be ones nobody has drawn yet. The sketchpad will not tell you whether your shape holds together; it hands you the part a crystal starts with, the pattern.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Keep <span class="hue">going</span></h2>
+      <div class="grid">
+        <a class="card-link reveal" href="metamaterials.html">
+          <div class="card">
+            <span class="card-glyph">🕸️</span>
+            <h3>Metamaterials</h3>
+            <p>The honeycomb hint, taken seriously: printed shapes that carry load, steer sound and spring back, where the pattern, not the ingredient, does the heavy lifting.</p>
+          </div>
+        </a>
+        <a class="card-link reveal" href="gnome.html">
+          <div class="card">
+            <span class="card-glyph">💎</span>
+            <h3>GNoME</h3>
+            <p>The crystal hunt at full scale: the predicted recipes, the reported numbers, and the road from a guessed pattern to a real material.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  "use strict";
+  var TAU = Math.PI * 2;
+  var DEG = Math.PI / 180;
+  var canvas = document.getElementById("lab-canvas");
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext("2d");
+  var dpr = Math.min(2, window.devicePixelRatio || 1);
+
+  var state = {
+    lattice: "honeycomb",
+    spacing: 22,
+    node: 4,
+    layers: 2,
+    stack: "twist",
+    twist: 5,
+    tilt: 0,
+    yaw: 0
+  };
+
+  var LAT_NAMES = { square: "square", tri: "triangle", honeycomb: "honeycomb", kagome: "kagome" };
+
+  var W = 0, H = 0, R = 0;
+  var base = { xy: [], blen: 1 };
+  var bonds = [];
+  var px = new Float32Array(0), py = new Float32Array(0);
+
+  /* ---------- geometry ---------- */
+
+  function genPoints(lat, a, radius) {
+    var pts = [], HF = Math.sqrt(3) / 2, R2 = radius * radius;
+    function push(x, y) { if (x * x + y * y <= R2) { pts.push(x, y); } }
+    if (lat === "square") {
+      var N = Math.ceil(radius / a) + 1;
+      for (var j = -N; j <= N; j++) {
+        for (var i = -N; i <= N; i++) push(i * a, j * a);
+      }
+      return { xy: pts, blen: a };
+    }
+    var basis, blen;
+    if (lat === "tri") {
+      basis = [[0, 0]]; blen = a;
+    } else if (lat === "honeycomb") {
+      basis = [[0, 0], [a / 2, a / (2 * Math.sqrt(3))]]; blen = a / Math.sqrt(3);
+    } else {
+      basis = [[0, 0], [a / 2, 0], [a / 4, a * HF / 2]]; blen = a / 2;
+    }
+    var jm = Math.ceil(radius / (a * HF)) + 2;
+    for (var jj = -jm; jj <= jm; jj++) {
+      var y0 = jj * a * HF, x0 = jj * a * 0.5;
+      var i1 = Math.floor((-radius - a - x0) / a), i2 = Math.ceil((radius + a - x0) / a);
+      for (var ii = i1; ii <= i2; ii++) {
+        var cx = ii * a + x0;
+        for (var b = 0; b < basis.length; b++) push(cx + basis[b][0], y0 + basis[b][1]);
+      }
+    }
+    return { xy: pts, blen: blen };
+  }
+
+  function buildBonds(xy, cutoff) {
+    var n = xy.length / 2, c2 = cutoff * cutoff, out = [];
+    var map = new Map();
+    var i, cx, cy, key, arr;
+    for (i = 0; i < n; i++) {
+      cx = Math.floor(xy[2 * i] / cutoff); cy = Math.floor(xy[2 * i + 1] / cutoff);
+      key = cx * 100003 + cy;
+      arr = map.get(key);
+      if (!arr) { arr = []; map.set(key, arr); }
+      arr.push(i);
+    }
+    for (i = 0; i < n; i++) {
+      var x = xy[2 * i], y = xy[2 * i + 1];
+      cx = Math.floor(x / cutoff); cy = Math.floor(y / cutoff);
+      for (var dx = -1; dx <= 1; dx++) {
+        for (var dy = -1; dy <= 1; dy++) {
+          arr = map.get((cx + dx) * 100003 + (cy + dy));
+          if (!arr) continue;
+          for (var t = 0; t < arr.length; t++) {
+            var j = arr[t];
+            if (j <= i) continue;
+            var ddx = xy[2 * j] - x, ddy = xy[2 * j + 1] - y;
+            if (ddx * ddx + ddy * ddy <= c2) out.push(i, j);
+          }
+        }
+      }
+    }
+    return out;
+  }
+
+  function shiftFor(lat, a) {
+    if (lat === "square") return [a / 2, a / 2];
+    if (lat === "kagome") return [a / 2, 0];
+    return [a / 2, a / (2 * Math.sqrt(3))];
+  }
+
+  function palette(L) {
+    var A = [163, 230, 53], B = [45, 212, 191], out = [], k, t;
+    if (L === 1) return ["rgb(163,230,53)"];
+    for (k = 0; k < L; k++) {
+      t = k / (L - 1);
+      out.push("rgb(" +
+        Math.round(A[0] + (B[0] - A[0]) * t) + "," +
+        Math.round(A[1] + (B[1] - A[1]) * t) + "," +
+        Math.round(A[2] + (B[2] - A[2]) * t) + ")");
+    }
+    return out;
+  }
+
+  /* ---------- sizing and rebuild ---------- */
+
+  function sizeCanvas() {
+    W = canvas.clientWidth || 900;
+    H = Math.max(340, Math.min(640, Math.round(W * 0.62)));
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+  }
+
+  function rebuild() {
+    R = Math.min(W, H) * 0.48;
+    base = genPoints(state.lattice, state.spacing, R);
+    bonds = buildBonds(base.xy, base.blen * 1.2);
+    var n = base.xy.length / 2;
+    if (px.length < n) { px = new Float32Array(n); py = new Float32Array(n); }
+  }
+
+  /* ---------- drawing ---------- */
+
+  function draw() {
+    var n = base.xy.length / 2, L = state.layers;
+    ctx.setTransform(dpr, 0, 0, dpr, W * 0.5 * dpr, H * 0.5 * dpr);
+    ctx.clearRect(-W / 2, -H / 2, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    var cols = palette(L);
+    var t = state.tilt * DEG, cosT = Math.cos(t), sinT = Math.sin(t);
+    var gap = state.spacing * 0.9;
+    var sh = shiftFor(state.lattice, state.spacing);
+    var xy = base.xy;
+    for (var k = 0; k < L; k++) {
+      var rot = state.stack === "twist" ? k * state.twist * DEG : 0;
+      var ang = rot + state.yaw, cA = Math.cos(ang), sA = Math.sin(ang);
+      var ox = 0, oy = 0;
+      if (state.stack === "ab" && k % 2 === 1) {
+        var cy0 = Math.cos(state.yaw), sy0 = Math.sin(state.yaw);
+        ox = sh[0] * cy0 - sh[1] * sy0;
+        oy = sh[0] * sy0 + sh[1] * cy0;
+      }
+      var z = (k - (L - 1) / 2) * gap, zs = -z * sinT;
+      for (var i = 0; i < n; i++) {
+        var x = xy[2 * i], y = xy[2 * i + 1];
+        px[i] = x * cA - y * sA + ox;
+        py[i] = (x * sA + y * cA + oy) * cosT + zs;
+      }
+      var alpha = L === 1 ? 1 : 0.38 + 0.62 * k / (L - 1);
+      ctx.strokeStyle = cols[k];
+      ctx.globalAlpha = alpha * 0.5;
+      ctx.lineWidth = Math.max(0.8, state.node * 0.3);
+      ctx.beginPath();
+      for (var b = 0; b < bonds.length; b += 2) {
+        var i1 = bonds[b], i2 = bonds[b + 1];
+        ctx.moveTo(px[i1], py[i1]);
+        ctx.lineTo(px[i2], py[i2]);
+      }
+      ctx.stroke();
+      ctx.fillStyle = cols[k];
+      ctx.globalAlpha = Math.min(1, alpha);
+      var r = state.node;
+      ctx.beginPath();
+      for (i = 0; i < n; i++) {
+        ctx.moveTo(px[i] + r, py[i]);
+        ctx.arc(px[i], py[i], r, 0, TAU);
+      }
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+    updateCaption(n);
+  }
+
+  var drawQueued = false;
+  function requestDraw() {
+    if (drawQueued) return;
+    drawQueued = true;
+    requestAnimationFrame(function () { drawQueued = false; draw(); });
+  }
+
+  function fmtNum(n) {
+    if (window.EMA && window.EMA.fmt) return window.EMA.fmt(n);
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function updateCaption(n) {
+    var L = state.layers;
+    var left = fmtNum(n) + " points · " + fmtNum(bonds.length / 2) +
+      " bonds each layer · " + L + (L === 1 ? " layer" : " layers");
+    var mode = state.stack === "twist" ? "twist " + state.twist.toFixed(1) + "°"
+      : state.stack === "ab" ? "AB" : "AA";
+    var right = LAT_NAMES[state.lattice] + " · " + mode + " · tilt " + Math.round(state.tilt) + "°";
+    document.getElementById("cap-left").textContent = left;
+    document.getElementById("cap-right").textContent = right;
+  }
+
+  /* ---------- controls ---------- */
+
+  var spacingEl = document.getElementById("spacing");
+  var nodeEl = document.getElementById("node-size");
+  var twistEl = document.getElementById("twist");
+  var tiltEl = document.getElementById("tilt");
+  var stackEl = document.getElementById("stack-sel");
+  var twistCtrl = document.getElementById("twist-ctrl");
+
+  function segSync(segId, attr, value) {
+    var btns = document.querySelectorAll("#" + segId + " button");
+    btns.forEach(function (b) {
+      var on = b.getAttribute(attr) === String(value);
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function syncUI() {
+    segSync("lat-seg", "data-lat", state.lattice);
+    segSync("lay-seg", "data-n", state.layers);
+    spacingEl.value = state.spacing;
+    nodeEl.value = state.node;
+    twistEl.value = state.twist;
+    tiltEl.value = state.tilt;
+    stackEl.value = state.stack;
+    document.getElementById("spacing-vv").textContent = state.spacing + " px";
+    document.getElementById("node-vv").textContent = String(state.node);
+    document.getElementById("twist-vv").textContent = state.twist.toFixed(1) + "°";
+    document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
+    var twistOn = state.stack === "twist";
+    twistEl.disabled = !twistOn;
+    twistCtrl.classList.toggle("off", !twistOn);
+  }
+
+  document.querySelectorAll("#lat-seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.lattice = b.getAttribute("data-lat");
+      segSync("lat-seg", "data-lat", state.lattice);
+      rebuild(); requestDraw();
+    });
+  });
+
+  document.querySelectorAll("#lay-seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.layers = parseInt(b.getAttribute("data-n"), 10);
+      segSync("lay-seg", "data-n", state.layers);
+      requestDraw();
+    });
+  });
+
+  spacingEl.addEventListener("input", function () {
+    state.spacing = parseFloat(spacingEl.value);
+    document.getElementById("spacing-vv").textContent = state.spacing + " px";
+    rebuild(); requestDraw();
+  });
+
+  nodeEl.addEventListener("input", function () {
+    state.node = parseFloat(nodeEl.value);
+    document.getElementById("node-vv").textContent = String(state.node);
+    requestDraw();
+  });
+
+  twistEl.addEventListener("input", function () {
+    state.twist = parseFloat(twistEl.value);
+    document.getElementById("twist-vv").textContent = state.twist.toFixed(1) + "°";
+    requestDraw();
+  });
+
+  tiltEl.addEventListener("input", function () {
+    state.tilt = parseFloat(tiltEl.value);
+    document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
+    requestDraw();
+  });
+
+  stackEl.addEventListener("change", function () {
+    state.stack = stackEl.value;
+    var twistOn = state.stack === "twist";
+    twistEl.disabled = !twistOn;
+    twistCtrl.classList.toggle("off", !twistOn);
+    requestDraw();
+  });
+
+  /* ---------- presets ---------- */
+
+  function applyPreset(p) {
+    Object.assign(state, p);
+    syncUI();
+    rebuild();
+    requestDraw();
+  }
+
+  document.getElementById("preset-graphite").addEventListener("click", function () {
+    applyPreset({ lattice: "honeycomb", spacing: 30, node: 5, layers: 3, stack: "ab", tilt: 55 });
+  });
+  document.getElementById("preset-kagome").addEventListener("click", function () {
+    applyPreset({ lattice: "kagome", spacing: 34, node: 5, layers: 1, stack: "aa", tilt: 0 });
+  });
+  document.getElementById("preset-magic").addEventListener("click", function () {
+    applyPreset({ lattice: "honeycomb", spacing: 10, node: 2.5, layers: 2, stack: "twist", twist: 1.1, tilt: 0 });
+  });
+
+  /* ---------- drag to rotate ---------- */
+
+  var drag = null;
+  canvas.addEventListener("pointerdown", function (e) {
+    drag = { x: e.clientX, y: e.clientY };
+    canvas.classList.add("dragging");
+    if (canvas.setPointerCapture) { try { canvas.setPointerCapture(e.pointerId); } catch (err) {} }
+    e.preventDefault();
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.x = e.clientX; drag.y = e.clientY;
+    state.yaw += dx * 0.006;
+    state.tilt = Math.max(0, Math.min(80, state.tilt + dy * 0.25));
+    tiltEl.value = state.tilt;
+    document.getElementById("tilt-vv").textContent = Math.round(state.tilt) + "°";
+    requestDraw();
+  });
+  function endDrag() { drag = null; canvas.classList.remove("dragging"); }
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+
+  /* ---------- resize ---------- */
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      sizeCanvas();
+      rebuild();
+      requestDraw();
+    }, 150);
+  });
+
+  /* ---------- go ---------- */
+
+  sizeCanvas();
+  rebuild();
+  syncUI();
+  draw();
+})();
+</script>
+</body>
+</html>

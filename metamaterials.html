@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metamaterials · Extreme Matter Atlas</title>
+<meta name="description" content="Materials whose behaviour comes from their repeating internal shape: pull a honeycomb, gate a wave, stamp a tile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles: metamaterials */
+body[data-page="meta"] #auxCanvas { height: 380px; }
+body[data-page="meta"] #waveCanvas { height: 290px; }
+body[data-page="meta"] #stampCanvas { height: 300px; }
+@media (max-width: 700px) {
+  body[data-page="meta"] #auxCanvas { height: 300px; }
+  body[data-page="meta"] #waveCanvas { height: 240px; }
+}
+body[data-page="meta"] .band-strip {
+  display: flex; height: 34px; border-radius: 999px; overflow: hidden;
+  border: 1px solid var(--line-bright); position: relative; margin: 16px 0 4px;
+}
+body[data-page="meta"] .band-strip .zone {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden;
+}
+body[data-page="meta"] .z-pass { background: rgba(52, 211, 153, 0.16); color: #34d399; }
+body[data-page="meta"] .z-gap  { background: rgba(232, 121, 249, 0.22); color: #e879f9; }
+body[data-page="meta"] .z-dead { background: rgba(148, 163, 184, 0.14); color: #94a3b8; }
+body[data-page="meta"] .band-marker {
+  position: absolute; top: 2px; bottom: 2px; width: 4px; border-radius: 2px;
+  background: var(--ink); box-shadow: 0 0 10px rgba(242, 245, 255, 0.9);
+  transform: translateX(-2px); pointer-events: none;
+}
+body[data-page="meta"] .wave-readout {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--muted);
+  min-height: 3.4em; margin-top: 12px; max-width: 46em;
+}
+body[data-page="meta"] .wave-readout strong { color: var(--accent); font-weight: 600; }
+body[data-page="meta"] .tile-flex {
+  display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start;
+}
+@media (max-width: 820px) {
+  body[data-page="meta"] .tile-flex { grid-template-columns: 1fr; }
+}
+body[data-page="meta"] .tile-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+  padding: 10px; background: var(--bg2);
+  border: 1px solid var(--line-bright); border-radius: 14px;
+}
+body[data-page="meta"] .tile-cell {
+  aspect-ratio: 1; border-radius: 5px; border: 1px solid var(--line);
+  background: var(--panel2); cursor: pointer; padding: 0;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+body[data-page="meta"] .tile-cell.on {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
+}
+body[data-page="meta"] .preset-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+body[data-page="meta"] .btn.mini { padding: 6px 13px; font-size: 13px; border-radius: 9px; }
+body[data-page="meta"] .slider-cap {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+</style>
+</head>
+<body data-page="meta">
+<div id="site-header"></div>
+<main>
+
+<section class="hero">
+  <div class="orbs"><span class="orb3"></span></div>
+  <div class="wrap">
+    <span class="kicker">Metamaterials</span>
+    <h1 class="display">Geometry doing the work of chemistry</h1>
+    <p class="lede">A foam mattress and a woven cane mat can be much the same stuff: plant matter and air. One hugs you to sleep, the other holds you flat. A bike helmet takes a knock and survives because of the shape of its foam cells, not just the plastic they are made of. When the shape inside is doing most of the work, the material has a name: <strong>a metamaterial</strong>.</p>
+    <div class="control-row" style="margin-top:26px">
+      <a class="btn" href="#stretch">Pull the honeycomb</a>
+      <a class="btn ghost" href="#wavegate">Try the wave gate</a>
+    </div>
+  </div>
+</section>
+
+<section id="define">
+  <div class="wrap">
+    <h2>Shape first, <span class="hue">recipe second</span></h2>
+    <p>Build one plastic three ways and you get three materials in practice: a solid block, a soft foam, and a springy lattice (an open framework of little struts, like scaffolding shrunk small). Same recipe, three behaviours.</p>
+    <div class="note"><strong>The working definition.</strong> A metamaterial is a material whose behaviour comes from its repeating internal shape rather than only its ingredients. Change the pattern and you change what it does, without touching the recipe.</div>
+    <p>Scale sets the difficulty. The repeating pattern needs to sit smaller than whatever it has to steer. Everyday sound waves stretch from centimetres to metres, so a sound-steering pattern can be as chunky as marbles. Visible light waves run a few hundred times thinner than a human hair, so a light-steering pattern has to be finer than a home workshop could cut. That is why the sound tricks reached products first.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="stretch">
+  <div class="wrap">
+    <h2>Pull it and it <span class="hue">gets wider</span></h2>
+    <p>Stretch a rubber band and it thins in the middle. Most materials do that: pull one way and they draw in from the sides. Engineers track the habit with the Poisson's ratio, the squeeze number: how much a material narrows sideways for each bit of lengthways stretch.</p>
+    <p>Draw the honeycomb cells as arrowheads instead of hexagons and the habit flips. Pull, and the arrowheads unfold; the mesh grows wider while it grows longer. Shapes that do this are called auxetic. Below, both meshes get the same sideways pull. Watch what each does with it.</p>
+    <div class="canvas-frame">
+      <canvas id="auxCanvas" role="img" aria-label="Two honeycomb meshes side by side. The ordinary one gets shorter as it is pulled wider; the arrowhead one gets taller."></canvas>
+    </div>
+    <div class="control-row">
+      <div class="control">
+        <label for="auxStretch">Pull · none to full</label>
+        <input type="range" id="auxStretch" min="0" max="100" value="0">
+      </div>
+      <span class="slider-cap" id="auxCap">Both meshes are pulled sideways by the same amount.</span>
+    </div>
+    <p>A pad that widens under load hugs whatever it lands on instead of thinning away from it, and a hit spreads sideways through the cells instead of punching straight through. Arrowhead patterns already turn up in some running shoe soles, and cut into a flat sheet they can let it wrap a dome without crumpling.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="wavegate">
+  <div class="wrap">
+    <h2>The <span class="hue">wave gate</span></h2>
+    <p>String beads on springs in a line, alternating a light bead with a heavy one, and the chain becomes choosy. Shake one end slowly and the wiggle strolls to the far end. Shake at certain faster pitches and it dies out within a few beads, as if the chain had shut a gate. That refused range is called a band gap: a speed bump for waves. The rhythm of light and heavy sets where the bump sits.</p>
+    <div class="canvas-frame">
+      <canvas id="waveCanvas" role="img" aria-label="A chain of beads joined by springs, shaken from the left end. At some pitches the wiggle travels the chain; in the band gap it fades within a few beads."></canvas>
+    </div>
+    <div class="control-row">
+      <div class="control" style="flex:1; min-width:240px">
+        <label for="waveFreq">Pitch of the shake · low to high</label>
+        <input type="range" id="waveFreq" min="0" max="175" value="40" style="width:100%">
+        <div class="band-strip" id="bandStrip" aria-hidden="true"></div>
+      </div>
+    </div>
+    <p class="wave-readout" id="waveOut"></p>
+    <p>The same kind of gate, drawn at other sizes, decides what passes through panels, walls and crystals. The pattern picks the pitches; the stuff it is cut from mostly picks the price.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="tile">
+  <div class="wrap">
+    <h2>One tile does <span class="hue">the talking</span></h2>
+    <p>Each demo above is one small shape repeated. The repeated shape has a name, the unit cell: the single tile the whole pattern is built from. Sketch a tile below, or pick one, and stamp it across the plane. Whatever habits the tile has, the plane inherits.</p>
+    <div class="tile-flex">
+      <div>
+        <div class="tile-grid" id="tileGrid" aria-label="A seven by seven grid of squares. Click a square to add or remove it from the tile."></div>
+        <div class="preset-row">
+          <button type="button" class="btn ghost mini" data-preset="truss">Truss</button>
+          <button type="button" class="btn ghost mini" data-preset="arch">Arch</button>
+          <button type="button" class="btn ghost mini" data-preset="cross">Cross</button>
+          <button type="button" class="btn ghost mini" data-preset="coil">Coil</button>
+          <button type="button" class="btn ghost mini" data-preset="clear">Clear</button>
+        </div>
+      </div>
+      <div>
+        <div class="canvas-frame" style="margin:0 0 14px">
+          <canvas id="stampCanvas" role="img" aria-label="The tile from the editor, stamped over and over across a plane."></canvas>
+        </div>
+        <div class="control-row" style="margin:0">
+          <button type="button" class="btn mini" id="stampAgain">Stamp it again</button>
+          <span class="slider-cap">One tile drawn once; the plane takes care of the rest.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="uses">
+  <div class="wrap">
+    <h2>Where shaped matter <span class="hue">already works</span></h2>
+    <p>Four things you could hold or stand next to, each one shape-first.</p>
+    <div class="grid" style="margin-top:26px">
+      <div class="card reveal">
+        <span class="card-glyph">🔇</span>
+        <h3>Quiet walls</h3>
+        <p>A panel about as thick as two stacked phones can hush a chosen hum, because small tuned pockets inside it swallow that pitch. Marble-sized rubber-coated weights were measured doing this in a lab in 2000, and shaped sound panels are starting to turn up in machine rooms, studios and apartment walls.</p>
+      </div>
+      <div class="card reveal">
+        <span class="card-glyph">🔦</span>
+        <h3>Lenses that bend light backwards</h3>
+        <p>A straw in a glass of water looks kinked forwards. A patterned surface can kink the wave the other way, backwards, which ordinary glass does not do. This is measured in labs: first with microwaves in 2001, later at narrow colours of light. A cloak of broad invisibility would need the trick across many colours at once; the measured wins so far cover one narrow band at a time.</p>
+      </div>
+      <div class="card reveal">
+        <span class="card-glyph">👟</span>
+        <h3>Soles and crash padding</h3>
+        <p>A printed running sole can be a lattice of a few thousand tiny struts: picture a bag of matchsticks glued into one springy block, each strut angled so the heel lands soft and the toe pushes off firm. Soles like this have been on sale in sports shops since about 2018, and similar cell shapes cushion some newer bike helmets and packaging.</p>
+      </div>
+      <div class="card reveal">
+        <span class="card-glyph">📡</span>
+        <h3>Antennas folded small</h3>
+        <p>The aerial inside a phone is a long metal path folded like a maze, a garden hose coiled to fit a bucket, so a wave longer than your hand fits behind the screen. Flat satellite antennas push further: thousands of small patterned cells steer the beam electronically, so the dish on a boat or a ute can be a plate that does not swivel.</p>
+      </div>
+    </div>
+    <div class="note"><strong>Limits.</strong> The backwards-bending measurements are real, repeatable and narrow. Each win covers one small band of colours or pitches. Talk of full invisibility cloaks runs well ahead of anything measured so far.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="simulate">
+  <div class="wrap">
+    <h2>How people <span class="hue">simulate one</span></h2>
+    <p>The working method is plainer than it sounds. Draw one repeating tile. Tell the computer the tile repeats forever in each direction; that single instruction spares it from drawing the rest. Then sweep through frequencies the way you would walk fingers up a piano, and note which notes travel through the pattern and which fall flat. The flat notes are the gaps, and the gaps are the product: they say what the finished material would refuse to carry.</p>
+    <p>Then the flat tile earns its third dimension. Print it, and a drawing becomes a strut pattern you can stand on. Stack printed sheets, and the gaps shift with the stacking. Twist one sheet a few degrees against the next, and a larger pattern blooms across the pair: a moire, the watery pattern two flyscreens make when they overlap, with habits neither sheet had alone. That twist is a playground of its own.</p>
+    <div class="grid" style="margin-top:30px">
+      <a class="card-link" href="crystal-lab.html">
+        <div class="card reveal">
+          <span class="card-glyph">💠</span>
+          <h3>Crystal Lab</h3>
+          <p>Stack flat lattices, twist them, and watch the larger moire pattern arrive. The twisting trick from the tile above, hands on.</p>
+        </div>
+      </a>
+      <a class="card-link" href="engineering.html">
+        <div class="card reveal">
+          <span class="card-glyph">🏗️</span>
+          <h3>Engineering</h3>
+          <p>The record-holding materials matched to real jobs: bridges, cables, hulls and heat. Where lattice printing meets the big builds.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="sources" style="padding-top:0">
+  <div class="wrap">
+    <div class="panel">
+      <h3>Sources</h3>
+      <ul class="src-list">
+        <li><span class="tag tier-1">T1</span> Foam that widens when pulled: measured and reported by Roderick Lakes, University of Iowa, 1987.</li>
+        <li><span class="tag tier-1">T1</span> Marble-sized sound blockers in a panel: measured at the Hong Kong University of Science and Technology, reported 2000.</li>
+        <li><span class="tag tier-1">T1</span> Waves bent backwards: microwave bench measurement at the University of California San Diego, reported 2001; repeated since at narrow colours of light.</li>
+        <li>Printed lattice running soles: on sale in sports shops since about 2018.</li>
+        <li>Flat beam-steering satellite antennas: sold for boats and vehicles since the late 2010s.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  "use strict";
+  var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function fit(cv) {
+    var dpr = window.devicePixelRatio || 1;
+    var w = cv.clientWidth || 600;
+    var h = cv.clientHeight || 300;
+    var pw = Math.round(w * dpr), ph = Math.round(h * dpr);
+    if (cv.width !== pw || cv.height !== ph) { cv.width = pw; cv.height = ph; }
+    var ctx = cv.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx: ctx, W: w, H: h };
+  }
+  function deg(d) { return d * Math.PI / 180; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpColor(c1, c2, t) {
+    var a = parseInt(c1.slice(1), 16), b = parseInt(c2.slice(1), 16);
+    var r = Math.round(lerp((a >> 16) & 255, (b >> 16) & 255, t));
+    var g = Math.round(lerp((a >> 8) & 255, (b >> 8) & 255, t));
+    var bl = Math.round(lerp(a & 255, b & 255, t));
+    return "rgb(" + r + "," + g + "," + bl + ")";
+  }
+
+  /* ---------- 1. auxetic stretch demo ---------- */
+
+  var auxCv = document.getElementById("auxCanvas");
+  var auxSlider = document.getElementById("auxStretch");
+  var auxCap = document.getElementById("auxCap");
+
+  function drawMesh(ctx, cx, cy, th, l, h, cols, rows, colour) {
+    var ct = Math.cos(th), st = Math.sin(th);
+    var xp = 2 * l * ct, yp = h + l * st;
+    var bw = (cols - 1) * xp + 2 * l * ct + (rows > 1 ? xp / 2 : 0);
+    var minY = -h / 2 - Math.max(0, l * st);
+    var bh = (rows - 1) * yp + h + 2 * Math.max(0, l * st);
+    var ox0 = cx - bw / 2, oy0 = cy - bh / 2 - minY;
+    ctx.strokeStyle = colour;
+    ctx.lineWidth = 2;
+    ctx.globalAlpha = 0.92;
+    ctx.beginPath();
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var ox = ox0 + c * xp + (r % 2 ? xp / 2 : 0);
+        var oy = oy0 + r * yp;
+        ctx.moveTo(ox, oy - h / 2);
+        ctx.lineTo(ox, oy + h / 2);
+        ctx.lineTo(ox + l * ct, oy + h / 2 + l * st);
+        ctx.lineTo(ox + 2 * l * ct, oy + h / 2);
+        ctx.lineTo(ox + 2 * l * ct, oy - h / 2);
+        ctx.lineTo(ox + l * ct, oy - h / 2 - l * st);
+        ctx.closePath();
+      }
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    return yp;
+  }
+
+  function drawAux() {
+    var f = fit(auxCv), ctx = f.ctx, W = f.W, H = f.H;
+    ctx.clearRect(0, 0, W, H);
+    var s = auxSlider.value / 100;
+    var halfW = W / 2;
+    ctx.strokeStyle = "rgba(44,60,107,0.85)";
+    ctx.setLineDash([4, 7]);
+    ctx.beginPath(); ctx.moveTo(halfW, 14); ctx.lineTo(halfW, H - 14); ctx.stroke();
+    ctx.setLineDash([]);
+
+    var narrow = halfW < 300;
+    var cols = narrow ? 4 : 6, rows = narrow ? 4 : 5;
+    var l1 = (halfW - 50) / (2 * cols + 1);
+    var l2 = (H - 96) / ((rows - 1) * 1.59 + 2.03);
+    var l = Math.max(6, Math.min(l1, l2));
+    var h = 1.15 * l;
+    var thd = 26 - 22 * s;
+
+    var ypO = drawMesh(ctx, halfW * 0.5, H / 2 + 8, deg(thd), l, h, cols, rows, "#fbbf24");
+    var ypA = drawMesh(ctx, halfW * 1.5, H / 2 + 8, deg(-thd), l, h, cols, rows, "#e879f9");
+
+    var yp0O = h + l * Math.sin(deg(26));
+    var yp0A = h + l * Math.sin(deg(-26));
+    var pctO = Math.round((ypO / yp0O - 1) * 100);
+    var pctA = Math.round((ypA / yp0A - 1) * 100);
+    var pctW = Math.round((Math.cos(deg(thd)) / Math.cos(deg(26)) - 1) * 100);
+
+    ctx.textAlign = "center";
+    ctx.font = "600 12px 'JetBrains Mono', monospace";
+    ctx.fillStyle = "#93a3c4";
+    ctx.fillText("ORDINARY CELLS", halfW * 0.5, 24);
+    ctx.fillText("AUXETIC CELLS", halfW * 1.5, 24);
+
+    ctx.font = "600 13px 'JetBrains Mono', monospace";
+    ctx.fillStyle = "#fbbf24";
+    ctx.fillText("height " + (pctO > 0 ? "+" : "") + pctO + "%", halfW * 0.5, H - 30);
+    ctx.fillStyle = "#e879f9";
+    ctx.fillText("height " + (pctA > 0 ? "+" : "") + pctA + "%", halfW * 1.5, H - 30);
+
+    ctx.font = "11px 'JetBrains Mono', monospace";
+    ctx.fillStyle = "#93a3c4";
+    ctx.fillText(s > 0.02 ? "squeeze number above zero" : "at rest", halfW * 0.5, H - 12);
+    ctx.fillText(s > 0.02 ? "squeeze number below zero" : "at rest", halfW * 1.5, H - 12);
+
+    auxCap.textContent = s > 0.02
+      ? "Both meshes pulled " + (pctW > 0 ? "+" : "") + pctW + "% wider. One shrinks, one grows."
+      : "Both meshes are pulled sideways by the same amount.";
+  }
+  auxSlider.addEventListener("input", drawAux);
+
+  /* ---------- 2. wave gate demo ---------- */
+
+  var waveCv = document.getElementById("waveCanvas");
+  var waveSlider = document.getElementById("waveFreq");
+  var waveOut = document.getElementById("waveOut");
+  var bandStrip = document.getElementById("bandStrip");
+
+  /* chain of alternating masses m1 = 1, m2 = 4, spring K = 1.
+     response worked out ahead of time for each slider step, so the
+     drawing loop only reads numbers. */
+  var LUT = [];
+  (function () {
+    for (var i = 0; i <= 175; i++) {
+      var w = 0.05 + 0.01 * i;
+      var X = 1.5625 - Math.pow(w * w - 1.25, 2); /* sin^2(q) per cell */
+      var e = { w: w };
+      if (X > 1) {
+        e.mode = "gap";
+        e.beta = Math.acosh(Math.sqrt(X));
+      } else if (X >= 0) {
+        e.mode = (w * w <= 0.5) ? "ac" : "op";
+        e.q = Math.asin(Math.sqrt(X));
+      } else {
+        e.mode = "dead";
+        e.beta = Math.asinh(Math.sqrt(-X));
+      }
+      LUT.push(e);
+    }
+  })();
+
+  var N_BEADS = 28;
+
+  (function buildStrip() {
+    var zones = [
+      { w: 37.5, label: "travels", cls: "z-pass" },
+      { w: 40.4, label: "band gap", cls: "z-gap" },
+      { w: 9.6,  label: "travels", cls: "z-pass" },
+      { w: 12.5, label: "fades", cls: "z-dead" }
+    ];
+    var html = zones.map(function (z) {
+      return '<span class="zone ' + z.cls + '" style="width:' + z.w + '%">' + z.label + "</span>";
+    }).join("");
+    html += '<span class="band-marker" id="bandMarker"></span>';
+    bandStrip.innerHTML = html;
+  })();
+  var bandMarker = document.getElementById("bandMarker");
+
+  function setWaveText() {
+    var e = LUT[waveSlider.value];
+    bandMarker.style.left = (waveSlider.value / 175 * 100) + "%";
+    if (e.mode === "ac") {
+      waveOut.innerHTML = "<strong>Travels.</strong> This pitch rides the chain from end to end; the beads pass it along like a slow Mexican wave.";
+    } else if (e.mode === "op") {
+      waveOut.innerHTML = "<strong>Travels again.</strong> Above the gap the chain finds a second way to carry the wiggle, with neighbours rocking against each other.";
+    } else if (e.mode === "gap") {
+      var reach = Math.min(N_BEADS - 1, Math.ceil(3 / e.beta) * 2);
+      waveOut.innerHTML = "<strong>Band gap.</strong> The wiggle fades to nothing by about bead " + reach + " of " + N_BEADS + ". The pattern refuses to carry this pitch.";
+    } else {
+      waveOut.innerHTML = "<strong>Too fast.</strong> Past the top of the second band the beads cannot swing quickly enough, so the wiggle stays near the shaker.";
+    }
+  }
+
+  var waveT = 0, waveLast = null;
+  function drawWave() {
+    var f = fit(waveCv), ctx = f.ctx, W = f.W, H = f.H;
+    ctx.clearRect(0, 0, W, H);
+    var e = LUT[waveSlider.value];
+    var base = H * 0.52;
+    var A = Math.min(42, H * 0.17);
+    var margin = 36;
+    var sp = (W - margin - 20) / (N_BEADS - 1);
+    var rl = Math.max(3.5, Math.min(6.5, sp * 0.24));
+    var rh = rl * 1.75;
+    var phase = waveT * e.w * 6;
+
+    var ys = [];
+    for (var b = 0; b < N_BEADS; b++) {
+      var cell = Math.floor(b / 2);
+      var heavy = b % 2 === 1;
+      var y;
+      if (e.mode === "ac") {
+        y = A * Math.cos(phase - e.q * cell) * (heavy ? 0.9 : 1);
+      } else if (e.mode === "op") {
+        y = A * Math.cos(phase - e.q * cell) * (heavy ? -0.45 : 1);
+      } else if (e.mode === "gap") {
+        y = A * Math.exp(-e.beta * cell) * (cell % 2 ? -1 : 1) * Math.cos(phase) * (heavy ? 0.6 : 1);
+      } else {
+        y = A * Math.exp(-e.beta * cell) * Math.cos(phase) * (heavy ? 0.5 : 1);
+      }
+      ys.push(y);
+    }
+
+    /* springs */
+    ctx.strokeStyle = "#3b4d84";
+    ctx.lineWidth = 1.5;
+    for (b = 0; b < N_BEADS - 1; b++) {
+      var x1 = margin + b * sp, y1 = base + ys[b];
+      var x2 = margin + (b + 1) * sp, y2 = base + ys[b + 1];
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      for (var k = 1; k < 8; k++) {
+        var xt = lerp(x1, x2, k / 8);
+        var yt = lerp(y1, y2, k / 8) + (k % 2 ? 5 : -5);
+        ctx.lineTo(xt, yt);
+      }
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    /* shaker paddle, driving the left end */
+    ctx.fillStyle = "rgba(242,245,255,0.85)";
+    var py = base + ys[0];
+    ctx.beginPath();
+    if (ctx.roundRect) { ctx.roundRect(10, py - 24, 9, 48, 4); } else { ctx.rect(10, py - 24, 9, 48); }
+    ctx.fill();
+    ctx.strokeStyle = "#3b4d84";
+    ctx.beginPath(); ctx.moveTo(19, py); ctx.lineTo(margin, py); ctx.stroke();
+
+    /* beads */
+    for (b = 0; b < N_BEADS; b++) {
+      var heavyB = b % 2 === 1;
+      ctx.fillStyle = heavyB ? "#e879f9" : "#fbbf24";
+      ctx.beginPath();
+      ctx.arc(margin + b * sp, base + ys[b], heavyB ? rh : rl, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function waveFrame(ts) {
+    if (waveLast !== null) { waveT += Math.min(0.05, (ts - waveLast) / 1000); }
+    waveLast = ts;
+    drawWave();
+    requestAnimationFrame(waveFrame);
+  }
+  waveSlider.addEventListener("input", function () {
+    setWaveText();
+    if (RM) { drawWave(); }
+  });
+  setWaveText();
+  if (RM) { waveT = 0.6; drawWave(); } else { requestAnimationFrame(waveFrame); }
+
+  /* ---------- 3. unit cell repeater ---------- */
+
+  var tileGrid = document.getElementById("tileGrid");
+  var stampCv = document.getElementById("stampCanvas");
+  var tile = new Array(49).fill(0);
+  var PRESETS = {
+    truss: ["1000001", "0100010", "0010100", "0001000", "0010100", "0100010", "1000001"],
+    arch:  ["0011100", "0100010", "1000001", "1000001", "1000001", "0000000", "0000000"],
+    cross: ["0001000", "0001000", "0001000", "1111111", "0001000", "0001000", "0001000"],
+    coil:  ["1111111", "0000001", "1111101", "1000101", "1011101", "1010001", "1011111"],
+    clear: ["0000000", "0000000", "0000000", "0000000", "0000000", "0000000", "0000000"]
+  };
+  var cellEls = [];
+  (function buildEditor() {
+    for (var i = 0; i < 49; i++) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tile-cell";
+      btn.setAttribute("aria-label", "tile square " + (i + 1));
+      btn.setAttribute("aria-pressed", "false");
+      (function (idx, el) {
+        el.addEventListener("click", function () {
+          tile[idx] = tile[idx] ? 0 : 1;
+          el.classList.toggle("on", !!tile[idx]);
+          el.setAttribute("aria-pressed", tile[idx] ? "true" : "false");
+          scheduleStamp();
+        });
+      })(i, btn);
+      tileGrid.appendChild(btn);
+      cellEls.push(btn);
+    }
+  })();
+  function setPreset(name) {
+    var rows = PRESETS[name];
+    for (var r = 0; r < 7; r++) {
+      for (var c = 0; c < 7; c++) {
+        var v = rows[r].charAt(c) === "1" ? 1 : 0;
+        tile[r * 7 + c] = v;
+        cellEls[r * 7 + c].classList.toggle("on", !!v);
+        cellEls[r * 7 + c].setAttribute("aria-pressed", v ? "true" : "false");
+      }
+    }
+    restartStamp();
+  }
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () { setPreset(b.getAttribute("data-preset")); });
+  });
+
+  var stampOrder = [], stampIdx = 0, stampRAF = null, stampGeom = null;
+  function prepStamp() {
+    var f = fit(stampCv);
+    var cp = f.W > 760 ? 7 : 6;
+    var ts = cp * 7;
+    var cols = Math.ceil(f.W / ts), rows = Math.ceil(f.H / ts);
+    stampGeom = { ctx: f.ctx, W: f.W, H: f.H, cp: cp, ts: ts };
+    stampOrder = [];
+    for (var ty = 0; ty < rows; ty++) {
+      for (var tx = 0; tx < cols; tx++) { stampOrder.push([tx, ty]); }
+    }
+    stampOrder.sort(function (a, b) {
+      return (a[0] + a[1]) - (b[0] + b[1]) || a[0] - b[0];
+    });
+  }
+  function drawOneTile(tx, ty) {
+    var g = stampGeom;
+    var col = lerpColor("#e879f9", "#fbbf24", ((tx + ty) % 10) / 9);
+    g.ctx.fillStyle = col;
+    for (var r = 0; r < 7; r++) {
+      for (var c = 0; c < 7; c++) {
+        if (tile[r * 7 + c]) {
+          g.ctx.fillRect(tx * g.ts + c * g.cp + 0.5, ty * g.ts + r * g.cp + 0.5, g.cp - 1, g.cp - 1);
+        }
+      }
+    }
+  }
+  function stampFrame() {
+    var per = 2;
+    for (var i = 0; i < per && stampIdx < stampOrder.length; i++, stampIdx++) {
+      drawOneTile(stampOrder[stampIdx][0], stampOrder[stampIdx][1]);
+    }
+    if (stampIdx < stampOrder.length) { stampRAF = requestAnimationFrame(stampFrame); }
+  }
+  function restartStamp() {
+    if (stampRAF) { cancelAnimationFrame(stampRAF); stampRAF = null; }
+    prepStamp();
+    stampGeom.ctx.clearRect(0, 0, stampGeom.W, stampGeom.H);
+    stampIdx = 0;
+    if (RM) {
+      while (stampIdx < stampOrder.length) {
+        drawOneTile(stampOrder[stampIdx][0], stampOrder[stampIdx][1]);
+        stampIdx++;
+      }
+    } else {
+      stampRAF = requestAnimationFrame(stampFrame);
+    }
+  }
+  var stampTimer = null;
+  function scheduleStamp() {
+    if (stampTimer) { clearTimeout(stampTimer); }
+    stampTimer = setTimeout(restartStamp, 160);
+  }
+  document.getElementById("stampAgain").addEventListener("click", restartStamp);
+
+  /* ---------- boot and resize ---------- */
+
+  function bootDraw() {
+    drawAux();
+    setPreset("truss");
+    if (RM) { drawWave(); }
+  }
+  bootDraw();
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(drawAux); }
+
+  var rsTimer = null;
+  window.addEventListener("resize", function () {
+    if (rsTimer) { clearTimeout(rsTimer); }
+    rsTimer = setTimeout(function () {
+      drawAux();
+      restartStamp();
+      if (RM) { drawWave(); }
+    }, 140);
+  });
+})();
+</script>
+</body>
+</html>
