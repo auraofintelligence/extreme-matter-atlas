@@ -1259,7 +1259,10 @@ body[data-page="elements115"] .ask li b { color: var(--ink); }
       if (p >= 1e3) return (p / 1e3).toFixed(1) + " kW";
       if (p >= 1) return p.toFixed(1) + " W";
       if (p >= 1e-3) return (p * 1e3).toFixed(1) + " mW";
-      return p.toExponential(1) + " W";
+      if (p >= 1e-6) return (p * 1e6).toFixed(1) + " µW";
+      if (p >= 1e-9) return (p * 1e9).toFixed(1) + " nW";
+      if (p >= 1e-12) return (p * 1e12).toFixed(1) + " pW";
+      return "less than a picowatt";
     }
     function fmtMass(g) {
       if (g >= 1) return g.toFixed(2) + " g";
