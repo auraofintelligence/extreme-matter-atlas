@@ -69,7 +69,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
       <h1 class="display">A flood of new crystals</h1>
       <p class="lede">In late 2023 a pattern-finding program called <strong>GNoME</strong>, built by Google DeepMind, published a list of about <strong>2.2 million</strong> crystal structures that were not in the world's catalogues, and flagged about <strong>380,000</strong> of them as likely to hold together. The team behind it describes the haul as close to <strong>800 years</strong> of discovery at the earlier pace. Here is what that means, in plain words.</p>
       <div class="stat-row">
-        <div class="stat"><span class="num">2.2 million</span><span class="lbl">new crystal structures predicted</span></div>
+        <div class="stat"><span class="num">2.2 million</span><span class="lbl">new crystal structures predicted, close to one for every person in Perth</span></div>
         <div class="stat"><span class="num">~380,000</span><span class="lbl">judged stable enough to try making</span></div>
         <div class="stat"><span class="num">736</span><span class="lbl">made in labs around the world while the work ran</span></div>
         <div class="stat"><span class="num">41 in 17 days</span><span class="lbl">cooked by a robot kitchen at Berkeley</span></div>
@@ -139,7 +139,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
   <section class="reveal">
     <div class="wrap">
       <h2>The numbers, held <span class="hue">one at a time</span></h2>
-      <p>Numbers this big slide off the mind, so give each one a picture. About 2.2 million predicted crystals is roughly one for every person in Perth. The stable short-list, about 380,000, would fill the MCG (the Melbourne Cricket Ground, about 100,000 seats) close to four times over.</p>
+      <p>Numbers this big slide off the mind, so give each one a picture. About 2.2 million predicted crystals is close to one for every person in Perth, which passed 2.4 million in 2025. The stable short-list, about 380,000, would fill the MCG (the Melbourne Cricket Ground, about 100,000 seats) close to four times over.</p>
       <p>Or try it as a job. If you looked at one predicted crystal a minute, eight hours a day, seven days a week, the full 2.2 million would keep you busy for about 12 and a half years. The stable short-list alone would take you a bit over two years.</p>
       <p>The team describes the release as close to 800 years of discovery at the earlier pace. Count back 800 years from 2023 and you land in the 1220s, when the Magna Carta was newly signed. Before the release, the catalogues held about 48,000 crystals known to be stable; with it, about 421,000, which is nearly nine times the earlier count.</p>
 
@@ -201,7 +201,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
   <section class="reveal">
     <div class="wrap">
       <h2>What it <span class="hue">could mean</span></h2>
-      <p>Every claim in this section is about the future, so it wears could and would. A predicted crystal is a candidate, not a product.</p>
+      <p>Everything below is about what could follow, not what has been built. A predicted crystal is a candidate, not a product.</p>
       <div class="grid">
         <div class="card"><span class="card-glyph">🔋</span><h3>Batteries</h3><p>The 528 candidate lithium conductors could lead to solid-state batteries: batteries with no flammable liquid inside, which could hold more charge and shrug off knocks. Any one of them would still need years of testing before it reached a car or a phone.</p></div>
         <div class="card"><span class="card-glyph">☀️</span><h3>Solar</h3><p>New light-catching crystals could lift how much of the day's sun a rooftop panel turns into power, and the layered candidates could suit panels that are lighter and cheaper to make. Which ones survive rain, heat and twenty summers is the open question.</p></div>
@@ -227,7 +227,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
       <div class="panel">
         <p>A prediction is a computed judgement, not a sample in a jar. The stability check is done with physics maths at idealised conditions, colder and cleaner than any real bench; how a crystal behaves warm, damp and squeezed is a separate question, answered only by making it.</p>
         <p>Stable does not mean useful, cheap or easy to make. Many of the 380,000 may resist every furnace recipe thrown at them, and most will turn out to be ordinary. The made-so-far numbers, 736 plus the A-Lab's 41, are a first taste, not a verdict on the rest.</p>
-        <p>The headline growth is from about 48,000 known stable crystals to about 421,000. That is nearly nine times the earlier count; the team rounds it to an order of magnitude. The 800 years figure is the team's own comparison against the earlier pace, and it depends on how that pace is measured.</p>
+        <p>The headline growth is from about 48,000 known stable crystals to about 421,000. That is nearly nine times the earlier count, which the team rounds off to about ten times over. The 800 years figure is the team's own comparison against the earlier pace, and it depends on how that pace is measured.</p>
       </div>
     </div>
   </section>
@@ -238,7 +238,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
     <div class="wrap">
       <h2>Keep <span class="hue">exploring</span></h2>
       <div class="grid">
-        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">🧊</span><h3>Crystal Lab</h3><p>Stack and twist flat lattices into 3D yourself, and watch moire patterns bloom, in the atlas's playable lab.</p></div></a>
+        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">🧊</span><h3>Crystal Lab</h3><p>Stack and twist flat lattices into 3D yourself, and watch a moire bloom: the big ghost pattern two fine patterns make when they overlap slightly out of step.</p></div></a>
         <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where the paths could lead next: the exploration routes still open, told in could and would.</p></div></a>
       </div>
     </div>
@@ -422,13 +422,16 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
     var RELEASE = 380000;
     var PER_YEAR = RELEASE / 800; /* the team's 800-year comparison, spread evenly */
 
+    /* each landmark sits in a band around its own year, not above it */
     function milestone(startYear) {
-      if (startYear >= 2000) return "just this side of the Sydney Olympics";
-      if (startYear >= 1969) return "back around the year of the Moon landing";
-      if (startYear >= 1901) return "back around Federation";
-      if (startYear >= 1800) return "back into the 1800s";
-      if (startYear >= 1564) return "back to Shakespeare's lifetime";
-      return "back to around the time the Magna Carta was signed";
+      if (startYear >= 1996 && startYear <= 2004) return "around the time of the Sydney Olympics";
+      if (startYear >= 1964 && startYear <= 1974) return "back around the year of the Moon landing";
+      if (startYear >= 1896 && startYear <= 1906) return "back around Federation";
+      if (startYear >= 1564 && startYear <= 1616) return "back in Shakespeare's lifetime";
+      if (startYear >= 1213 && startYear <= 1233) return "back around the time the Magna Carta was signed";
+      if (startYear >= 2014) return "less than a decade back";
+      if (startYear >= 1900) return "back in the " + (Math.floor(startYear / 10) * 10) + "s";
+      return "back in the " + (Math.floor(startYear / 100) * 100) + "s";
     }
 
     function updatePace() {
