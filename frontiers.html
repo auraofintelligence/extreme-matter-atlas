@@ -18,21 +18,15 @@ body[data-page="frontiers"] .path-grid {
 }
 body[data-page="frontiers"] .path-card {
   display: flex; flex-direction: column; gap: 12px;
-  border-top: 3px solid var(--hz, var(--accent));
+  border-top: 3px solid var(--accent);
 }
-body[data-page="frontiers"] .path-card[data-hz="near"] { --hz: #34d399; }
-body[data-page="frontiers"] .path-card[data-hz="mid"]  { --hz: #fbbf24; }
-body[data-page="frontiers"] .path-card[data-hz="far"]  { --hz: #e879f9; }
 body[data-page="frontiers"] .path-card .card-glyph {
   margin-bottom: 0;
-  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--hz) 70%, transparent));
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--accent) 70%, transparent));
 }
 body[data-page="frontiers"] .path-head {
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  display: flex; align-items: flex-start; gap: 10px;
 }
-body[data-page="frontiers"] .tag.hz-near { border-color: #34d399; color: #34d399; background: rgba(52, 211, 153, 0.08); }
-body[data-page="frontiers"] .tag.hz-mid  { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.08); }
-body[data-page="frontiers"] .tag.hz-far  { border-color: #e879f9; color: #e879f9; background: rgba(232, 121, 249, 0.10); }
 body[data-page="frontiers"] .story-home { display: none; }
 body[data-page="frontiers"] .path-card.at-home .story-lab  { display: none; }
 body[data-page="frontiers"] .path-card.at-home .story-home { display: block; }
@@ -43,10 +37,10 @@ body[data-page="frontiers"] .flip-btn {
   padding: 7px 15px; font-family: var(--font-body); font-size: 13px; font-weight: 600;
   transition: border-color .15s ease, background .15s ease, transform .15s ease;
 }
-body[data-page="frontiers"] .flip-btn:hover { border-color: var(--hz, var(--accent)); transform: translateY(-1px); }
+body[data-page="frontiers"] .flip-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
 body[data-page="frontiers"] .path-card.at-home .flip-btn {
-  border-color: var(--hz);
-  background: color-mix(in srgb, var(--hz) 14%, transparent);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 body[data-page="frontiers"] .open-q {
   margin-top: auto; padding-top: 12px;

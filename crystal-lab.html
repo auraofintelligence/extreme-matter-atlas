@@ -97,7 +97,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
         <div class="stat reveal"><span class="num">6</span><span class="lbl">arms on most snowflakes</span></div>
         <div class="stat reveal"><span class="num">1.1&deg;</span><span class="lbl">the twist at which chilled graphene carries current with no measured loss</span></div>
         <div class="stat reveal"><span class="num">74%</span><span class="lbl">the most space equal spheres can fill, in a fruit crate or in a metal</span></div>
-        <div class="stat reveal"><span class="num">1982</span><span class="lbl">the year a solid returned a five-fold pattern no repeating lattice can hold</span></div>
+        <div class="stat reveal"><span class="num">1982</span><span class="lbl">the year a solid returned a diffraction pattern no repeating lattice can hold</span></div>
       </div>
     </div>
   </section>
@@ -266,7 +266,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
         </div>
       </div>
 
-      <p>There is a shortest wave the pattern can hold, and the sketchpad shows it. Slide <strong>Wavelength</strong> down to two spacings and neighbouring atoms swing in exact opposition, one up while the next goes down. Ask for anything shorter and there are no atoms in between to carry it. That floor puts a ceiling on the highest note a crystal can ring at. In silicon the ceiling lands near 15.6 million million wobbles a second, read straight off the sharp line at 520.7 wavenumbers that a laser instrument returns from a clean wafer. The highest note a person can hear is about 20,000 wobbles a second, so a silicon crystal tops out around 800 million times higher than your ears do.</p>
+      <p>There is a shortest wave the pattern can hold, and the sketchpad shows it. Slide <strong>Wavelength</strong> down to two spacings and neighbouring atoms swing in exact opposition, one up while the next goes down. Ask for anything shorter and there are no atoms in between to carry it. That floor puts a ceiling on the highest note a crystal can ring at. In silicon the ceiling lands near 15.6 million million wobbles a second, read straight off a single sharp line in the light a laser instrument bounces back from a clean wafer. The highest note a person can hear is about 20,000 wobbles a second, so a silicon crystal tops out around 800 million times higher than your ears do.</p>
 
       <div class="note"><strong>The same rule, three benches.</strong> A wave that has to fit a fixed space can only take certain shapes: that is what a lattice does to a vibration, what a plate does to sand scattered on it, and what a guitar string does to a pluck. <a href="cymatics.html">Cymatics</a> drives the plate and photographs the answer. <a href="resonance.html">Resonance</a> follows the rule from a tuning fork all the way down to an atom. The sketchpad is the same argument drawn in points.</div>
     </div>
@@ -944,7 +944,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       b.addEventListener("click", function () {
         state.lattice = b.getAttribute("data-lat");
         segSync("lat-seg", "data-lat", state.lattice);
-        rebuild(); requestDraw();
+        rebuild(); draw();
       });
     });
 
@@ -952,7 +952,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       b.addEventListener("click", function () {
         state.layers = parseInt(b.getAttribute("data-n"), 10);
         segSync("lay-seg", "data-n", state.layers);
-        requestDraw();
+        draw();
       });
     });
 
@@ -981,7 +981,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       var twistOn = state.stack === "twist";
       twistEl.disabled = !twistOn;
       twistCtrl.classList.toggle("off", !twistOn);
-      requestDraw();
+      draw();
     });
     motionEl.addEventListener("change", function () {
       state.motion = motionEl.value;
@@ -990,7 +990,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       }
       syncWave();
       startLoop();
-      requestDraw();
+      draw();
     });
     wavelenEl.addEventListener("input", function () {
       state.wavelen = parseFloat(wavelenEl.value);
@@ -1019,7 +1019,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       syncUI();
       rebuild();
       if (state.playing) startLoop(); else stopLoop();
-      requestDraw();
+      draw();
     }
     document.getElementById("preset-graphite").addEventListener("click", function () {
       applyPreset({ lattice: "honeycomb", spacing: 30, node: 5, layers: 3, stack: "ab", tilt: 55, motion: "still", playing: false });
@@ -1037,7 +1037,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       });
     });
     document.getElementById("preset-five").addEventListener("click", function () {
-      applyPreset({ lattice: "penrose", spacing: 34, node: 4, layers: 1, stack: "aa", tilt: 0, yaw: 0, motion: "still", playing: false });
+      applyPreset({ lattice: "penrose", spacing: 22, node: 3.5, layers: 1, stack: "aa", tilt: 0, yaw: 0, motion: "still", playing: false });
     });
 
     /* ---- drag to rotate ---- */
@@ -1297,7 +1297,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       slideCtrl.classList.toggle("off", !isEdge);
       runCtrl.classList.toggle("off", !isEdge);
       readEl.innerHTML = TEXT[mode][1];
-      requestDraw();
+      draw();
     }
 
     function slideLabel() {
@@ -1468,6 +1468,8 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       }
 
       /* ---- rotation centres ---- */
+      /* rotations are tested tighter than the rest, so nearby centres stay apart */
+      var rtol = blen * 0.09;
       function testRot(cx, cy, order) {
         var d = Math.sqrt(cx * cx + cy * cy);
         var Rs = Math.min(blen * 6, R * 0.9 - d);
@@ -1479,21 +1481,21 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
           var dx = samples[s] - cx, dy = samples[s + 1] - cy;
           if (dx * dx + dy * dy > Rs2) continue;
           cnt++;
-          if (!has(cx + dx * ca - dy * sa, cy + dx * sa + dy * ca, tol)) return false;
+          if (!has(cx + dx * ca - dy * sa, cy + dx * sa + dy * ca, rtol)) return false;
         }
         return cnt >= 14;
       }
 
       var grid = [];
       if (v1 && v2) {
-        for (var s1 = 0; s1 < 12; s1++) {
-          for (var t1 = 0; t1 < 12; t1++) {
-            grid.push([ax + (s1 / 12) * v1.x + (t1 / 12) * v2.x,
-                       ay + (s1 / 12) * v1.y + (t1 / 12) * v2.y]);
+        for (var s1 = 0; s1 < 24; s1++) {
+          for (var t1 = 0; t1 < 24; t1++) {
+            grid.push([ax + (s1 / 24) * v1.x + (t1 / 24) * v2.x,
+                       ay + (s1 / 24) * v1.y + (t1 / 24) * v2.y]);
           }
         }
       } else {
-        var step = blen / 3, lim = blen * 2.6;
+        var step = blen / 5, lim = blen * 2.6;
         for (var gx = -lim; gx <= lim; gx += step) {
           for (var gy = -lim; gy <= lim; gy += step) {
             if (gx * gx + gy * gy <= lim * lim) grid.push([gx, gy]);
@@ -1524,17 +1526,36 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
           return ox * ox + oy * oy;
         };
       }
-      centres.sort(function (p, q) { return q.order - p.order; });
-      var keep = [], lim2 = (blen * 0.3) * (blen * 0.3);
-      for (i = 0; i < centres.length; i++) {
-        var dup = false;
-        for (var j = 0; j < keep.length; j++) {
-          var ddx = keep[j].x - centres[i].x, ddy = keep[j].y - centres[i].y;
-          var gap2 = fold ? fold(ddx, ddy) : ddx * ddx + ddy * ddy;
-          if (gap2 < lim2) { dup = true; break; }
-        }
-        if (!dup) keep.push(centres[i]);
+      /* several neighbouring test points pass around one true centre, so chain them
+         into clusters and keep one marker per cluster */
+      var lim2 = (blen * 0.12) * (blen * 0.12);
+      function near(p, q) {
+        var ddx = p.x - q.x, ddy = p.y - q.y;
+        var gap2 = fold ? fold(ddx, ddy) : ddx * ddx + ddy * ddy;
+        return gap2 < lim2;
       }
+      var groups = [];
+      for (i = 0; i < centres.length; i++) {
+        var touched = [];
+        for (var j = 0; j < groups.length; j++) {
+          for (var m = 0; m < groups[j].length; m++) {
+            if (near(groups[j][m], centres[i])) { touched.push(j); break; }
+          }
+        }
+        if (!touched.length) { groups.push([centres[i]]); continue; }
+        var merged = [centres[i]];
+        for (var t2 = 0; t2 < touched.length; t2++) merged = merged.concat(groups[touched[t2]]);
+        for (var t3 = touched.length - 1; t3 >= 0; t3--) groups.splice(touched[t3], 1);
+        groups.push(merged);
+      }
+      var keep = groups.map(function (g) {
+        var sx = 0, sy = 0, ord = 0, ref = g[0];
+        for (var q = 0; q < g.length; q++) {
+          sx += g[q].x - ref.x; sy += g[q].y - ref.y;
+          if (g[q].order > ord) ord = g[q].order;
+        }
+        return { x: ref.x + sx / g.length, y: ref.y + sy / g.length, order: ord };
+      });
 
       /* ---- mirror lines ---- */
       function testMirror(theta, off) {
@@ -1585,7 +1606,6 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       }
 
       found = { centres: keep, mirrors: mirrors, v1: v1, v2: v2, anchor: [ax, ay] };
-      window.__dbg = { found: found, blen: blen, raw: centres.length };
     }
 
     /* --- markers --- */
@@ -1663,7 +1683,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       ctx.fill();
       ctx.globalAlpha = 1;
 
-      var clip = R * 1.05;
+      var clip = R * 0.99;
 
       /* mirror lines */
       if (mirChk.checked) {
@@ -1830,8 +1850,9 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
 
     function draw() {
       var n = parseInt(nEl.value, 10);
-      var L = Math.min(W, H) * 0.3;
-      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.56 * DPR);
+      /* a pentagon reaches about 1.62 edge lengths from the shared corner */
+      var L = Math.min(W, H) * 0.46 / 1.62;
+      ctx.setTransform(DPR, 0, 0, DPR, W * 0.5 * DPR, H * 0.5 * DPR);
       ctx.clearRect(-W / 2, -H, W, H * 2);
       var start = (90 - n * 54) * DEG;
 
@@ -2122,7 +2143,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       document.getElementById("cell-metals").innerHTML = C.metals;
       syncBars();
       size();
-      requestDraw();
+      draw();
     }
 
     [].forEach.call(document.querySelectorAll("#cell-seg button"), function (b) {
