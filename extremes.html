@@ -656,13 +656,11 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     var proportional = dir === "hi" && !p.spread && min >= 0;
 
     board.innerHTML = rows.map(function (r, i) {
-      var w;
-      if (proportional) {
-        w = max > 0 ? Math.max(5, (r.v / max) * 100) : 100;
-      } else {
-        w = max === min ? 100 : 100 - 68 * ((r.v - min) / (max - min));
-        if (dir === "hi") w = max === min ? 100 : 32 + 68 * ((r.v - min) / (max - min));
-      }
+      /* highest first draws true proportions; the other direction steps by place,
+         because values there can run over millions to one */
+      var w = proportional
+        ? (max > 0 ? Math.max(5, (r.v / max) * 100) : 100)
+        : 100 - 68 * (i / (rows.length > 1 ? rows.length - 1 : 1));
       var cat = "cat-" + (r.e.cat || "unknown");
       var tag = r.est ? ' <span class="tag est">est.</span>' : "";
       return '<div class="bar-row" data-rank="' + (i + 1) + '">' +
