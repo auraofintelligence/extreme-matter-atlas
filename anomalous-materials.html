@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samples · Extreme Matter Atlas</title>
+<meta name="description" content="Nine pieces of metal, ceramic and slag that arrived with a story attached: what was claimed, what the laboratories measured, and where the paperwork goes thin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page-specific styles, scoped to this page */
+body[data-page="anomalies"] h4 {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+  margin: 0 0 9px;
+}
+
+/* ---- the tier key ---- */
+body[data-page="anomalies"] .tier-key { display: grid; gap: 12px; }
+body[data-page="anomalies"] .tier-key li {
+  list-style: none; display: grid; grid-template-columns: 46px 1fr; gap: 14px;
+  align-items: baseline; font-size: 15px; color: var(--muted);
+}
+body[data-page="anomalies"] .tier-key b { color: var(--ink); font-weight: 600; }
+
+/* ---- isotope widget ---- */
+body[data-page="anomalies"] .iso-row { margin: 20px 0 24px; }
+body[data-page="anomalies"] .iso-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 7px;
+}
+body[data-page="anomalies"] .iso-name { font-weight: 600; font-size: 15px; }
+body[data-page="anomalies"] .iso-name span { color: var(--muted); font-weight: 400; }
+body[data-page="anomalies"] .iso-val {
+  font-family: var(--font-mono); font-size: 19px; font-weight: 600;
+  white-space: nowrap; color: var(--ink);
+}
+body[data-page="anomalies"] .iso-track {
+  height: 26px; border-radius: 999px; overflow: hidden;
+  background: var(--bg2); border: 1px solid var(--line);
+}
+body[data-page="anomalies"] .iso-fill {
+  height: 100%; width: 0; border-radius: 999px;
+  transition: width .7s cubic-bezier(.2, .8, .2, 1);
+}
+body[data-page="anomalies"] .iso-a .iso-fill { background: linear-gradient(90deg, #fb7185, #f472b6); box-shadow: 0 0 20px -5px #fb7185; }
+body[data-page="anomalies"] .iso-a .iso-val { color: #fb7185; }
+body[data-page="anomalies"] .iso-b .iso-fill { background: linear-gradient(90deg, #fbbf24, #fde047); box-shadow: 0 0 20px -5px #fbbf24; }
+body[data-page="anomalies"] .iso-b .iso-val { color: #fbbf24; }
+body[data-page="anomalies"] .iso-c .iso-fill { background: linear-gradient(90deg, #a78bfa, #22d3ee); box-shadow: 0 0 20px -5px #a78bfa; }
+body[data-page="anomalies"] .iso-c .iso-val { color: #a78bfa; }
+
+body[data-page="anomalies"] .iso-dev {
+  display: grid; grid-template-columns: 168px 1fr 128px; gap: 12px;
+  align-items: center; margin-top: 9px;
+}
+body[data-page="anomalies"] .dev-label,
+body[data-page="anomalies"] .dev-val {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+  letter-spacing: 0.06em;
+}
+body[data-page="anomalies"] .dev-val { text-align: right; }
+body[data-page="anomalies"] .dev-track {
+  position: relative; height: 10px; border-radius: 999px;
+  background: var(--bg2); border: 1px solid var(--line);
+}
+body[data-page="anomalies"] .dev-mid {
+  position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1px;
+  background: var(--line-bright);
+}
+body[data-page="anomalies"] .dev-bar {
+  position: absolute; top: 1px; bottom: 1px; left: 50%; width: 0;
+  border-radius: 999px; background: var(--ink); opacity: 0.85;
+  transition: left .7s cubic-bezier(.2, .8, .2, 1), width .7s cubic-bezier(.2, .8, .2, 1);
+}
+body[data-page="anomalies"] .dev-bar.clamped { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+body[data-page="anomalies"] .iso-total {
+  font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+  border-top: 1px dashed var(--line); padding-top: 14px; margin-top: 6px;
+}
+body[data-page="anomalies"] .iso-total b { color: var(--ink); font-weight: 600; }
+body[data-page="anomalies"] .iso-badge {
+  display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--muted);
+  margin-top: 14px;
+}
+@media (max-width: 620px) {
+  body[data-page="anomalies"] .iso-dev { grid-template-columns: 1fr 92px; }
+  body[data-page="anomalies"] .dev-label { grid-column: 1 / -1; }
+}
+
+/* ---- tier filter chips ---- */
+body[data-page="anomalies"] .chip {
+  cursor: pointer; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600;
+  padding: 7px 14px; border-radius: 999px; border-width: 1px; border-style: solid;
+  background-color: transparent; transition: filter .15s ease, opacity .15s ease;
+}
+body[data-page="anomalies"] .chip[aria-pressed="false"] {
+  opacity: 0.4; border-color: var(--line-bright); color: var(--muted);
+  background-color: transparent;
+}
+body[data-page="anomalies"] .chip:hover { filter: brightness(1.25); }
+body[data-page="anomalies"] .chip-all {
+  cursor: pointer; font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
+  padding: 7px 15px; border-radius: 999px;
+  border: 1px solid var(--line-bright); background: var(--panel2); color: var(--ink);
+}
+body[data-page="anomalies"] .chip-all:hover { border-color: var(--accent); }
+body[data-page="anomalies"] .filter-count {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-left: auto;
+}
+body[data-page="anomalies"] .no-cards {
+  display: none; padding: 22px; text-align: center; color: var(--muted);
+  border: 1px dashed var(--line-bright); border-radius: 16px;
+}
+
+/* ---- specimen cards ---- */
+body[data-page="anomalies"] .spec { margin: 20px 0; padding: 28px 26px; }
+body[data-page="anomalies"] .spec-head {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px;
+}
+body[data-page="anomalies"] .spec-head h3 { margin: 0; font-size: 20px; }
+body[data-page="anomalies"] .spec-where {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  letter-spacing: 0.05em; margin-bottom: 14px;
+}
+body[data-page="anomalies"] .spec-story { font-size: 15.5px; color: var(--muted); margin-bottom: 20px; }
+body[data-page="anomalies"] .spec-story strong { color: var(--ink); }
+body[data-page="anomalies"] .lines { list-style: none; margin: 0; }
+body[data-page="anomalies"] .lines li {
+  font-size: 14.5px; color: var(--muted); line-height: 1.55;
+  padding: 9px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="anomalies"] .lines li:last-child { border-bottom: 0; }
+body[data-page="anomalies"] .lines .tag { margin-right: 8px; }
+body[data-page="anomalies"] .lines b { color: var(--ink); font-weight: 600; }
+body[data-page="anomalies"] .spec-open {
+  margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line);
+}
+body[data-page="anomalies"] .spec-open p { font-size: 14.5px; color: var(--muted); }
+body[data-page="anomalies"] .xlink { font-size: 14.5px; color: var(--muted); margin-top: 12px; }
+body[data-page="anomalies"] details.spec-src { margin-top: 16px; }
+body[data-page="anomalies"] details.spec-src summary {
+  cursor: pointer; font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+  list-style: none; padding: 7px 0;
+}
+body[data-page="anomalies"] details.spec-src summary::-webkit-details-marker { display: none; }
+body[data-page="anomalies"] details.spec-src summary::before { content: "+ "; }
+body[data-page="anomalies"] details.spec-src[open] summary::before { content: "- "; }
+body[data-page="anomalies"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="anomalies"] .src-list .tag { margin-right: 8px; }
+
+/* ---- settle-it ladder ---- */
+body[data-page="anomalies"] .settle { counter-reset: settle; }
+body[data-page="anomalies"] .settle .card { padding-top: 30px; }
+body[data-page="anomalies"] .settle .card::before {
+  counter-increment: settle; content: counter(settle);
+  position: absolute; top: 16px; right: 20px;
+  font-family: var(--font-display); font-weight: 900; font-size: 34px;
+  color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+</style>
+</head>
+<body data-page="anomalies">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Samples · claimed material, measured and logged</span>
+      <h1 class="display">Samples on the bench</h1>
+      <p class="lede">Every so often a piece of metal turns up with a story attached: it fell out of the sky, it was picked off a beach, it came from a crash. A handful of those pieces have been through real laboratories, sometimes several of them, sometimes decades apart. Laid out here are the ones with numbers behind them, each with <strong>what was claimed</strong>, <strong>what came back</strong>, and where the paperwork goes thin.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">9</span><span class="lbl">cases laid out with their paperwork in view</span></div>
+        <div class="stat"><span class="num">79 / 10 / 11</span><span class="lbl">Earth's magnesium blend, in atoms per hundred</span></div>
+        <div class="stat"><span class="num">1957</span><span class="lbl">the oldest fragment here, still being re-measured</span></div>
+        <div class="stat"><span class="num">4</span><span class="lbl">strength tags, from journal page to anecdote</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>How to read <span class="hue">this bench</span></h2>
+      <p>Claims about a sample come from very different places, and the difference matters more than the wording does. Four tags do that job here. They sit on individual lines inside each case, so one case can carry several at once: a wild claim and a careful measurement often live in the same story.</p>
+      <div class="panel">
+        <ul class="tier-key">
+          <li><span class="tag tier-1">T1</span><span><b>Peer-reviewed measurement.</b> A number that went past a journal's reviewers before it was printed, with the method written down beside it.</span></li>
+          <li><span class="tag tier-2">T2</span><span><b>Named-lab report.</b> A laboratory put its name to a written result, without a journal's review. Instruments and numbers are stated; nobody outside checked the working.</span></li>
+          <li><span class="tag tier-3">T3</span><span><b>Broadcast or documentary claim.</b> Said on air or in an interview. The figures may be right, but the spectra, error bars and blanks have not been published, so they cannot be checked either way.</span></li>
+          <li><span class="tag tier-4">T4</span><span><b>Story or anecdote.</b> An account from a person, a letter, a book or a newspaper column, with no measurement attached to it.</span></li>
+        </ul>
+      </div>
+      <div class="note"><strong>A tag is not a score.</strong> Plenty of T1 measurements came back ordinary, and a few T4 stories sit next to metal that is still puzzling chemists. The tag says where a line came from, and nothing more.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The fingerprint a laboratory <span class="hue">reaches for first</span></h2>
+      <p>Pick up a light camera body, a bike frame or a laptop shell and there is a fair chance you are holding magnesium alloy: chosen because it is light, and because it can be cast into shape cheaply. Magnesium also happens to be what several of the samples on this bench are mostly made of, which is lucky, because magnesium carries an unusually clean fingerprint.</p>
+      <p>Magnesium atoms behave the same way chemically, but they do not all weigh the same. The different weights are called isotopes: the same element in a different weight. Magnesium comes in three, a light one, a middle one and a heavy one, and any lump of the metal is a blend of all three.</p>
+      <p>Here is the useful part. Wherever you scoop magnesium from on this planet, the blend comes out close to the same: about 79 atoms in a hundred are the light one, about 10 the middle, about 11 the heavy. Beach sand, North Atlantic seawater, a bag of Epsom salts, a river in the Amazon, the magnesium in your own muscles: same blend, within a whisker. Meteorites carry it too, because they were made from the same cloud of dust the planets were.</p>
+      <p>That is why the blend would matter on a strange sample. The three weights are cooked up in stars, in different amounts depending on the star, and our whole neighbourhood settled into one ratio when the solar system formed. Something grown around a different star, out of a cloud with a different history, would carry a different ratio, and there is no cheap way to fake one: shifting the blend by hand means sorting atoms by weight, which is slow, costly and leaves traces of its own. So the weights are the first reading a laboratory takes when an odd sample lands on the bench. It is quick, the reference numbers are known to several decimal places, and there would be little argument about what an answer meant.</p>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="isoPick">Reading</label>
+            <select id="isoPick"></select>
+          </div>
+        </div>
+        <div class="iso-badge"><span class="tag tier-1" id="isoTier">T1</span><span id="isoTierWord">peer-reviewed measurement</span></div>
+        <div id="isoRows">
+          <div class="iso-row iso-a">
+            <div class="iso-head"><span class="iso-name">Mg&#8209;24 <span>the light one</span></span><span class="iso-val" data-val="0">0%</span></div>
+            <div class="iso-track"><div class="iso-fill"></div></div>
+            <div class="iso-dev">
+              <span class="dev-label">gap from Earth's blend</span>
+              <div class="dev-track"><span class="dev-mid"></span><span class="dev-bar"></span></div>
+              <span class="dev-val">0.00</span>
+            </div>
+          </div>
+          <div class="iso-row iso-b">
+            <div class="iso-head"><span class="iso-name">Mg&#8209;25 <span>the middle one</span></span><span class="iso-val" data-val="0">0%</span></div>
+            <div class="iso-track"><div class="iso-fill"></div></div>
+            <div class="iso-dev">
+              <span class="dev-label">gap from Earth's blend</span>
+              <div class="dev-track"><span class="dev-mid"></span><span class="dev-bar"></span></div>
+              <span class="dev-val">0.00</span>
+            </div>
+          </div>
+          <div class="iso-row iso-c">
+            <div class="iso-head"><span class="iso-name">Mg&#8209;26 <span>the heavy one</span></span><span class="iso-val" data-val="0">0%</span></div>
+            <div class="iso-track"><div class="iso-fill"></div></div>
+            <div class="iso-dev">
+              <span class="dev-label">gap from Earth's blend</span>
+              <div class="dev-track"><span class="dev-mid"></span><span class="dev-bar"></span></div>
+              <span class="dev-val">0.00</span>
+            </div>
+          </div>
+        </div>
+        <p class="iso-total" id="isoTotal"></p>
+        <p class="note" id="isoNote"></p>
+      </div>
+
+      <p>The thin bars under each fat one show the gap from Earth's blend, stretched so that a tenth of a percentage point is visible. Their full width is one and a half percentage points either way, which is far wider than any of the careful readings need.</p>
+      <p>One catch keeps the readings interesting. Heat, evaporation and hard knocks do nudge the blend a little: boil off some magnesium and the light atoms leave first, so what is left sits slightly heavy. That drift runs along a known line, and every solar-system material measured so far sits on that line, including the layered fragment further down this page. A sample sitting a little off the reference numbers can still be plain Earth material. What would stand out is a sample sitting off the line altogether.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The <span class="hue">cases</span></h2>
+      <p>Each card carries the same four parts: the story in brief, what was claimed, what the instruments returned, and the questions still open. The tag on the card title is the strongest kind of source behind the <em>measurements</em>, which is often weaker than the strongest source in the reading list underneath.</p>
+
+      <div class="control-row" id="tierFilter">
+        <button type="button" class="chip tag tier-1" data-tier="1" aria-pressed="true">T1 journal</button>
+        <button type="button" class="chip tag tier-2" data-tier="2" aria-pressed="true">T2 named lab</button>
+        <button type="button" class="chip tag tier-3" data-tier="3" aria-pressed="true">T3 broadcast</button>
+        <button type="button" class="chip tag tier-4" data-tier="4" aria-pressed="true">T4 story</button>
+        <button type="button" class="chip-all" id="chipAll">Show all</button>
+        <span class="filter-count" id="filterCount"></span>
+      </div>
+
+      <div id="specList">
+
+        <!-- 1 -->
+        <article class="card spec" data-tier="1">
+          <div class="spec-head"><h3>Ubatuba magnesium fragments</h3><span class="tag tier-1">T1</span></div>
+          <p class="spec-where">1957 as claimed, possibly the early 1930s · Ubatuba coast, São Paulo state, Brazil</p>
+          <p class="spec-story">In September 1957 a Rio de Janeiro newspaper column printed a letter from a reader whose signature could not be read. He wrote that he had been fishing near Ubatuba when a disc climbing above the sea broke apart, and that he had picked light grey metal off the beach. Three pieces reached the paper, then a doctor, then a private research group, then a Stanford professor, then a modern bench in 2017. Nobody has identified the man who wrote the letter.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> The metal is <b>pure magnesium</b>, purer than anything obtainable in 1957, and therefore not made on Earth. This came from a 1960 bulletin and it is the origin of the whole story.</li>
+                <li><span class="tag tier-3">T3</span> Reported in interviews from 2021 onward: one Ubatuba piece run on a fine-beam instrument has magnesium weights <b>about 30 per cent off</b> the ordinary blend, which would imply somebody engineered it. Data tables, uncertainties and standards for that run have not been published.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-2">T2</span> 1957, a Brazilian government laboratory: no trace elements detected, reported as 100 per cent magnesium. Later reviewers read that as the instrument running out of sensitivity, not as real purity.</li>
+                <li><span class="tag tier-2">T2</span> 1958, Oak Ridge National Laboratory: <b>99.8 per cent magnesium</b>, with iron, silicon and aluminium in the parts-per-million range.</li>
+                <li><span class="tag tier-2">T2</span> 1961, Dow Chemical: 99.98 per cent magnesium, with strontium and barium near 30 parts per million.</li>
+                <li><span class="tag tier-2">T2</span> 1968, a US federal laboratory: 99.9 per cent magnesium. Its single isotope figure was later traced to the weight of the wrong sample, and is now treated as a failed run rather than an oddity.</li>
+                <li><span class="tag tier-1">T1</span> 1997, all three magnesium weights at once: the sample sat <b>closer to the reference</b> than two shop-bought standards sat to each other.</li>
+                <li><span class="tag tier-2">T2</span> 2017 and 2018, two commercial laboratories on the same dissolved drop. Cleveland returned 79.28 / 9.94 / 10.85; Austin returned 79.31 / 10.10 / 10.58. Same liquid, different answers.</li>
+                <li><span class="tag tier-1">T1</span> The published finding, 2022: the magnesium weights <b>fall inside terrestrial limits</b>. The trace-element weights disagreed between the two labs, so no reading was taken from them.</li>
+                <li><span class="tag tier-1">T1</span> What survives is chemistry rather than weights: consistently about <b>99.88 per cent magnesium</b> carrying several hundred parts per million of strontium, which is roughly a pinch of salt in a one kilogram bag of flour.</li>
+                <li><span class="tag tier-2">T2</span> Chemists at two firms told the investigators that strontium is not a by-product of making magnesium, and would have to be put in deliberately. That recipe was not in use when the sample surfaced.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>The paperwork is broken at the start and sound after it. There is no named finder, no fixed location and no confirmed date, so the metal cannot be tied to anything anybody saw. A later search for a matching event turned up a bright object over Ubatuba in 1933 or 1934, with light material caught in a fishing net around the same time, plus an undisputed aircraft crash in the area in April 1957. What is left is a workshop puzzle rather than a sky one: who made very pure magnesium with strontium added on purpose at that date, and why. The 2022 team recommend separating the trace metals from the bulk magnesium before re-running, because the magnesium outnumbers the traces about a thousand to one and swamps the detector, rather like trying to pick out one voice in a full grandstand.</p>
+            <p class="xlink">Where measurement could go from here is sketched in <a href="frontiers.html">Frontiers</a>.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-1">T1</span> Powell, Swords, Rodeghier &amp; Budinger, "Isotope Ratios and Chemical Analysis of the 1957 Brazilian Ubatuba Fragment", Journal of Scientific Exploration 36(1), 2022 · <a href="https://journalofscientificexploration.org/index.php/jse/article/view/2415" rel="noopener">journalofscientificexploration.org</a></li>
+              <li><span class="tag tier-1">T1</span> Sturrock, "Composition Analysis of the Brazil Magnesium", Journal of Scientific Exploration 15(1), 2001</li>
+              <li><span class="tag tier-1">T1</span> Kaufmann &amp; Sturrock, "On Events Possibly Related to the Brazil Magnesium", Journal of Scientific Exploration 18(2), 2004</li>
+              <li><span class="tag tier-2">T2</span> Oak Ridge National Laboratory report, September 1958, reproduced in Powell et al. 2022</li>
+              <li><span class="tag tier-2">T2</span> National Office Laboratory of the Alcohol and Tobacco Division, neutron activation report, 27 February 1968</li>
+              <li><span class="tag tier-2">T2</span> Cerium Laboratories (Austin) 2017 and ICP &amp; ICP-MS Services (Cleveland) 2018 reports, both reproduced in Powell et al. 2022</li>
+              <li><span class="tag tier-3">T3</span> Nolan interview transcript, February 2022 · <a href="https://ufos-scientificresearch.blogspot.com/2022/02/a-new-interview-with-dr-garry-nolan.html" rel="noopener">ufos-scientificresearch.blogspot.com</a></li>
+              <li><span class="tag tier-4">T4</span> APRO Bulletin, March 1960, p.3, and the Ibrahim Sued column, O Globo, 14 September 1957</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 2 -->
+        <article class="card spec" data-tier="1">
+          <div class="spec-head"><h3>Council Bluffs molten metal</h3><span class="tag tier-1">T1</span></div>
+          <p class="spec-where">17 December 1977 · Big Lake Park levee, Council Bluffs, Iowa</p>
+          <p class="spec-story">At about a quarter to eight one December evening, several separate groups of people in Council Bluffs reported a glowing red mass coming down near Big Lake Park, then a flash and flames a few metres high. Police and fire crews were on the levee within about fifteen minutes and found molten metal running down the bank, glowing red-orange, spread over roughly the footprint of a single bed and weighing somewhere between 16 and 25 kilograms, about a bag of cement. Eleven witnesses were documented, among them an assistant fire chief who said the cooled metal could be neither broken nor bent.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> An unidentified object hovering overhead dropped the molten mass. Some witnesses described something round with red blinking lights.</li>
+                <li><span class="tag tier-4">T4</span> The exotic reading that followed: the metal itself would turn out to be unusual.</li>
+                <li><span class="tag tier-1">T1</span> A narrower claim was made much later, in 2022: that material like this <b>could</b> be discarded slag from an advanced vehicle, and that instruments built for biology could characterise it properly.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-2">T2</span> On the night, a check at the scene: <b>not radioactive</b>.</li>
+                <li><span class="tag tier-2">T2</span> Within days, Ames Laboratory at Iowa State: chiefly iron with under 1 per cent of other metals, mainly nickel and chromium, plus a slag foam and a white ash of calcium and magnesium.</li>
+                <li><span class="tag tier-2">T2</span> Four days after the fall, a pipe foundry laboratory: carbon 0.70 per cent, manganese 0.56, silicon 0.52, the rest traces. That is <b>ordinary carbon steel</b> of a grade made in commercial foundries, two of which were working in Council Bluffs at the time.</li>
+                <li><span class="tag tier-1">T1</span> 2022, a surviving fragment on modern instruments: titanium, iron and chromium weights consistent with terrestrial values. One iron figure came back slightly high, and the authors themselves put it down to a known interference in the instrument.</li>
+                <li><span class="tag tier-1">T1</span> The paper's stated finding: the components are consistent with a terrestrial origin, with no sign of being engineered or designed.</li>
+                <li><span class="tag tier-1">T1</span> The oddity the paper does flag is compositional: five sub-samples differ from each other a lot, with aluminium varying two-fold and iron ten-fold, which reads as a rough industrial process rather than a designed alloy.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>The front of the trail is unusually good and the back of it is thin. Material went from a guarded scene to two named laboratories inside four days, which is why this case, rather than a more famous one, is the one that reached a journal. The specific fragment tested in 2022, though, is documented only as coming from one author's own holdings, with the intervening decades undescribed. The 1977 and 2022 element pictures also disagree: the newer charts put aluminium and silicon above iron in most sub-samples, where the 1977 work called it chiefly iron, and nobody has reconciled the two. The instrument could not see carbon or oxygen, so the obvious plain explanation, scrap metal melted by an improvised thermite reaction, could not be tested. Nothing in the metal is unusual. What stays unexplained is arrival: no foundry, transport route or spill has been matched to it, and a prank would mean somebody moved a bag of cement's worth of molten steel onto a park levee at night, which has no evidence either.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-1">T1</span> Nolan, Vallée, Jiang &amp; Lemke, "Improved instrumental techniques, including isotopic analysis, applicable to the characterization of unusual materials with potential relevance to aerospace forensics", Progress in Aerospace Sciences 128, January 2022 · <a href="https://www.sciencedirect.com/science/article/am/pii/S0376042121000907" rel="noopener">sciencedirect.com</a></li>
+              <li><span class="tag tier-1">T1</span> Vallée, "Physical Analyses in Ten Cases of Unexplained Aerial Objects with Material Samples", Journal of Scientific Exploration 12(3), 1998, Case 9</li>
+              <li><span class="tag tier-2">T2</span> Ames Laboratory, Iowa State University, analysis by R. S. Hansen and E. DeKalb, December 1977</li>
+              <li><span class="tag tier-2">T2</span> Griffin Pipe Products Company laboratory report, 21 December 1977</li>
+              <li><span class="tag tier-4">T4</span> Council Bluffs Historical Society, "UFO Crash at Big Lake Park" · <a href="https://www.thehistoricalsociety.org/h/ufo.html" rel="noopener">thehistoricalsociety.org</a></li>
+              <li><span class="tag tier-4">T4</span> Metabunk review thread on the 2022 paper, method critique · <a href="https://www.metabunk.org/threads/is-improved-instrumental-techniques-nolan-vallee-jiang-lemke-2022-a-useful-paper.13286/" rel="noopener">metabunk.org</a></li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 3 -->
+        <article class="card spec" data-tier="1">
+          <div class="spec-head"><h3>Ten samples, one catalogue</h3><span class="tag tier-1">T1</span></div>
+          <p class="spec-where">Published 1998, cases spanning 1933 to about 1978 · Brazil, the United States, Sweden, Colombia, Mexico</p>
+          <p class="spec-story">In 1998 Jacques Vallée published a survey pulling together ten incidents in which physical material was claimed to go with something seen in the sky. The aim was narrower than the subject suggests: to test whether laboratory work on such leftovers is workable at all, and to see what the evidence trail actually looked like when each case was examined one at a time. The ten run from Ubatuba and Maury Island through Sweden, Colombia, Mexico and Iowa.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> Popularly, that these samples are recovered fragments of craft of unknown origin.</li>
+                <li><span class="tag tier-1">T1</span> The author's own claim is smaller: that a physical phenomenon has been reported over a long period, that it is said to leave material traces, and that those traces <b>can be studied</b> with ordinary laboratory methods.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-1">T1</span> Across all ten, the material falls into two ordinary families: light metals that conduct well, meaning magnesium and aluminium, and slag-like industrial leftovers, meaning iron with chromium, manganese and silicon.</li>
+                <li><span class="tag tier-1">T1</span> <b>No rare element turned up</b>, and no unusual isotope weight is reported anywhere in the set.</li>
+                <li><span class="tag tier-1">T1</span> Sweden, 1956: tungsten carbide at 94.9 per cent with cobalt at 4.1. Good quality for the early 1950s, and a known manufactured product; the same material tips a masonry drill bit.</li>
+                <li><span class="tag tier-1">T1</span> Bogotá: aluminium 93.7 per cent with phosphorus 4.8, an unexplained surface layer, and, oddly for aluminium, no fluoride and no water. The author writes that a hoax could not be ruled out.</li>
+                <li><span class="tag tier-1">T1</span> Campinas about 90 per cent tin; Maumee a fibrous piece at 92 per cent magnesium; Jopala plain iron with a little silicon, manganese and chromium.</li>
+                <li><span class="tag tier-1">T1</span> The set's best entry for paperwork is Council Bluffs, the one case the author says met all four of his conditions, and its metal turned out to be ordinary carbon steel.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>The author's own list of limits is the load-bearing part of the paper: inaccuracies in data gathering, missing dates and times, no detailed field investigation, and no unbroken trail from ground to laboratory. One case in ten clears that bar. Critics argue the reverse of the paper's intent, that including cases with known trail failures, Maury Island above all, weakens the set as a whole. The argument the paper actually makes is about method rather than evidence: that comparative work is worth doing even when the material turns out mundane, and that field protocol has to improve before any sample could carry weight.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-1">T1</span> Vallée, "Physical Analyses in Ten Cases of Unexplained Aerial Objects with Material Samples", Journal of Scientific Exploration 12(3), 1998, 359-375 · <a href="https://www.semanticscholar.org/paper/Physical-Analyses-in-Ten-Cases-of-Unexplained-with-Vallee/ff12dbcb7692a1f9c92a78454497b2beda66ac87" rel="noopener">semanticscholar.org</a></li>
+              <li><span class="tag tier-1">T1</span> Sturrock, "Composition Analysis of the Brazil Magnesium", Journal of Scientific Exploration 15(1), 2001, the companion analysis of Case 1</li>
+              <li><span class="tag tier-2">T2</span> SAAB and associated Swedish, Danish and German laboratories, via Sven Schalin, for the Väddö composition</li>
+              <li><span class="tag tier-2">T2</span> Ames Laboratory and Griffin Pipe Products Company reports, December 1977, for Case 9</li>
+              <li><span class="tag tier-4">T4</span> Kevin Randle, "Jacques Vallee and Ten Unexplained UFO Cases and Metallic Debris", December 2021 · <a href="https://kevinrandle.blogspot.com/2021/12/jacques-vallee-and-ten-unexplained-ufo.html" rel="noopener">kevinrandle.blogspot.com</a></li>
+              <li><span class="tag tier-4">T4</span> Preliminary Catalogue of Analysis of Alleged UAP Fragments, Project 1947 · <a href="https://www.project1947.com/kbcat/kbuapfrag.htm" rel="noopener">project1947.com</a></li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 4 -->
+        <article class="card spec" data-tier="1">
+          <div class="spec-head"><h3>Maury Island slag</h3><span class="tag tier-1">T1</span></div>
+          <p class="spec-where">21 June 1947 · Maury Island, Puget Sound, Washington state</p>
+          <p class="spec-story">A harbour patrolman said that on a June day in 1947, while working in Puget Sound, he watched six large doughnut-shaped craft overhead, one of which shed a shower of light white material and heavier dark slag-like pieces that damaged his boat. His supervisor said he went to the beach and collected samples. A magazine publisher wired money to a pilot to investigate, and the visit from a man in dark clothing that the patrolman described is where the men-in-black motif starts. This one is on the bench as a baseline: a fall story whose residue was matched to something local.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> The fragments were debris shed by a damaged disc, and the government suppressed the evidence.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-2">T2</span> Testing arranged in Chicago in 1947 identified the material as <b>slag from steel production</b>.</li>
+                <li><span class="tag tier-2">T2</span> Army and FBI investigators compared it against slag from a Tacoma smelter that had been working across the bay since 1912, and found the two alike. The federal analysis results were not released publicly, which is the one real documentary gap here.</li>
+                <li><span class="tag tier-1">T1</span> The element list carried in the later catalogue is a routine smelter signature: calcium, iron, zinc and titanium as the main constituents, with aluminium, manganese, copper, magnesium, silicon, nickel, lead, strontium and chromium behind them and traces of silver, tin and cadmium. Nothing rare, nothing pure, no unusual weights.</li>
+                <li><span class="tag tier-4">T4</span> The pilot who was sent to investigate examined the white metal produced for him and found it ordinary, and inconsistent with the finder's own description of what fell.</li>
+                <li><span class="tag tier-2">T2</span> Federal files record the finder saying that if questioned he would call it a hoax because he wanted no further trouble, and record the pair approaching publications hoping to build the story into a profitable deal.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>There is no collection record at all: the fragments were said to be picked up loose from a beach next to a working smelter district. Two investigators died when their aircraft came down near Kelso while carrying material from the case, which fed suppression claims for decades and adds no measurement to the pile. The head of the later official study called it the dirtiest hoax in the field, and prosecution was dropped. Its value on this bench is as a control: it shows what a case looks like when the residue does match the local industrial waste, which is a useful shape to have in your eye when reading the others.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-1">T1</span> Vallée, Journal of Scientific Exploration 12(3), 1998, Case 2, element list and the author's own weak-case assessment</li>
+              <li><span class="tag tier-2">T2</span> Analysis arranged by Ray Palmer at Chicago, 1947; Army and FBI comparison against Tacoma smelter slag</li>
+              <li><span class="tag tier-2">T2</span> FBI investigative file on Dahl and Crisman, 1947</li>
+              <li><span class="tag tier-4">T4</span> HistoryLink.org essay 2068, Dahl and Crisman report a 21 June 1947 explosion · <a href="https://www.historylink.org/File/2068" rel="noopener">historylink.org</a></li>
+              <li><span class="tag tier-4">T4</span> Edward J. Ruppelt, The Report on Unidentified Flying Objects, 1956</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 5 -->
+        <article class="card spec" data-tier="2">
+          <div class="spec-head"><h3>The layered magnesium piece</h3><span class="tag tier-2">T2</span></div>
+          <p class="spec-where">Received 1996, origin claimed as 1947 · posted to a radio host in Nevada; claimed origin New Mexico</p>
+          <p class="spec-story">In 1996 an anonymous correspondent posted metal fragments to a late-night radio host, with letters saying his grandfather had been on a 1947 recovery team in New Mexico and had taken the pieces from the underside of a wedge-shaped craft. The material passed through private hands, then a research group, then in 2019 into a co-operative agreement with a US Army research command. Nothing about where the piece was before 1996 has been documented. It is the sample most often described as the strongest one in private hands.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-3">T3</span> A layered magnesium-zinc and bismuth structure with <b>no manufacturing precedent</b>, the bismuth layers thinner than a human hair and the magnesium layers about ten times a hair.</li>
+                <li><span class="tag tier-3">T3</span> That the layer spacing would make it a waveguide, a channel that steers a wave the way a hose steers water, for terahertz light, which sits between radio and infrared. The claim is that it would steer waves far longer than the channel should allow, and it has been linked publicly to reducing a craft's effective mass.</li>
+                <li><span class="tag tier-3">T3</span> That a search of national laboratories, metallurgists and the published literature found no evidence anybody had made one.</li>
+                <li><span class="tag tier-3">T3</span> A researcher who has examined it says it is about as close to technology as anything he holds.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-2">T2</span> 2023 to 2024, Oak Ridge National Laboratory, on the parent sample and three earlier sub-samples: about <b>97.5 per cent magnesium</b> by weight with about 2 per cent zinc, the zinc varying band to band.</li>
+                <li><span class="tag tier-2">T2</span> Traces in parts per million: bismuth 3813, lead 2859, thallium 215, iron 55, gold 11. The bismuth is about four grams in a kilo, roughly a level teaspoon of sugar in a kilo bag, and it sits alongside lead at about one to one right through the bands.</li>
+                <li><span class="tag tier-2">T2</span> Electron diffraction: the bismuth-rich bands are tiny disordered crystals in a glassy surround. The single clean bismuth crystal that the waveguide idea needs, according to the physics paper the idea rests on, <b>was never present</b> in the material.</li>
+                <li><span class="tag tier-2">T2</span> Magnesium weights: shifted by heat and strain, and sitting on the same line as solar-system materials generally, alongside meteorites, seawater, Earth rock and two brands of commercial magnesium metal.</li>
+                <li><span class="tag tier-2">T2</span> Lead weights: inside the ordinary terrestrial field, and clear of the fields for lunar glass, Mars and meteorite minerals.</li>
+                <li><span class="tag tier-2">T2</span> The reported reading: made on Earth, using a mixture of elements uncommon by today's standards, then damaged by heat and force. The commissioning office set it beside mid-century magnesium alloy programmes, where zinc at 1 to 4 per cent and lead and bismuth additions for corrosion resistance were being tried.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>With no trail before 1996, no measurement can bind the piece to 1947 or to anything seen in the sky. The laboratories could not say whether it is a fragment of something larger, and noted that its layers have come apart and oxidised, so its present shape is probably not its original one, which leaves a waveguide argument about the original state not fully closed by structure alone. The report is a laboratory synopsis rather than a peer-reviewed paper, and no independent laboratory has published a repeat of the magnesium or lead runs. The group that supplied it accepted publication and said the reports do not settle origin or purpose; its follow-up questions have not appeared. The researcher who rates the piece highest has not published isotope numbers of his own for it.</p>
+            <p class="xlink">A claim about what a shape would do, arriving with a story wrapped around it: <a href="vimana.html">Vimana</a> reads a much older set of stories the same way.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-2">T2</span> Oak Ridge National Laboratory, "Synopsis: Analysis of a Metallic Specimen", April 2024, released July 2024 · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/ORNL-Synopsis_Analysis_of_a_Metallic_Specimen.pdf" rel="noopener">aaro.mil</a></li>
+              <li><span class="tag tier-2">T2</span> Supplement to Oak Ridge National Laboratory's analysis, July 2024, covering the waveguide reasoning and the mid-century alloy context · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/AAROs_Supplement_to_ORNLs_Analysis_of_a_Metallic_Specimen.pdf" rel="noopener">aaro.mil</a></li>
+              <li><span class="tag tier-3">T3</span> To The Stars, "Material of Interest: Magnesium-Zinc-Bismuth", carrying the terahertz waveguide claim and conceding the provenance cannot be verified · <a href="https://tothestars.media/blogs/press-and-news/material-of-interest-magnesium-zinc-bismuth" rel="noopener">tothestars.media</a></li>
+              <li><span class="tag tier-3">T3</span> Hal Puthoff, address to the SSE/IRVA conference, Las Vegas, June 2018</li>
+              <li><span class="tag tier-3">T3</span> To The Stars, "ORNL and AARO Material Analysis Update" · <a href="https://tothestars.media/blogs/press-and-news/ornl-and-aaro-material-analysis" rel="noopener">tothestars.media</a></li>
+              <li><span class="tag tier-4">T4</span> The anonymous letters to Art Bell, 1996, claiming a grandfather on the 1947 retrieval team</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 6 -->
+        <article class="card spec" data-tier="2">
+          <div class="spec-head"><h3>Flint Ridge aluminium</h3><span class="tag tier-2">T2</span></div>
+          <p class="spec-where">Mid-1990s as claimed, reported January 2026 · private land near Flint Ridge, central Ohio</p>
+          <p class="spec-story">A property owner in central Ohio said he saw a large unidentified object overhead in or around 1995, and afterwards found metal on his land. What eventually reached the assessing office was three bags of drill shavings, drilled by somebody else before the office took possession, plus one small sectioned piece. Oak Ridge ran the work and the report came out in January 2026, the second of two such reports on privately held metal.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> The specimen has unusual composition and structure, and it <b>emits a gamma-ray signal</b>. The claim is anchored to the owner's account of the object rather than to any documented recovery.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-2">T2</span> Bulk composition by weight: aluminium 86.1 per cent, silicon 11.9, then iron 0.97, copper 0.37, magnesium 0.30, zinc 0.20, manganese 0.20, titanium 0.03. That is a <b>conventional aluminium-silicon casting alloy</b>, the family used for engine blocks and pump housings, closest to two catalogue reference grades.</li>
+                <li><span class="tag tier-2">T2</span> Structure: silicon plates and needles in an aluminium surround, ordinary iron and manganese intermetallics, small lead-rich pockets consistent with recycled feedstock, and shrinkage holes up to about a millimetre, roughly the thickness of a five cent coin.</li>
+                <li><span class="tag tier-2">T2</span> Feature spacing of a few hundred micrometres, about the thickness of a business card, means the metal <b>cooled slowly in a mould</b>. A fast quench would have left features ten times finer, and it did not.</li>
+                <li><span class="tag tier-2">T2</span> Shavings and bulk interior matched chemically within instrument uncertainty, so the alloy identity is not an artefact of the drilling.</li>
+                <li><span class="tag tier-2">T2</span> About two days of gamma counting on three pieces: spectra indistinguishable from background. <b>No radioactivity.</b></li>
+                <li><span class="tag tier-2">T2</span> The reported reading: most likely an ordinary, conventionally manufactured aluminium alloy. The supplement adds that the piece lacks the strontium or sodium modifiers a high-performance casting would carry, that its shape shows no working geometry, and that this alloy family has accounted for the bulk of shaped aluminium castings since the 1970s.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>No specific source, manufacturer or heat treatment could be pinned down; more pieces or factory records would be needed to narrow it to a catalogue grade. The owner's account is not independently corroborated, and nothing measured connects the metal to it. Isotope weights were not measured on this one at all, only elements, structure and gamma counting, so the test the rest of this bench leans on was not applied here. The shavings were drilled before the office took possession, so that handling is undocumented. The suggested plain candidates, a commercial casting, an industrial by-product, recycled alloy or a slow-cooling melt from a vehicle fire, are candidates rather than a match.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-2">T2</span> Oak Ridge National Laboratory, "Synopsis: Analysis of an Aluminum Specimen" · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/ORNL_ANALYSIS_OF_AN_ALUMINUM_SPECIMEN.pdf" rel="noopener">aaro.mil</a></li>
+              <li><span class="tag tier-2">T2</span> Supplement to that analysis, cleared for open publication 9 January 2026 · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/AARO_Metallic_Materials_Analysis_Supplement_Jan2026.pdf" rel="noopener">aaro.mil</a></li>
+              <li><span class="tag tier-2">T2</span> Fiscal Year 2024 consolidated annual report, recording the taskings and the concurrence with both findings · <a href="https://www.aaro.mil/" rel="noopener">aaro.mil</a></li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 7 -->
+        <article class="card spec" data-tier="2">
+          <div class="spec-head"><h3>Uinta Basin livestock samples</h3><span class="tag tier-2">T2</span></div>
+          <p class="spec-where">1996 to 2004 · Uinta Basin, Utah, and wider Rocky Mountain states</p>
+          <p class="spec-story">A privately funded science group bought a Utah ranch in 1996 and put staff on it with cameras, sensors and a permanent presence. Alongside the ranch watch it ran a regional study of unexplained livestock deaths, led by a veterinarian and microbiologist. Investigators went out with vets, carried out field examinations, and sent blood, tissue and eye fluid to laboratories. Most of the analysed cases were elsewhere in the basin rather than on the ranch itself, which matters when the results get quoted as ranch evidence.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-3">T3</span> Precise cuts made with a sharp instrument rather than by scavengers.</li>
+                <li><span class="tag tier-2">T2</span> Oxindole, a compound with a sedative effect, present in tissue and eye fluid of one affected animal and absent from a control animal.</li>
+                <li><span class="tag tier-2">T2</span> Potassium chloride in blood at about ten times the normal level, copper shortfalls in six documented cases, and phenolic compounds with trace formaldehyde in some specimens.</li>
+                <li><span class="tag tier-3">T3</span> A blue gel-like substance recovered from a 1998 site, said to have one rough precedent from the 1970s and none locally.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-2">T2</span> Real bench work sits behind this one: organic extractions, infrared spectrometry, and gas chromatography with mass spectrometry, run against control animals, written up in about <b>twenty technical reports</b>.</li>
+                <li><span class="tag tier-2">T2</span> Those reports were published by the body that funded the work and none went to a journal. The individual laboratory reports behind them have not been released as documents.</li>
+                <li><span class="tag tier-3">T3</span> Press reporting in 2001 said two university veterinary laboratories had confirmed that an eye and part of an ear in a 1998 case were removed with a sharp instrument rather than by scavengers. The universities are not named in the reporting.</li>
+                <li><span class="tag tier-3">T3</span> The 1998 blue gel was reported in 1999 as still being analysed, with results due soon. <b>No identification has been published.</b> Formaldehyde, which later summaries mention, is a common preserving fluid, and that is the first thing a written report would need to address.</li>
+                <li><span class="tag tier-4">T4</span> The group's own deputy administrator later wrote that years of focused investigation produced very little physical evidence, and none that could be considered conclusive proof of anything.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>Which two university laboratories confirmed the sharp-instrument finding, and are their reports retrievable? How many of the analysed animals were actually on the ranch as against elsewhere in the basin? Where did the tissue and blood from the best-known 1997 case go, and does the internal report from that year hold analytical results or only field observations? The group's observation logs, calibration records and negative results have not been released as one archive, and it is not publicly documented who holds them now. A later government contract ran on the same property between 2008 and 2012; the official record confirms the activity took place and was not requested in the contract's statement of work, and its published output is literature reviews rather than sample reports.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-2">T2</span> NIDS technical report on the Dupuyer, Montana case of 27 July 2001, with the oxindole comparison against a control, archived · <a href="https://ufology.patrickgross.org/htm/cattlenids01.htm" rel="noopener">ufology.patrickgross.org</a></li>
+              <li><span class="tag tier-2">T2</span> All-domain Anomaly Resolution Office, Historical Record Report Volume 1, March 2024 · <a href="https://www.aaro.mil/Portals/136/PDFs/AARO_Historical_Record_Report_Vol_1_2024.pdf" rel="noopener">aaro.mil</a></li>
+              <li><span class="tag tier-3">T3</span> Deseret News, "Ranch still studying cattle mutilations, unexplained sightings", 1 January 2001 · <a href="https://www.deseret.com/2001/1/1/19561572/ranch-still-studying-cattle-mutilations-unexplained-sightings/" rel="noopener">deseret.com</a></li>
+              <li><span class="tag tier-3">T3</span> Deseret News, "Answers actively sought in bizarre cattle mutilations", 28 July 1999 · <a href="https://www.deseret.com/1999/7/28/19457864/answers-actively-sought-in-bizarre-cattle-mutilations-br-patterns-are-being-found-151-but-not-explan/" rel="noopener">deseret.com</a></li>
+              <li><span class="tag tier-4">T4</span> Kelleher &amp; Knapp, Hunt for the Skinwalker, 2005</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 8 -->
+        <article class="card spec" data-tier="3">
+          <div class="spec-head"><h3>Mesa ceramic and metal flakes</h3><span class="tag tier-3">T3</span></div>
+          <p class="spec-where">2022 to 2026 · a ranch mesa in the Uinta Basin, Utah</p>
+          <p class="spec-story">Since 2020 a television team has been drilling and digging into a mesa on the same Utah property, and sifting the spoils with a magnetic wand. Ceramic-looking shards came up from around 143 to 152 metres down, and small metal flakes from around 10 and 16 metres. Both were carried to instruments on camera, including a scanning electron microscope at a Utah university. This is the current programme's strongest material claim, and it is the one with the least written down.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-3">T3</span> Under the electron beam the ceramic's surface pores appeared to enlarge, then appeared restored when the microscope was switched off and back on. The operator is quoted saying he has not seen material do that.</li>
+                <li><span class="tag tier-3">T3</span> Earlier flakes were reported on air as containing iron, aluminium, <b>europium and tellurium</b>, described as elements found in spacecraft materials.</li>
+                <li><span class="tag tier-3">T3</span> A hand-held X-ray reading on a 2022 mesa fragment was reported as an alloy of iron, silicon, aluminium, magnesium, calcium and manganese. The instrument maker published a note confirming which analyser was used and by whom.</li>
+                <li><span class="tag tier-3">T3</span> The property owner has said the material is manufactured, is not a natural part of the local soil, and that this has been verified. No laboratory is named and no document is pointed to.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-3">T3</span> In 2026 the team's own portable analyser read a fresh flake as iron and aluminium with <b>no europium and no tellurium</b>. The episode presented that as a difference from the earlier flakes.</li>
+                <li><span class="tag tier-3">T3</span> A 2025 run on the ceramic reported titanium, calcium, iron, aluminium and vanadium. Those five are ordinary constituents of both crustal rock and commercial ceramics.</li>
+                <li><span class="tag tier-3">T3</span> Nothing has been released in writing for any of it: no spectra, no concentrations with uncertainties, no detection limits, no blanks, and no drilling-mud controls, which for material sifted out of a spoils pile is the first control a written report would need.</li>
+                <li><span class="tag tier-4">T4</span> A microscopist with twenty-five years on these instruments attributes the ceramic effect to charging: an uncoated insulating ceramic collects electrons under the beam and discharges, which can look like holes opening and closing. The standard fixes, a conductive coating or a low-vacuum mode, were not used on screen, and the imaging voltage changed between shots.</li>
+                <li><span class="tag tier-3">T3</span> A hand-held X-ray analyser gives a rough surface element list. It does not give crystal phase, structure, trace fingerprint or isotope weights, which is what an origin claim would need.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>What is the local background level of europium and tellurium in mesa rock, and does any flake sit above it? The basin carries widespread weak uranium and vanadium mineralisation, and relatively high tellurium turns up in local produced water, so a comparison against plain mesa rock and against a commercial refractory ceramic would settle most of this quickly. What is the trail from borehole to instrument? Flakes and shards were said on air to be going to a Utah university; no result has been issued, and the microscope operator has reportedly cited a non-disclosure agreement. One more thing worth recording plainly: several web pages state that a January 2026 journal paper published the ranch's sensor data. The journal's own article index returns no such paper, and the pages give no volume, page numbers or author list.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-3">T3</span> SciAps, "SciAps X-550 visits The Secret of Skinwalker Ranch", 27 June 2022, confirming instrument and operators · <a href="https://www.sciaps.com/post/sciaps-x-550-visits-the-secret-of-skinwalker-ranch" rel="noopener">sciaps.com</a></li>
+              <li><span class="tag tier-3">T3</span> Episode recaps for season 7, aired 26 June and 9 July 2026 · <a href="https://horrorpress.com/tv/13924/the-secret-of-skinwalker-ranch-rocket-men-s7e8/" rel="noopener">horrorpress.com</a></li>
+              <li><span class="tag tier-3">T3</span> Review of season 6 episode 12, "Hard Boiled", aired 19 August 2025 · <a href="https://www.ghosthuntingtheories.com/2025/08/review-secret-of-skinwalker-ranch-s6_19.html" rel="noopener">ghosthuntingtheories.com</a></li>
+              <li><span class="tag tier-3">T3</span> IBTimes UK, owner quotes on manufactured material and verified soil composition · <a href="https://www.ibtimes.co.uk/skinwalker-ranch-manufactured-materials-discovery-1811547" rel="noopener">ibtimes.co.uk</a></li>
+              <li><span class="tag tier-4">T4</span> Metabunk thread, "Self-healing Ceramic Material from Skinwalker Ranch", including the charging explanation from a scanning electron microscope specialist · <a href="https://www.metabunk.org/threads/self-healing-ceramic-material-from-skinwalker-ranch-sem-scanning-electron-microscope-analysis.14382/" rel="noopener">metabunk.org</a></li>
+              <li><span class="tag tier-2">T2</span> Journal of Scientific Exploration article index, returning no Skinwalker Ranch paper · <a href="https://journalofscientificexploration.org/index.php/jse/search/search?query=Skinwalker" rel="noopener">journalofscientificexploration.org</a></li>
+              <li><span class="tag tier-2">T2</span> "Reconnaissance for Uranium in the Uinta Basin of Colorado and Utah", regional mineralisation background · <a href="https://www.osti.gov/biblio/4084991" rel="noopener">osti.gov</a></li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- 9 -->
+        <article class="card spec" data-tier="4">
+          <div class="spec-head"><h3>No papers yet, in the owner's words</h3><span class="tag tier-4">T4</span></div>
+          <p class="spec-where">August 2025 · a public post</p>
+          <p class="spec-story">Asked directly by a follower why his team had not put its findings through peer review, the Utah ranch's owner answered at length in a public post. It belongs on the bench because it is the clearest statement on the record about the state of the written output, from the person who commissions it. It is not a claim about a sample; it is a claim about the absence of paperwork.</p>
+          <div class="two-col">
+            <div>
+              <h4>What was claimed</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> The team <b>has not yet submitted papers</b> for peer review, for five stated reasons.</li>
+                <li><span class="tag tier-4">T4</span> One: the experiments are ongoing and the events are transient and unpredictable, while publication needs robust repeatable evidence.</li>
+                <li><span class="tag tier-4">T4</span> Two: equipment failures, power loss and data corruption at key moments.</li>
+                <li><span class="tag tier-4">T4</span> Three: the work spreads across physics, biology, psychology and archaeology.</li>
+                <li><span class="tag tier-4">T4</span> Four: phenomena that appear to actively evade detection, described as cat-and-mouse behaviour.</li>
+                <li><span class="tag tier-4">T4</span> Five: that submitting inconclusive findings early would damage credibility.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>What was measured</h4>
+              <ul class="lines">
+                <li><span class="tag tier-4">T4</span> Nothing went on a bench for this one. What can be checked is the statement itself, which is on the record and has not been withdrawn.</li>
+                <li><span class="tag tier-4">T4</span> In earlier exchanges over a 2021 dropped-bottle experiment, the position given was that releasing partial data before review would confuse the issue. Those text files have not been released.</li>
+                <li><span class="tag tier-4">T4</span> Two university physicists who took part in ranch experiments did so under a non-disclosure agreement, according to their own university's news item.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="spec-open">
+            <h4>Open questions</h4>
+            <p>Is any manuscript in preparation or under review, and with which journal? Whether the agreements around the current programme belong to the broadcaster or to the ranch is not publicly documented. The three collections that would answer most of the questions on the two Utah cards, the 1996 to 2004 archive, any analytical reports from the 2008 to 2012 contract, and the current team's raw instrument logs and physical samples, are all held privately, and none has been released.</p>
+          </div>
+          <details class="spec-src">
+            <summary>Sources</summary>
+            <ul class="src-list">
+              <li><span class="tag tier-4">T4</span> Brandon Fugal on X, post of about 10 August 2025 · <a href="https://x.com/BrandonFugal/status/1954403256148672729" rel="noopener">x.com</a></li>
+              <li><span class="tag tier-4">T4</span> Fan wiki transcription of the same exchange · <a href="https://the-secret-of-skinwalker-ranch.fandom.com/wiki/User_blog:Anomalous_Reading/Brandon_Fugal_Q%26A_..._Project_2025" rel="noopener">fandom.com</a></li>
+              <li><span class="tag tier-4">T4</span> Mick West, comment thread on data requests to the ranch team · <a href="https://mickwest.substack.com/p/no-mere-balloons/comments" rel="noopener">mickwest.substack.com</a></li>
+              <li><span class="tag tier-3">T3</span> University of Alabama in Huntsville news item recording participation under a non-disclosure agreement · <a href="https://www.uah.edu/science/departments/physics/news/15032-uah-scientists-brave-curses-spooky-anomalies-to-unravel-secrets-at-skinwalker-ranch" rel="noopener">uah.edu</a></li>
+            </ul>
+          </details>
+        </article>
+
+      </div>
+      <p class="no-cards" id="noCards">No cases at the tiers currently showing. Switch a chip back on.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Limits</span></h2>
+      <div class="panel">
+        <p>Every number here comes from somebody else's bench, and the ones that matter most were often run once. A single laboratory's reading, unrepeated, is a starting point rather than a finish.</p>
+        <p>Where a case has no trail from the ground to the laboratory door, no measurement can tie the material to anything seen in the sky. That gap sits on most of this bench, including the two most famous fragments.</p>
+        <p>Ordinary is a common result here, and it is still a result. Several of these cases came back as plain steel, plain aluminium or plain smelter slag, and what stayed unexplained afterwards was how the material arrived, which is a different question from what it is made of.</p>
+        <p>Where figures are quoted from a broadcast or an interview, they are quoted as given. Without the working beside them they cannot be checked in either direction, and a figure that has not been checked is not the same thing as a figure that has been found wrong.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would <span class="hue">settle it</span></h2>
+      <p>Read across nine cases and the shape of a decisive result comes into focus. Three things would have to arrive together, and none of them needs an invention.</p>
+      <div class="grid settle">
+        <div class="card">
+          <h3>A blend off the line</h3>
+          <p>Not a tenth of a per cent off the reference numbers, which heat and handling can do on their own, but a magnesium blend sitting off the line that solar-system material follows. Something the size of a coin would be plenty.</p>
+        </div>
+        <div class="card">
+          <h3>Two labs that never spoke</h3>
+          <p>The same material, split and sent to independent laboratories that do not compare notes, each publishing its numbers, its standards, its blanks and its uncertainties. The Ubatuba pair showed why: two labs on one drop of liquid returned different answers, and that disagreement is what stopped the trace-element reading cold.</p>
+        </div>
+        <div class="card">
+          <h3>A trail with names on it</h3>
+          <p>A documented chain of custody: the paperwork trail that shows nobody swapped the sample. Who picked it up, when, who held it, who signed it across at every handover, from the ground to the instrument. This is the piece missing from nearly every case above, and it costs a notebook.</p>
+        </div>
+      </div>
+      <div class="note"><strong>The hopeful part is the instruments.</strong> A multicollector mass spectrometer, which weighs atoms one kind at a time and separates the three magnesium weights cleanly, is not exotic kit. Universities and geology labs around Australia and the world run them daily on rocks, seawater and meteorites, and the reference numbers they check against are already agreed. So the missing pieces are a notebook, an agreement between two labs, and a sample somebody is willing to cut in half. If those three ever line up, the reading itself would take an afternoon.</div>
+      <p>Until then the sensible position is the one the benches have already taken: measure what turns up, write down where it came from, publish the numbers whether they come back strange or dull, and leave the question where the evidence leaves it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="vimana.html"><div class="card"><span class="card-glyph">📜</span><h3>Vimana</h3><p>Old stories read as a design brief, with physics held up beside them as the ruler.</p></div></a>
+        <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where the exploration paths could lead next, told in could and would.</p></div></a>
+        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏆</span><h3>Records</h3><p>The measured record holders among the elements, ranked live from the dataset.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  /* ---------- isotope comparison ---------- */
+  var EARTH = [78.99, 10.00, 11.01];
+  var DEV_MAX = 1.5; /* percentage points at each end of the fine scale */
+
+  var READINGS = [
+    {
+      name: "Earth's standard blend",
+      v: [78.99, 10.00, 11.01],
+      tier: 1,
+      note: "The agreed reference numbers. Scoop magnesium out of beach sand, seawater, a bag of Epsom salts or your own muscle and this is the blend that comes back, within a whisker."
+    },
+    {
+      name: "A shop-bought standard bar, 1997",
+      v: [78.76, 10.07, 11.16],
+      tier: 1,
+      note: "A second reference standard, bought off the shelf and run in the same session as the Ubatuba fragment. Useful as a yardstick: two standards can sit this far apart from each other, so a sample inside this much of the reference is inside the noise."
+    },
+    {
+      name: "Ubatuba fragment, 1997 run",
+      v: [79.25, 9.81, 10.99],
+      tier: 1,
+      note: "All three weights measured together on a fine-beam instrument. The gap from the reference came out smaller than the gap between the two standards that were run alongside it."
+    },
+    {
+      name: "Ubatuba fragment, Austin lab, 2017",
+      v: [79.31, 10.10, 10.58],
+      tier: 2,
+      note: "One of two commercial laboratories given the same dissolved drop of the fragment. No error bars were supplied with these figures. On the standard fractionation plot this point sits off the line that solar-system materials follow."
+    },
+    {
+      name: "Ubatuba fragment, Cleveland lab, 2018",
+      v: [79.28, 9.94, 10.85],
+      tier: 2,
+      note: "The other laboratory, same drop of liquid, with confidence intervals published. This point sits on the line, alongside meteorite, seawater, Amazon River, Dead Sea and Australian olivine samples. Because both labs measured the same liquid, the published paper reads the difference between them as measurement error rather than as anything about the sample."
+    },
+    {
+      name: "Reported in an interview, not published",
+      v: [60, 20, 10],
+      tier: 3,
+      note: "Described in a 2022 interview as roughly 60, 20 and 10 per cent for a piece from the same event, against the ordinary 79, 10 and 11. As given the three figures do not add to a hundred, and no data table, uncertainty, blank or standard has been published for the run. The same speaker says a second piece from that event, measured in the same instrument on the same day, came back ordinary."
+    }
+  ];
+
+  var TIER_WORD = {
+    1: "peer-reviewed measurement",
+    2: "named-lab report",
+    3: "broadcast or documentary claim",
+    4: "story or anecdote"
+  };
+
+  var pick = document.getElementById("isoPick");
+  if (pick) {
+    var rows = document.querySelectorAll("#isoRows .iso-row");
+    var tierTag = document.getElementById("isoTier");
+    var tierWord = document.getElementById("isoTierWord");
+    var totalOut = document.getElementById("isoTotal");
+    var noteOut = document.getElementById("isoNote");
+
+    READINGS.forEach(function (r, i) {
+      var opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = r.name;
+      pick.appendChild(opt);
+    });
+
+    function sign(n) { return (n >= 0 ? "+" : "-") + Math.abs(n).toFixed(2); }
+
+    function render() {
+      var r = READINGS[parseInt(pick.value, 10) || 0];
+      var total = 0;
+      for (var i = 0; i < rows.length; i++) {
+        var val = r.v[i];
+        total += val;
+        var row = rows[i];
+        row.querySelector(".iso-fill").style.width = val + "%";
+        row.querySelector(".iso-val").textContent = val.toFixed(2) + "%";
+
+        var d = val - EARTH[i];
+        var mag = Math.abs(d);
+        var w = Math.min(mag, DEV_MAX) / DEV_MAX * 50;
+        var bar = row.querySelector(".dev-bar");
+        bar.style.width = w + "%";
+        bar.style.left = (d >= 0 ? 50 : 50 - w) + "%";
+        bar.classList.toggle("clamped", mag > DEV_MAX);
+        row.querySelector(".dev-val").textContent =
+          sign(d) + (mag > DEV_MAX ? " past the scale" : "");
+      }
+
+      tierTag.className = "tag tier-" + r.tier;
+      tierTag.textContent = "T" + r.tier;
+      tierWord.textContent = TIER_WORD[r.tier];
+      totalOut.innerHTML = "Three weights add to <b>" + total.toFixed(2) +
+        "%</b>. Published figures are rounded, so a careful reading lands near a hundred rather than exactly on it.";
+      noteOut.textContent = r.note;
+    }
+
+    pick.addEventListener("change", render);
+    render();
+  }
+
+  /* ---------- tier filter over the specimen cards ---------- */
+  var filter = document.getElementById("tierFilter");
+  if (filter) {
+    var chips = filter.querySelectorAll(".chip");
+    var cards = document.querySelectorAll("#specList .spec");
+    var countOut = document.getElementById("filterCount");
+    var empty = document.getElementById("noCards");
+    var allBtn = document.getElementById("chipAll");
+
+    function apply() {
+      var on = {};
+      chips.forEach(function (c) {
+        if (c.getAttribute("aria-pressed") === "true") on[c.getAttribute("data-tier")] = true;
+      });
+      var shown = 0;
+      cards.forEach(function (card) {
+        var keep = !!on[card.getAttribute("data-tier")];
+        card.style.display = keep ? "" : "none";
+        if (keep) shown++;
+      });
+      countOut.textContent = shown + " of " + cards.length + " cases showing";
+      empty.style.display = shown === 0 ? "block" : "none";
+    }
+
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") === "true" ? "false" : "true");
+        apply();
+      });
+    });
+
+    allBtn.addEventListener("click", function () {
+      chips.forEach(function (c) { c.setAttribute("aria-pressed", "true"); });
+      apply();
+    });
+
+    apply();
+  }
+})();
+</script>
+</body>
+</html>
