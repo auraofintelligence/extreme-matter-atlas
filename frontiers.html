@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frontiers · Extreme Matter Atlas</title>
+<meta name="description" content="Seven paths materials discovery could follow next, from robot chemists to walls that face a small star.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* Frontiers page styles */
+body[data-page="frontiers"] .path-grid {
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  align-items: stretch;
+}
+body[data-page="frontiers"] .path-card {
+  display: flex; flex-direction: column; gap: 12px;
+  border-top: 3px solid var(--hz, var(--accent));
+}
+body[data-page="frontiers"] .path-card[data-hz="near"] { --hz: #34d399; }
+body[data-page="frontiers"] .path-card[data-hz="mid"]  { --hz: #fbbf24; }
+body[data-page="frontiers"] .path-card[data-hz="far"]  { --hz: #e879f9; }
+body[data-page="frontiers"] .path-card .card-glyph {
+  margin-bottom: 0;
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--hz) 70%, transparent));
+}
+body[data-page="frontiers"] .path-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+}
+body[data-page="frontiers"] .tag.hz-near { border-color: #34d399; color: #34d399; background: rgba(52, 211, 153, 0.08); }
+body[data-page="frontiers"] .tag.hz-mid  { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.08); }
+body[data-page="frontiers"] .tag.hz-far  { border-color: #e879f9; color: #e879f9; background: rgba(232, 121, 249, 0.10); }
+body[data-page="frontiers"] .story-home { display: none; }
+body[data-page="frontiers"] .path-card.at-home .story-lab  { display: none; }
+body[data-page="frontiers"] .path-card.at-home .story-home { display: block; }
+body[data-page="frontiers"] .flip-btn {
+  align-self: flex-start;
+  background: transparent; color: var(--ink); cursor: pointer;
+  border: 1px solid var(--line-bright); border-radius: 999px;
+  padding: 7px 15px; font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+body[data-page="frontiers"] .flip-btn:hover { border-color: var(--hz, var(--accent)); transform: translateY(-1px); }
+body[data-page="frontiers"] .path-card.at-home .flip-btn {
+  border-color: var(--hz);
+  background: color-mix(in srgb, var(--hz) 14%, transparent);
+}
+body[data-page="frontiers"] .open-q {
+  margin-top: auto; padding-top: 12px;
+  border-top: 1px dashed var(--line-bright);
+  font-size: 14px; color: var(--muted);
+}
+body[data-page="frontiers"] .open-q .oq {
+  display: block; margin-bottom: 4px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--hz, var(--accent));
+}
+body[data-page="frontiers"] .xlink { font-size: 14px; }
+body[data-page="frontiers"] .hz-legend { list-style: none; margin-top: 6px; }
+body[data-page="frontiers"] .hz-legend li {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 8px 0; font-size: 15px; color: var(--muted);
+}
+body[data-page="frontiers"] .hz-legend .tag { flex: 0 0 auto; min-width: 58px; text-align: center; }
+body[data-page="frontiers"] .filter-lbl {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+body[data-page="frontiers"] .hz-btn {
+  background: transparent; color: var(--muted); cursor: pointer;
+  border: 1px solid var(--line-bright); border-radius: 999px;
+  padding: 8px 18px; font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
+  transition: all .15s ease;
+}
+body[data-page="frontiers"] .hz-btn:hover { color: var(--ink); border-color: var(--accent); }
+body[data-page="frontiers"] .hz-btn.active {
+  color: #04060c;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-color: transparent;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+body[data-page="frontiers"] .hz-btn.active[data-hz="near"] { background: #34d399; }
+body[data-page="frontiers"] .hz-btn.active[data-hz="mid"]  { background: #fbbf24; }
+body[data-page="frontiers"] .hz-btn.active[data-hz="far"]  { background: #e879f9; }
+body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
+</style>
+</head>
+<body data-page="frontiers">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Future paths</span>
+      <h1 class="display">Where matter could go next</h1>
+      <p class="lede">The glass on your phone, the magnet on the fridge, the frame of your bike: each began as a strange result on a lab bench. Seven such results sit on benches right now. <strong>None is promised; each is being worked at</strong>, and any one of them would change the shape of an ordinary day.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">7</span><span class="lbl">paths under way, from robot chemists to walls built to face a small star</span></div>
+        <div class="stat"><span class="num">3</span><span class="lbl">horizons: in labs now, a decade of engineering, physics still open</span></div>
+        <div class="stat"><span class="num">1</span><span class="lbl">open question on each card; the whole field runs on them</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Seven <span class="hue">paths</span></h2>
+      <p>Each card tells its story twice: once as the lab sees it, once as your kitchen would. The button on each card flips between the two.</p>
+
+      <div class="panel reveal">
+        <h3>How the labels read</h3>
+        <ul class="hz-legend">
+          <li><span class="tag hz-near">Near</span><span>In labs now. Measured results already exist.</span></li>
+          <li><span class="tag hz-mid">Mid</span><span>A decade of engineering. The physics works; the factory does not exist yet.</span></li>
+          <li><span class="tag hz-far">Far</span><span>Physics still open. Whether it can be done at all is the question being asked.</span></li>
+        </ul>
+      </div>
+
+      <div class="control-row" role="group" aria-label="Filter paths by horizon">
+        <span class="filter-lbl">Horizon</span>
+        <button class="hz-btn active" type="button" data-hz="all">All seven</button>
+        <button class="hz-btn" type="button" data-hz="near">Near</button>
+        <button class="hz-btn" type="button" data-hz="mid">Mid</button>
+        <button class="hz-btn" type="button" data-hz="far">Far</button>
+      </div>
+
+      <div class="grid path-grid">
+
+        <article class="card path-card reveal" data-hz="near">
+          <div class="path-head">
+            <span class="card-glyph">🦾</span>
+            <span class="tag hz-near">Near · in labs now</span>
+          </div>
+          <h3>Self-driving labs</h3>
+          <div class="story story-lab">
+            <p>A robot arm weighs the powders, a furnace cooks them, an instrument reads what formed, and software chooses the next recipe while the town sleeps. The loop of guess, cook and test runs nights, weekends and public holidays. One such line in California reported 41 new compounds, blends of elements locked into new solids, across 17 days of continuous running.</p>
+          </div>
+          <div class="story story-home">
+            <p>Most objects in your house waited decades between somebody's good idea and the shelf. If the guess-cook-test loop keeps speeding up, that wait could shrink: a fridge coating that sheds frost, a cheaper solar tile, a longer-lived hot water heater element could each arrive years sooner than the old pace would have carried them.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>Can software tell a genuinely new material from a burnt mess in the crucible, without a chemist leaning in for a look?</p>
+        </article>
+
+        <article class="card path-card reveal" data-hz="near">
+          <div class="path-head">
+            <span class="card-glyph">🔩</span>
+            <span class="tag hz-near">Near · in labs now</span>
+          </div>
+          <h3>High-entropy alloys</h3>
+          <div class="story story-lab">
+            <p>Nearly every metal object you own is one main metal with a pinch of helpers: steel is iron with a whisper of carbon. High-entropy alloys turn that recipe upside down. Five or more metals blend in roughly equal shares, like a fruitcake where every slice holds the same mix. Some blends grow stronger, not weaker, in deep cold: one chromium, cobalt and nickel mix posted toughness readings, its knack for bending rather than snapping, among the highest on record, in tests near minus 250 degrees.</p>
+          </div>
+          <div class="story story-home">
+            <p>Blades that hold their edge through a year of Sunday roasts. A tow bar that stays tough on the frostiest morning of a high-country winter. Turbine parts that run hotter and turn more fuel into power instead of waste heat, which would show up quietly on the power bill. Cold-tough steels would also suit the trucks and freezers that carry food and medicine to your shops.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>Millions of five-metal recipes are possible; which handful deserve the furnace time?</p>
+        </article>
+
+        <article class="card path-card reveal" data-hz="mid">
+          <div class="path-head">
+            <span class="card-glyph">🔋</span>
+            <span class="tag hz-mid">Mid · a decade of engineering</span>
+          </div>
+          <h3>Solid-state batteries</h3>
+          <div class="story story-lab">
+            <p>The battery in your phone ferries charged atoms through a flammable liquid: the electrolyte, the syrup the charge swims through. Solid-state cells swap that liquid for a thin ceramic or polymer that stays put and still lets the charged atoms slide. Small cells work in labs today; the climb is making them by the million, cheaply, in sheets big enough for a car.</p>
+          </div>
+          <div class="story story-home">
+            <p>A phone that would shrug off a hot dashboard. An electric ute that could take on charge in about the time a counter coffee takes, and hold more of it, so the commute and the weekend trip fit inside one battery. A home battery that would sit in the garage with one less flammable thing inside it.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>Batteries breathe, swelling and shrinking with each charge; can a solid keep snug contact through thousands of those breaths?</p>
+        </article>
+
+        <article class="card path-card reveal" data-hz="mid">
+          <div class="path-head">
+            <span class="card-glyph">🥞</span>
+            <span class="tag hz-mid">Mid · a decade of engineering</span>
+          </div>
+          <h3>2D stacking and twistronics</h3>
+          <div class="story story-lab">
+            <p>The graphite in a pencil is a deck of carbon sheets, each a single atom thick. One sheet on its own is graphene, so thin that about three million of them stack to a millimetre. Lay one sheet on another and turn the top one by about a degree, and the pair behaves like a brand-new material: near absolute zero, the coldest cold there is, one twisted pair carries current with no measurable loss. Choosing the sheets and the angle of the turn is a craft of its own, called twistronics.</p>
+          </div>
+          <div class="story story-home">
+            <p>Materials tuned by geometry rather than by chemistry could be dialled in like a radio station: a window film that switches from clear to shady on a scorcher, sensors fine enough to read a heartbeat through a shirt, chips that run cooler in the laptop on your knees.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>The effects live in flakes smaller than this full stop; whether anyone could make them by the metre is wide open.</p>
+        </article>
+
+        <article class="card path-card reveal" data-hz="far">
+          <div class="path-head">
+            <span class="card-glyph">⚡</span>
+            <span class="tag hz-far">Far · physics still open</span>
+          </div>
+          <h3>Room-temperature superconductors</h3>
+          <div class="story story-lab">
+            <p>A superconductor carries electric current with no measurable loss. Many materials manage it today, but only when chilled colder than any winter on Earth. Squeeze certain hydrogen-rich compounds to more than a million times the push of the air around you, pressures like the deep inside of the planet, and the trick survives up to about minus 23 degrees, the chill of a shop ice-cream freezer. The prize would be a wire that does it on a bench: no chill, no squeeze. Bold claims of exactly that have appeared, and so far each has faded under repeat testing, so the search continues, a little wiser with each round.</p>
+          </div>
+          <div class="story story-home">
+            <p>Roughly one part in twenty of the electricity sent down the wires arrives as warm cable instead of a boiled kettle. Wires with no loss would close that gap on the power bill, and would open doors well past it: trains that float on magnetic fields for a smoother commute, medical scanners cheap enough for country hospitals, motors the size of a mango.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>Is there a material family that keeps the trick at everyday pressure and temperature, or does the physics rule it out? Neither answer has been shown yet.</p>
+          <p class="xlink"><a href="vimana.html">A craft dreamed up long ago, measured against real physics →</a></p>
+        </article>
+
+        <article class="card path-card reveal" data-hz="mid">
+          <div class="path-head">
+            <span class="card-glyph">⭐</span>
+            <span class="tag hz-mid">Mid · a decade of engineering</span>
+          </div>
+          <h3>Materials for fusion</h3>
+          <div class="story story-lab">
+            <p>A fusion machine holds a working star. Its fuel is plasma, a gas so hot its atoms have come apart, at more than 100 million degrees: over six times the heat at the centre of the Sun. Magnetic fields hold the plasma away from the walls, yet the walls still cop the glare plus a hail of neutrons, the uncharged pieces that fly out of the reaction. Tungsten, the metal with the highest melting point at 3,422 degrees, about three times the heat of fresh lava, lines the hottest parts of today's test machines. Steels that stay sound after years of that hail are still being worked out.</p>
+          </div>
+          <div class="story story-home">
+            <p>If the walls hold, fusion stations could one day feed the grid: steady power for the fridge, the kettle and the air-con, drawn from a fuel found in seawater, running through rain, hail and still nights. That is a could, not a will; the walls are a fair share of the distance left.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>No test rig yet matches decades of neutron hail; which steel would still be sound at year twenty?</p>
+        </article>
+
+        <article class="card path-card reveal" data-hz="near">
+          <div class="path-head">
+            <span class="card-glyph">💠</span>
+            <span class="tag hz-near">Near · in labs now</span>
+          </div>
+          <h3>Discovery at GNoME scale</h3>
+          <div class="story story-lab">
+            <p>Before anything gets cooked, software that has studied the known crystals can sketch which new recipes would likely hold together. One effort, called GNoME, predicted about 2.2 million new crystals, roughly one for every person in Perth, and flagged about 380,000 of them as likely stable: give each crystal a seat and they would fill seven footy stadiums. Hundreds from the list have since been made in labs and held together as the predictions said they would.</p>
+          </div>
+          <div class="story story-home">
+            <p>A shortlist that long would keep the robot labs fed for decades. Somewhere in it could sit the solid for the next battery in your ute, the blend for a tougher kitchen knife, the wall for the small star. The shortlist exists now; the queue for the furnace is the story of the coming years.</p>
+          </div>
+          <button class="flip-btn" type="button" aria-pressed="false">What would change at your place</button>
+          <p class="open-q"><span class="oq">Open question</span>Likely stable on paper is not the same as makeable in a crucible; how much of the list can be coaxed into existence?</p>
+          <p class="xlink"><a href="gnome.html">The numbers behind the crystal predictions →</a></p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>Where to look <span class="hue">tomorrow</span></h2>
+      <p>Neither of these waits on a lab coat.</p>
+      <div class="grid">
+        <a class="card-link" href="https://materialsproject.org"><article class="card reveal">
+          <span class="card-glyph">🗂️</span>
+          <h3>Browse the Materials Project</h3>
+          <p>A free public database holding well over a hundred thousand materials, each with its properties laid out: more entries than an MCG grand final crowd, one material per seat. Free to browse, and the same well many of the labs above drink from.</p>
+        </article></a>
+        <article class="card reveal">
+          <span class="card-glyph">🧊</span>
+          <h3>Grow a crystal on the windowsill</h3>
+          <p>Crystal growing kits are real and sit on school supply and toy shop shelves. Sugar on a string in a jar of warm syrup works too. In about a week a faceted crystal forms, its atoms filing into the same ordered ranks the labs above spend careers arranging.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="panel reveal">
+        <h2>Sources</h2>
+        <ul class="src-list">
+          <li>A-Lab robot chemistry line at Lawrence Berkeley National Laboratory: 41 new compounds in 17 days, Nature, 2023.</li>
+          <li>GNoME crystal predictions, Google DeepMind, Nature, 2023: about 2.2 million candidates, about 380,000 flagged stable, 736 since made in labs.</li>
+          <li>Chromium cobalt nickel alloy toughness measured at 20 kelvin, Science, 2022.</li>
+          <li>Superconductivity in twisted bilayer graphene, Nature, 2018.</li>
+          <li>Superconductivity in lanthanum hydride near minus 23 degrees under about 170 gigapascals, Nature, 2019.</li>
+          <li>The Materials Project, materialsproject.org, free to browse.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  /* horizon filter */
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".path-card"));
+  var btns = Array.prototype.slice.call(document.querySelectorAll(".hz-btn"));
+  btns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      btns.forEach(function (b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      var hz = btn.getAttribute("data-hz");
+      cards.forEach(function (card) {
+        var hide = hz !== "all" && card.getAttribute("data-hz") !== hz;
+        card.classList.toggle("hz-hidden", hide);
+      });
+    });
+  });
+
+  /* lab story / home story flip */
+  var LAB_LABEL = "What would change at your place";
+  var HOME_LABEL = "Back to the lab";
+  Array.prototype.slice.call(document.querySelectorAll(".flip-btn")).forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var card = btn.closest(".path-card");
+      if (!card) return;
+      var home = card.classList.toggle("at-home");
+      btn.setAttribute("aria-pressed", home ? "true" : "false");
+      btn.textContent = home ? HOME_LABEL : LAB_LABEL;
+    });
+  });
+})();
+</script>
+</body>
+</html>
