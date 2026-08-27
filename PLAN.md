@@ -110,6 +110,29 @@ For any story, claim or piece of fiction, work it as an engineering brief in thi
 Never end a speculative page on a dismissal or a verdict. End on the measurement, the
 open question, or the thing worth building.
 
+### 3c. The workhorse sentence: "X, not Y"
+
+This is the house construction across Luke's other sites, and it is how a claim gets held
+without either endorsing it or sneering at it. **Y is the specific overclaim a sceptical
+reader would suspect, named before they can suspect it.** Naming it first is what earns
+the licence to keep going. Live examples from his sites:
+
+> a hypothesis, not a discovery · a widely used shorthand, not a guarantee · engineering
+> estimates for comparison, not a budget anyone has raised · a field trip, not a fog
+> machine · digital twin, not digital master · a research lane, not a prediction machine ·
+> a governance exercise before it is a belief exercise · a choice, not a law of physics
+
+Two more habits from the same sites:
+
+- **State what is unknown as a positive fact, with a cause.** Not a shrug and not an
+  apology: "the other 352 bodies wear a latitude and longitude grid instead, because a map
+  of them does not exist yet"; "where they have not been measured, the lab says unmeasured
+  rather than guessing."
+- **Never write** debunked, so-called, believers, or scare quotes. Scepticism is carried by
+  what the sentence reports, never by its tone.
+
+Section headings may be full sentences with full stops when they carry an argument.
+
 ## 4. Design system
 
 Committed dark theme, very colourful, high contrast, not normal. Fonts via Google Fonts:
