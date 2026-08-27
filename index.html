@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extreme Matter Atlas</title>
+<meta name="description" content="An interactive atlas of matter at its limits: all 118 elements, the record holders, predicted crystals, lattices you can sketch, and the questions still open.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+body[data-page="index"] .ribbon-wrap {
+  margin: 34px 0 8px;
+  border: 1px solid var(--line-bright);
+  border-radius: 18px;
+  background: radial-gradient(120% 140% at 50% 0%, var(--bg2), var(--bg));
+  padding: 16px 14px 12px;
+  box-shadow: inset 0 0 70px -34px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+body[data-page="index"] .ribbon {
+  display: grid;
+  grid-template-columns: repeat(59, minmax(15px, 1fr));
+  gap: 3px;
+  min-width: 620px;
+}
+body[data-page="index"] .ribbon a {
+  aspect-ratio: 1 / 1.15;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800; color: #04060c;
+  text-decoration: none; line-height: 1;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+body[data-page="index"] .ribbon a:hover,
+body[data-page="index"] .ribbon a:focus-visible {
+  transform: scale(1.9); z-index: 6;
+  filter: brightness(1.2);
+  box-shadow: 0 6px 20px -4px rgba(0,0,0,.9);
+}
+body[data-page="index"] .ribbon-cap {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; flex-wrap: wrap; margin-top: 12px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+body[data-page="index"] #ribbon-read { color: var(--ink); font-weight: 600; }
+body[data-page="index"] .door-glyph { font-size: 30px; }
+body[data-page="index"] .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+body[data-page="index"] .why-grid { margin-top: 26px; }
+body[data-page="index"] .why-grid .card p { color: var(--muted); }
+</style>
+</head>
+<body data-page="index">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Field guide to matter at its limits</span>
+      <h1 class="display">Extreme Matter Atlas</h1>
+      <p class="lede">
+        Everything you have ever held is built from the same short list of ingredients: <strong>118 elements</strong>,
+        and only 94 of them turn up in nature. Some of them are show-offs. One is so heavy a soft drink can of it
+        would be a struggle to lift. One stays liquid no matter how cold the room gets. One holds onto its
+        electrons so tightly that almost nothing can talk it out of them.
+      </p>
+      <p class="lede" style="margin-top:16px;">
+        Pick a door and go looking. There is no right order.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="periodic-table.html">Meet all 118</a>
+        <a class="btn ghost" href="extremes.html">Straight to the records</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>The whole shelf, <span class="hue">in one strip</span></h2>
+      <p>
+        Every element, in order, coloured by family. Hover one to see who it is, or click through to the full table.
+      </p>
+      <div class="ribbon-wrap">
+        <div class="table-scroll" style="border:0;margin:0;">
+          <div class="ribbon" id="ribbon"></div>
+        </div>
+        <div class="ribbon-cap">
+          <span id="ribbon-read">Hover an element</span>
+          <span>1 to 118, left to right</span>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <span class="num">118</span>
+          <span class="lbl">Elements confirmed so far. The list has not changed since 2016.</span>
+        </div>
+        <div class="stat">
+          <span class="num">94</span>
+          <span class="lbl">Turn up in nature. The rest are made in labs, and most vanish in moments.</span>
+        </div>
+        <div class="stat">
+          <span class="num">2.2 million</span>
+          <span class="lbl">New crystal recipes a computer model put forward in 2023. Predictions, not finished materials: enough to hand every person in Perth one each.</span>
+        </div>
+        <div class="stat">
+          <span class="num">17 days</span>
+          <span class="lbl">A robot lab took that long to cook 41 recipes it had never made before.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>Choose <span class="hue">your door</span></h2>
+      <p>Nine ways in. Each one stands on its own.</p>
+      <div class="grid" style="margin-top:26px;">
+
+        <a class="card-link reveal" href="periodic-table.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🧊</span>
+            <h3>Table</h3>
+            <p>Meet all 118 and colour them by any property you like: weight, heat, size, how common they are.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="extremes.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🏆</span>
+            <h3>Records</h3>
+            <p>The heaviest, hottest, rarest and strangest, with numbers you can picture.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="gnome.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🔮</span>
+            <h3>GNoME</h3>
+            <p>The computer model that guessed millions of new crystals, and the robot kitchen that started cooking them.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="crystal-lab.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🪟</span>
+            <h3>Crystal Lab</h3>
+            <p>Sketch a flat pattern, stack it, twist it, and watch a whole new pattern appear out of nowhere.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="metamaterials.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🕸️</span>
+            <h3>Metamaterials</h3>
+            <p>Shapes that do what chemistry cannot: pull them and they get fatter, not thinner.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="engineering.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🛠️</span>
+            <h3>Engineering</h3>
+            <p>Records put to work on real jobs: your phone screen, a hospital scanner, a jet engine, a deep-sea sub.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="frontiers.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🚀</span>
+            <h3>Frontiers</h3>
+            <p>Where the search could head next, and what it would change at your place.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="anomalous-materials.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🔬</span>
+            <h3>Samples</h3>
+            <p>Claimed fragments on the bench, paperwork and all: what was said, and what the instruments read.</p>
+          </article>
+        </a>
+
+        <a class="card-link reveal" href="vimana.html">
+          <article class="card">
+            <span class="card-glyph door-glyph">🛸</span>
+            <h3>Vimana</h3>
+            <p>Old sky-craft stories read as a design brief, with physics holding the ruler.</p>
+          </article>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>Why the <span class="hue">extremes</span> matter</h2>
+      <p>
+        A record is not a trophy. It is a door to a job nothing ordinary can do. The metal with the highest melting
+        point is the one you line a fusion reactor with. The metal that carries electricity best is the one you would
+        wire a city with, if it were not so dear. The element that grips its electrons hardest is the reason a
+        non-stick pan shrugs off a fried egg.
+      </p>
+      <p>
+        Push any property to its limit and you find an engineer waiting there with a problem that needs exactly that.
+      </p>
+      <div class="grid why-grid">
+        <article class="card reveal">
+          <h3>Every record has a use</h3>
+          <p>Hardest, lightest, hottest, coldest: each one is already load-bearing in something you own or something that keeps you alive.</p>
+        </article>
+        <article class="card reveal">
+          <h3>The shelf is fixed, the arrangements are not</h3>
+          <p>Nobody is adding a new element to the shopping list any time soon. The room to move is in how you arrange what is already there.</p>
+        </article>
+        <article class="card reveal">
+          <h3>The search got faster</h3>
+          <p>For most of history, new materials came from slow cooking and luck. Pattern-finding software changed the pace, and the results are free to browse.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/elements.js"></script>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var els = window.ELEMENTS || [];
+  var host = document.getElementById("ribbon");
+  var read = document.getElementById("ribbon-read");
+  if (!host || !els.length) return;
+
+  var CAT_LABEL = {
+    alkali: "Alkali metal", alkaline: "Alkaline earth metal", transition: "Transition metal",
+    "post-transition": "Post-transition metal", metalloid: "Metalloid", nonmetal: "Non-metal",
+    halogen: "Halogen", noble: "Noble gas", lanthanide: "Lanthanide", actinide: "Actinide",
+    unknown: "Properties still being pinned down"
+  };
+
+  var frag = document.createDocumentFragment();
+  els.forEach(function (el) {
+    var a = document.createElement("a");
+    a.href = "periodic-table.html";
+    a.className = "el-tile " + (window.EMA ? window.EMA.catClass(el.cat) : "cat-" + el.cat);
+    a.textContent = el.sym;
+    a.setAttribute("title", el.z + " " + el.name);
+    a.setAttribute("aria-label", el.name + ", atomic number " + el.z);
+    a.addEventListener("mouseenter", function () { show(el); });
+    a.addEventListener("focus", function () { show(el); });
+    frag.appendChild(a);
+  });
+  host.appendChild(frag);
+
+  function show(el) {
+    var extra = (el.records && el.records.length) ? " · " + el.records[0] : "";
+    read.textContent = el.z + " · " + el.name + " · " + (CAT_LABEL[el.cat] || el.cat) + extra;
+  }
+
+  host.addEventListener("mouseleave", function () { read.textContent = "Hover an element"; });
+})();
+</script>
+</body>
+</html>
