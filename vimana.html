@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vimana · Extreme Matter Atlas</title>
+<meta name="description" content="Old sky-chariot stories read as an engineering brief, measured against today's material records.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="vimana"] .hero {
+  background-image:
+    radial-gradient(1.2px 1.2px at 25px 35px, rgba(242, 245, 255, 0.55), transparent 55%),
+    radial-gradient(1px 1px at 75px 120px, rgba(192, 132, 252, 0.55), transparent 55%),
+    radial-gradient(1.4px 1.4px at 160px 60px, rgba(251, 191, 36, 0.45), transparent 55%),
+    radial-gradient(1px 1px at 210px 150px, rgba(242, 245, 255, 0.35), transparent 55%);
+  background-size: 210px 190px, 260px 230px, 320px 280px, 380px 330px;
+}
+body[data-page="vimana"] .story-card p { font-size: 15px; }
+body[data-page="vimana"] .brief-item {
+  display: grid; grid-template-columns: 52px 1fr auto; gap: 14px; align-items: baseline;
+  padding: 15px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="vimana"] .brief-item:last-child { border-bottom: 0; }
+body[data-page="vimana"] .brief-num {
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px;
+  color: var(--accent);
+}
+body[data-page="vimana"] .brief-req { font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="vimana"] .brief-item { grid-template-columns: 40px 1fr; }
+  body[data-page="vimana"] .brief-item .tag { grid-column: 2; justify-self: start; }
+}
+body[data-page="vimana"] .spec-grid {
+  display: grid; gap: 14px; margin: 20px 0;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+body[data-page="vimana"] .spec-block {
+  border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+}
+body[data-page="vimana"] .spec-block h4 {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 6px;
+}
+body[data-page="vimana"] .spec-block .pick {
+  font-family: var(--font-display); font-weight: 500; font-size: 16px;
+  display: block; margin-bottom: 10px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="vimana"] .spec-block p { font-size: 14px; color: var(--muted); }
+body[data-page="vimana"] .spec-block p strong { color: var(--ink); font-weight: 600; }
+body[data-page="vimana"] .spec-block p + p { margin-top: 10px; }
+body[data-page="vimana"] .spec-summary {
+  border-left: 3px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 7%, var(--panel));
+  border-radius: 0 14px 14px 0; padding: 16px 20px; margin-top: 20px;
+  font-size: 15px;
+}
+body[data-page="vimana"] .gap-caption {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin: 18px 0 8px;
+}
+body[data-page="vimana"] .control select { min-width: 230px; }
+</style>
+</head>
+<body data-page="vimana">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Thought experiment</span>
+      <h1 class="display">Vimana</h1>
+      <p class="lede">The old Sanskrit epics tell of palaces that fly. Suppose an engineer took those stories the way they would take a client's wish list, and priced it against the periodic table. <strong>The records below are real and measured; every sentence about the craft itself stays in would and could.</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">stories</span> <span class="tag tier-4">T4 · story</span></h2>
+      <p>In the Ramayana, one of the two great Sanskrit epics, the hero rides home aboard the Pushpaka vimana: a palace that moves through the sky at its owner's wish, roomy enough for a crowd, gentle enough that nobody aboard feels the ride. The Mahabharata, the other great epic, carries sky chariots of its own. These poems have been told and retold for well over two thousand years; call it eighty to a hundred generations of voices, each one choosing to keep the flying palace in the story.</p>
+      <p>India is not alone. Persian tales carry flying carpets, Chinese stories tell of cloud chariots, and medieval Irish annals tell of ships seen sailing through the air. People in many places have looked up and imagined riding the sky, long before anything made of metal did.</p>
+      <p>Read them here as stories first: kept and polished because people loved them, not as flight logs. Nothing on this page treats a poem as a measurement. But engineers do play a game with any wish list: take it seriously for an afternoon and work out what it would cost. That game is the whole of this thought experiment.</p>
+
+      <div class="stat-row">
+        <div class="stat reveal"><span class="num">2,000+</span><span class="lbl">years of retelling; the poems are older than most standing buildings on Earth</span></div>
+        <div class="stat reveal"><span class="num">118</span><span class="lbl">elements on the only shelf found so far, anywhere light has been read</span></div>
+        <div class="stat reveal"><span class="num">1868</span><span class="lbl">the year helium turned up in sunlight, 27 years before anyone found it on the ground</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">design brief</span></h2>
+      <p>An engineer reading those poems the way they read a client brief would jot down four requirements, and each one turns into a physics question with a number attached.</p>
+
+      <div class="panel reveal">
+        <div class="brief-item">
+          <span class="brief-num">01</span>
+          <span class="brief-req">Lift, with no wings and no rotor in sight</span>
+          <span class="tag">energy density</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-num">02</span>
+          <span class="brief-req">Near-silence, even up close</span>
+          <span class="tag">momentum</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-num">03</span>
+          <span class="brief-req">Turns and stops that spare the passengers</span>
+          <span class="tag">momentum</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-num">04</span>
+          <span class="brief-req">A hull that does not seem to mind heat</span>
+          <span class="tag">heat shedding</span>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card reveal">
+          <span class="card-glyph">🎈</span>
+          <h3>Lift without wings</h3>
+          <p>Hovering is expensive. A small two-seat helicopter holds itself up on roughly 100 kilowatts, about fifty kitchen kettles boiling at once, and it pays that bill by throwing a gale of air at the ground. The brief asks for the same lift with nothing visibly thrown. Whatever the craft would push against, the kettle bill would still come due, so the first question is energy density: how much go is packed into each kilogram carried on board.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🤫</span>
+          <h3>Silence</h3>
+          <p>Aircraft noise is mostly the sound of air being shoved. Physics keeps one firm rule here: every push needs a push-back. Engines that push something other than air do exist. An ion engine, which throws charged atoms instead of air, flies on deep-space probes today and runs close to silent; its push is about the weight of a couple of sheets of paper resting on your palm. Quiet thrust is real. Strong quiet thrust is the gap.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">↩️</span>
+          <h3>Sharp turns</h3>
+          <p>Aerobatic pilots handle about ten g for a few seconds, where one g is the pull you feel standing still. A palace that stopped mid-air or turned on the spot at speed would put hundreds of g through everyone aboard; at one hundred g a passenger would press into their seat with about the weight of three utes. The brief quietly asks for a cabin where momentum, the oomph a moving thing carries, gets settled without the passengers paying for it.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🔥</span>
+          <h3>A hull that shrugs at heat</h3>
+          <p>Anything fast in air gets hot. The skin of a returning space capsule cops temperatures hotter than lava. Today's answers are to let a sacrificial layer char away, or to tile the craft in heat-proof ceramics. The brief describes a hull that lands looking like a palace, so it would need to shed that heat continuously and show nothing for it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">universal shelf</span></h2>
+      <p>Here is the quietly wonderful part, and it is measured, not imagined. Starlight carries a barcode. Split any star's light with a prism and thin dark lines appear at exact colours; each element prints its own line pattern, as personal as a fingerprint. In 1868 astronomers found a pattern in sunlight that matched nothing known on the ground and named the element helium, after the Greek word for the Sun. It took another 27 years for anyone to find helium here on Earth. The Sun's shopping list was read from 150 million kilometres away, and it was correct.</p>
+      <p>Every star measured so far prints its barcode from the same set of elements. So the shelf is universal: an engineer near any star would be shopping from the same stock list of 118 kinds of atom, and the entire list fits on one classroom wall chart. No secret ingredients have turned up anywhere light has been read.</p>
+      <p>Which means any real edge would come from arrangement, not ingredients. Three arrangements already show what that edge looks like.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <span class="card-glyph">💎</span>
+          <h3>Perfect crystals</h3>
+          <p>A metal's weakness mostly lives in its flaws. Tiny flawless whiskers of iron measure many times stronger than ordinary iron from the same shelf. Same atoms, tidier stacking, very different material.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">⚖️</span>
+          <h3>Chosen isotopes</h3>
+          <p>An isotope is the same element at a slightly different weight. Diamond grown from carbon of a single weight sheds heat noticeably better than natural diamond. The chemistry is identical; the sorting does the work.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🕸️</span>
+          <h3>Metamaterial lattices</h3>
+          <p>A metamaterial is a material whose trick is its shape, not its chemistry. Built as a fine lattice, an ordinary substance can steer sound or light in ways no plain block of the same stuff can.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">hypothetical cabinet</span></h2>
+      <p>If the brief forced a shopping list, an engineer might write down four wishes. Every line below is a wish, not a stock item; the measurements around each wish are real.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <h3>Metallic hydrogen <span class="tag tier-2">T2 · lab report</span></h3>
+          <p>Squeeze hydrogen hard enough and the prediction, first made in 1935, is that it would turn into a shiny metal. Labs press samples between two shaped diamonds, point to point; one group reports a reflective sample at pressures beyond the centre of the Earth, like parking two thousand utes on a space the size of a fingernail, held for moments. If it could be kept stable at everyday pressure, and no lab has shown that so far, predictions say it could carry current without loss and pack several times the energy of petrol into each kilogram.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Room-temperature superconductor <span class="tag tier-1">T1 · measured limits</span></h3>
+          <p>A superconductor carries electric current without losing any of it as heat. The warmest confirmed one at everyday pressure works near minus 140 degrees, colder than the coldest outdoor air ever recorded on Earth. Under crushing pressure, hydrogen-rich compounds are reported superconducting near minus 20 degrees, close to a kitchen freezer. A superconductor happy in a warm room at everyday pressure would let a craft's wiring and magnets run without waste; none is confirmed so far.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Orbit-grown single crystals <span class="tag tier-1">T1 · measured</span></h3>
+          <p>Labs aboard the space station grow crystals in free fall, and many come back more even than the same recipe grown on the ground; reports describe fewer flaws. Today's best space-grown pieces sit closer to a sugar grain than a brick. A hull grown as one flawless piece would need that process scaled up millions of times, which nobody has attempted.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Lattices thinner than soap film <span class="tag tier-1">T1 · measured</span></h3>
+          <p>Graphene is a sheet of carbon one atom thick; a stack of three hundred thousand sheets would be about as thick as a page of a book, and each sheet is far thinner than the wall of a soap bubble. Tiny flawless pieces measure stronger for their weight than any steel. A hull skin assembled layer by chosen layer would be a material with no catalogue entry yet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">spec builder</span></h2>
+      <p>Pick a hull, a power source and a lift idea. Under each pick sits the real record it would lean on, and the size of the gap between that record and the brief. The records stand in present tense; the craft stays in would.</p>
+
+      <div class="panel reveal">
+        <div class="control-row">
+          <div class="control">
+            <label for="sel-hull">Hull</label>
+            <select id="sel-hull">
+              <option value="ti">Titanium alloy</option>
+              <option value="uhtc">Ultra-high-temperature ceramic</option>
+              <option value="graphene">Layered graphene laminate</option>
+              <option value="orbit">Orbit-grown single crystal</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="sel-power">Power</label>
+            <select id="sel-power">
+              <option value="battery">Lithium battery pack</option>
+              <option value="fuelcell">Hydrogen fuel cell</option>
+              <option value="rtg">Radioisotope generator</option>
+              <option value="methyd">Metallic hydrogen cell</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="sel-lift">Lift idea</label>
+            <select id="sel-lift">
+              <option value="rotors">Ducted rotors</option>
+              <option value="ionwind">Ion wind</option>
+              <option value="maglev">Magnetic levitation</option>
+              <option value="mystery">A push with no exhaust</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="spec-result" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="note reveal"><strong>Limits.</strong> The poems are poems; no physical vimana has been measured, recovered or catalogued. Every number on this page comes from present-day records, and every sentence about the craft itself is conditional. If a workshop somewhere ever does produce a silent, wingless, heat-shrugging palace, the shelf it shops from will be the same 118 elements on the classroom wall.</div>
+
+      <h2>Keep <span class="hue">wandering</span></h2>
+      <div class="grid">
+        <a class="card-link" href="anomalous-materials.html"><div class="card reveal">
+          <span class="card-glyph">🧪</span>
+          <h3>Samples</h3>
+          <p>Claimed and alleged samples, what was measured, and how strong each claim runs.</p>
+        </div></a>
+        <a class="card-link" href="metamaterials.html"><div class="card reveal">
+          <span class="card-glyph">🕸️</span>
+          <h3>Metamaterials</h3>
+          <p>Where shape beats chemistry: lattices that steer sound, light and load.</p>
+        </div></a>
+        <a class="card-link" href="frontiers.html"><div class="card reveal">
+          <span class="card-glyph">🧭</span>
+          <h3>Frontiers</h3>
+          <p>The paths from today's records toward materials nobody has held yet.</p>
+        </div></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var SPEC = {
+    hull: {
+      ti: {
+        name: "Titanium alloy",
+        leans: "Airliner parts and artificial hips are titanium today; it is light, tough and shrugs off rust.",
+        gap: "It loses its strength well below the heat a returning capsule's skin cops, so the calm unscorched palace of the stories would need a separate shield to do the suffering for it.",
+        score: 55
+      },
+      uhtc: {
+        name: "Ultra-high-temperature ceramic",
+        leans: "Hafnium carbide, a fired material like pottery's far tougher cousin, stays solid to about 3,900 degrees: roughly two thirds of the way to the temperature of the Sun's surface.",
+        gap: "Ceramics crack rather than bend. A hull that banked hard would ask for a toughness no ceramic has shown; the brief wants a dinner plate that bounces.",
+        score: 45
+      },
+      graphene: {
+        name: "Layered graphene laminate",
+        leans: "Graphene is a sheet of carbon one atom thick, and tiny flawless pieces measure stronger for their weight than any steel.",
+        gap: "Flawless pieces top out around fingernail size. A hull would want flawless sheets closer to the size of a driveway, and stacked by the hundred thousand.",
+        score: 70
+      },
+      orbit: {
+        name: "Orbit-grown single crystal",
+        leans: "Labs on the space station grow crystals in free fall, and many come back with fewer flaws than ground-grown ones.",
+        gap: "Today's best space-grown pieces sit nearer a sugar grain than a brick; a one-piece hull would be a scale-up of millions of times.",
+        score: 80
+      }
+    },
+    power: {
+      battery: {
+        name: "Lithium battery pack",
+        leans: "Batteries run phones, power tools and whole suburbs' worth of storage right now.",
+        gap: "A phone battery holds less energy than a teaspoon of petrol. Today's battery drones hover for about twenty to thirty minutes; the stories read like hours aloft, unhurried.",
+        score: 65
+      },
+      fuelcell: {
+        name: "Hydrogen fuel cell",
+        leans: "A small number of fuel-cell cars drive on Australian roads now, and kilogram for kilogram hydrogen carries about three times the energy of petrol.",
+        gap: "The tank outweighs the fuel it holds many times over. The slim hull in the poems would leave nowhere to hide a heavy tank.",
+        score: 50
+      },
+      rtg: {
+        name: "Radioisotope generator",
+        leans: "A slug of warm metal that turns its own heat into electricity: the deep-space probes launched in the 1970s still phone home on these, decades on, with no moving parts.",
+        gap: "Output is a few hundred watts, a fraction of one kitchen kettle. Hovering would want thousands of kettles' worth, so this pick would keep the lights on and nothing else.",
+        score: 75
+      },
+      methyd: {
+        name: "Metallic hydrogen cell",
+        leans: "Labs report squeezing hydrogen toward a shiny metal between two diamonds, at pressures beyond the centre of the Earth, held for moments.",
+        gap: "No lab has shown it holding together at everyday pressure. If it did, the prediction is a fuel several times denser than petrol; that if is the largest one in the cabinet.",
+        score: 95
+      }
+    },
+    lift: {
+      rotors: {
+        name: "Ducted rotors",
+        leans: "Delivery drones and rescue helicopters fly on pushed air every day of the week.",
+        gap: "Pushed air is loud; a drone up close runs about as loud as a blender at arm's length, and the stories describe silence.",
+        score: 40
+      },
+      ionwind: {
+        name: "Ion wind",
+        leans: "In 2018 an experimental aeroplane with no moving parts, lifted by charged air, flew about the length of an Olympic pool indoors, close to silent.",
+        gap: "The push is gentle, about the weight of a few sheets of paper per engine. Lifting a person this way would ask for thousands of times more shove.",
+        score: 70
+      },
+      maglev: {
+        name: "Magnetic levitation",
+        leans: "Maglev trains carry paying passengers at over 400 km/h, floating on magnets, quietly.",
+        gap: "They float over a prepared track laid centimetres below. The craft in the poems would cross open sky with nothing underneath to push on.",
+        score: 60
+      },
+      mystery: {
+        name: "A push with no exhaust",
+        leans: "No measured record backs this pick; every push measured so far moves something the other way.",
+        gap: "This choice would sit outside the current record books entirely. If it existed, it would be bigger news than the craft itself.",
+        score: 100
+      }
+    }
+  };
+
+  var LABELS = { hull: "Hull", power: "Power", lift: "Lift" };
+
+  function gapWord(s) {
+    if (s <= 45) return "wide";
+    if (s <= 65) return "very wide";
+    if (s <= 85) return "vast";
+    return "off the chart";
+  }
+
+  function summarise(avg) {
+    if (avg <= 55) {
+      return "This build would lean mostly on hardware that already flies, floats or drives. The brief would still outrun it on silence, stamina and heat, but most of its parts have a measured record to point at.";
+    }
+    if (avg <= 75) {
+      return "This build would mix real records with real gaps. The parts exist as measurements; the distance from each measurement to the brief would be counted in thousands of times, not in percent.";
+    }
+    return "This build would rest on the cabinet's biggest ifs. If even one of them landed as a measurement, it would be larger news than any flying palace.";
+  }
+
+  var out = document.getElementById("spec-result");
+  var sels = {
+    hull: document.getElementById("sel-hull"),
+    power: document.getElementById("sel-power"),
+    lift: document.getElementById("sel-lift")
+  };
+
+  function render() {
+    var keys = ["hull", "power", "lift"];
+    var blocks = "";
+    var bars = "";
+    var total = 0;
+    keys.forEach(function (k) {
+      var o = SPEC[k][sels[k].value];
+      total += o.score;
+      blocks +=
+        '<div class="spec-block">' +
+        "<h4>" + LABELS[k] + "</h4>" +
+        '<span class="pick">' + o.name + "</span>" +
+        "<p><strong>Leans on:</strong> " + o.leans + "</p>" +
+        "<p><strong>The gap:</strong> " + o.gap + "</p>" +
+        "</div>";
+      bars +=
+        '<div class="bar-row">' +
+        '<span class="who">' + LABELS[k] + "</span>" +
+        '<div class="bar" style="width:' + o.score + '%"></div>' +
+        '<span class="val">' + gapWord(o.score) + "</span>" +
+        "</div>";
+    });
+    var avg = total / keys.length;
+    out.innerHTML =
+      '<div class="spec-grid">' + blocks + "</div>" +
+      '<p class="gap-caption">Distance from the brief · longer bar, wider gap</p>' +
+      bars +
+      '<p class="spec-summary">' + summarise(avg) + "</p>";
+  }
+
+  Object.keys(sels).forEach(function (k) {
+    sels[k].addEventListener("change", render);
+  });
+  render();
+})();
+</script>
+</body>
+</html>
