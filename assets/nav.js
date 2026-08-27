@@ -24,8 +24,41 @@
     header.innerHTML =
       '<header class="site-header"><div class="nav-bar">' +
       '<a class="brand" href="index.html">EXTREME MATTER ATLAS</a>' +
-      '<ul class="pill-nav">' + links + "</ul>" +
+      '<button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="main-nav">' +
+      '<span class="menu-lines" aria-hidden="true"><i></i><i></i><i></i></span>' +
+      '<span class="menu-word">Menu</span></button>' +
+      '<ul class="pill-nav" id="main-nav">' + links + "</ul>" +
       "</div></header>";
+
+    var btn = document.getElementById("menu-btn");
+    var nav = document.getElementById("main-nav");
+    var hdr = header.querySelector(".site-header");
+
+    var setOpen = function (open) {
+      hdr.classList.toggle("menu-open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setOpen(btn.getAttribute("aria-expanded") !== "true");
+    });
+
+    nav.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") setOpen(false);
+    });
+
+    document.addEventListener("click", function (e) {
+      if (hdr.classList.contains("menu-open") && !hdr.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 900) setOpen(false);
+    });
   }
 
   var footer = document.getElementById("site-footer");

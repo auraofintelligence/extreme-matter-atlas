@@ -38,6 +38,8 @@ body[data-page="table"] .ptable .el-tile .pv {
 }
 body[data-page="table"] .ptable.mode-prop .el-tile .nm { display: none; }
 body[data-page="table"] .ptable.mode-prop .el-tile .pv { display: block; }
+body[data-page="table"] .ptable.mode-prop .el-tile { color: #04060c; }
+body[data-page="table"] .ptable.mode-prop .el-tile.no-data { color: var(--muted); }
 body[data-page="table"] .el-tile.dim { opacity: 0.13; filter: saturate(0.25); }
 body[data-page="table"] .el-tile.dim:hover, body[data-page="table"] .el-tile.dim:focus-visible { opacity: 0.5; }
 body[data-page="table"] .ptable.show-records .el-tile.has-rec {
@@ -119,6 +121,14 @@ body[data-page="table"] .scrim {
   opacity: 0; pointer-events: none; transition: opacity .28s ease;
 }
 body[data-page="table"] .scrim.on { opacity: 1; pointer-events: auto; }
+body[data-page="table"] .drawer {
+  visibility: hidden;
+  transition: transform .28s cubic-bezier(.2, .8, .2, 1), visibility 0s linear .28s;
+}
+body[data-page="table"] .drawer.open {
+  visibility: visible;
+  transition: transform .28s cubic-bezier(.2, .8, .2, 1), visibility 0s;
+}
 body[data-page="table"] .drawer .el-head {
   display: flex; gap: 15px; align-items: flex-start; padding-right: 44px; margin-bottom: 14px;
 }
@@ -226,7 +236,7 @@ body[data-page="table"] .drawer .drawer-note {
         </div>
         <div class="panel">
           <h3>Reading down</h3>
-          <p>Now read straight down a column instead. A column is a family: its members carry the same number of electrons out on the rim, so they behave alike. The far left column holds metals soft enough to cut with a butter knife. The far right column holds gases that mostly keep to themselves.</p>
+          <p>Now read straight down a column instead. A column is a family: its members carry the same number of electrons out on the rim, so they behave alike. The column running down the left edge holds metals soft enough to cut with a butter knife, once you get past hydrogen at the top. The column down the right edge holds gases that mostly keep to themselves.</p>
         </div>
         <div class="panel">
           <h3>The two loose rows</h3>
@@ -365,9 +375,15 @@ body[data-page="table"] .drawer .drawer-note {
   function kelvinPair(k) {
     return fmt(k, k < 100 ? 2 : 0) + " K (" + fmt(k - 273.15, 0) + " °C)";
   }
+  function densFmt(d) {
+    return String(Number(Number(d).toPrecision(d < 1 ? 3 : 5)));
+  }
+  function massFmt(m) {
+    return m % 1 === 0 ? fmt(m, 0) : fmt(m, 3);
+  }
   function ppmLong(v) {
     if (v >= 1000) return fmt(v, 0) + " ppm";
-    if (v >= 1) return trim(v) + " ppm";
+    if (v >= 0.0001) return String(Number(Number(v).toPrecision(3))) + " ppm";
     return Number(v).toExponential(1) + " ppm";
   }
   function ppmPlain(v, what) {
@@ -395,11 +411,11 @@ body[data-page="table"] .drawer .drawer-note {
       tile: function (v) { return fmt(v, 0); },
       end: function (v) { return fmt(v, v < 100 ? 1 : 0) + " K"; } },
     { key: "boil", label: "Boiling point",
-      note: "The temperature where a liquid turns to vapour. A kettle gets water there at 373 K. Helium needs 4 K, colder than deep space; rhenium needs 5,869 K.",
+      note: "The temperature where a liquid turns to vapour. A kettle gets water there at 373 K. Helium turns to vapour at 4 K, barely above the background chill of deep space; rhenium holds out to 5,869 K.",
       tile: function (v) { return fmt(v, 0); },
       end: function (v) { return fmt(v, v < 100 ? 1 : 0) + " K"; } },
     { key: "en", label: "Pull on shared electrons",
-      note: "When two atoms share electrons, one usually pulls harder. That tug is scored on the Pauling scale, from 0.7 for caesium up to 3.98 for fluorine. Six boxes hold no score, because they hardly share at all.",
+      note: "When two atoms share electrons, one usually pulls harder. That tug is scored on the Pauling scale, from 0.7 for caesium up to 3.98 for fluorine. Eighteen boxes hold no score, because they hardly share at all.",
       tile: function (v) { return trim(v); },
       end: function (v) { return trim(v) + " on the scale"; } },
     { key: "ion1", label: "Energy to strip one electron",
@@ -411,7 +427,7 @@ body[data-page="table"] .drawer .drawer-note {
       tile: function (v) { return fmt(v, 0); },
       end: function (v) { return fmt(v, 0) + " pm"; } },
     { key: "abundCrust", label: "Share of Earth's crust", log: true,
-      note: "How much of the ground is made of it, in grams per tonne. Oxygen runs to 461,000 of them, close to half the weight of the crust; astatine is so scarce the whole crust may hold less than a teaspoon at any moment.",
+      note: "How much of the ground is made of it, in grams per tonne. Oxygen runs to 461,000 of them, close to half the weight of the crust. Astatine is the scarcest, with estimates putting the whole crust's supply at under a gram, about the weight of a paperclip.",
       tile: function (v) { return compact(v); },
       end: function (v) { return compact(v) + " ppm"; } },
     { key: "discovered", label: "Year first found",
@@ -531,8 +547,8 @@ body[data-page="table"] .drawer .drawer-note {
         b.querySelector(".pv").textContent = "";
       });
       legend.innerHTML = FAMILIES.map(function (f) {
-        return '<span class="nodata"><i class="' + catClass(f.key) + '" style="border-color:transparent"></i>' +
-               f.name.split(",")[0] + "</span>";
+        return '<span class="nodata"><i style="background:var(--cat-' + f.key +
+               ');border-color:transparent"></i>' + f.name.split(",")[0] + "</span>";
       }).join("");
       legendNote.textContent = mode.note;
       return;
@@ -550,14 +566,12 @@ body[data-page="table"] .drawer .drawer-note {
       if (v === null || v === undefined) {
         b.style.backgroundColor = NO_DATA_BG;
         b.classList.add("no-data");
-        b.style.color = "";
         pv.textContent = "";
         return;
       }
       b.classList.remove("no-data");
       var t = ((useLog ? Math.log10(v) : v) - lo) / span;
       b.style.backgroundColor = rampColour(t);
-      b.style.color = "";
       pv.textContent = mode.tile(v);
     });
 
@@ -661,8 +675,8 @@ body[data-page="table"] .drawer .drawer-note {
       '<span class="tag">' + CAT_LABEL[e.cat] + "</span></div></div>";
 
     h += propRow("Atomic number", fmt(e.z, 0), "Protons in the middle of the atom.");
-    h += propRow("Atomic mass", trim(e.mass) + " u", null);
-    h += propRow("Density", trim(e.density) + " g/cm³", densityPlain(e.density), isEst("density"));
+    h += propRow("Atomic mass", massFmt(e.mass) + " u", null);
+    h += propRow("Density", densFmt(e.density) + " g/cm³", densityPlain(e.density), isEst("density"));
     h += propRow("Melting point",
       e.melt === null ? "no settled figure" : kelvinPair(e.melt), null, isEst("melt"));
     h += propRow("Boiling point",
@@ -687,7 +701,7 @@ body[data-page="table"] .drawer .drawer-note {
       e.discovered === null ? "Worked and named long before anyone kept records of it." : null);
     if (e.radioactive) {
       h += propRow("Radioactive", "yes",
-        e.halfLife ? "Its longest-lived form takes " + esc(e.halfLife) + " for half of a sample to break down."
+        e.halfLife ? "Half of any sample of its steadiest form breaks down in " + esc(e.halfLife) + "."
                    : "Its atoms break down over time.");
     }
 
