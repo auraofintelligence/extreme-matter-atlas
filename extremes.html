@@ -284,7 +284,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
           </div>
           <div class="rec-val">8.1 hours</div>
           <span class="rec-unit">half-life of its longest-lasting form</span>
-          <p>Astatine forms in trace amounts as heavier elements break down, and it leaves almost as fast as it arrives. Reported estimates of how much exists in the entire crust at any one moment range from under a gram to a few dozen grams <span class="tag est">est.</span>: on the low reading, every rock on the planet between them holds less astatine than would sit on the tip of a teaspoon. The dataset behind this atlas lists no crust figure for it at all, and nor does it for francium.</p>
+          <p>Astatine forms in trace amounts as heavier elements break down, and it leaves almost as fast as it arrives. Reported estimates of how much exists in the entire crust at any one moment range from under a gram to a few dozen grams <span class="tag est">est.</span>: on the low reading, every rock on the planet between them holds less astatine than would sit on the tip of a teaspoon. The standard reference tables give no crust figure for it at all, and none for francium either.</p>
           <p>Nobody has seen a visible piece. Gather enough in one place and its own radioactive heat would boil it away before you could look at it. Its bulk numbers, the density and the melting point, are all calculated rather than weighed. One isotope, astatine-211, is being studied as a cancer treatment that would carry radiation to a tumour cell by cell.</p>
         </div>
 
@@ -498,7 +498,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       titleLo: "Weakest pull on shared electrons", sub: "electronegativity, Pauling scale",
       get: function (e) { return e.en; },
       est: function (e) { return e.est.indexOf("en") >= 0; },
-      fmt: function (v) { return num(v, 2); },
+      fmt: function (v) { return Number(v).toFixed(2); },
       plain: "When two atoms share electrons, one pulls harder. This rates that pull, from about 0.7 up to 3.98.",
       gloss: "When two atoms share electrons, one of them pulls harder. This is the rating for that pull, running from about 0.7 up to 3.98. The high end grabs; the low end gives. Elements with no rating at all, mostly the noble gases that rarely bond with anything, sit this board out."
     },
@@ -696,9 +696,12 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     var scale = proportional
       ? "Bar lengths are drawn against the leader, so you can read the gaps straight off them."
       : "In this direction the bars show the running order; the numbers carry the size of the gaps.";
-    if (estCount) {
-      scale += " " + estCount + " of the eight values shown " + (estCount === 1 ? "is an estimate" : "are estimates") +
-        " rather than a settled measurement.";
+    if (estCount === rows.length) {
+      scale += " Every value shown here is calculated rather than measured.";
+    } else if (estCount === 1) {
+      scale += " One of the values shown is calculated rather than measured.";
+    } else if (estCount) {
+      scale += " " + estCount + " of the values shown are calculated rather than measured.";
     }
     if (settledOnly) scale += " Estimated values are set aside.";
     lbScale.textContent = scale;
