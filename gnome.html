@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNoME · Extreme Matter Atlas</title>
+<meta name="description" content="About 2.2 million predicted crystals, about 380,000 judged stable, and a robot kitchen cooking the first batches: the GNoME release in plain words.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page-specific styles, scoped to this page */
+body[data-page="gnome"] .lat-caps {
+  display: flex; justify-content: space-between; gap: 14px;
+  padding: 8px 10px 2px;
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
+}
+body[data-page="gnome"] .step-num {
+  display: inline-block; margin-bottom: 10px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--accent);
+}
+body[data-page="gnome"] .fstage { margin: 20px 0; }
+body[data-page="gnome"] .fstage:first-child { margin-top: 6px; }
+body[data-page="gnome"] .fmeta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 7px;
+}
+body[data-page="gnome"] .flabel { font-weight: 600; font-size: 14.5px; }
+body[data-page="gnome"] .fcount {
+  font-family: var(--font-mono); font-size: 18px; font-weight: 600;
+  color: var(--accent); white-space: nowrap;
+}
+body[data-page="gnome"] .fbar-track {
+  height: 22px; border-radius: 999px; overflow: hidden;
+  background: var(--bg2); border: 1px solid var(--line);
+}
+body[data-page="gnome"] .fbar {
+  height: 100%; width: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 18px -4px color-mix(in srgb, var(--accent) 65%, transparent);
+  transition: width 1.1s cubic-bezier(.2, .8, .2, 1);
+}
+body[data-page="gnome"] .fnote { font-size: 13px; color: var(--muted); margin-top: 6px; }
+body[data-page="gnome"] .scale-note {
+  margin-top: 16px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+body[data-page="gnome"] .pace-read {
+  font-family: var(--font-mono); font-size: 14px; color: var(--ink);
+  padding: 8px 14px; border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2);
+}
+body[data-page="gnome"] .pace-read b { color: var(--accent); font-weight: 600; }
+body[data-page="gnome"] #paceCaption b { color: var(--ink); }
+body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
+</style>
+</head>
+<body data-page="gnome">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">GNoME · Graph Networks for Materials Exploration</span>
+      <h1 class="display">A flood of new crystals</h1>
+      <p class="lede">In late 2023 a pattern-finding program called <strong>GNoME</strong>, built by Google DeepMind, published a list of about <strong>2.2 million</strong> crystal structures that were not in the world's catalogues, and flagged about <strong>380,000</strong> of them as likely to hold together. The team behind it describes the haul as close to <strong>800 years</strong> of discovery at the earlier pace. Here is what that means, in plain words.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">2.2 million</span><span class="lbl">new crystal structures predicted</span></div>
+        <div class="stat"><span class="num">~380,000</span><span class="lbl">judged stable enough to try making</span></div>
+        <div class="stat"><span class="num">736</span><span class="lbl">made in labs around the world while the work ran</span></div>
+        <div class="stat"><span class="num">41 in 17 days</span><span class="lbl">cooked by a robot kitchen at Berkeley</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Start with something <span class="hue">you own</span></h2>
+      <p>Flip your phone over. The chip inside is a single crystal of silicon, grown to order. The battery stores its charge in a crystal that lets lithium slide in and out like a key in a lock. The magnet holding the shopping list to your fridge is a crystal with its atoms lined up in one direction. The panels on a solar roof catch light with crystals tuned to sunlight.</p>
+      <p>Nearly every finished thing you can point at leans on a crystal doing a quiet job. So a sudden pile of new crystals is not trivia for a lab shelf; it is a pile of possible future products, waiting to be sorted.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What a crystal <span class="hue">is</span></h2>
+      <p>A crystal is a repeating pattern of atoms, like brickwork. Lay one brick pattern down, repeat it in every direction, and you have a wall; repeat one small cluster of atoms in every direction and you have a crystal. Salt, diamond, the quartz in a watch: each is one small arrangement, copied over and over, trillions of times.</p>
+      <p>The pattern is the whole game. Carbon stacked one way is soft grey pencil lead; the same carbon in a tighter pattern is diamond. Change the pattern and you change the material. Glass, by contrast, has no repeat at all: its atoms sit jumbled, like bricks tipped out of a truck.</p>
+      <div class="canvas-frame">
+        <canvas id="latticeCanvas" width="1000" height="320" aria-label="Left half shows dots in a repeating grid, right half shows dots scattered at random"></canvas>
+        <div class="lat-caps"><span>crystal: the pattern repeats</span><span>glass: no pattern</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The old way: <span class="hue">slow cooking and luck</span></h2>
+      <p>For most of the last century, finding a new material meant mixing powders, baking them in a furnace for days, grinding the result, baking again, and then measuring whether anything new had formed. Months of careful work could end in a grey lump of nothing much. Good materials also arrived by accident, noticed by someone paying attention to a failed batch.</p>
+      <p>The recipe book grew, but slowly. Averaged over the long run, the world's list of crystals known to be stable, meaning they hold their pattern rather than falling apart into simpler stuff, grew by a few hundred entries a year.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What GNoME <span class="hue">is</span></h2>
+      <p>GNoME reads a crystal the way you might read a dot-to-dot puzzle: each atom is a dot, each bond between atoms is a line. Under the hood it is a graph neural network, which is a program that learns from worked examples which arrangements of dots and lines tend to hold together and which tend to fall apart.</p>
+      <p>Fed the tens of thousands of crystals already in the catalogues, it began proposing new ones: sometimes a known pattern with one kind of atom swapped for another, sometimes a wilder arrangement no bench had tried. Most guesses fail, and that is fine, because it can make millions of them.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The <span class="hue">loop</span></h2>
+      <div class="grid">
+        <div class="card"><span class="step-num">STEP 01</span><h3>Guess</h3><p>GNoME proposes a batch of new atomic arrangements, from careful swaps to long shots.</p></div>
+        <div class="card"><span class="step-num">STEP 02</span><h3>Check</h3><p>Physics maths grades each guess: would this arrangement hold its shape, or collapse into something simpler?</p></div>
+        <div class="card"><span class="step-num">STEP 03</span><h3>Learn</h3><p>The graded guesses, passes and fails alike, go back into the program's training pile.</p></div>
+        <div class="card"><span class="step-num">STEP 04</span><h3>Guess better</h3><p>Each round comes back sharper. By the final rounds, far more of its guesses survive the check.</p></div>
+      </div>
+      <div class="note"><strong>The checking step</strong> uses density functional theory: a physics calculation that works out how the electrons in a proposed structure would settle, and from that how much energy the arrangement would cost. A low-energy arrangement is one that would rather stay as it is, which is what stable means here.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The numbers, held <span class="hue">one at a time</span></h2>
+      <p>Numbers this big slide off the mind, so give each one a picture. About 2.2 million predicted crystals is roughly one for every person in Perth. The stable short-list, about 380,000, would fill the MCG (the Melbourne Cricket Ground, about 100,000 seats) close to four times over.</p>
+      <p>Or try it as a job. If you looked at one predicted crystal a minute, eight hours a day, seven days a week, the full 2.2 million would keep you busy for about 12 and a half years. The stable short-list alone would take you a bit over two years.</p>
+      <p>The team describes the release as close to 800 years of discovery at the earlier pace. Count back 800 years from 2023 and you land in the 1220s, when the Magna Carta was newly signed. Before the release, the catalogues held about 48,000 crystals known to be stable; with it, about 421,000, which is nearly nine times the earlier count.</p>
+
+      <div class="panel" id="funnel">
+        <div class="fstage" data-count="2200000" data-w="100">
+          <div class="fmeta"><span class="flabel">Predicted crystal structures (about)</span><span class="fcount">0</span></div>
+          <div class="fbar-track"><div class="fbar"></div></div>
+          <p class="fnote">Fresh patterns proposed by GNoME and graded by the physics maths.</p>
+        </div>
+        <div class="fstage" data-count="380000" data-w="84">
+          <div class="fmeta"><span class="flabel">Judged stable (about)</span><span class="fcount">0</span></div>
+          <div class="fbar-track"><div class="fbar"></div></div>
+          <p class="fnote">Arrangements the maths says would hold their shape: the short-list worth trying at a bench.</p>
+        </div>
+        <div class="fstage" data-count="736" data-w="46">
+          <div class="fmeta"><span class="flabel">Already made in labs</span><span class="fcount">0</span></div>
+          <div class="fbar-track"><div class="fbar"></div></div>
+          <p class="fnote">Made by lab teams around the world, each working on their own, while GNoME was still running.</p>
+        </div>
+        <div class="fstage" data-count="41" data-w="26">
+          <div class="fmeta"><span class="flabel">Cooked by the robot kitchen</span><span class="fcount">0</span></div>
+          <div class="fbar-track"><div class="fbar"></div></div>
+          <p class="fnote">Made by the A-Lab in 17 days, from targets drawn from the same shared pool of predictions.</p>
+        </div>
+        <p class="scale-note">Bar lengths are compressed so the small counts stay visible; read the numbers for the real drop.</p>
+      </div>
+
+      <p>Inside the pile are families worth naming. About 52,000 of the predictions are layered materials similar to graphene, the carbon sheet one atom thick; that is close to a full house at Suncorp Stadium in Brisbane, one candidate per seat. Another 528 look like lithium-ion conductors, solids that could let lithium, the moving part of a battery, slip through; the team reports that is about 25 times as many candidates as an earlier search of the same kind turned up.</p>
+
+      <h3>How fast is that, really?</h3>
+      <p>Take the team's own comparison at face value: about 380,000 stable newcomers in one release, against roughly 800 years at the earlier pace. That works out to an earlier pace of a few hundred a year. Drag the slider to see how long the old road would have been.</p>
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="yearsRange">Years of earlier-pace work</label>
+            <input type="range" id="yearsRange" min="1" max="800" value="25" step="1">
+          </div>
+          <div class="pace-read"><b id="yearsOut">25</b> years, starting in <b id="startOut">1998</b></div>
+        </div>
+        <div class="bar-row"><span class="who">Earlier pace</span><div class="bar" id="oldBar" style="width:3.2%"></div><span class="val" id="oldVal">~11,875</span></div>
+        <div class="bar-row"><span class="who">GNoME release</span><div class="bar" style="width:100%"></div><span class="val">~380,000</span></div>
+        <p class="note" id="paceCaption"></p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The robot <span class="hue">kitchen</span></h2>
+      <p>Predicting a crystal is one thing; making it is another. In a room at Lawrence Berkeley National Laboratory in California sits the A-Lab: robotic arms that weigh out powders, load furnaces, bake, cool, and then read their own results. When a bake misses, the system rewrites its own recipe and tries again, drawing its cooking ideas from thousands of published methods.</p>
+      <p>Over 17 days of running on its own, the A-Lab made 41 of the 58 target crystals it attempted, working from the same shared pool of predictions. That is better than two new materials a day. A human team can spend months on a single one, and still miss.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What it <span class="hue">could mean</span></h2>
+      <p>Every claim in this section is about the future, so it wears could and would. A predicted crystal is a candidate, not a product.</p>
+      <div class="grid">
+        <div class="card"><span class="card-glyph">🔋</span><h3>Batteries</h3><p>The 528 candidate lithium conductors could lead to solid-state batteries: batteries with no flammable liquid inside, which could hold more charge and shrug off knocks. Any one of them would still need years of testing before it reached a car or a phone.</p></div>
+        <div class="card"><span class="card-glyph">☀️</span><h3>Solar</h3><p>New light-catching crystals could lift how much of the day's sun a rooftop panel turns into power, and the layered candidates could suit panels that are lighter and cheaper to make. Which ones survive rain, heat and twenty summers is the open question.</p></div>
+        <div class="card"><span class="card-glyph">💻</span><h3>Computing</h3><p>The team points to candidate superconductors, materials that could carry current with no energy lost as heat. If even a few worked at friendlier temperatures, chips and power lines could run cooler and waste less along the way.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Browse it <span class="hue">yourself</span></h2>
+      <p>The predictions were handed to the <a href="https://materialsproject.org" rel="noopener">Materials Project</a>, a free public database run out of Berkeley that lab teams and students anywhere can search. Type in a pair of elements and see what the maths says they could build together. No fee, no special kit; a browser is enough.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Limits</span></h2>
+      <div class="panel">
+        <p>A prediction is a computed judgement, not a sample in a jar. The stability check is done with physics maths at idealised conditions, colder and cleaner than any real bench; how a crystal behaves warm, damp and squeezed is a separate question, answered only by making it.</p>
+        <p>Stable does not mean useful, cheap or easy to make. Many of the 380,000 may resist every furnace recipe thrown at them, and most will turn out to be ordinary. The made-so-far numbers, 736 plus the A-Lab's 41, are a first taste, not a verdict on the rest.</p>
+        <p>The headline growth is from about 48,000 known stable crystals to about 421,000. That is nearly nine times the earlier count; the team rounds it to an order of magnitude. The 800 years figure is the team's own comparison against the earlier pace, and it depends on how that pace is measured.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">🧊</span><h3>Crystal Lab</h3><p>Stack and twist flat lattices into 3D yourself, and watch moire patterns bloom, in the atlas's playable lab.</p></div></a>
+        <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where the paths could lead next: the exploration routes still open, told in could and would.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li><span class="tag tier-1">T1</span> Merchant et al., "Scaling deep learning for materials discovery", Nature, November 2023 · <a href="https://www.nature.com/articles/s41586-023-06735-9" rel="noopener">nature.com/articles/s41586-023-06735-9</a></li>
+        <li><span class="tag tier-1">T1</span> Szymanski et al., "An autonomous laboratory for the accelerated synthesis of inorganic materials", Nature, November 2023 · <a href="https://www.nature.com/articles/s41586-023-06734-w" rel="noopener">nature.com/articles/s41586-023-06734-w</a></li>
+        <li><span class="tag tier-1">T1</span> "Millions of new materials discovered with deep learning", Google DeepMind, November 2023 · <a href="https://deepmind.google/discover/blog/millions-of-new-materials-discovered-with-deep-learning/" rel="noopener">deepmind.google/discover/blog/millions-of-new-materials-discovered-with-deep-learning</a></li>
+        <li><span class="tag tier-1">T1</span> "Google DeepMind adds nearly 400,000 new compounds to Berkeley Lab's Materials Project", Lawrence Berkeley National Laboratory, November 2023 · <a href="https://newscenter.lbl.gov/2023/11/29/google-deepmind-new-compounds-materials-project/" rel="noopener">newscenter.lbl.gov/2023/11/29/google-deepmind-new-compounds-materials-project</a></li>
+        <li><span class="tag tier-1">T1</span> The Materials Project, free public database · <a href="https://materialsproject.org" rel="noopener">materialsproject.org</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fmt = (window.EMA && window.EMA.fmt) || function (n) { return String(n); };
+
+  /* ---------- lattice canvas: repeating pattern vs jumble ---------- */
+  var cv = document.getElementById("latticeCanvas");
+  if (cv && cv.getContext) {
+    var cx = cv.getContext("2d");
+    var styles = getComputedStyle(document.body);
+    var ACC = (styles.getPropertyValue("--accent") || "#818cf8").trim();
+    var ACC2 = (styles.getPropertyValue("--accent2") || "#22d3ee").trim();
+    var W = 0, H = 0, DPR = 1;
+    var randDots = [];
+
+    /* seeded pseudo-random so the jumble stays put between frames */
+    function lcg(seed) {
+      var s = seed;
+      return function () { s = (s * 48271) % 2147483647; return s / 2147483647; };
+    }
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 640;
+      var h = Math.max(220, Math.round(w * 0.3));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+      var rnd = lcg(20231129);
+      randDots = [];
+      var half = W / 2;
+      var count = Math.round((half * H) / 1500);
+      for (var i = 0; i < count; i++) {
+        randDots.push({
+          x: half + 18 + rnd() * (half - 36),
+          y: 14 + rnd() * (H - 28),
+          p: rnd() * Math.PI * 2,
+          a: 0.35 + rnd() * 0.5
+        });
+      }
+    }
+
+    function draw(t) {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+      var half = W / 2;
+      var s = Math.max(30, Math.round(W / 26));
+      var cols = Math.floor((half - 28) / s);
+      var rows = Math.floor((H - 24) / s);
+      var ox = (half - cols * s) / 2 + s / 2;
+      var oy = (H - rows * s) / 2 + s / 2;
+      var i, j;
+
+      /* left: the repeating pattern, dots joined by lines */
+      cx.strokeStyle = ACC;
+      cx.globalAlpha = 0.28;
+      cx.lineWidth = 1;
+      cx.beginPath();
+      for (j = 0; j < rows; j++) {
+        for (i = 0; i < cols; i++) {
+          var x = ox + i * s, y = oy + j * s;
+          if (i < cols - 1) { cx.moveTo(x, y); cx.lineTo(x + s, y); }
+          if (j < rows - 1) { cx.moveTo(x, y); cx.lineTo(x, y + s); }
+        }
+      }
+      cx.stroke();
+      cx.globalAlpha = 1;
+      for (j = 0; j < rows; j++) {
+        for (i = 0; i < cols; i++) {
+          var r = 3 + 0.9 * Math.sin(t / 750 + (i + j) * 0.7);
+          cx.fillStyle = ((i + j) % 2 === 0) ? ACC : ACC2;
+          cx.beginPath();
+          cx.arc(ox + i * s, oy + j * s, Math.max(1.6, r), 0, Math.PI * 2);
+          cx.fill();
+        }
+      }
+
+      /* right: the jumble, no repeat */
+      for (i = 0; i < randDots.length; i++) {
+        var d = randDots[i];
+        var wob = REDUCED ? 0 : 2.2 * Math.sin(t / 1100 + d.p);
+        cx.globalAlpha = d.a;
+        cx.fillStyle = (i % 2 === 0) ? ACC2 : ACC;
+        cx.beginPath();
+        cx.arc(d.x + wob, d.y + wob * 0.6, 3, 0, Math.PI * 2);
+        cx.fill();
+      }
+      cx.globalAlpha = 1;
+
+      /* soft divider */
+      var g = cx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, "rgba(44,60,107,0)");
+      g.addColorStop(0.5, "rgba(44,60,107,0.9)");
+      g.addColorStop(1, "rgba(44,60,107,0)");
+      cx.fillStyle = g;
+      cx.fillRect(half - 1, 6, 2, H - 12);
+    }
+
+    sizeCanvas();
+    if (REDUCED) {
+      draw(0);
+    } else {
+      (function loop(ts) { draw(ts || 0); requestAnimationFrame(loop); })(0);
+    }
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeCanvas(); if (REDUCED) draw(0); }, 150);
+    });
+  }
+
+  /* ---------- discovery funnel: bars grow and counts climb on scroll ---------- */
+  var funnel = document.getElementById("funnel");
+  if (funnel) {
+    var stages = funnel.querySelectorAll(".fstage");
+    function runFunnel() {
+      stages.forEach(function (st, idx) {
+        var target = parseInt(st.getAttribute("data-count"), 10);
+        var wPct = st.getAttribute("data-w");
+        var bar = st.querySelector(".fbar");
+        var out = st.querySelector(".fcount");
+        setTimeout(function () {
+          bar.style.width = wPct + "%";
+          if (REDUCED) { out.textContent = fmt(target); return; }
+          var t0 = null, dur = 1300;
+          function tick(ts) {
+            if (!t0) t0 = ts;
+            var p = Math.min(1, (ts - t0) / dur);
+            var eased = 1 - Math.pow(1 - p, 3);
+            out.textContent = fmt(Math.round(target * eased));
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }, REDUCED ? 0 : idx * 260);
+      });
+    }
+    if ("IntersectionObserver" in window && !REDUCED) {
+      var fio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { runFunnel(); fio.disconnect(); }
+        });
+      }, { threshold: 0.25 });
+      fio.observe(funnel);
+    } else {
+      runFunnel();
+    }
+  }
+
+  /* ---------- pace comparator ---------- */
+  var range = document.getElementById("yearsRange");
+  if (range) {
+    var yearsOut = document.getElementById("yearsOut");
+    var startOut = document.getElementById("startOut");
+    var oldBar = document.getElementById("oldBar");
+    var oldVal = document.getElementById("oldVal");
+    var caption = document.getElementById("paceCaption");
+    var RELEASE = 380000;
+    var PER_YEAR = RELEASE / 800; /* the team's 800-year comparison, spread evenly */
+
+    function milestone(startYear) {
+      if (startYear >= 2000) return "just this side of the Sydney Olympics";
+      if (startYear >= 1969) return "back around the year of the Moon landing";
+      if (startYear >= 1901) return "back around Federation";
+      if (startYear >= 1800) return "back into the 1800s";
+      if (startYear >= 1564) return "back to Shakespeare's lifetime";
+      return "back to around the time the Magna Carta was signed";
+    }
+
+    function updatePace() {
+      var years = parseInt(range.value, 10);
+      var startYear = 2023 - years;
+      var oldCount = Math.round(years * PER_YEAR);
+      yearsOut.textContent = years;
+      startOut.textContent = startYear;
+      oldBar.style.width = Math.max(0.6, (oldCount / RELEASE) * 100) + "%";
+      oldVal.textContent = "~" + fmt(oldCount);
+      if (years >= 800) {
+        caption.innerHTML = "At <b>800 years</b> the two bars finally meet. That is the team's comparison: to match one release at the earlier pace, the benches would have needed to start " + milestone(startYear) + ".";
+      } else {
+        caption.innerHTML = "Starting in <b>" + startYear + "</b>, " + milestone(startYear) + ", the earlier pace would have logged about <b>" + fmt(oldCount) + "</b> stable crystals by 2023. The single GNoME release lists about <b>380,000</b>.";
+      }
+    }
+    range.addEventListener("input", updatePace);
+    updatePace();
+  }
+})();
+</script>
+</body>
+</html>
