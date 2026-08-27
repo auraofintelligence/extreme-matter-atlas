@@ -129,11 +129,6 @@ body[data-page="vimana"] .closing {
   font-size: 15px;
 }
 body[data-page="vimana"] .closing strong { color: var(--ink); }
-body[data-page="vimana"] .closing .verdict-word {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
-  display: block; margin-bottom: 6px;
-}
 body[data-page="vimana"] .sum-steps { list-style: none; margin: 12px 0 0; }
 body[data-page="vimana"] .sum-steps li {
   font-size: 14px; color: var(--muted);
@@ -296,7 +291,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
   <section>
     <div class="wrap">
       <h2>The <span class="hue">design bench</span></h2>
-      <p>A wish list is cheap. A sum is not. So here is the brief turned into a bench: eight hulls, eight ways of carrying power, eight ways of pushing against the world. Every option names something built or measured, with its figures attached, and nothing here swaps the story for a nicer story. Pick three, set the craft's size and what it carries, and the bench works the arithmetic all the way to the closing question: <strong>can the power plant hold up its own weight, and everything else with it?</strong></p>
+      <p>A wish list is cheap. A sum is not. So here is the brief turned into a bench: eight hulls, eight ways of carrying power, eight ways of pushing against the world. Every option names something built or measured, with its figures attached. Pick three, set the craft's size and what it carries, and the bench works the arithmetic all the way to the closing question: <strong>can the power plant hold up its own weight, and everything else with it?</strong></p>
       <p>Most combinations do not close. That is the interesting part, and it is a result, not a failure. When a design runs away, the bench says by how much and which line is doing it.</p>
 
       <div class="panel reveal">
@@ -464,7 +459,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
     { id: "methyd", name: "Metallic hydrogen", wkg: 7000, whkg: 60000,
       figs: [["Specific power", "about 7,000 W/kg"], ["Specific energy", "60,000 Wh/kg"]],
       leans: "Squeezed between diamond points, hydrogen is predicted to turn metal, and predicted to stay metal if you let the pressure off gently. Isaac Silvera and John Cole worked out in 2010 what that would be worth as a fuel: 216 megajoules per kilogram, more than twenty times what a Space Shuttle main engine burned. The same stuff is predicted to carry current without loss, so it could be tank, wiring and fuel at once.",
-      buys: "Fuel and structure in one, at about eight times the energy per kilogram of petrol. The specific power here is a real turboshaft's, around 7,000 watts per kilogram, standing in for an engine nobody has built. A prediction with arithmetic behind it, not a fuel anyone has poured." },
+      buys: "Fuel and structure in one, at about five times the energy per kilogram of petrol. The specific power here is a real turboshaft's, around 7,000 watts per kilogram, standing in for an engine nobody has built. A prediction with arithmetic behind it, not a fuel anyone has poured." },
 
     { id: "fusion", name: "Proton-boron fusion", wkg: 1000, whkg: null,
       figs: [["Specific power", "about 1,000 W/kg"], ["Needs", "about a billion degrees"]],
@@ -494,15 +489,15 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       ceil: { kind: "area", v: 3.3, what: "3.3 newtons per square metre of craft" },
       needs: null,
       figs: [["Thrust to power", "110 N/kW"], ["Push per square metre", "3.3 N"]],
-      leans: "Charge a thin wire hard enough and it strips electrons off the air around it; the charged air drifts to a second electrode, dragging ordinary air with it, and out the back comes a breeze with nothing moving but the air itself. In 2018 a team at MIT led by Steven Barrett flew an aeroplane on it, five metres of wingspan and two and a half kilograms, the length of a gymnasium, with no propeller, no turbine and no moving part in the drive. It was close to silent. Measured at MIT in 2013, ionic wind returns about 110 newtons of push per kilowatt, against a jet engine's two.",
-      buys: "This is the payload for silent lift, and by far the most efficient push on the bench. The catch is not the power bill, it is how thinly the push spreads: about 3.3 newtons on every square metre, a bit less than a full can of soft drink pressing down. Cover a whole saucer in it and the total is still small." },
+      leans: "Charge a thin wire hard enough and it strips electrons off the air around it; the charged air drifts to a second electrode, dragging ordinary air with it, and out the back comes a breeze with nothing moving but the air itself. In 2018 a team at MIT led by Steven Barrett flew an aeroplane on it, five metres of wingspan and two and a half kilograms, sixty metres down a gymnasium, with no propeller, no turbine and no moving part in the drive. It was close to silent. Measured at MIT in 2013, ionic wind returns about 110 newtons of push per kilowatt, against a jet engine's two.",
+      buys: "This is the strongest case on the bench for silent lift, and it returns more push per kilowatt than anything else here that works in open air. The catch is not the power bill, it is how thinly the push spreads: about 3.3 newtons on every square metre, a bit less than a full can of soft drink pressing down. Cover a whole saucer in it and the total is still small." },
 
     { id: "fluxpin", name: "Superconducting flux pinning", npkw: 2450, npkwNote: "estimated: a 1 kW cryocooler holding up a 250 kg module",
       ceil: { kind: "area", v: 100000, what: "10 newtons per square centimetre over the track" },
       needs: "a magnet track underneath the whole flight path",
       figs: [["Thrust to power", "about 2,450 N/kW"], ["Holds", "10 N per cm2"]],
       leans: "Chill a disc of yttrium-barium-copper oxide below about minus 196 degrees over a magnet and the field threads through it in fixed lines and stays put. The disc then hangs at the height it was cooled at, sideways as easily as upright, and shoves back if you push it. Melt-grown discs 30 millimetres across hold about 10 to 16 newtons per square centimetre. The German SupraTrans test vehicle rides on modules like these, a quarter of a tonne each, on one fill of liquid nitrogen a day.",
-      buys: "It is the most dramatic thing on the list to watch and it costs almost nothing to hold station, because the pinning itself draws no power and only the cooling does. It also has to be over a magnet track, so it is a railway rather than a sky. The power figure is an estimate: a kilowatt of cryocooler holding a module of that size." },
+      buys: "It is the easiest thing on the list to watch happen and it costs almost nothing to hold station, because the pinning itself draws no power and only the cooling does. It also has to be over a magnet track, so it is a railway rather than a sky. The power figure is an estimate: a kilowatt of cryocooler holding a module of that size." },
 
     { id: "mhd", name: "Magnetohydrodynamic thrust", npkw: 4, npkwNote: "worked from Yamato-1's thrusters and generators",
       ceil: null,
@@ -522,7 +517,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       ceil: { kind: "mass", v: 0.00284, what: "2.84 grams, the record" },
       needs: "a standing wave, so the craft has to sit inside the sound",
       figs: [["Thrust to power", "about 1.4 N/kW"], ["Record lift", "2.84 g"]],
-      leans: "Aim two ultrasonic emitters at each other and the sound waves stack into a standing pattern with still points every half wavelength. Small things sit in the still points and hang there. In 2002 Wenjun Xie, Chuanjun Cao, Yajun Lü and Bingbo Wei levitated a four-millimetre iridium sphere weighing 2.84 grams, the densest solid there is, and reported it in Physical Review Letters.",
+      leans: "Aim two ultrasonic emitters at each other and the sound waves stack into a standing pattern with still points every half wavelength. Small things sit in the still points and hang there. In 2002 Wenjun Xie, Chuanjun Cao, Yajun Lü and Bingbo Wei levitated an iridium sphere weighing 2.84 grams, a little over six millimetres across and second only to osmium as the densest solid there is, and reported it in Physical Review Letters.",
       buys: "Contactless handling that laboratories use every week for droplets and protein crystals. It does not scale: the still points are half a wavelength apart, so at 40 kilohertz the object has to be smaller than about a centimetre, and the record load is under three grams." },
 
     { id: "photon", name: "Photon drive", npkw: 1000 / 299792458, npkwNote: "power divided by the speed of light",
@@ -536,7 +531,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       ceil: null,
       needs: "a solution to general relativity that nobody has built hardware for",
       figs: [["Thrust to power", "not that kind of push"], ["Energy asked for", "see below"]],
-      leans: "In 1994 Miguel Alcubierre published a real solution to Einstein's equations in which space contracts ahead of a craft and stretches behind it. Nothing moves through space faster than light; the patch of space carries the craft. Michael Pfenning and Larry Ford worked out in 1997 what it would cost and got a negative energy about ten billion times the mass of everything visible in the universe. Harold White cut that to around 700 kilograms of mass-energy in 2011 by reshaping the bubble, and in 2024 Jared Fuchs and colleagues published a slower-than-light version that needs no negative energy at all, just a shell of ordinary matter.",
+      leans: "In 1994 Miguel Alcubierre published a real solution to Einstein's equations, a metric: a description of the shape of space itself, in which space contracts ahead of a craft and stretches behind it. Nothing moves through space faster than light; the patch of space carries the craft. Michael Pfenning and Larry Ford worked out in 1997 what it would cost and got a negative energy about ten billion times the mass of everything visible in the universe. Harold White cut that to around 700 kilograms of mass-energy in 2011 by reshaping the bubble, and in 2024 Jared Fuchs and colleagues published a slower-than-light version that needs no negative energy at all, just a shell of ordinary matter.",
       buys: "A published piece of general relativity with thirty years of working on it, not a device. It does not push, so newtons per kilowatt is the wrong question to ask it, and the bench says so rather than inventing an answer. <a href=\"sci-fi-lab.html\">Named fictional drives, given spec sheets</a>." }
   ];
 
@@ -806,7 +801,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       reads = '<div class="readout-row">' +
         readout("Hull mass", mass(r.hullMass), "Skin of " + sig(r.skin) + " square metres at " + sig(hull.areal) + " kilograms each. " + massLike(r.hullMass) + ".") +
         readout("Lift-off weight", force((r.hullMass + pay) * G), "Hull and crew together, times 9.81.") +
-        readout("Power to hover", "no figure", "A warp metric does not push against anything, so newtons per kilowatt is the wrong question.") +
+        readout("Power to hover", "no figure", "A warp bubble does not push against anything, so newtons per kilowatt is the wrong question.") +
         readout("Power plant mass", "no figure", "There is nothing to size it against yet.") +
         "</div>";
       closing = '<p class="closing"><span class="verdict-word">Held open</span>' +

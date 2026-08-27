@@ -51,36 +51,9 @@ body[data-page="frontiers"] .open-q .oq {
   display: block; margin-bottom: 4px;
   font-family: var(--font-mono); font-size: 11px; font-weight: 600;
   letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--hz, var(--accent));
+  color: var(--accent);
 }
 body[data-page="frontiers"] .xlink { font-size: 14px; }
-body[data-page="frontiers"] .hz-legend { list-style: none; margin-top: 6px; }
-body[data-page="frontiers"] .hz-legend li {
-  display: flex; align-items: baseline; gap: 12px;
-  padding: 8px 0; font-size: 15px; color: var(--muted);
-}
-body[data-page="frontiers"] .hz-legend .tag { flex: 0 0 auto; min-width: 58px; text-align: center; }
-body[data-page="frontiers"] .filter-lbl {
-  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-}
-body[data-page="frontiers"] .hz-btn {
-  background: transparent; color: var(--muted); cursor: pointer;
-  border: 1px solid var(--line-bright); border-radius: 999px;
-  padding: 8px 18px; font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
-  transition: all .15s ease;
-}
-body[data-page="frontiers"] .hz-btn:hover { color: var(--ink); border-color: var(--accent); }
-body[data-page="frontiers"] .hz-btn.active {
-  color: #04060c;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border-color: transparent;
-  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 40%, transparent);
-}
-body[data-page="frontiers"] .hz-btn.active[data-hz="near"] { background: #34d399; }
-body[data-page="frontiers"] .hz-btn.active[data-hz="mid"]  { background: #fbbf24; }
-body[data-page="frontiers"] .hz-btn.active[data-hz="far"]  { background: #e879f9; }
-body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
 </style>
 </head>
 <body data-page="frontiers">
@@ -95,7 +68,7 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
       <p class="lede">The glass on your phone, the magnet on the fridge, the frame of your bike: each began as a strange result on a lab bench. Seven such results sit on benches right now. <strong>None is promised; each is being worked at</strong>, and any one of them would change the shape of an ordinary day.</p>
       <div class="stat-row">
         <div class="stat"><span class="num">7</span><span class="lbl">paths under way, from robot chemists to walls built to face a small star</span></div>
-        <div class="stat"><span class="num">3</span><span class="lbl">horizons: in labs now, a decade of engineering, physics still open</span></div>
+        <div class="stat"><span class="num">41</span><span class="lbl">compounds a robot line in California cooked for the first time, across 17 days of continuous running</span></div>
         <div class="stat"><span class="num">1</span><span class="lbl">open question on each card; the whole field runs on them</span></div>
       </div>
     </div>
@@ -106,29 +79,11 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
       <h2>Seven <span class="hue">paths</span></h2>
       <p>Each card tells its story twice: once as the lab sees it, once as your kitchen would. The button on each card flips between the two.</p>
 
-      <div class="panel reveal">
-        <h3>How the labels read</h3>
-        <ul class="hz-legend">
-          <li><span class="tag hz-near">Near</span><span>In labs now. Measured results already exist.</span></li>
-          <li><span class="tag hz-mid">Mid</span><span>A decade of engineering. The physics works; the factory does not exist yet.</span></li>
-          <li><span class="tag hz-far">Far</span><span>Physics still open. Whether it can be done at all is the question being asked.</span></li>
-        </ul>
-      </div>
-
-      <div class="control-row" role="group" aria-label="Filter paths by horizon">
-        <span class="filter-lbl">Horizon</span>
-        <button class="hz-btn active" type="button" data-hz="all">All seven</button>
-        <button class="hz-btn" type="button" data-hz="near">Near</button>
-        <button class="hz-btn" type="button" data-hz="mid">Mid</button>
-        <button class="hz-btn" type="button" data-hz="far">Far</button>
-      </div>
-
       <div class="grid path-grid">
 
-        <article class="card path-card reveal" data-hz="near">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">🦾</span>
-            <span class="tag hz-near">Near · in labs now</span>
           </div>
           <h3>Self-driving labs</h3>
           <div class="story story-lab">
@@ -141,10 +96,9 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
           <p class="open-q"><span class="oq">Open question</span>Can software tell a genuinely new material from a burnt mess in the crucible, without a chemist leaning in for a look?</p>
         </article>
 
-        <article class="card path-card reveal" data-hz="near">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">🔩</span>
-            <span class="tag hz-near">Near · in labs now</span>
           </div>
           <h3>High-entropy alloys</h3>
           <div class="story story-lab">
@@ -157,10 +111,9 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
           <p class="open-q"><span class="oq">Open question</span>Millions of five-metal recipes are possible; which handful deserve the furnace time?</p>
         </article>
 
-        <article class="card path-card reveal" data-hz="mid">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">🔋</span>
-            <span class="tag hz-mid">Mid · a decade of engineering</span>
           </div>
           <h3>Solid-state batteries</h3>
           <div class="story story-lab">
@@ -173,10 +126,9 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
           <p class="open-q"><span class="oq">Open question</span>Batteries breathe, swelling and shrinking with each charge; can a solid keep snug contact through thousands of those breaths?</p>
         </article>
 
-        <article class="card path-card reveal" data-hz="mid">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">🥞</span>
-            <span class="tag hz-mid">Mid · a decade of engineering</span>
           </div>
           <h3>2D stacking and twistronics</h3>
           <div class="story story-lab">
@@ -189,14 +141,13 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
           <p class="open-q"><span class="oq">Open question</span>The effects live in flakes smaller than this full stop; whether anyone could make them by the metre is wide open.</p>
         </article>
 
-        <article class="card path-card reveal" data-hz="far">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">⚡</span>
-            <span class="tag hz-far">Far · physics still open</span>
           </div>
           <h3>Room-temperature superconductors</h3>
           <div class="story story-lab">
-            <p>A superconductor carries electric current with no measurable loss. Many materials manage it today, but only when chilled colder than any winter on Earth. Squeeze certain hydrogen-rich compounds to more than a million times the push of the air around you, pressures like the deep inside of the planet, and the trick survives up to about minus 23 degrees, the chill of a shop ice-cream freezer. The prize would be a wire that does it on a bench: no chill, no squeeze. Bold claims of exactly that have appeared, and so far each has faded under repeat testing, so the search continues, a little wiser with each round.</p>
+            <p>A superconductor carries electric current with no measurable loss. Many materials manage it today, but only when chilled colder than any winter on Earth. Squeeze certain hydrogen-rich compounds to more than a million times the push of the air around you, pressures like the deep inside of the planet, and the trick survives up to about minus 23 degrees, the chill of a shop ice-cream freezer. The prize would be a wire that does it on a bench: no chill, no squeeze. None is confirmed at everyday pressure so far: bold claims of exactly that have appeared, and each has faded under repeat testing, so the search continues, a little wiser with each round.</p>
           </div>
           <div class="story story-home">
             <p>Roughly one part in twenty of the electricity sent down the wires arrives as warm cable instead of a boiled kettle. Wires with no loss would close that gap on the power bill, and would open doors well past it: trains that float on magnetic fields for a smoother commute, medical scanners cheap enough for country hospitals, motors the size of a mango.</p>
@@ -206,10 +157,9 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
           <p class="xlink"><a href="vimana.html">A craft dreamed up long ago, measured against real physics →</a></p>
         </article>
 
-        <article class="card path-card reveal" data-hz="mid">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">⭐</span>
-            <span class="tag hz-mid">Mid · a decade of engineering</span>
           </div>
           <h3>Materials for fusion</h3>
           <div class="story story-lab">
@@ -222,10 +172,9 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
           <p class="open-q"><span class="oq">Open question</span>No test rig yet matches decades of neutron hail; which steel would still be sound at year twenty?</p>
         </article>
 
-        <article class="card path-card reveal" data-hz="near">
+        <article class="card path-card reveal">
           <div class="path-head">
             <span class="card-glyph">💠</span>
-            <span class="tag hz-near">Near · in labs now</span>
           </div>
           <h3>Discovery at GNoME scale</h3>
           <div class="story story-lab">
@@ -285,21 +234,6 @@ body[data-page="frontiers"] .path-card.hz-hidden { display: none; }
 <script src="assets/nav.js"></script>
 <script>
 (function () {
-  /* horizon filter */
-  var cards = Array.prototype.slice.call(document.querySelectorAll(".path-card"));
-  var btns = Array.prototype.slice.call(document.querySelectorAll(".hz-btn"));
-  btns.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      btns.forEach(function (b) { b.classList.remove("active"); });
-      btn.classList.add("active");
-      var hz = btn.getAttribute("data-hz");
-      cards.forEach(function (card) {
-        var hide = hz !== "all" && card.getAttribute("data-hz") !== hz;
-        card.classList.toggle("hz-hidden", hide);
-      });
-    });
-  });
-
   /* lab story / home story flip */
   var LAB_LABEL = "What would change at your place";
   var HOME_LABEL = "Back to the lab";
