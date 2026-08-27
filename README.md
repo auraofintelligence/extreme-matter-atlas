@@ -10,27 +10,47 @@
 > and **Claude — Fable 5** (Anthropic) on **27 August 2026**. _Not a Codex build._
 
 A colourful, interactive atlas of matter pushed to its limits: the periodic table at full
-stretch, the record-holding atoms, Google DeepMind's GNoME crystal predictions, a playable
-crystal lattice lab, metamaterials, engineering at the edge, claimed anomalous samples with
-their provenance on show, and a vimana thought experiment that reads old stories as a design
-brief.
+stretch, the record-holding atoms, Google DeepMind's GNoME crystal predictions, lattices and
+Chladni plates you can drive, metamaterials, engineering at the edge, and the questions that
+sit past the measured line, from claimed samples to sky-craft stories worked as design briefs.
+
+Science fiction and contested science are treated here as earlier stages of the same
+exploration as textbook physics, not as a separate lesser category. Every speculative page
+works the same ladder: the story, the claim as a spec with real units, the physics it would
+need, **the nearest thing anyone has actually built**, what would have to be true, and what
+you would measure next. No page grades a claim for you.
 
 **Live site:** https://auraofintelligence.github.io/extreme-matter-atlas/
 
 ## Page map
 
+Eighteen pages, grouped by subject rather than by how settled the subject is, so the
+arguments sit in the same drawers as the answers.
+
 | Page | What it holds |
 | --- | --- |
 | [index.html](index.html) | The atlas hub: choose your door |
-| [periodic-table.html](periodic-table.html) | All 118 elements, colour-by-property, click for detail |
-| [extremes.html](extremes.html) | The record book: leaderboards computed live from the dataset |
-| [gnome.html](gnome.html) | Deep dive on GNoME and the 2.2 million predicted crystals |
-| [crystal-lab.html](crystal-lab.html) | 2D lattice sketchpad that stacks and twists layers into 3D |
-| [metamaterials.html](metamaterials.html) | Geometry doing the work of chemistry, with playable demos |
-| [engineering.html](engineering.html) | Extreme records matched to real civil jobs |
-| [frontiers.html](frontiers.html) | Where materials discovery could go next |
-| [anomalous-materials.html](anomalous-materials.html) | Claimed samples on the bench, provenance tiers shown |
-| [vimana.html](vimana.html) | The imaginative fan-out: craft from stories, physics as the ruler |
+| [beyond.html](beyond.html) | The ladder from a story to a measurement, and the anthem |
+| **Elements** | |
+| [periodic-table.html](periodic-table.html) | All 118, colour by any property, click for the full card |
+| [extremes.html](extremes.html) | The record book, computed live from the dataset |
+| [claimed-elements.html](claimed-elements.html) | Elements named in strange stories, and what they actually do |
+| [anomalous-materials.html](anomalous-materials.html) | Samples that arrived with a story, and what instruments returned |
+| **Patterns** | |
+| [crystal-lab.html](crystal-lab.html) | Lattice sketchpad: stack it, twist it, break it, watch it vibrate |
+| [metamaterials.html](metamaterials.html) | Geometry doing the work of chemistry |
+| [cymatics.html](cymatics.html) | Chladni plates you can drive, and a ripple tank |
+| [resonance.html](resonance.html) | One idea from a playground swing to a single atom |
+| **Engines** | |
+| [vimana.html](vimana.html) | Old sky-craft stories on a bench that does the sums |
+| [red-mercury.html](red-mercury.html) | Mercury engines in the texts, and the ion drives that flew |
+| [element-115.html](element-115.html) | Moscovium, the island of stability, the cost of bending gravity |
+| [zero-point.html](zero-point.html) | The Casimir force is measured. Now what? |
+| **Making** | |
+| [gnome.html](gnome.html) | GNoME and the 2.2 million predicted crystals |
+| [engineering.html](engineering.html) | Records matched to real civil jobs |
+| [sci-fi-lab.html](sci-fi-lab.html) | Fictional technology given a spec sheet and a nearest real thing |
+| [frontiers.html](frontiers.html) | Where discovery could head next |
 
 ## Run locally
 

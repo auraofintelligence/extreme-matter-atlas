@@ -239,6 +239,26 @@ values wear a small "est." tag in any UI that shows them.
     2025", "at 2026 prices") so the next reader can see how old the comparison is.
   - When a page's prose and `assets/elements.js` disagree, fix both. Half the second-round
     findings were a page and the dataset drifting apart after a one-file edit.
+- 2026-08-28: the site grew from ten pages to eighteen and changed stance.
+  - The provenance tier system was removed everywhere: 146 tags on the samples page and 21
+    stray source badges on five older pages. Sources moved into the prose instead, which
+    made the samples page longer, not shorter. See section 3a; do not reintroduce them.
+  - Nav regrouped by subject into Elements, Patterns, Engines and Making, so contested and
+    settled material share drawers. `assets/nav.js` carries a general `wing` system and
+    `WINGS` supplies the labels and colours; adding a page is one line.
+  - New: beyond, element-115, red-mercury, zero-point, sci-fi-lab, claimed-elements,
+    cymatics, resonance. `media/we-go-beyond.mp4` plays on beyond.html with controls, no
+    autoplay and no loop.
+  - Vimana became a design bench that computes. Eight hulls, eight power sources, eight
+    lift methods, each anchored to something built or measured. It sizes hull mass from
+    areal density, hover power from newtons per kilowatt, and plant mass from watts per
+    kilogram, then reports whether the design closes or the plant eats the craft. Swept
+    all 1,536 combinations across three diameters: no NaN, no runaway text, 327 close.
+  - The lesson that keeps repeating: a session limit can kill a whole fan-out mid-flight.
+    Research results survive in the workflow journal at
+    `subagents/workflows/<runId>/journal.jsonl`, so recover briefs from there rather than
+    re-running the research. Files an agent already wrote survive too; check disk before
+    assuming an agent that reported failure did nothing.
 
 ## 7. Checks run before each publish
 
