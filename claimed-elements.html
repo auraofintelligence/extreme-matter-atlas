@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claimed Elements · Extreme Matter Atlas</title>
+<meta name="description" content="Every element named in an anomalous-material claim, from the 1957 Ubatuba magnesium to the 2026 Skinwalker Ranch flakes, with what each one genuinely does and what a laboratory would measure to test it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="claimed"] { --accent: #f472b6; --accent2: #fbbf24; }
+
+body[data-page="claimed"] .hero {
+  background-image:
+    linear-gradient(90deg, transparent 0 6px, rgba(244, 114, 182, 0.10) 6px 7px, transparent 7px 44px),
+    linear-gradient(90deg, transparent 0 18px, rgba(251, 191, 36, 0.09) 18px 19px, transparent 19px 97px);
+  background-size: 44px 100%, 97px 100%;
+}
+
+/* ---- the roll call grid: a small periodic table ---- */
+body[data-page="claimed"] .roll {
+  display: grid; grid-template-columns: repeat(18, minmax(0, 1fr));
+  gap: 3px; min-width: 660px; padding: 4px;
+}
+body[data-page="claimed"] .roll .cell {
+  border-radius: 5px; aspect-ratio: 1 / 1;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-body); font-weight: 800; font-size: 12px;
+  color: #04060c; opacity: 0.16; filter: saturate(0.4);
+}
+body[data-page="claimed"] .roll a.cell {
+  opacity: 1; filter: none; text-decoration: none;
+  box-shadow: 0 0 0 1px rgba(242, 245, 255, 0.55), 0 5px 18px -6px rgba(0, 0, 0, 0.9);
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+body[data-page="claimed"] .roll a.cell:hover,
+body[data-page="claimed"] .roll a.cell:focus-visible {
+  transform: scale(1.2); z-index: 4;
+  box-shadow: 0 0 0 2px var(--ink), 0 8px 24px -6px rgba(0, 0, 0, 0.95);
+}
+body[data-page="claimed"] .roll-key {
+  display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+}
+
+/* ---- the comparison board ---- */
+body[data-page="claimed"] .popstrip {
+  position: relative; height: 46px; border-radius: 12px;
+  background: linear-gradient(180deg, var(--bg2), var(--panel));
+  border: 1px solid var(--line-bright); overflow: hidden;
+}
+body[data-page="claimed"] .popstrip i {
+  position: absolute; top: 9px; bottom: 9px; width: 1px;
+  background: var(--line-bright); transform: translateX(-0.5px);
+}
+body[data-page="claimed"] .popstrip i.on {
+  top: 4px; bottom: 4px; width: 3px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+body[data-page="claimed"] .popax {
+  display: flex; justify-content: space-between; gap: 10px; margin-top: 7px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+}
+body[data-page="claimed"] .popax span:last-child { text-align: right; }
+
+body[data-page="claimed"] .board { margin-top: 22px; }
+body[data-page="claimed"] .brow {
+  display: grid; align-items: center; gap: 12px;
+  grid-template-columns: 40px minmax(88px, 132px) 1fr 96px 108px;
+  padding: 8px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="claimed"] .brow:last-child { border-bottom: 0; }
+body[data-page="claimed"] .bsym {
+  display: flex; align-items: center; justify-content: center;
+  height: 34px; border-radius: 8px; color: #04060c;
+  font-weight: 800; font-size: 14px; text-decoration: none;
+}
+body[data-page="claimed"] .bsym:hover { text-decoration: none; filter: brightness(1.15); }
+body[data-page="claimed"] .bname { font-size: 14.5px; font-weight: 600; }
+body[data-page="claimed"] .btrack {
+  position: relative; height: 12px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--panel2), var(--panel));
+  border: 1px solid var(--line);
+}
+body[data-page="claimed"] .btrack .bfill {
+  position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 30%, transparent), var(--accent));
+  transition: width .45s ease;
+}
+body[data-page="claimed"] .btrack .bdot {
+  position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%;
+  margin: -7px 0 0 -7px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: 2px solid #04060c;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent2) 75%, transparent);
+  transition: left .45s ease;
+}
+body[data-page="claimed"] .brank {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; color: var(--accent2);
+}
+body[data-page="claimed"] .bval {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); text-align: right;
+}
+body[data-page="claimed"] .brow.nofig .bname,
+body[data-page="claimed"] .brow.nofig .brank { color: var(--muted); }
+@media (max-width: 780px) {
+  body[data-page="claimed"] .brow {
+    grid-template-columns: 40px 1fr auto; gap: 8px 10px;
+    grid-template-areas: "sym name val" "trk trk rnk";
+  }
+  body[data-page="claimed"] .bsym  { grid-area: sym; }
+  body[data-page="claimed"] .bname { grid-area: name; }
+  body[data-page="claimed"] .btrack{ grid-area: trk; }
+  body[data-page="claimed"] .brank { grid-area: rnk; text-align: right; }
+  body[data-page="claimed"] .bval  { grid-area: val; }
+}
+body[data-page="claimed"] .scale-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="claimed"] .scale-row .btn { padding: 9px 16px; font-size: 13.5px; min-height: 44px; }
+body[data-page="claimed"] .scale-row .btn[aria-pressed="false"] {
+  color: var(--ink); background: transparent;
+  border: 1px solid var(--line-bright); box-shadow: none;
+}
+body[data-page="claimed"] .scale-row .btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+body[data-page="claimed"] .summary {
+  margin-top: 18px; font-size: 15.5px; color: var(--ink);
+  border-left: 3px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 8%, var(--panel));
+  border-radius: 0 14px 14px 0; padding: 14px 18px;
+}
+body[data-page="claimed"] .summary b { color: var(--accent2); }
+
+/* ---- element cards ---- */
+body[data-page="claimed"] .cards {
+  display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+@media (max-width: 520px) {
+  body[data-page="claimed"] .cards { grid-template-columns: 1fr; }
+}
+body[data-page="claimed"] .elc {
+  scroll-margin-top: 84px;
+  border-radius: 20px; padding: 24px 22px;
+  background: linear-gradient(165deg, var(--panel2), var(--panel));
+  border: 1px solid var(--line);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+body[data-page="claimed"] .elc:hover, body[data-page="claimed"] .elc:target {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  box-shadow: 0 16px 44px -20px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+body[data-page="claimed"] .elc-top { display: flex; gap: 16px; align-items: flex-start; }
+body[data-page="claimed"] .elc-badge {
+  flex: 0 0 auto; width: 68px; height: 68px; border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #04060c; text-decoration: none; line-height: 1.05;
+  box-shadow: 0 8px 26px -10px rgba(0, 0, 0, 0.95);
+}
+body[data-page="claimed"] .elc-badge:hover { text-decoration: none; filter: brightness(1.15); }
+body[data-page="claimed"] .elc-badge .z { font-size: 10px; font-weight: 600; opacity: 0.8; }
+body[data-page="claimed"] .elc-badge .s { font-size: 26px; font-weight: 800; }
+body[data-page="claimed"] .elc h3 { margin-bottom: 4px; font-size: 20px; }
+body[data-page="claimed"] .elc .strap {
+  font-size: 14.5px; color: var(--accent2); font-weight: 600; line-height: 1.35;
+}
+body[data-page="claimed"] .figs {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 4px;
+}
+body[data-page="claimed"] .fig {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink);
+  border: 1px solid var(--line-bright); border-radius: 999px; padding: 3px 10px;
+  background: var(--bg2); white-space: nowrap;
+}
+body[data-page="claimed"] .fig b {
+  color: var(--muted); font-weight: 600; margin-right: 6px;
+  text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px;
+}
+body[data-page="claimed"] .elc p { font-size: 15px; margin-top: 14px; }
+body[data-page="claimed"] .elc p.lead-line { color: var(--ink); }
+body[data-page="claimed"] .elc p.why { color: var(--muted); }
+body[data-page="claimed"] .elc p.why strong { color: var(--ink); font-weight: 600; }
+body[data-page="claimed"] .elc dl {
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line);
+  font-size: 14.5px;
+}
+body[data-page="claimed"] .elc dt {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-top: 12px;
+}
+body[data-page="claimed"] .elc dt:first-child { margin-top: 0; }
+body[data-page="claimed"] .elc dd { color: var(--muted); }
+body[data-page="claimed"] .elc dd strong { color: var(--ink); font-weight: 600; }
+
+body[data-page="claimed"] .instrument {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--line-bright); border-radius: 18px; overflow: hidden;
+  margin: 24px 0;
+}
+body[data-page="claimed"] .instrument > div { padding: 22px 22px 24px; }
+body[data-page="claimed"] .instrument > div:first-child { border-right: 1px solid var(--line-bright); }
+body[data-page="claimed"] .instrument h3 { color: var(--accent); }
+body[data-page="claimed"] .instrument p { font-size: 15px; color: var(--muted); }
+@media (max-width: 780px) {
+  body[data-page="claimed"] .instrument { grid-template-columns: 1fr; }
+  body[data-page="claimed"] .instrument > div:first-child {
+    border-right: 0; border-bottom: 1px solid var(--line-bright);
+  }
+}
+
+body[data-page="claimed"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap; }
+</style>
+</head>
+<body data-page="claimed">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">The roll call · 1957 to 2026</span>
+      <h1 class="display">Claimed Elements</h1>
+      <p class="lede">Thirteen elements turn up again and again when someone says a piece of metal did not come from here. <strong>Most of them are genuinely strange</strong>, and that is the fun of it: bismuth shoves magnets away hard enough to hold one in mid air, mercury pours at room temperature, tellurium holds the slowest decay ever clocked. An element's strangeness is a fact about the element, not a fact about the sample it was read out of. So here is the whole list, each one with what it actually does and what a laboratory would put it through.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">13</span><span class="lbl">elements named across the claims, each with a record or an oddity of its own</span></div>
+        <div class="stat"><span class="num">2nd &amp; 3rd</span><span class="lbl">where silicon and aluminium sit among the elements in Earth's crust, and both are regulars on the list</span></div>
+        <div class="stat"><span class="num">2 &times; 10<sup>19</sup> yr</span><span class="lbl">bismuth-209's measured half-life, more than a billion times as long as the universe has been running</span></div>
+        <div class="stat"><span class="num">Apr 2024</span><span class="lbl">Oak Ridge National Laboratory finished the one published laboratory analysis in this set</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Where they sit on <span class="hue">the shelf</span></h2>
+      <p>Lit tiles are the thirteen. Two of them, silicon and aluminium, are the commonest solid things under your feet. Two more, magnesium and titanium, are in the top ten of the crust. One, moscovium, has never existed in a quantity anyone could weigh. They are spread right across the table, and the spread is the first thing worth noticing: the list is not a family, it is a habit of naming.</p>
+
+      <div class="table-scroll">
+        <div class="roll" id="rollGrid"></div>
+      </div>
+      <div class="roll-key">
+        <span>lit = named in a claim, and a link to its card</span>
+        <span>dim = the other 105 elements</span>
+      </div>
+
+      <p>Pick any element in the roll call and you can walk two ways from it. One way is the claim: who said it, on what day, with what instrument in their hand. The other way is the element itself, which was interesting before anyone pointed a spectrometer at it in a paddock. Both walks are short and both end in a number.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Ranked against <span class="hue">the whole table</span></h2>
+      <p>Choose a property and the thirteen line up against all 118 elements. Some of them land near the top, which is the point of naming them. Others land in the middle of a crowd, which is also worth seeing. The marks on the strip are every element that carries a figure for the chosen property; the bright ones are the thirteen.</p>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="propPick">Compare them on</label>
+            <select id="propPick"></select>
+          </div>
+          <div class="control">
+            <label id="scaleLabel">Spacing along the strip</label>
+            <div class="scale-row" role="group" aria-labelledby="scaleLabel">
+              <button type="button" class="btn" id="scaleLin" aria-pressed="true">Even steps</button>
+              <button type="button" class="btn" id="scaleLog" aria-pressed="false">Steps of ten</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="popstrip" id="popStrip" aria-hidden="true"></div>
+        <div class="popax"><span id="popMin"></span><span id="popMax"></span></div>
+        <p class="note" id="popNote" style="margin-top:14px"></p>
+
+        <div class="board" id="board"></div>
+
+        <p class="summary" id="boardSummary" aria-live="polite"></p>
+      </div>
+
+      <p>Parts per million is grams in a tonne, so gold at four parts per billion means four grams of gold in a thousand tonnes of rock, about forty tip-truck loads. Where a figure is a prediction rather than a reading it carries a small <span class="tag est">est.</span> mark, and the superheavy end of the table is mostly predictions, because the atoms do not last long enough to be weighed.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The <span class="hue">thirteen</span></h2>
+      <p>In order of atomic number, lightest first. Each card leads with what the element does on a bench, because in most of these cases the element is the more remarkable half of the story.</p>
+
+      <div class="cards">
+
+        <article class="elc" id="card-Mg">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Mg" href="periodic-table.html#el-Mg"><span class="z">12</span><span class="s">Mg</span></a>
+            <div>
+              <h3>Magnesium</h3>
+              <p class="strap">The blend of atoms that stays the same everywhere you look</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Mg"></div>
+          <p class="lead-line">Magnesium is the lightest metal anyone builds with, about two thirds the weight of aluminium for the same volume, which is why it ends up in camera bodies and laptop lids. Its quieter distinction is the one that matters here. Natural magnesium is a fixed mixture of three kinds of atom, which differ only in weight: 79 parts in a hundred are magnesium-24, 10 parts magnesium-25 and 11 parts magnesium-26. That mixture holds steady in seawater, in basalt, in bone and in factory ingot. A ruler is only useful if it does not stretch, and this one does not.</p>
+          <p class="why">On 14 September 1957 Ibrahim Sued's column in <em>O Globo</em> in Rio de Janeiro printed a letter enclosing three small pieces of white metal, describing a disc that had burst over the beach at Ubatuba in S&atilde;o Paulo. Olavo Fontes arranged the first analysis that November at Brazil's government Mineral Production Laboratory, and early reports put the metal at 99.8 per cent magnesium with no trace elements found at all, which was the whole basis of the claim, because magnesium that pure was said to be unobtainable in 1957. Roy Craig, analysing for the 1969 Condon Report, found the reverse: the metal was <strong>less</strong> pure than the commercial magnesium Dow Chemical was making at Midland, Michigan at the time, and Dow supplied triply sublimed magnesium for the comparison. The composition settled near 99.9 per cent magnesium with strontium at 500 parts per million, zinc 500, barium 160, manganese 35, chromium 32 and copper 3. Craig noted that strontium was not then a known commercial addition to magnesium, and that thread is still loose. Garry Nolan has said in interviews that a sample he examined carried magnesium ratios roughly 30 per cent off normal; the written measurement is Robert Powell, Michael Swords, Mark Rodeghier and Phyllis Budinger in the <em>Journal of Scientific Exploration</em> in 2022, who ran the Ubatuba fragment on high-resolution mass spectrometry in 2017 and 2018 and reported the magnesium ratios inside terrestrial limits.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Sublimation and distillation take commercial magnesium to 99.9 or 99.99 per cent as a matter of routine, and Dow was making triply sublimed magnesium in the 1950s. Those processes <strong>do</strong> shift the blend of atoms, by a few parts in a thousand, because the lighter ones boil off first. That is the size of the effect the bench actually sees.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>The three kinds of magnesium atom against an international reference sample, plotted against each other. Boiling, distilling or subliming a metal always shifts the mixture along one particular line of slope near 0.521; material that formed around a different star sits off that line. Split whatever is left of the fragment and run it blind at two facilities.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Al">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Al" href="periodic-table.html#el-Al"><span class="z">13</span><span class="s">Al</span></a>
+            <div>
+              <h3>Aluminium</h3>
+              <p class="strap">The commonest metal in the ground, and the one the usual test cannot touch</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Al"></div>
+          <p class="lead-line">Every aluminium atom on Earth is the same weight. There is only aluminium-27, and roughly twenty of the 118 elements are like that. It has a consequence that runs through this whole page: the standard test on a claimed exotic sample is to weigh its mixture of atom types against the terrestrial mixture, and on aluminium there is no mixture to weigh. Aluminium is also 8.2 per cent of the crust by mass, third behind oxygen and silicon, and it holds itself together with an oxide skin about four nanometres thick, roughly fourteen atoms, that reforms in milliseconds every time you scratch it.</p>
+          <p class="why">Aluminium appears in nearly every element list read out on <em>The Secret of Skinwalker Ranch</em> since the series began on History in March 2020. Iron and aluminium in the metal flakes in season 7. Iron with silicon, aluminium, magnesium, calcium and manganese in the season 3 alloy, read on a SciAps X-550 handheld analyser brought to the ranch by the company's own chief technology officer in 2022 and written up afterwards on the company blog. Carbon, oxygen, silicon, magnesium and aluminium at the ceramic surface in season 6. It is the element most often present and the element that tells you least.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Accelerator mass spectrometry, which sorts atoms by weight after speeding them up, reads aluminium-26 against aluminium-27 down to about <strong>one part in a thousand million million</strong>: like picking one particular second out of thirty million years. Meteorites picked up soon after they land carry roughly 40 to 70 aluminium-26 decays a minute per kilogram, put there by cosmic rays while they were still in space.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>The aluminium-26 and beryllium-10 pair. Anything that spent real time outside the atmosphere and the Earth's magnetic field carries a cosmic-ray record, and the ratio of the two even gives the depth it sat at and how long it was up there. Anything made in a factory carries essentially none. The technique is mature and widely available, and no result from it has been published for the Ubatuba fragment, for the Art's Parts specimen, or for any ranch material.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Si">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Si" href="periodic-table.html#el-Si"><span class="z">14</span><span class="s">Si</span></a>
+            <div>
+              <h3>Silicon</h3>
+              <p class="strap">The purity record belongs to a sphere ground on Earth to redefine the kilogram</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Si"></div>
+          <p class="lead-line">If unusual purity is the argument, silicon already holds the record and it was set by people. The International Avogadro Coordination grew single crystals enriched to 99.9995 per cent silicon-28 and ground them into spheres about 93.75 millimetres across, a little smaller than a softball, each weighing exactly a kilogram and round to within tens of nanometres. Those spheres pinned down the Avogadro constant and, in 2019, redefined the kilogram itself. Later batches reached roughly <strong>one wrong atom in every hundred million</strong>, which is one grain in sixty kilograms of sugar. Silicon is also 28.2 per cent of the crust by weight, more than a quarter of everything under your feet.</p>
+          <p class="why">Silicon dominates the ceramic element lists on Skinwalker Ranch, at the surface and in the interior both, and it is a major component of the Council Bluffs, Iowa sample from 17 December 1977 that Garry Nolan, Jacques Vall&eacute;e, Sizun Jiang and Larry Lemke analysed in <em>Progress in Aerospace Sciences</em>, published online on 9 December 2021. That paper's own isotope results, for titanium, iron, chromium, silicon, aluminium, magnesium, manganese and sodium, were reported as consistent with terrestrial values, with a slightly high iron-57 reading attributed to an iron-hydride interference in the instrument. A reviewer also noted that aluminium and silicon exceed iron in most of the subsamples, which sits awkwardly against the 1977 and 1978 descriptions of the same material as chiefly iron.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>The silicon-28 spheres held at NIST in the United States, PTB in Germany and NMIJ in Japan. Alongside them, ordinary semiconductor polysilicon at <strong>99.9999999 per cent</strong>, made by the tonne for chip fabs.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Silicon-30 against the NBS-28 reference, and X-ray diffraction to say which mineral the silicon is sitting in. Silicon locked in quartz or feldspar means rock. Silicon as the free element, or as silicon carbide, means a furnace. That single distinction resolves most unusual-silicon claims in an afternoon.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Ti">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Ti" href="periodic-table.html#el-Ti"><span class="z">22</span><span class="s">Ti</span></a>
+            <div>
+              <h3>Titanium</h3>
+              <p class="strap">One of the best origin tests in existence, named as though it were the evidence</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Ti"></div>
+          <p class="lead-line">Titanium carries some of the clearest fingerprints of where matter was made. The proportions of titanium-50 and titanium-46 differ between meteorite families in a way that splits the solar system in two, into material that formed inside Jupiter's orbit and material that formed outside it. Grains of silicon carbide recovered from meteorites, older than the Sun, carry titanium-49 excesses of hundreds of parts per thousand. And titanium-44, with a half-life of 59.1 years, glows as a live supernova tracer that has been mapped in the wreckage of Cassiopeia A. Meteoriticists reach for titanium first, precisely because it answers this question.</p>
+          <p class="why">Titanium headed the atomic emission list read out for the Skinwalker ceramic material, titanium with calcium, iron, aluminium and vanadium, which Travis Taylor described on air as similar to the main ingredients of stealth materials. Titanium plus aluminium plus vanadium is in fact the signature of <strong>Ti-6Al-4V</strong>: about 90 per cent titanium, 6 per cent aluminium and 4 per cent vanadium, the most-used titanium alloy on the planet, holding roughly half the aerospace titanium market. Finding those three together is finding the commonest titanium alloy there is.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Ti-6Al-4V in jet engine compressor blades, in bicycle frames and in hip replacements. It sits at 4.51 grams per cubic centimetre, about 57 per cent the density of steel, at comparable strength.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Titanium-50 and titanium-46 against the OL-Ti reference on a multi-collector mass spectrometer. Terrestrial, lunar and Martian material all fall on one tight, well-mapped line; anything formed elsewhere sits measurably off it. Then run the weight ratio on an electron microprobe. If titanium, aluminium and vanadium land near 90 to 6 to 4, the answer is a commodity alloy and the question moves on.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-V">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="V" href="periodic-table.html#el-V"><span class="z">23</span><span class="s">V</span></a>
+            <div>
+              <h3>Vanadium</h3>
+              <p class="strap">The only common battery chemistry that runs one element on both sides</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="V"></div>
+          <p class="lead-line">Vanadium is happy in four different charge states in water, and each one is a different colour: lavender, green, blue and yellow. That is what makes the vanadium flow battery work, and it makes it the one common battery chemistry with the same element in both tanks, so the two liquids seeping into each other cannot poison the cell the way it would in any other design. Vanadium's rarer atom type, vanadium-50 at roughly one atom in 400, is not quite stable either: it decays with a half-life around 2.7 &times; 10<sup>17</sup> years, about 20 million times as long as the universe has been running, which is the only reason any of it is left.</p>
+          <p class="why">Vanadium closed the atomic emission list for the Skinwalker ceramic, presented on air as resembling stealth-material ingredients. Two ordinary sources sit directly underneath it. Ti-6Al-4V carries about 4 per cent vanadium, so titanium and vanadium arriving together is expected. And the ranch sits on the Green River Formation of the Uinta Basin, where United States Geological Survey work records local enrichment of vanadium, cobalt, nickel, copper and zinc above ordinary shale, and where gilsonite, the tar-like mineral mined in veins across Uintah County, carries vanadium, nickel, iron, magnesium and calcium locked into its organic matter. <strong>Vanadium in a Uinta Basin drill sample is close to the local default.</strong></p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Grid-scale vanadium flow batteries at the tens-of-megawatt-hour scale in China and in Australia, where the electrolyte is a liquid you can store in a tank and top up rather than a cell you replace. Also vanadium pentoxide catalyst beds, which have made most of the world's sulfuric acid for a century.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>An electron microprobe for the vanadium to titanium to aluminium weight ratio. Near 4 to 90 to 6 means the aerospace alloy. If instead the vanadium sits in an oxide, or bound into oil-shale organic matter alongside nickel, it points straight at Green River kerogen or gilsonite residue, and a local gilsonite standard run in the same session settles which.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Zn">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Zn" href="periodic-table.html#el-Zn"><span class="z">30</span><span class="s">Zn</span></a>
+            <div>
+              <h3>Zinc</h3>
+              <p class="strap">Its atoms remember whether they were ever a vapour</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Zn"></div>
+          <p class="lead-line">Zinc comes in five stable weights, and they separate measurably whenever zinc is boiled or smelted, because the lighter atoms leave first. That makes the zinc-66 reading a working tracer for industrial emissions: a soil sample can be told apart from ore zinc and traced back to a smelter. Inside a layered piece of metal it answers a sharper question, which is whether that layer condensed out of a vapour or was poured.</p>
+          <p class="why">Zinc is the alloying partner in the magnesium matrix of the Art's Parts specimen. In the 1990s an anonymous sender signing himself "A Friend" posted several fragments to Art Bell, host of <em>Coast to Coast AM</em>, saying they came from the 1947 Roswell event by way of a military grandfather. The best-known piece is about 44 by 32 by 6 millimetres, a large postage stamp with real thickness, micron-layered bismuth against a magnesium-zinc alloy. Oak Ridge National Laboratory, contracted by the All-domain Anomaly Resolution Office and finishing in April 2024, measured the zinc varying from <strong>1 to 4 per cent by weight</strong> through the specimen.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Magnesium-zinc alloys at 1 to 4 per cent zinc are a commodity family: ZK60 runs about 5.5 per cent zinc with a little zirconium, ZE41 about 4.2 per cent. Vapour-deposited magnesium-zinc coatings were an active research subject in the middle of last century, which is the window Oak Ridge's own assessment points at.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Zinc-66 against the standard reference zinc, layer by layer through a cross-section. That says whether this zinc passed through a vapour, and where in the stack it happened. Zinc-70 is also a candidate for a rare double decay nobody has yet caught, which is a separate and open bench question.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Te">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Te" href="periodic-table.html#el-Te"><span class="z">52</span><span class="s">Te</span></a>
+            <div>
+              <h3>Tellurium</h3>
+              <p class="strap">The longest half-life ever measured for anything</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Te"></div>
+          <p class="lead-line">Tellurium-128 decays so slowly that it holds the record outright. Recent work from xenon trapped in ancient tellurium ores puts its half-life near 7.7 &times; 10<sup>24</sup> years, about <strong>560 trillion times as long as the universe has been running</strong>; older determinations give about 2.2 &times; 10<sup>24</sup>. Either way, put a kilogram of ordinary tellurium on a bench and roughly one of its tellurium-128 atoms breaks apart every eight years. This is the longest measured half-life of any kind, which is a different record from bismuth's and a much longer one. Tellurium is also one of the scarcest stable elements in the ground, about a gram in a thousand tonnes of rock, rarer than gold or platinum, while being far more common in the solar system at large. The usual explanation is that most of Earth's tellurium left as a gas while the planet was still assembling.</p>
+          <p class="why">In "Rocket Men", season 7 episode 8 of <em>The Secret of Skinwalker Ranch</em>, aired 9 July 2026, Erik Bard used his portable X-ray fluorescence analyser, a hand-held reader that fires X-rays at a surface and names elements from the light that comes back, on a metal flake recovered during drilling. That flake read as iron and aluminium only. The reported contrast was that earlier flakes had carried iron, aluminium, europium and tellurium, described on air as elements found in the materials used to make spacecraft. Tellurium's industrial homes are thermoelectric modules, cadmium telluride solar panels, rewritable discs and free-machining steel. The nearest real link to spaceflight is that the nuclear batteries on Voyager and Perseverance do use telluride thermocouples. On a hand-held reader the tellurium lines also sit in a crowded part of the spectrum and are easy to confuse with lines from commoner elements in an iron-rich flake, so this is a reading to confirm, not an identification to build on.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>CUORE, under the mountain at Gran Sasso in Italy, runs <strong>988 tellurium dioxide crystals totalling about 741 kilograms</strong> at around ten thousandths of a degree above absolute zero, watching for a decay of tellurium-130 nobody has seen yet. It is the largest object anyone has built out of tellurium for physics.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Confirm the identification first, on solution mass spectrometry or a wavelength-dispersive microprobe, either of which separates lines a hand-held reader cannot. Then check what the tellurium travels with. Tracking alongside bismuth points at a thermoelectric module; tracking alongside cadmium points at a solar panel.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Eu">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Eu" href="periodic-table.html#el-Eu"><span class="z">63</span><span class="s">Eu</span></a>
+            <div>
+              <h3>Europium</h3>
+              <p class="strap">The lightest of the rare earths, and radioactive after all</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Eu"></div>
+          <p class="lead-line">Europium is the least dense of the fifteen lanthanides at 5.24 grams per cubic centimetre, lighter than vanadium and lighter than zinc, because its half-filled electron shell holds its atoms further apart than its neighbours manage. It is also the most reactive of them, tarnishing in open air the way a fresh-cut alkali metal does. And europium-151, which is about 48 per cent of natural europium, turns out not to be stable: a team working under the mountain at Gran Sasso caught it decaying for the first time in 2007, using a calcium fluoride crystal doped with europium as both the source and the detector, and put the half-life near 5 &times; 10<sup>18</sup> years, some 360 million times the age of the universe.</p>
+          <p class="why">Europium was reported alongside tellurium in the earlier Skinwalker Ranch metal flakes and described on air, with tellurium, as an element found in the materials used to make spacecraft. Europium's actual trade is colour. It is the red and the blue emitter in fluorescent lamps and older television screens, and it is in the security ink of euro banknotes, which is why they glow in patches under an ultraviolet lamp. It also swallows neutrons well enough for reactor control rods. Like tellurium, its lines are a plausible misassignment on a hand-held reader pointed at an iron-rich flake, so what exists here is <strong>a reading to check, not a finding</strong>. The team said they intended to send flakes to Utah Valley University; no report from that has been published.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Europium-doped yttrium oxysulfide has been the standard red phosphor since the 1960s. If a television or a fluorescent tube in the last sixty years showed you a red, europium made it.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>The same as tellurium: confirm or drop the assignment on an instrument that resolves the lines, then publish the raw spectrum with the fitted peaks marked, so anyone can check the identification themselves. That one file would settle more than another season of readings.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Hg">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Hg" href="periodic-table.html#el-Hg"><span class="z">80</span><span class="s">Hg</span></a>
+            <div>
+              <h3>Mercury</h3>
+              <p class="strap">The one metal you can pour at room temperature</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Hg"></div>
+          <p class="lead-line">Mercury melts at minus 38.83 degrees Celsius and boils at 356.73, so at 25 degrees and normal pressure it is the metal that is liquid. The qualifier is worth keeping: caesium melts at 28.5 degrees, gallium at 29.8 and rubidium at 39.3, so on a hot Australian afternoon mercury has company; at the standard reference temperature it stands alone. It is also heavier than people expect, at 13.53 grams per cubic centimetre, so <strong>a one-litre milk bottle of it weighs about 13.5 kilograms</strong> and a lump of iron floats on top. Its second oddity is in the atoms. Mercury is one of very few elements whose odd-weight types, mercury-199 and mercury-201, separate in a way that does not depend on weight at all, driven by the magnetism and the shape of their nuclei. That signature traces mercury pollution back to the stack it came out of, and it is a working forensic tool.</p>
+          <p class="why">Red mercury surfaced in the collapsing Soviet arms market between about 1991 and 1995, described as a mercury and antimony compound with extraordinary properties and offered at up to about 300,000 United States dollars a kilogram, roughly A$460,000 at 0.65 US dollars to the Australian dollar, August 2026. Dozens of intermediaries petitioned Russian authorities for export licences. Every sample seized and analysed in the open literature turned out to be something cheap and well known: mercury(II) iodide, mercury stirred through red dye, or plain elemental mercury. The story has been recycled since, including as a claimed coronavirus cure and, in one variant, as something supposedly extractable from old sewing machines. The full account, and the mercury-fuelled engines that really did fly, sit on the <a href="red-mercury.html">red mercury page</a>.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Mercury(II) iodide is genuinely, startlingly red, and costs a few dollars a gram. It comes with a memorable bench test: heat it past about 127 degrees and it turns yellow, then goes red again as it cools. Several samples sold as red mercury were exactly this.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>X-ray diffraction plus mass spectrometry names the compound in under an hour, and a density reading alone would flag anything genuinely unusual, because a heavy compressible compound would have to be heavy. So far every sample handed to a laboratory has come back as a compound already in the catalogue.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Pb">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Pb" href="periodic-table.html#el-Pb"><span class="z">82</span><span class="s">Pb</span></a>
+            <div>
+              <h3>Lead</h3>
+              <p class="strap">The strongest provenance fingerprint in geology, and nobody claimed it</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Pb"></div>
+          <p class="lead-line">Three of lead's four stable atom types are the end of a decay chain: lead-206 comes from uranium-238, lead-207 from uranium-235, lead-208 from thorium-232. Only lead-204 was there from the start. So an ore body's lead mixture is set by its age and by how much uranium and thorium sat beside it while it aged, and different ore bodies carry signatures you can tell apart. That is how archaeologists trace a Roman water pipe back to its mine, and how safeguards laboratories trace seized ore concentrate. There is no route by which lead from somewhere else lands inside the terrestrial field by accident.</p>
+          <p class="why">Lead was not in the Art's Parts claim at all. It was found. Oak Ridge National Laboratory measured the top layer's composition and crystal structure for the All-domain Anomaly Resolution Office and found bismuth sitting with <strong>nearly equal parts lead</strong>, banded and repeating through the specimen, with columnar magnesium grains running across the banding. Oak Ridge reported the lead signature as fully consistent with common lead that occurs naturally on Earth, and the magnesium signature as fractionated but within normal terrestrial compositions. Its assessment, published on aaro.mil, is that the specimen is terrestrial, consistent with mid-twentieth-century magnesium alloy research and experimental manufacturing, later damaged by mechanical and heat stress.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Betterton-Kroll debismuthising has been standard lead refining since the 1930s: molten magnesium floated on liquid lead pulls the bismuth out as a magnesium-bismuth dross, and what skims off is bismuth intergrown with lead and magnesium. Nicholas Reiter, commissioned by Linda Moulton Howe in 1996, proposed that origin for this specimen decades before anyone sectioned it.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>The chemistry has been measured. What has not is where the object was before 1996: the 1947 attribution rests on an anonymous letter, and no document, receipt or photograph has been produced to attach it to a place or a date. That is a records question now rather than a bench question.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Bi">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Bi" href="periodic-table.html#el-Bi"><span class="z">83</span><span class="s">Bi</span></a>
+            <div>
+              <h3>Bismuth</h3>
+              <p class="strap">It shoves magnets away, and it was on the stable list for a century</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Bi"></div>
+          <p class="lead-line">Bismuth is the most diamagnetic metal there is: it pushes back against a magnetic field about twenty times harder than water does, at a volume susceptibility near minus 1.66 &times; 10<sup>-4</sup>. Lay a small strong magnet between a bismuth plate and a lifting magnet above, and the little one hangs in mid air with nothing touching it, no power and no cooling. Bismuth also expands about 3.3 per cent when it freezes, a habit it shares with water, gallium, silicon and germanium and very little else metallic, and it conducts heat at about 7.97 watts per metre per kelvin, down among the poorest conductors on the metal list with manganese at 7.81 and plutonium at 6.74.</p>
+          <p class="lead-line">And bismuth-209 sat on the list of stable isotopes for a hundred years, until Pierre de Marcillac and colleagues at Orsay in France caught it decaying with a scintillating bolometer and published the half-life in <em>Nature</em> in April 2003: <strong>1.9 &plusmn; 0.2 &times; 10<sup>19</sup> years</strong>. That is more than a billion times as long as the universe has been running, and it is the longest half-life ever measured for alpha decay, where a nucleus spits out a helium core. Longest for alpha decay, not longest of any kind: tellurium-128 holds that, by a very wide margin. For a mind's-eye version, hold a kilogram block of bismuth, about the volume of a quarter of a soft drink can, containing some 2.9 &times; 10<sup>24</sup> atoms. Roughly one of them decays every five minutes. That rate is why it took a hundred years and a detector cooled to a few thousandths of a degree to catch it.</p>
+          <p class="why">The Art's Parts specimen is micron-layered bismuth against a magnesium-zinc alloy. The piece passed to To The Stars Academy, which sold it to the United States Army for 35,000 United States dollars, about A$54,000 at 0.65 US dollars to the Australian dollar, August 2026. The claim attached to it was that the layering could act as a terahertz waveguide, a channel that steers very short radio waves, and so allow inertial mass reduction. Oak Ridge, in the analysis it completed in April 2024, found the bismuth amorphous and nanocrystalline rather than the pure crystalline bismuth such a waveguide would need, and noted that the properties required to steer terahertz waves would in any case be disrupted by the bismuth being mixed through with lead. One thing the whole case turns on: every bismuth atom is bismuth-209, so there is no bismuth ratio to test, which is exactly why Oak Ridge went to the lead sitting alongside it.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Bismuth telluride modules, the solid-state coolers inside a camping fridge or a wine cabinet, are layered bismuth doing a real job with no moving parts. Low-melting bismuth alloys such as Wood's metal go liquid in a cup of hot tea, which is how they hold fire sprinklers shut until a room gets hot.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Terahertz time-domain spectroscopy on the specimen itself, which measures whether it guides those waves rather than inferring it from a picture of the layers. Alongside it, a thin cross-section under a transmission electron microscope for the layer thicknesses and how sharp the interfaces are, and the lead ratios plotted against the standard growth curve for common lead.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-U">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="U" href="periodic-table.html#el-U"><span class="z">92</span><span class="s">U</span></a>
+            <div>
+              <h3>Uranium</h3>
+              <p class="strap">A ratio that barely moves, which is what makes any wobble worth reporting</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="U"></div>
+          <p class="lead-line">Natural uranium is 99.2742 per cent uranium-238, 0.7204 per cent uranium-235 and 0.0054 per cent uranium-234, and the remarkable part is how little that varies. Joe Hiess and colleagues measured 44 zircon crystals from around the world and published a uranium-238 to uranium-235 ratio of 137.818 plus or minus 0.045 in <em>Science</em> in 2012. A number that steady across a whole planet is what lets any departure from it mean something. There is one known natural exception, and it is a good one: at Oklo in Gabon, found in 1972 when French inspectors noticed ore assaying below the natural figure, seams of ore ran as natural nuclear reactors about 1.7 billion years ago, roughly a third of the way back to the Earth's formation, and burned their uranium-235 down to as low as 0.29 per cent in places. Uranium is also less exotic in the ground than its reputation: at 2.7 parts per million it is about thirty times commoner than mercury and hundreds of times commoner than gold.</p>
+          <p class="why">Uranium sits behind the radiation claims rather than the sample claims. <em>The Secret of Skinwalker Ranch</em> has reported elevated ionising radiation across several seasons and, in season 6, short-lived isotopes said to decay too fast to exist unless nuclear reactions had happened recently. The Uinta Basin's Green River Formation carries natural uranium, thorium and potassium-40 through the section, plus radon in the air, so <strong>the local background is not a flat line</strong> and a reading has to be measured against the rock it came out of.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>Nuclear safeguards laboratories fingerprint seized material by its uranium ratios and its trace rare-earth pattern, and can often name the mine and the process it came through. The same method sorts reactor fuel from the leftover tails of enrichment, which run 0.2 to 0.3 per cent uranium-235.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Gamma spectrometry naming the actual isotopes and their activity in becquerels per kilogram, on paired samples taken on the ranch and off it at matched depth in the same rock. A short-lived isotope is only unusual when its parent is missing from the sample. And for any uranium at all: uranium-236 against uranium-238. Uranium-236 sits near one part in a hundred million million in ore and is made by neutron capture, so a reading above roughly one part in ten thousand million is proof the material has seen neutrons.</dd>
+          </dl>
+        </article>
+
+        <article class="elc" id="card-Mc">
+          <div class="elc-top">
+            <a class="elc-badge" data-badge="Mc" href="periodic-table.html#el-Mc"><span class="z">115</span><span class="s">Mc</span></a>
+            <div>
+              <h3>Moscovium</h3>
+              <p class="strap">About a hundred atoms of it have ever existed, and none lasted a second</p>
+            </div>
+          </div>
+          <div class="figs" data-figs="Mc"></div>
+          <p class="lead-line">Moscovium is real and it has been made, four atoms at a time. A team at the Joint Institute for Nuclear Research at Dubna under Yuri Oganessian, working with Lawrence Livermore under Ken Moody, fired calcium-48 at an americium-243 target in 2003 and got four atoms. IUPAC named it after Moscow Oblast in 2016. The known types run from moscovium-286 to moscovium-290, and the longest-lived is moscovium-290 at somewhere between 0.65 and 0.84 seconds, about the length of a slow blink. Roughly a hundred atoms have been made anywhere by anyone. What is genuinely unusual at this end of the table is not stability but speed: the inner electrons move fast enough for relativity to distort the chemistry, so moscovium is expected to behave less like bismuth than its position in the column suggests. Its bulk figures in the roll call are predictions, not readings, because there has never been enough of it to put on a scale.</p>
+          <p class="why">In May 1989, in interviews with George Knapp on KLAS-TV in Las Vegas, Bob Lazar said he had worked at a site he called S-4 near Papoose Lake on craft fuelled by a stable element 115, and described a wedge of about 223 grams. In 1989 element 115 was an empty slot on the chart, predicted but unmade, which is a different thing from unknown. A 223 gram wedge of moscovium-290 would hold about 4.6 &times; 10<sup>23</sup> atoms, some sixty thousand times the commonly quoted estimate for every grain of sand on Earth, and at the measured half-life it would put out roughly <strong>790 gigawatts in its first instant</strong>, about twenty-five times what Australia's power stations deliver on average, then fall away within seconds. The full arithmetic, the island of stability and the gravity question are on the <a href="element-115.html">element 115 page</a>.</p>
+          <dl>
+            <dt>Nearest built thing</dt>
+            <dd>The closest thing to a weighable superheavy sample is the microgram-scale berkelium-249 and californium-249 targets that Oak Ridge's High Flux Isotope Reactor makes for these experiments. Those are among the most expensive materials on Earth by weight, and they are the input rather than the product.</dd>
+            <dt>What a laboratory would measure</dt>
+            <dd>Anyone holding a macroscopic sample could settle it in an afternoon. A high-purity germanium gamma detector and an alpha spectrometer would show either the decay chain of a superheavy nucleus or the absence of one. And a 223 gram wedge of any moscovium anyone has made would not be an inert wedge on a bench; it would be a self-heating decay source, and the heat would be the first thing you noticed.</dd>
+          </dl>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What a hand-held reader returns, and <span class="hue">what a laboratory returns</span></h2>
+      <p>Almost every element list in the roll call came off a hand-held X-ray fluorescence analyser. That is a good instrument and a genuinely useful one: it names the elements on a surface in seconds, in the field, in the rain, which is why geologists and scrap yards and customs officers all carry them. It is a different object from a laboratory report, and the difference is what most of these cases turn on.</p>
+
+      <div class="instrument">
+        <div>
+          <h3>A reading in the field</h3>
+          <p>Names elements from a surface in seconds. Semi-quantitative. Sensitive to what it is pointed at and how the sample sits. Overlapping spectral lines in a crowded region are the known failure mode, particularly in an iron-rich matrix, which is where the europium and tellurium assignments live. It produces a list of names, not a document, and nothing about that is a fault in the instrument.</p>
+        </div>
+        <div>
+          <h3>A report from a bench</h3>
+          <p>Quantified weight percentages with stated uncertainties, a named method, stated detection limits, sample identifiers, a chain of custody, control samples, and a signature. An accredited materials laboratory produces one as a matter of course. Across all the material gathered here, one such report has been published: Oak Ridge National Laboratory on the Art's Parts specimen, completed April 2024 and posted on aaro.mil.</p>
+        </div>
+      </div>
+
+      <p>The written trail behind the Utah ranch is thinner than the television makes it look, and the reason is worth stating plainly rather than shrugging at. The National Institute for Discovery Science, funded by Robert Bigelow, bought the 512 acre property in 1996, about 207 hectares or roughly a hundred MCG playing surfaces, and studied it until the institute wound down in 2004. Its main surviving record is a trade book, Colm Kelleher and George Knapp's <em>Hunt for the Skinwalker</em>, published in 2005. Kelleher, a biochemist and the institute's deputy administrator, wrote later that years of focused investigation had produced very little physical evidence and none of it conclusive. The Defense Intelligence Agency's AAWSAP program, running 2008 to 2010, used the ranch as a study site and produced 38 reference documents on advanced physics topics; none is a materials analysis of a ranch sample.</p>
+
+      <div class="note"><strong>The one university laboratory in the set.</strong> In season 6 episode 1, aired August 2025, ceramic tile fragments from mesa drilling spoils were examined by Brian Patchett at Utah Valley University on a Tescan scanning electron microscope, a microscope that paints its picture with a beam of electrons, running at 20 kilovolts with an EDAX X-ray attachment. On camera, rectangular features and holes appeared to grow during scanning and to vanish when the beam was switched off, which was presented as self-healing. Arnold Kruize, a scanning electron microscope specialist formerly with Tescan, identified the effect as charging: an insulating sample such as a ceramic, bombarded at high voltage without a conductive coating, builds up charge, and the apparent healing is that charge draining once the scan stops. The standard remedy is a five to ten nanometre sputter coat of gold or carbon, or dropping the voltage to a few kilovolts. The composition, not shown in full on air, indicated roughly 1 per cent iron, consistent with alumina or zirconia, which are the standard materials for mud-pump liners and other wear parts on the rig that produced the spoils. Brandon Fugal, the ranch's owner, has donated 5 million United States dollars, about A$7.7 million at 0.65 US dollars to the Australian dollar, August 2026, to Utah Valley University. No written report from the analysis has been published.</div>
+
+      <p>The test that separates those two readings is small and cheap: re-image the same fragment coated, at low voltage. If the features are gone, it was charging. If they are still there, that is a result worth a paper. Either way the question stops being an argument and becomes a photograph.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The four measurements <span class="hue">still waiting</span></h2>
+      <p>Across every claim in the roll call, the same four measurements would move the question, and each has instruments that exist today, in numbers, at prices well under what has already been spent filming. Meteoritics runs all four as ordinary practice on any newly recovered rock, before anybody's claim about it is accepted.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">☄️</span>
+          <h3>Ask whether it was ever in space</h3>
+          <p>Accelerator mass spectrometry for the aluminium-26 and beryllium-10 pair. Anything that spent real time outside the atmosphere and the magnetic field carries a cosmic-ray record, and the ratio of the two gives the shielding depth and the exposure time. Anything made in a shed carries essentially none. It reads down to about one part in a thousand million million.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔭</span>
+          <h3>Ask which star made the atoms</h3>
+          <p>Titanium-50 and titanium-46 on a multi-collector mass spectrometer, against the OL-Ti reference. Terrestrial, lunar and Martian material all fall on one tight line that has been mapped for decades. Material formed outside the solar system sits measurably off it. Titanium is already on nearly every claimed element list, so the sample is already the right sample.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🧪</span>
+          <h3>Split it, and hide the label</h3>
+          <p>Send halves of the same fragment to two independent accredited laboratories with the identity withheld, and publish both outputs. This is the cheapest of the four and the one that costs a claim nothing if it holds up. It is standard for meteorites, for doping control and for forensic chemistry.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⛰️</span>
+          <h3>Bring a control up the hill</h3>
+          <p>For the ranch specifically: off-ranch soil and rock from the same Green River Formation layers at the same depth, run on the same instruments in the same session. Without that pairing, an unusual reading and the local geochemistry look identical. This is the largest gap in the ranch work and by some distance the easiest to close.</p>
+        </div>
+      </div>
+
+      <p>None of these needs a new instrument, a new theory or a new institution. They need a split of a sample, a shipping label and a published file. The custodians of the Ubatuba fragment, the Art's Parts specimen and the ranch material are known people at known addresses, and the meteoritics laboratories that do this work take outside samples every week.</p>
+      <p>Meanwhile the elements themselves keep their records regardless of who names them. Bismuth still holds a magnet in mid air. Tellurium-128 still outlasts everything measured. Vanadium still runs the only battery whose two halves cannot poison each other. Those are on the bench today, and every one of them was found by somebody who took a measurement instead of a position.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="periodic-table.html"><div class="card"><span class="card-glyph">🧫</span><h3>The Table</h3><p>All 118, colour-coded by property, with a drawer for every element. Each badge in the roll call opens straight into it.</p></div></a>
+        <a class="card-link" href="anomalous-materials.html"><div class="card"><span class="card-glyph">🔍</span><h3>Samples</h3><p>The specimens themselves, case by case: what was collected, what instrument was pointed at it, and what came back.</p></div></a>
+        <a class="card-link" href="element-115.html"><div class="card"><span class="card-glyph">⚗️</span><h3>Element 115</h3><p>Moscovium in full: the 1989 account read as a spec sheet, the island of stability, and where 184 neutrons actually sits.</p></div></a>
+        <a class="card-link" href="red-mercury.html"><div class="card"><span class="card-glyph">🜃</span><h3>Red Mercury</h3><p>The market that ran on a compound nobody could produce, and the mercury-fuelled engines that really did fly.</p></div></a>
+        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏆</span><h3>Records</h3><p>Leaderboards computed live from the same dataset: densest, hottest, rarest, and who actually holds each one.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>Oak Ridge National Laboratory, "Analysis of a Metallic Specimen", synopsis completed April 2024, with the All-domain Anomaly Resolution Office supplement &middot; <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/ORNL-Synopsis_Analysis_of_a_Metallic_Specimen.pdf" rel="noopener">aaro.mil ORNL synopsis</a></li>
+        <li>All-domain Anomaly Resolution Office, "Report on the Historical Record of U.S. Government Involvement with Unidentified Anomalous Phenomena, Volume I", released 8 March 2024 &middot; <a href="https://www.aaro.mil/Portals/136/PDFs/AARO_Historical_Record_Report_Vol_1_2024.pdf" rel="noopener">aaro.mil</a></li>
+        <li>R. Powell, M. Swords, M. Rodeghier and P. Budinger, "Isotope Ratios and Chemical Analysis of the 1957 Brazilian Ubatuba Fragment", <em>Journal of Scientific Exploration</em> 36(1), 39 to 48, 2022 &middot; <a href="https://doi.org/10.31275/20222415" rel="noopener">doi.org/10.31275/20222415</a></li>
+        <li>E. D. Condon (ed.), <em>Scientific Study of Unidentified Flying Objects</em>, 1969, Roy Craig's analysis of the Ubatuba magnesium.</li>
+        <li>P. de Marcillac, N. Coron, G. Dambier, J. Leblanc and J.-P. Moalic, "Experimental detection of alpha-particles from the radioactive decay of natural bismuth", <em>Nature</em> 422, 876 to 878, April 2003 &middot; <a href="https://pubmed.ncbi.nlm.nih.gov/12712201/" rel="noopener">pubmed.ncbi.nlm.nih.gov/12712201</a></li>
+        <li>P. Belli et al., first observation of the alpha decay of europium-151 with a europium-doped calcium fluoride scintillator at the Gran Sasso National Laboratory, 2007.</li>
+        <li>J. Hiess, D. J. Condon, N. McLean and S. R. Noble, "<sup>238</sup>U/<sup>235</sup>U systematics in terrestrial uranium-bearing minerals", <em>Science</em> 335, 1610, 2012 &middot; <a href="https://www.science.org/doi/10.1126/science.1215507" rel="noopener">science.org/doi/10.1126/science.1215507</a></li>
+        <li>G. Nolan, J. Vall&eacute;e, S. Jiang and L. Lemke, "Improved instrumental techniques, including isotopic analysis, applicable to the characterization of unusual materials with potential relevance to aerospace forensics", <em>Progress in Aerospace Sciences</em> 128, 100788, online 9 December 2021.</li>
+        <li>United States Geological Survey, geochemistry of the Green River Formation, Uinta Basin &middot; <a href="https://pubs.usgs.gov/publication/70236514" rel="noopener">pubs.usgs.gov/publication/70236514</a></li>
+        <li>Utah Geological Survey, gilsonite and oil shale of the Uinta Basin &middot; <a href="https://geology.utah.gov/shale-oil-resource-play-potential-of-the-green-river-formation-uinta-basin-utah/" rel="noopener">geology.utah.gov</a></li>
+        <li>NIST, "The kilogram: silicon spheres and the International Avogadro Project" &middot; <a href="https://www.nist.gov/si-redefinition/kilogram/kilogram-silicon-spheres-and-international-avogadro-project" rel="noopener">nist.gov</a></li>
+        <li>SciAps, account of the X-550 hand-held analyser's visit to the ranch, 2022 &middot; <a href="https://www.sciaps.com/post/sciaps-x-550-visits-the-secret-of-skinwalker-ranch" rel="noopener">sciaps.com</a></li>
+        <li>Discussion of the season 6 scanning electron microscope footage, including Arnold Kruize's charging identification &middot; <a href="https://www.metabunk.org/threads/self-healing-ceramic-material-from-skinwalker-ranch-sem-scanning-electron-microscope-analysis.14382/" rel="noopener">metabunk.org</a></li>
+        <li>C. A. Kelleher and G. Knapp, <em>Hunt for the Skinwalker</em>, Paraview Pocket Books, 2005.</li>
+        <li>B. Lazar, interviews with George Knapp, KLAS-TV Las Vegas, May 1989; moscovium production, Y. Oganessian et al., Joint Institute for Nuclear Research and Lawrence Livermore National Laboratory, 2003.</li>
+        <li>CUORE collaboration, tellurium dioxide bolometer array at the Gran Sasso National Laboratory; tellurium-128 half-life determinations from xenon in ancient tellurium ores.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/elements.js"></script>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var ELS = window.ELEMENTS || [];
+  var EMA = window.EMA || { fmt: function (n) { return String(n); }, catClass: function (c) { return "cat-" + (c || "unknown"); } };
+
+  var NAMED = ["Mg", "Al", "Si", "Ti", "V", "Zn", "Te", "Eu", "Hg", "Pb", "Bi", "U", "Mc"];
+
+  var byS = {};
+  ELS.forEach(function (e) { byS[e.sym] = e; });
+
+  /* ---------- shared number words ---------- */
+
+  function sig(x, n) {
+    var s = Number(x).toPrecision(n || 3);
+    if (s.indexOf("e") >= 0) return Number(s).toString();
+    if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+    return s;
+  }
+
+  function degWords(k) {
+    var c = k - 273.15;
+    if (Math.abs(c) < 100) return (Math.round(c * 10) / 10) + " °C";
+    return EMA.fmt(Math.round(c)) + " °C";
+  }
+
+  /* parts per million by mass, said in whichever unit keeps it readable */
+  function abundWords(v) {
+    if (v >= 10000) return sig(v / 10000, 3) + " %";
+    if (v >= 1) return sig(v, 3) + " ppm";
+    if (v >= 0.001) return sig(v * 1000, 3) + " ppb";
+    return sig(v * 1e6, 3) + " ppt";
+  }
+
+  function ord(n) {
+    var r = n % 100;
+    if (r >= 11 && r <= 13) return n + "th";
+    switch (n % 10) {
+      case 1: return n + "st";
+      case 2: return n + "nd";
+      case 3: return n + "rd";
+      default: return n + "th";
+    }
+  }
+
+  function isEst(e, field) {
+    return !!(e && e.est && e.est.indexOf(field) >= 0);
+  }
+
+  /* ---------- the roll call grid ---------- */
+
+  var rollGrid = document.getElementById("rollGrid");
+  if (rollGrid) {
+    var slots = {};
+    ELS.forEach(function (e) {
+      if (e.ypos >= 1 && e.ypos <= 10 && e.xpos >= 1 && e.xpos <= 18) {
+        slots[e.ypos + ":" + e.xpos] = e;
+      }
+    });
+    var html = "";
+    for (var y = 1; y <= 10; y++) {
+      for (var x = 1; x <= 18; x++) {
+        var e = slots[y + ":" + x];
+        if (!e) { html += '<span class="cell" style="opacity:0"></span>'; continue; }
+        var cls = "cell " + EMA.catClass(e.cat);
+        if (NAMED.indexOf(e.sym) >= 0) {
+          html += '<a class="' + cls + '" href="#card-' + e.sym + '" title="' + e.name + ', named in a claim">' + e.sym + "</a>";
+        } else {
+          html += '<span class="' + cls + '" title="' + e.name + '">' + e.sym + "</span>";
+        }
+      }
+    }
+    rollGrid.innerHTML = html;
+  }
+
+  /* ---------- figure chips inside each card ---------- */
+
+  [].slice.call(document.querySelectorAll("[data-figs]")).forEach(function (host) {
+    var e = byS[host.getAttribute("data-figs")];
+    if (!e) return;
+    var out = [];
+    function chip(k, v, est) {
+      out.push('<span class="fig"><b>' + k + "</b>" + v +
+        (est ? ' <span class="tag est">est.</span>' : "") + "</span>");
+    }
+    if (e.density !== null) chip("Density", sig(e.density, 4) + " g/cm³", isEst(e, "density"));
+    if (e.melt !== null) chip("Melts", degWords(e.melt), isEst(e, "melt"));
+    if (e.boil !== null) chip("Boils", degWords(e.boil), isEst(e, "boil"));
+    if (e.abundCrust !== null) chip("In the crust", abundWords(e.abundCrust), isEst(e, "abundCrust"));
+    if (e.halfLife) chip("Half-life", e.halfLife, false);
+    if (e.discovered) chip("First isolated", String(e.discovered), false);
+    host.innerHTML = out.join("");
+  });
+
+  /* ---------- element badges take their category colour ---------- */
+
+  [].slice.call(document.querySelectorAll("[data-badge]")).forEach(function (b) {
+    var e = byS[b.getAttribute("data-badge")];
+    if (e) b.classList.add(EMA.catClass(e.cat));
+  });
+
+  /* ---------- the comparison board ---------- */
+
+  var PROPS = [
+    {
+      id: "density", field: "density", label: "Density",
+      note: "how much a given volume of it weighs",
+      logOK: true, defLog: true,
+      val: function (e) { return e.density; },
+      words: function (v) { return sig(v, 3) + " g/cm³"; }
+    },
+    {
+      id: "melt", field: "melt", label: "Melting point",
+      note: "the temperature at which it turns liquid",
+      logOK: false, defLog: false,
+      val: function (e) { return e.melt; },
+      words: function (v) { return degWords(v); }
+    },
+    {
+      id: "boil", field: "boil", label: "Boiling point",
+      note: "the temperature at which it turns to vapour",
+      logOK: false, defLog: false,
+      val: function (e) { return e.boil; },
+      words: function (v) { return degWords(v); }
+    },
+    {
+      id: "crust", field: "abundCrust", label: "How much is in Earth's crust",
+      note: "by weight, where one part per million is a gram in a tonne",
+      logOK: true, defLog: true,
+      val: function (e) { return e.abundCrust; },
+      words: function (v) { return abundWords(v); }
+    },
+    {
+      id: "uni", field: "abundUni", label: "How much is in the universe",
+      note: "by weight, counting everything the telescopes can add up",
+      logOK: true, defLog: true,
+      val: function (e) { return e.abundUni; },
+      words: function (v) { return abundWords(v); }
+    },
+    {
+      id: "ion1", field: "ion1", label: "Grip on its own outer electron",
+      note: "the energy needed to pull one electron off a loose atom",
+      logOK: true, defLog: false,
+      val: function (e) { return e.ion1; },
+      words: function (v) { return EMA.fmt(v, 0) + " kJ/mol"; }
+    },
+    {
+      id: "en", field: "en", label: "Pull on electrons it shares",
+      note: "how hard it tugs at the electrons in a bond",
+      logOK: true, defLog: false,
+      val: function (e) { return e.en; },
+      words: function (v) { return sig(v, 3); }
+    },
+    {
+      id: "mass", field: "mass", label: "Weight of one atom",
+      note: "on the scale where a carbon atom is 12",
+      logOK: true, defLog: false,
+      val: function (e) { return e.mass; },
+      words: function (v) { return sig(v, 5) + " u"; }
+    },
+    {
+      id: "radius", field: "radius", label: "Reach when bonded",
+      note: "from the centre of the atom out to the centre of a partner it bonds with",
+      logOK: true, defLog: false,
+      val: function (e) { return e.radius; },
+      words: function (v) { return EMA.fmt(v, 0) + " pm"; }
+    }
+  ];
+
+  var pick = document.getElementById("propPick");
+  var board = document.getElementById("board");
+  var strip = document.getElementById("popStrip");
+  var axMin = document.getElementById("popMin");
+  var axMax = document.getElementById("popMax");
+  var popNote = document.getElementById("popNote");
+  var summary = document.getElementById("boardSummary");
+  var btnLin = document.getElementById("scaleLin");
+  var btnLog = document.getElementById("scaleLog");
+
+  var useLog = true;
+  var current = PROPS[0];
+
+  function ranked(prop) {
+    var a = ELS.filter(function (e) {
+      var v = prop.val(e);
+      return v !== null && v !== undefined && !isNaN(v);
+    });
+    a.sort(function (x, y) { return prop.val(y) - prop.val(x); });
+    return a;
+  }
+
+  function place(v, lo, hi, log) {
+    var f;
+    if (log && lo > 0 && hi > 0 && hi > lo) {
+      f = (Math.log(v) - Math.log(lo)) / (Math.log(hi) - Math.log(lo));
+    } else if (hi > lo) {
+      f = (v - lo) / (hi - lo);
+    } else {
+      f = 0.5;
+    }
+    return Math.max(0, Math.min(100, f * 100));
+  }
+
+  function render() {
+    if (!board) return;
+    var prop = current;
+    var list = ranked(prop);
+    var n = list.length;
+    var rankOf = {};
+    list.forEach(function (e, i) { rankOf[e.sym] = i + 1; });
+
+    var lo = prop.val(list[n - 1]);
+    var hi = prop.val(list[0]);
+    var log = useLog && prop.logOK && lo > 0;
+
+    /* the population strip: one mark per element that carries a figure */
+    var marks = list.map(function (e) {
+      var on = NAMED.indexOf(e.sym) >= 0 ? " class=\"on\"" : "";
+      return "<i" + on + ' style="left:' + place(prop.val(e), lo, hi, log).toFixed(3) + '%"></i>';
+    }).join("");
+    if (strip) strip.innerHTML = marks;
+
+    if (axMin) axMin.textContent = "lowest · " + list[n - 1].sym + " " + prop.words(lo);
+    if (axMax) axMax.textContent = "highest · " + list[0].sym + " " + prop.words(hi);
+
+    var missing = NAMED.filter(function (s) { return !rankOf[s]; });
+    if (popNote) {
+      popNote.innerHTML = "Each mark is one of the <strong>" + n + "</strong> elements that carries a figure for " +
+        prop.label.toLowerCase() + ", which is " + prop.note + ". The bright marks are the thirteen. " +
+        (log
+          ? "Spacing runs in steps of ten, so each equal stretch of strip is a tenfold change."
+          : "Spacing runs in even steps, so equal stretches of strip are equal amounts.");
+    }
+
+    /* the rows, highest first, with anything unmeasured gathered at the end */
+    var rows = NAMED.map(function (s) { return byS[s]; }).filter(Boolean);
+    rows.sort(function (x, y) {
+      var rx = rankOf[x.sym] || 9999, ry = rankOf[y.sym] || 9999;
+      return rx - ry;
+    });
+
+    board.innerHTML = rows.map(function (e) {
+      var r = rankOf[e.sym];
+      var cat = EMA.catClass(e.cat);
+      if (!r) {
+        return '<div class="brow nofig">' +
+          '<a class="bsym ' + cat + '" href="#card-' + e.sym + '">' + e.sym + "</a>" +
+          '<span class="bname">' + e.name + "</span>" +
+          '<div class="btrack"></div>' +
+          '<span class="brank">no figure</span>' +
+          '<span class="bval">not measured</span>' +
+          "</div>";
+      }
+      var v = prop.val(e);
+      var pct = place(v, lo, hi, log);
+      var est = isEst(e, prop.field) ? ' <span class="tag est">est.</span>' : "";
+      return '<div class="brow">' +
+        '<a class="bsym ' + cat + '" href="#card-' + e.sym + '">' + e.sym + "</a>" +
+        '<span class="bname">' + e.name + "</span>" +
+        '<div class="btrack"><span class="bfill" style="width:' + pct.toFixed(2) + '%"></span>' +
+        '<span class="bdot" style="left:' + pct.toFixed(2) + '%"></span></div>' +
+        '<span class="brank">' + ord(r) + " of " + n + "</span>" +
+        '<span class="bval">' + prop.words(v) + est + "</span>" +
+        "</div>";
+    }).join("");
+
+    if (summary) {
+      var placed = rows.filter(function (e) { return rankOf[e.sym]; });
+      var top = placed[0], bottom = placed[placed.length - 1];
+      var txt = "Of the <b>" + n + "</b> elements carrying a figure for " + prop.label.toLowerCase() +
+        ", " + top.name.toLowerCase() + " sits <b>" + ord(rankOf[top.sym]) + "</b> and " +
+        bottom.name.toLowerCase() + " sits <b>" + ord(rankOf[bottom.sym]) + "</b>.";
+      if (missing.length) {
+        var names = missing.map(function (s) { return byS[s].name.toLowerCase(); });
+        txt += " " + (names.length === 1 ? "No figure exists for " + names[0] : "No figures exist for " + names.join(" or ")) +
+          ", because every atom of it has been made in a laboratory and none has lasted a second.";
+      }
+      summary.innerHTML = txt;
+    }
+  }
+
+  function setScale(log) {
+    useLog = log;
+    if (btnLin) btnLin.setAttribute("aria-pressed", log ? "false" : "true");
+    if (btnLog) btnLog.setAttribute("aria-pressed", log ? "true" : "false");
+    render();
+  }
+
+  function syncScaleButtons() {
+    var ok = current.logOK;
+    if (btnLog) {
+      btnLog.disabled = !ok;
+      if (!ok && useLog) { useLog = false; }
+    }
+    if (btnLin) btnLin.setAttribute("aria-pressed", useLog ? "false" : "true");
+    if (btnLog) btnLog.setAttribute("aria-pressed", useLog ? "true" : "false");
+  }
+
+  if (pick && board) {
+    pick.innerHTML = PROPS.map(function (p) {
+      return '<option value="' + p.id + '">' + p.label + "</option>";
+    }).join("");
+
+    pick.addEventListener("change", function () {
+      for (var i = 0; i < PROPS.length; i++) {
+        if (PROPS[i].id === pick.value) { current = PROPS[i]; break; }
+      }
+      useLog = current.logOK ? current.defLog : false;
+      syncScaleButtons();
+      render();
+    });
+
+    if (btnLin) btnLin.addEventListener("click", function () { setScale(false); });
+    if (btnLog) btnLog.addEventListener("click", function () { if (current.logOK) setScale(true); });
+
+    useLog = current.defLog;
+    syncScaleButtons();
+    render();
+  }
+})();
+</script>
+</body>
+</html>

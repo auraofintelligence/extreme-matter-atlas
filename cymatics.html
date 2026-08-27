@@ -321,7 +321,7 @@ body[data-page="cymatics"] .twin-note {
     <div class="wrap">
       <h2>Two sources, <span class="hue">one tray of water</span></h2>
       <p>Before the leap to atoms there is one more picture to have, and it is the oldest demonstration in the book. Put two dippers in a shallow tray and bob them up and down together. Two sets of circular ripples spread out and cross. Wherever a crest from one arrives with a crest from the other the water heaves twice as high. Wherever a crest meets a trough, the water sits flat and stays flat, and those flat places join into curved lines running out across the tray.</p>
-      <p>Those lines are the same still lines the sand was finding, made by two sources instead of by a boundary. Everything downstream is this picture: the moiré fringes in <a href="metamaterials.html">metamaterials</a>, the spots in a diffraction pattern in the <a href="crystal-lab.html">crystal lab</a>, and the shells further down this page.</p>
+      <p>Those lines are the same still lines the sand was finding, made by two sources instead of by a boundary. Everything downstream is this picture: the moiré fringes in <a href="metamaterials.html">metamaterials</a>, the spots in a diffraction pattern in the <a href="crystal-lab.html">crystal lab</a>, and the electron shells a little further on.</p>
 
       <div class="canvas-frame">
         <canvas id="rippleCanvas" width="1000" height="470" aria-label="A shallow tray seen from above with two dippers bobbing. Circular ripples spread from each and cross, and gold lines mark the curves where the water stays flat."></canvas>
@@ -1053,6 +1053,8 @@ body[data-page="cymatics"] .twin-note {
     var img = null, buf32 = null;
     var p1 = null, p2 = null, a1 = null, a2 = null, still = null;
     var dirty = true;
+    var bufCv = document.createElement("canvas");
+    var bufCtx = bufCv.getContext("2d");
 
     /* sine lookup */
     var LUT_N = 4096, LUT_MASK = LUT_N - 1;
@@ -1090,7 +1092,8 @@ body[data-page="cymatics"] .twin-note {
       cv.style.height = h + "px";
       RW = Math.max(120, Math.round(w / 2));
       RH = Math.max(80, Math.round(h / 2));
-      img = ctx.createImageData(RW, RH);
+      bufCv.width = RW; bufCv.height = RH;
+      img = bufCtx.createImageData(RW, RH);
       buf32 = new Uint32Array(img.data.buffer);
       p1 = new Float32Array(RW * RH);
       p2 = new Float32Array(RW * RH);
@@ -1148,11 +1151,11 @@ body[data-page="cymatics"] .twin-note {
         }
         buf32[idx] = c;
       }
-      ctx.putImageData(img, 0, 0);
+      bufCtx.putImageData(img, 0, 0);
 
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.imageSmoothingEnabled = true;
-      ctx.drawImage(cv, 0, 0, RW, RH, 0, 0, W, H);
+      ctx.drawImage(bufCv, 0, 0, W, H);
 
       /* the two dippers */
       var cmPerPxFull = TRAY_CM / W;
