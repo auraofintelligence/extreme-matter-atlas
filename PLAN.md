@@ -9,20 +9,32 @@ pages: the periodic table, the record-holding atoms, GNoME's predicted crystals,
 crystal lab, metamaterials, engineering uses, future paths, claimed anomalous samples, and a
 vimana thought experiment. Static HTML/CSS/JS, GitHub Pages, no build step.
 
-## 2. Page map (all ten ship; never index-only)
+## 2. Page map (18 pages; never index-only)
 
-| File | Nav label | One line |
-| --- | --- | --- |
-| index.html | Atlas | Hub, choose-your-door cards, element strip |
-| periodic-table.html | Table | 118 elements, colour-by-property, detail drawer |
-| extremes.html | Records | Leaderboards computed live from the dataset, analogies |
-| gnome.html | GNoME | DeepMind's crystal predictions, verified numbers |
-| crystal-lab.html | Crystal Lab | 2D lattices stacked and twisted into 3D, moire view |
-| metamaterials.html | Metamaterials | Geometry beats chemistry, playable demos |
-| engineering.html | Engineering | Records matched to civil jobs, bridged from products |
-| frontiers.html | Frontiers | Future exploration paths, conditional voice |
-| anomalous-materials.html | Samples | Claimed samples, measurements, provenance tiers |
-| vimana.html | Vimana | Stories read as a design brief, physics as the ruler |
+Grouped **by subject, never by how settled the subject is**. Contested and settled material
+share the same drawers on purpose: that arrangement is the argument. Nav groups live in
+`assets/nav.js` as `wing` values, and `WINGS` carries their labels.
+
+| File | data-page | Wing | One line |
+| --- | --- | --- | --- |
+| index.html | index | (top) | Hub, choose-your-door cards, element ribbon |
+| beyond.html | beyond | (top) | The method: story to spec to measurement, and the anthem |
+| periodic-table.html | table | elements | 118 elements, colour-by-property, detail drawer |
+| extremes.html | extremes | elements | Leaderboards computed live from the dataset |
+| claimed-elements.html | claimed | elements | Every element named in an anomalous claim, and what it actually does |
+| anomalous-materials.html | anomalies | elements | Claimed samples: story, claim, what instruments returned |
+| crystal-lab.html | crystal | patterns | Lattice sketchpad: 2D to 3D, twist, defects, vibrating modes |
+| metamaterials.html | meta | patterns | Geometry doing the work of chemistry |
+| cymatics.html | cymatics | patterns | Chladni plates, standing waves, patterns you can drive |
+| resonance.html | resonance | patterns | Resonance from a tuning fork to an atom |
+| vimana.html | vimana | engines | Old sky-craft stories read as a design brief |
+| red-mercury.html | redmercury | engines | Mercury drives, from the old texts to real ion thrusters |
+| element-115.html | elements115 | engines | Moscovium, the S4 account, the island of stability |
+| zero-point.html | zeropoint | engines | Vacuum energy, the Casimir force, what a ZPM would need |
+| gnome.html | gnome | making | DeepMind's crystal predictions |
+| engineering.html | engineering | making | Records matched to civil jobs |
+| sci-fi-lab.html | scifi | making | Named fictional technology given a spec sheet |
+| frontiers.html | frontiers | making | Where discovery could head next |
 
 ## 3. Audience and voice (hard gates, checked before ship)
 
@@ -49,9 +61,54 @@ vimana thought experiment. Static HTML/CSS/JS, GitHub Pages, no build step.
 - The page talks to the reader, second person or plain declarative. Neutral, warm.
 - Peace-first: engineering examples stay civil (energy, space, ocean, medicine,
   transport). No weapons applications, no current defence events.
-- Provenance tiers wherever claims vary in strength, shown as tags, never verdict stamps:
-  T1 peer-reviewed measurement · T2 named-lab report · T3 broadcast or documentary claim ·
-  T4 story or anecdote.
+
+### 3a. The stance: no boundary, no grading
+
+**NO TRUTH TAGS. NO CONFIDENCE TIERS. NO GRADED BADGES OF ANY KIND.** An earlier draft put
+T1 to T4 provenance tags on the samples page and they were removed on sight. Do not
+reintroduce them under any name: no tier chips, no confidence scores, no "strength of
+evidence" labels, no colour-coded reliability keys, no section explaining how to weigh what
+follows. Readers do their own pattern recognition; grading it for them is the failure.
+
+Instead, **attribute in plain prose, inside the sentence**. Say who said it, where, when,
+and on what instrument, and let that do the work:
+
+- Not: `<span class="tier-2">T2</span> Layer structure measured.`
+- Yes: "Oak Ridge National Laboratory reported the layer structure in 2019."
+- Not: `<span class="tier-3">T3</span> Unusual alloy claimed.`
+- Yes: "The claim was made on a History Channel episode in 2021, with no laboratory report
+  published alongside it."
+
+There is also **no discrete boundary between settled and speculative material**. Do not
+build a "measured wing" and a "beyond wing", do not write section headings that sort
+content into real and unreal, and do not open a page by warning the reader which mode they
+are entering. Sci-fi, fringe and mainstream are stages of the same exploration, and the
+site's structure treats them that way. A page may say what is measured and what is
+hypothesis in ordinary sentences; it may not stamp them.
+
+### 3b. Going beyond: the method every speculative page follows
+
+The point of this site is to push further, not to relay consensus. Never close an argument
+by citing what mainstream science says: that is an appeal to authority, and this site
+does not use it. Apply the same standard to every claim regardless of its origin.
+
+For any story, claim or piece of fiction, work it as an engineering brief in this order:
+
+1. **The story**, told with respect and without wink or sneer.
+2. **The claim as a spec**: pull out the numbers it implies. Thrust, energy density,
+   temperature, mass, half-life, field strength. Give it real units.
+3. **The physics it would need**: name the mechanism and put a number on the gap. Real
+   figures, computed, not gestured at.
+4. **The nearest built thing**: what already exists that rhymes with it. This is the
+   payload of the page. Mercury ion drives really flew. The Casimir force is really
+   measured. Acoustic levitation really lifts things. Find that, and lead with it.
+5. **What would have to be true**: the conditions, stated plainly, that would make the
+   claim work.
+6. **What you would measure**: the experiment that would move the question. Instruments
+   that exist, quantities they return.
+
+Never end a speculative page on a dismissal or a verdict. End on the measurement, the
+open question, or the thing worth building.
 
 ## 4. Design system
 
