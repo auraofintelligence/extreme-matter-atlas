@@ -125,6 +125,26 @@ section { padding: 56px 0; }
   box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
+/* narrow screens: one scrolling row instead of three stacked ones */
+@media (max-width: 900px) {
+  .site-header .bar { gap: 10px; padding: 10px 0 10px 16px; }
+  .brand { font-size: 13px; }
+  .pill-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 2px 16px 2px 0;
+    margin-left: 0;
+    width: 100%;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .pill-nav::-webkit-scrollbar { display: none; }
+  .pill-nav li { flex: 0 0 auto; scroll-snap-align: start; }
+  .pill-nav a { padding: 6px 12px; font-size: 13px; }
+}
+
 /* ---------- hero ---------- */
 
 .hero {
