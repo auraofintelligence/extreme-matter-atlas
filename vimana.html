@@ -155,7 +155,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
   <section class="hero">
     <div class="orbs"><span class="orb3"></span></div>
     <div class="wrap">
-      <span class="kicker">Thought experiment</span>
+      <span class="kicker">Sanskrit sky-craft · the brief they imply · the shelf they would shop from</span>
       <h1 class="display">Vimana</h1>
       <p class="lede">The old Sanskrit epics tell of palaces that fly. Suppose an engineer took those stories the way they would take a client's wish list, and priced it against the periodic table. <strong>The craft stays a wish. The records it would have to beat are already on the shelf.</strong></p>
     </div>
@@ -210,7 +210,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
         <div class="card reveal">
           <span class="card-glyph">🎈</span>
           <h3>Lift without wings</h3>
-          <p>Hovering is expensive. A small two-seat helicopter holds itself up on roughly 100 kilowatts, about fifty kitchen kettles boiling at once, and it pays that bill by throwing a gale of air at the ground. The brief asks for the same lift with nothing visibly thrown. Whatever the craft would push against, the kettle bill would still come due, so the first question is energy density: how much go is packed into each kilogram carried on board.</p>
+          <p>Hovering is expensive. A small two-seat helicopter holds itself up on roughly 100 kilowatts, about forty kitchen kettles boiling at once, and it pays that bill by throwing a gale of air at the ground. The brief asks for the same lift with nothing visibly thrown. Whatever the craft would push against, the kettle bill would still come due, so the first question is energy density: how much go is packed into each kilogram carried on board.</p>
         </div>
         <div class="card reveal">
           <span class="card-glyph">🤫</span>
@@ -518,7 +518,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
       needs: "a standing wave, so the craft has to sit inside the sound",
       figs: [["Thrust to power", "about 1.4 N/kW"], ["Record lift", "2.84 g"]],
       leans: "Aim two ultrasonic emitters at each other and the sound waves stack into a standing pattern with still points every half wavelength. Small things sit in the still points and hang there. In 2002 Wenjun Xie, Chuanjun Cao, Yajun Lü and Bingbo Wei levitated an iridium sphere weighing 2.84 grams, a little over six millimetres across and second only to osmium as the densest solid there is, and reported it in Physical Review Letters.",
-      buys: "Contactless handling that laboratories use every week for droplets and protein crystals. It does not scale: the still points are half a wavelength apart, so at 40 kilohertz the object has to be smaller than about a centimetre, and the record load is under three grams." },
+      buys: "Contactless handling that laboratories use every week for droplets and protein crystals. Scaling it up is the hard part. In a plain standing wave the still points sit half a wavelength apart, about four millimetres at 40 kilohertz, which sets the ordinary ceiling on what will fit between them. A driven array of 192 small speakers at that same frequency has held a 16 millimetre bead by alternating two counter-twisting sound fields, so the half wavelength is a working rule, not a wall. The record load is still under three grams." },
 
     { id: "photon", name: "Photon drive", npkw: 1000 / 299792458, npkwNote: "power divided by the speed of light",
       ceil: null,
@@ -570,21 +570,27 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
 
     // the lift figure, which for rotors depends on how heavy the craft turns out
     var s = power.wkg;
-    var npkw, alpha, total, i, next;
+    var npkw, alpha, total, i, next, firstNpkw;
+    var rotorSettles = true;
 
     if (lift.id === "rotors") {
+      // the first pass: the figure for the hull and crew alone, kept as the fallback
       total = out.dry;
-      npkw = rotorNpkW(d, total * G);
+      firstNpkw = rotorNpkW(d, out.dry * G);
+      npkw = firstNpkw;
       if (s !== null) {
+        rotorSettles = false;
         for (i = 0; i < 400; i++) {
           npkw = rotorNpkW(d, total * G);
           alpha = G / ((npkw / 1000) * s);
           if (alpha >= 1) break;
           next = out.dry / (1 - alpha);
-          if (Math.abs(next - total) < 1e-7) { total = next; break; }
+          if (Math.abs(next - total) < 1e-7 * Math.max(1, total)) { total = next; rotorSettles = true; break; }
           total = next;
           if (total > 1e12) break;
         }
+        // the plant grows faster than the disc can carry it, so show the first pass again
+        if (!rotorSettles) { total = out.dry; npkw = firstNpkw; }
       }
     } else {
       npkw = lift.npkw;
@@ -602,7 +608,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
 
     alpha = G / ((npkw / 1000) * s);
     out.alpha = alpha;
-    out.closesOnPower = alpha < 1;
+    out.closesOnPower = (lift.id === "rotors") ? rotorSettles : (alpha < 1);
 
     if (out.closesOnPower) {
       // the sum settles: enough plant to hover the hull, the crew and the plant itself
@@ -706,7 +712,7 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
 
   function powerLike(w) {
     if (!isFinite(w)) return "";
-    var kettles = w / 2000;              // a kitchen kettle, about 2 kW
+    var kettles = w / 2400;              // a kitchen kettle, about 2.4 kW
     var homes = w / 700;                 // an Australian home, averaged across a day
     var units = w / 5e8;                 // a large generating unit, about 500 MW
     var worldElec = w / 3.4e12;          // all the world's electricity, averaged
