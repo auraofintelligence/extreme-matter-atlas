@@ -150,7 +150,7 @@ body[data-page="cymatics"] .twin-note {
 
       <p><strong>A wine glass.</strong> Wet a finger, run it round the rim, and the glass sings. The finger is not sliding smoothly: it grips and slips, grips and slips, hundreds of times a second, and the glass answers at the frequency it likes. What the glass is doing is squeezing from round to oval and back, so four points around the rim hold still while four bulge. Gregor Jundt and colleagues at the École Polytechnique, with Neville Fletcher at the Australian National University, photographed exactly that with holographic interferometry and published it in the <em>Journal of the Acoustical Society of America</em> in June 2006. Their empty glass sang at about 890 hertz. Pour in ten centimetres of water and the same pattern drops to about 410 hertz, a shade over an octave lower, because the water has to be shoved along with the glass wall.</p>
 
-      <div class="note"><strong>The detail worth keeping from that paper.</strong> The oval can squash along one pair of axes or along the pair at right angles to it, and on a perfect glass those two would ring at exactly the same pitch. On a real glass they came in <strong>4 hertz apart</strong>, because the wall is a fraction thicker on one side than the other. A 4 hertz gap out of 890 is a wall-thickness difference no eye would catch. The glass hears it. And when the glass is full, that gap closes and the two go back to being the same note.</p></div>
+      <div class="note"><strong>The detail worth keeping from that paper.</strong> The oval can squash along one pair of axes or along the pair at right angles to it, and on a perfect glass those two would ring at exactly the same pitch. On a real glass they came in <strong>4 hertz apart</strong>, because the wall is a fraction thicker on one side than the other. A 4 hertz gap out of 890 is a wall-thickness difference no eye would catch. The glass hears it. And when the glass is full, that gap closes and the two go back to being the same note.</div>
 
       <p><strong>Sand on a speaker.</strong> Lay a stiff plate on a loudspeaker, sprinkle it with dry sand or table salt, and sweep the frequency. Most of the time the sand just shuffles. Then at particular frequencies the plate leaps into a pattern, and within a second the grains have found the still lines and are sitting on them in sharp ridges. It is the Chladni demonstration, running in school labs with a signal generator instead of a bow.</p>
     </div>
@@ -250,7 +250,7 @@ body[data-page="cymatics"] .twin-note {
         <div class="control">
           <label id="presetLabel">Jump to a figure</label>
           <div class="preset-row" role="group" aria-labelledby="presetLabel">
-            <button type="button" class="btn ghost" data-shape="square" data-m="1" data-n="2">The cross</button>
+            <button type="button" class="btn ghost" data-shape="square" data-m="1" data-n="2">The simplest figure</button>
             <button type="button" class="btn ghost" data-shape="square" data-m="2" data-n="3">The lattice</button>
             <button type="button" class="btn ghost" data-shape="square" data-m="4" data-n="5">The weave</button>
             <button type="button" class="btn ghost" data-shape="circle" data-m="0" data-n="2">Rings</button>
@@ -261,7 +261,7 @@ body[data-page="cymatics"] .twin-note {
 
         <p class="note" id="twinNote"><strong>Why the blend slider is there.</strong> On a square plate, two lines across with three down rings at exactly the same pitch as three across with two down. The plate cannot tell them apart, so what actually appears is whatever mixture the bowing and the damping fingers happen to set up. Slide the blend and the figure walks from one twin, through a plain grid, to the other, without the pitch changing at all. On the round plate the same slider turns the figure, because there the two twins differ by a rotation. This is a real thing about vibrating plates, not a drawing option: it is why two people bowing identical plates at the same note can get different figures.</p>
 
-        <p class="note">The still lines here are drawn from the standing-wave shapes for a plate: crossed cosines on the square, Bessel functions on the round one. Close relatives of a real bowed brass plate, not a solution of the full plate equation, which is fourth order and does not have a tidy answer with free edges. About 3,600 grains are drawn. A teaspoon of fine beach sand holds roughly seven hundred thousand.</p>
+        <p class="note">The still lines here are drawn from the standing-wave shapes for a plate: crossed cosines on the square, Bessel functions on the round one. Close relatives of a real bowed brass plate, not a solution of the full plate equation, which is fourth order and does not have a tidy answer with free edges. Several thousand grains are drawn, with the live count sitting under the picture. A teaspoon of fine beach sand holds roughly seven hundred thousand of them.</p>
       </div>
     </div>
   </section>
@@ -564,11 +564,11 @@ body[data-page="cymatics"] .twin-note {
   /* zeros[order] = ascending list of positive zeros of J_order */
   var BESSEL_ZEROS = (function () {
     var table = [];
-    for (var order = 0; order <= 8; order++) {
+    for (var order = 0; order <= 6; order++) {
       var found = [];
       var prevX = 0.0001;
       var prevV = besselJ(order, prevX);
-      for (var x = 0.05; x < 40 && found.length < 8; x += 0.05) {
+      for (var x = 0.05; x < 32 && found.length < 6; x += 0.05) {
         var v = besselJ(order, x);
         if (prevV === 0) { found.push(prevX); }
         else if ((prevV < 0) !== (v < 0)) {
@@ -668,7 +668,7 @@ body[data-page="cymatics"] .twin-note {
         for (i = 0; i < radialLut.length; i++) {
           radialLut[i] = besselJ(mVal, lam * (i / (radialLut.length - 1)));
         }
-        var phi = (mVal === 0) ? 0 : ((twist + 1) / 2) * Math.PI / Math.max(1, mVal);
+        var phi = (mVal === 0) ? 0 : ((twist + 1) / 2) * Math.PI;
         for (j = 0; j < N; j++) {
           var v = (j / (N - 1)) * 2 - 1;
           for (i = 0; i < N; i++) {
