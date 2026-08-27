@@ -22,7 +22,7 @@
       return '<li><a href="' + p.href + '"' + active + ">" + p.label + "</a></li>";
     }).join("");
     header.innerHTML =
-      '<header class="site-header"><div class="bar">' +
+      '<header class="site-header"><div class="nav-bar">' +
       '<a class="brand" href="index.html">EXTREME MATTER ATLAS</a>' +
       '<ul class="pill-nav">' + links + "</ul>" +
       "</div></header>";
