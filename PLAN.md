@@ -169,12 +169,15 @@ Every page uses this exact skeleton:
 </html>
 ```
 
-`PAGEKEY` is one of: index, table, extremes, gnome, crystal, meta, engineering, frontiers,
-anomalies, vimana. The body attribute selects the page's accent pair in style.css.
+`PAGEKEY` is one of: index, beyond, table, extremes, claimed, anomalies, crystal, meta,
+cymatics, resonance, vimana, redmercury, elements115, zeropoint, gnome, engineering, scifi,
+frontiers. It is the `data-page` value from the table in section 2, and it selects the
+page's accent pair, set either in style.css or in that page's own scoped style block.
 
 Component classes (all in style.css, use these before inventing new ones): `.wrap`,
 `.hero`, `.orbs`, `.kicker`, `.display`, `.lede`, `.grid`, `.card`, `.card-link`, `.btn`,
-`.panel`, `.stat`, `.stat-row`, `.bar-row`, `.bar`, `.tag`, `.tier-1` to `.tier-4`,
+`.panel`, `.stat`, `.stat-row`, `.bar-row`, `.bar`, `.tag` (with `.tag.est`, its only
+modifier: no graded variant of `.tag` may be added, see §3a),
 `.table-scroll`, `.data-table`, `.drawer`, `.control`, `.control-row`, `.canvas-frame`,
 `.src-list`, `.divider`, `.two-col`, `.note`. Page-specific styles go in a `<style>` block
 in that page's head, scoped under `body[data-page="..."]`.

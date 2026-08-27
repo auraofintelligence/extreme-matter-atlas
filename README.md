@@ -1,13 +1,13 @@
 <!--
   ██  BUILT BY LUKE × CLAUDE  ██
   This repository was created collaboratively by Luke Nathan Hayes and
-  Claude (Anthropic, Fable 5) — NOT by Codex. See signature below.
+  Claude (Anthropic, Fable 5), NOT by Codex. See signature below.
 -->
 
 # Extreme Matter Atlas
 
 > 🤝🔷 **A Luke × Claude build.** Created by **Luke Nathan Hayes** (`auraofintelligence`)
-> and **Claude — Fable 5** (Anthropic) on **27 August 2026**. _Not a Codex build._
+> and **Claude (Fable 5)**, Anthropic, on **27 August 2026**. _Not a Codex build._
 
 A colourful, interactive atlas of matter pushed to its limits: the periodic table at full
 stretch, the record-holding atoms, Google DeepMind's GNoME crystal predictions, lattices and
@@ -73,6 +73,6 @@ community use with attribution; all commercial rights reserved to Luke Nathan Ha
 
 ### 🔷 Signature
 **Made by Luke × Claude (Fable 5).** Not Codex.
-Every commit is co-signed `Co-Authored-By: Claude Fable 5` — check `git log` to confirm lineage.
+Every commit is co-signed `Co-Authored-By: Claude Fable 5`; check `git log` to confirm lineage.
 
 </sub>
