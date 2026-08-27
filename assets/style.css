@@ -456,7 +456,7 @@ input[type="range"]::-moz-range-thumb {
 }
 @media (max-width: 560px) { .bar-row { grid-template-columns: 92px 1fr 70px; } }
 
-/* ---------- tags / provenance tiers ---------- */
+/* ---------- tags ---------- */
 
 .tag {
   display: inline-block; padding: 3px 11px; border-radius: 999px;
@@ -466,11 +466,6 @@ input[type="range"]::-moz-range-thumb {
   vertical-align: middle;
 }
 .tag.est { border-style: dashed; }
-
-.tier-1 { border-color: #34d399; color: #34d399; background: rgba(52, 211, 153, 0.08); }
-.tier-2 { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.08); }
-.tier-3 { border-color: #fb923c; color: #fb923c; background: rgba(251, 146, 60, 0.08); }
-.tier-4 { border-color: #94a3b8; color: #94a3b8; background: rgba(148, 163, 184, 0.08); }
 
 /* ---------- tables ---------- */
 

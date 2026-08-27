@@ -4,10 +4,10 @@ Side document, never linked from the site. The site's front-facing pages follow 
 
 ## 1. What this site is
 
-A public, interactive atlas of matter at its limits, for everyday curious readers. Ten
-pages: the periodic table, the record-holding atoms, GNoME's predicted crystals, a playable
-crystal lab, metamaterials, engineering uses, future paths, claimed anomalous samples, and a
-vimana thought experiment. Static HTML/CSS/JS, GitHub Pages, no build step.
+A public, interactive atlas of matter at its limits, for everyday curious readers. Eighteen
+pages: a hub and the method page, then four wings, Elements, Patterns, Engines and Making.
+The full map is the table in section 2; do not keep a second list of page names anywhere
+else. Static HTML/CSS/JS, GitHub Pages, no build step.
 
 ## 2. Page map (18 pages; never index-only)
 
