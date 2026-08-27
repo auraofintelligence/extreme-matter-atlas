@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Red Mercury · Extreme Matter Atlas</title>
+<meta name="description" content="Mercury drives, from the passages in the old sky-craft texts to the mercury ion thrusters that really flew in 1964 and 1970, with a simulator for a tiny push held for years.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page-specific styles, scoped to this page */
+body[data-page="redmercury"] { --accent: #fb7185; --accent2: #7dd3fc; }
+
+body[data-page="redmercury"] .quicksilver {
+  background: linear-gradient(100deg, #cbd5e1 0%, #f8fafc 22%, #94a3b8 44%, #f1f5f9 62%, #cbd5e1 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="redmercury"] .step-num {
+  display: inline-block; margin-bottom: 10px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--accent);
+}
+body[data-page="redmercury"] .sim-grid {
+  display: grid; grid-template-columns: 1fr 268px; gap: 18px; align-items: start;
+}
+@media (max-width: 900px) { body[data-page="redmercury"] .sim-grid { grid-template-columns: 1fr; } }
+
+body[data-page="redmercury"] .readout {
+  border: 1px solid var(--line-bright); border-radius: 16px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  padding: 16px 18px;
+}
+body[data-page="redmercury"] .readout .row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  padding: 7px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="redmercury"] .readout .row:last-child { border-bottom: 0; }
+body[data-page="redmercury"] .readout .k {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--muted);
+}
+body[data-page="redmercury"] .readout .v {
+  font-family: var(--font-mono); font-size: 15px; font-weight: 600;
+  color: var(--ink); text-align: right; white-space: nowrap;
+}
+body[data-page="redmercury"] .readout .v.hi { color: var(--accent); }
+body[data-page="redmercury"] .readout .big {
+  display: block; font-family: var(--font-display); font-weight: 700;
+  font-size: 27px; line-height: 1.1; margin: 2px 0 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="redmercury"] .sim-caption {
+  font-size: 13.5px; color: var(--muted); margin-top: 10px;
+}
+body[data-page="redmercury"] .legend {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 12px 0 2px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+body[data-page="redmercury"] .legend span { display: inline-flex; align-items: center; gap: 7px; }
+body[data-page="redmercury"] .legend i {
+  width: 16px; height: 4px; border-radius: 999px; display: inline-block;
+}
+body[data-page="redmercury"] .sim-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+body[data-page="redmercury"] .sim-btns .btn { padding: 10px 20px; }
+
+body[data-page="redmercury"] .kvline {
+  font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+  margin-top: 8px;
+}
+body[data-page="redmercury"] .kvline b { color: var(--accent); font-weight: 600; }
+
+body[data-page="redmercury"] .drop {
+  display: grid; grid-template-columns: 78px 1fr; gap: 16px; align-items: start;
+  padding: 14px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="redmercury"] .drop:last-child { border-bottom: 0; }
+body[data-page="redmercury"] .drop .when {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--accent);
+  padding-top: 2px;
+}
+body[data-page="redmercury"] .drop .what { font-size: 15px; color: var(--muted); }
+body[data-page="redmercury"] .drop .what b { color: var(--ink); font-weight: 600; }
+
+body[data-page="redmercury"] .pull {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(19px, 2.6vw, 25px); line-height: 1.35;
+  margin: 26px 0; padding: 4px 0 4px 22px;
+  border-left: 4px solid var(--accent);
+  color: var(--ink);
+}
+body[data-page="redmercury"] .pull cite {
+  display: block; margin-top: 10px; font-family: var(--font-body);
+  font-style: normal; font-size: 14px; color: var(--muted);
+}
+body[data-page="redmercury"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="redmercury"] .ion-caps {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 8px 8px 2px; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+</style>
+</head>
+<body data-page="redmercury">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Red Mercury · the metal, the story, the drive</span>
+      <h1 class="display">A drive that ran on <span class="quicksilver">mercury</span> really flew</h1>
+      <p class="lede">Old sky-craft verses talk about mercury heated in vessels. A trade in something called red mercury ran through the 1990s at prices thousands of times the metal's own. Both of those stories orbit a real machine: on <strong>20 July 1964</strong> a small engine boiled mercury, stripped the vapour of electrons, and threw it out the back at about <strong>48 kilometres a second</strong>. It was the first ion drive ever run in space, and the family it started is now flying on thousands of satellites.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">28 mN</span><span class="lbl">the push from that 1964 mercury engine: about the weight of an Australian five-cent coin</span></div>
+        <div class="stat"><span class="num">5,792 h</span><span class="lbl">thrusting time logged in orbit by SERT II's two mercury engines, 1970</span></div>
+        <div class="stat"><span class="num">11 km/s</span><span class="lbl">speed change the Dawn spacecraft built from about 90 mN, held for years</span></div>
+        <div class="stat"><span class="num">13.546</span><span class="lbl">grams per cubic centimetre: a soft drink can of mercury weighs about 5.1 kg</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Start with the <span class="hue">metal</span></h2>
+      <p>If you have ever seen an old fever thermometer, a barometer in a hallway, or the silvery bead that rolls out of a broken tilt switch in a heater, you have met mercury. It is the one metal that stays liquid on an ordinary day. Caesium and gallium melt in a warm hand, at about 28 and 30 degrees, but they sit solid on a cool morning; mercury freezes at minus 38.83 degrees, colder than anywhere in Australia has ever recorded, and boils at 356.73 degrees, well past what a kitchen oven can reach.</p>
+      <p>It is also heavy for its size. A 375 millilitre can holds 5.1 kilograms of it, against 375 grams for the same can of water. A ten litre bucket of mercury weighs about 135 kilograms, which is why it was always shipped in small steel flasks rather than drums. Drop a steel nut into it and the nut floats. Drop in a lump of lead and that floats too.</p>
+      <p>That combination, a metal you can pour, is why mercury turns up everywhere in the history of making things: pulling gold out of crushed rock, silvering mirrors, filling teeth, carrying the pressure reading in a hospital blood pressure cuff, glowing inside a fluorescent tube. It behaves like a liquid and conducts like a metal at the same time, and almost nothing else does.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">-38.83 &deg;C</span><span class="lbl">melting point. Australia's coldest recorded reading is about minus 23</span></div>
+        <div class="stat"><span class="num">5.08 kg</span><span class="lbl">a 375 mL soft drink can filled with mercury</span></div>
+        <div class="stat"><span class="num">~2,500 t</span><span class="lbl">mined worldwide in 2020, about 2,200 t of it in China. All of it together would not fill a tenth of an Olympic pool</span></div>
+        <div class="stat"><span class="num">~US$19/kg</span><span class="lbl">bulk price quoted in 2006, about A$26 at 0.7181 AUD/USD, 27 August 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>How an ion drive <span class="hue">actually works</span></h2>
+      <p>Take an atom. Knock one electron off it and what is left carries an electric charge, so an electric field can grab it. Put two metal grids at the back of a small chamber, hold a couple of thousand volts across them, and every charged atom that drifts near gets flung out of the back at tens of kilometres a second. Throw enough of them and the chamber feels a push forward.</p>
+      <p>The push is tiny. The trick is that it never stops. A chemical rocket empties its tanks in minutes; an ion drive sips propellant for years, so the small push adds up into a large change in speed. Engineers call that total change delta-v, and it is the real currency of space travel: not how hard you shove, but how much speed you can buy with what you carry.</p>
+      <div class="canvas-frame">
+        <canvas id="ionCanvas" width="1000" height="300" aria-label="Diagram of an ion drive: neutral atoms drift in from a tank on the left, lose an electron in a chamber, then accelerate through two charged grids and leave as a beam on the right, with electrons added back from a neutraliser"></canvas>
+        <div class="ion-caps"><span>1 · propellant in</span><span>2 · electron knocked off</span><span>3 · grids at 2,000 to 2,500 V</span><span>4 · beam out, electrons added back</span></div>
+      </div>
+      <p>Two numbers describe any drive. <strong>Thrust</strong> is the push, measured in newtons. <strong>Specific impulse</strong> is how fast the exhaust leaves, quoted in seconds by convention; multiply it by 9.81 to get the exhaust speed in metres per second. A good chemical rocket runs about 320 seconds, which is 3.1 kilometres a second out the nozzle. The 1964 mercury engine ran about 4,900 seconds, which is 48 kilometres a second: Brisbane to Sydney in fifteen seconds.</p>
+      <div class="note"><strong>A cross-check you can do yourself.</strong> That engine held 2,500 volts across its grids. A mercury ion carries one electron's worth of charge and 200.592 units of mass, and an object accelerated through a voltage picks up a speed you can work out from those three numbers alone: 49.0 kilometres a second, an equivalent of about 5,000 seconds. The engine measured about 4,900. The grid voltage and the exhaust speed are the same fact stated twice.</div>
+      <p>The last piece is the bit that fails if you forget it. Fling positive ions out the back and the spacecraft is left negative, and it will simply pull its own exhaust back. So every ion drive carries a neutraliser: a hot filament or hollow cathode squirting electrons into the departing beam so the whole plume leaves electrically neutral. The 1964 flight was the first time anyone showed that worked outside a laboratory.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>SERT I, <span class="hue">20 July 1964</span></h2>
+      <p>A Scout X-4 lifted off from Wallops Flight Facility in Virginia at 10:53 UTC and threw a small NASA Lewis Research Center payload up to an apogee of 4,002 kilometres. It carried two engines. One was an eight centimetre caesium engine designed for 5.6 millinewtons at 8,050 seconds; a high voltage short circuit meant it never started. The other was a ten centimetre mercury engine, and about fourteen minutes into the flight it lit.</p>
+      <p>Inside it, a small boiler warmed liquid mercury and fed the vapour through a porous stainless steel plug into a chamber where a hot tantalum wire threw off electrons. Those electrons collided with mercury atoms and knocked electrons loose. Grids at 2,500 and 2,000 volts pulled the resulting ions out. It ran for 31 minutes on 1.4 kilowatts, produced 28 millinewtons, and rode out 53 high voltage recycle events, which is what the engineers called it when the grids arced and the supply had to blink off and back on.</p>
+      <p>Three independent systems measured the thrust, and all three agreed with what the same hardware had done on the ground. Nothing else on the spacecraft was disturbed by the beam. Those two results are the reason there is an ion drive on anything today.</p>
+
+      <h3>SERT II, 3 February 1970: the endurance run</h3>
+      <p>The follow-up went into a 1,000 kilometre polar orbit chosen so the spacecraft would sit in continuous sunlight and never lose power. It carried two identical fifteen centimetre mercury engines and what was then the largest solar array NASA had flown, five feet by forty. Each engine drew 0.85 kilowatts for 28 millinewtons at 4,200 seconds. Before launch, ground units had run 6,742 hours and 5,169 hours, plus a 2,400 hour test on a prototype spacecraft.</p>
+      <p>Thruster one started on 14 February 1970 and ran about five months, to 22 July, when a short across the ion optics stopped it. Thruster two started two days later and ran about three and a half months. Between them they logged 3,781 and 2,011 hours of thrust: 5,792 hours, or 241 days of continuous pushing, in orbit.</p>
+      <p>Then the spacecraft kept going. It was woken in 1973 to demonstrate cathode restarts, and again from 1979. NASA Glenn records about 18,000 hours of operation and more than 500 restarts across eleven years, until the propellant ran out in the spring of 1981. The whole eleven years used about 9 kilograms of mercury: 664 millilitres, less than two soft drink cans.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">31 min</span><span class="lbl">SERT I's mercury engine, the first ion drive run in space</span></div>
+        <div class="stat"><span class="num">5,792 h</span><span class="lbl">SERT II's two engines thrusting in orbit, 1970</span></div>
+        <div class="stat"><span class="num">500+</span><span class="lbl">restarts demonstrated across eleven years</span></div>
+        <div class="stat"><span class="num">9 kg</span><span class="lbl">mercury used in all that: under two soft drink cans of liquid</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The mercury engines that were <span class="hue">built and numbered</span></h2>
+      <p>Mercury electron-bombardment engines were built from five centimetres across to a hundred and fifty, and ground endurance tests on them ran from about 4,000 hours to 15,040. A five centimetre unit called SIT-5 weighed 2.2 kilograms complete with its tank and feed system, drew 72 watts, and pushed with 2.1 millinewtons: about a fifth of the weight of a five-cent coin. It could hold 6.8 kilograms of mercury, enough for roughly 30,000 hours at full power.</p>
+      <p>An eight centimetre engine called IAPS passed every flight qualification test in the years to 1983 and was fitted to an Air Force technology satellite. The flight was cancelled for lack of funding and it never left the ground. A thirty centimetre design for a solar-powered transfer stage, SEPS, was taken to 2.6 kilowatts, 128 millinewtons and about 3,000 seconds; NASA spent roughly US$30 million on it over about ten years, an engineering model ran 10,000 hours, and seven advanced models accumulated 14,541 hours between them.</p>
+      <p>So the built mercury range runs roughly 2,500 to 4,900 seconds of specific impulse and 2 to 128 millinewtons of thrust. Every one of those machines was a boiler, a discharge chamber, two charged grids and a neutraliser. A working mercury drive is plumbing and voltage, not a vortex.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Drive</th><th>Push</th><th>Exhaust speed</th><th>Power</th><th>Where it ran</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chemical apogee engine</td><td>about 450 N</td><td>320 s &middot; 3.1 km/s</td><td>none needed</td><td>satellites since the 1960s</td></tr>
+            <tr><td>Mercury ion, SERT I, 10 cm</td><td>28 mN</td><td>~4,900 s &middot; 48 km/s</td><td>1.4 kW</td><td>orbit, 20 July 1964, 31 min</td></tr>
+            <tr><td>Mercury ion, SERT II, 15 cm</td><td>28 mN</td><td>4,200 s &middot; 41 km/s</td><td>0.85 kW</td><td>orbit, from 3 Feb 1970, 5,792 h</td></tr>
+            <tr><td>Mercury ion, SIT-5, 5 cm</td><td>2.1 mN</td><td>3,000 s &middot; 29 km/s</td><td>0.072 kW</td><td>ground, one test of 9,715 h</td></tr>
+            <tr><td>Mercury ion, SEPS, 30 cm</td><td>128 mN</td><td>~3,000 s &middot; 29 km/s</td><td>2.6 kW</td><td>ground, models to 10,000 h</td></tr>
+            <tr><td>Caesium contact, Program 661A</td><td>8.9 mN</td><td>7,400 s &middot; 73 km/s</td><td>0.77 kW</td><td>three sub-orbital flights, 1962 to 1964</td></tr>
+            <tr><td>Caesium bombardment, ATS-6</td><td>4.5 mN</td><td>2,500 s &middot; 25 km/s</td><td>0.15 kW</td><td>orbit, from 30 May 1974, 1 h and 92 h</td></tr>
+            <tr><td>Xenon ion, NSTAR, 30 cm</td><td>19 to 92 mN</td><td>1,900 to 3,100 s</td><td>0.5 to 2.3 kW</td><td>Deep Space 1, 1998; Dawn, 2007</td></tr>
+            <tr><td>Xenon ion, XIPS-25</td><td>165 mN</td><td>3,800 s &middot; 37 km/s</td><td>4.2 kW</td><td>HS 702 communications satellites</td></tr>
+            <tr><td>Krypton Hall, Starlink v1</td><td>about 60 mN</td><td>~1,500 s &middot; 15 km/s</td><td>about 4 kW</td><td>orbit, from 2019</td></tr>
+            <tr><td>Argon Hall, Starlink V2 mini</td><td>170 mN</td><td>2,500 s &middot; 25 km/s</td><td>4.2 kW</td><td>orbit, from 27 February 2023</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="kvline">Exhaust speeds are specific impulse multiplied by 9.81 m/s&sup2;, rounded.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Watch a small push <span class="hue">win</span></h2>
+      <p>Give four drives the same spacecraft: 500 kilograms all up, with 80 kilograms of that as propellant. Fire them in a straight line with nothing pulling on them, and see who is going fastest. The chemical engine finishes in nine and a half minutes. The others are still going a year later.</p>
+
+      <div class="canvas-frame">
+        <canvas id="dvCanvas" width="1000" height="440" aria-label="Chart of speed gained against mission time for four drives, with a lane below showing how far each craft has travelled"></canvas>
+      </div>
+      <div class="legend" id="dvLegend"></div>
+
+      <div class="sim-grid">
+        <div>
+          <div class="control-row">
+            <div class="control">
+              <label for="driveSel">Drive to follow</label>
+              <select id="driveSel">
+                <option value="0">Chemical rocket, 450 N at 320 s</option>
+                <option value="1" selected>Mercury ion thruster, 28 mN at 4,200 s</option>
+                <option value="2">Xenon ion thruster, 92 mN at 3,100 s</option>
+                <option value="3">Argon Hall thruster, 170 mN at 2,500 s</option>
+              </select>
+            </div>
+            <div class="control">
+              <label for="timeRange">Mission time, 0 to 5 years</label>
+              <input type="range" id="timeRange" min="0" max="2000" value="0" step="1" aria-describedby="timeOut">
+            </div>
+            <div class="control">
+              <label for="speedRange">Watching speed, days per second</label>
+              <input type="range" id="speedRange" min="1" max="60" value="12" step="1">
+            </div>
+          </div>
+          <div class="sim-btns">
+            <button class="btn" id="playBtn" type="button">Play</button>
+            <button class="btn ghost" id="resetBtn" type="button">Back to launch</button>
+          </div>
+          <p class="sim-caption" id="simCaption">Press play, or drag the mission time slider yourself.</p>
+        </div>
+
+        <div class="readout" id="readout">
+          <div class="row"><span class="k">Mission time</span><span class="v hi" id="timeOut">0 days</span></div>
+          <div class="row"><span class="k">Speed gained</span><span class="v"><span class="big" id="dvOut">0</span>metres per second</span></div>
+          <div class="row"><span class="k">Push</span><span class="v" id="thrustOut">28 mN</span></div>
+          <div class="row"><span class="k">Propellant left</span><span class="v" id="propOut">80.0 kg</span></div>
+          <div class="row"><span class="k">Distance run</span><span class="v" id="distOut">0 km</span></div>
+          <div class="row"><span class="k">Leading now</span><span class="v" id="leadOut">nobody yet</span></div>
+        </div>
+      </div>
+
+      <div class="note"><strong>What the lines mean.</strong> Speed gained is worked out the standard way, from exhaust speed and the ratio of starting mass to current mass, with the tanks draining at a steady rate. The straight line is a thought experiment for comparison, not a mission anyone has flown: a real trajectory bends around planets and the drive coasts through eclipses. The ion drives also need electricity, which means a solar array the chemical engine does not carry.</div>
+
+      <p>Run it out and the order settles. The argon Hall thruster passes the chemical engine's total speed change after about 18 days, the xenon ion after about 34, the mercury ion after about 112. On distance covered the crossings come later, at about 37, 68 and 224 days, because the chemical craft spent its whole speed on day one and has been coasting ever since. By the five year mark the mercury ion has built 7,181 metres a second against the chemical engine's 547.</p>
+      <p>That last comparison is the whole argument for electric propulsion. Mercury's high exhaust speed is exactly why it was picked in the first place: the same 80 kilograms buys thirteen times the speed change.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What the family did <span class="hue">next</span></h2>
+      <p>Deep Space 1 launched on 24 October 1998 carrying a thirty centimetre xenon engine called NSTAR, throttleable from 19 to 92 millinewtons and 1,900 to 3,100 seconds. Ninety millinewtons is close to the weight of two sheets of A4 paper resting on your palm. It finished with 16,265 hours of running against a 14,000 hour design life, and gave a 486 kilogram spacecraft about 4.3 kilometres a second of speed change.</p>
+      <p>Dawn, launched 27 September 2007, carried three of the same engines and is the only spacecraft to have orbited two bodies beyond Earth, first Vesta and then Ceres. Its engines ran about 50,000 hours, used 425 kilograms of xenon, and built more than 11 kilometres a second of speed change. To buy that from a chemical stage at 320 seconds you would have to start with about 33 times the mass you finish with. At 3,100 seconds you need about 1.44 times. That ratio is why Dawn could visit two destinations and a chemical Dawn could not.</p>
+      <p>Meanwhile the same idea went commercial and quiet. PAS-5, launched 27 August 1997, was the first working satellite to run on ion propulsion, using four small xenon thrusters to hold its slot in the sky. The larger XIPS-25 at 4.2 kilowatts gives 165 millinewtons at 3,800 seconds and keeps a satellite on station for about 5 kilograms of xenon a year, saving as much as 450 kilograms of chemical propellant off the launch mass. Starlink satellites fly Hall thrusters, a cousin design that traps electrons in a magnetic field instead of using grids: krypton from 2019, and from 27 February 2023 argon, at a published 170 millinewtons and 2,500 seconds on 4.2 kilowatts, from a thruster weighing 2.1 kilograms.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">16,265 h</span><span class="lbl">Deep Space 1's engine, against a 14,000 h design life</span></div>
+        <div class="stat"><span class="num">50,000 h</span><span class="lbl">Dawn's engines, about five and a half years of thrusting</span></div>
+        <div class="stat"><span class="num">33&times; vs 1.44&times;</span><span class="lbl">starting mass needed for 11 km/s, chemical against ion</span></div>
+        <div class="stat"><span class="num">2.1 kg</span><span class="lbl">the whole argon Hall thruster on a Starlink V2 mini</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Why the field left mercury: a <span class="hue">handling problem</span></h2>
+      <p>Mercury's own numbers were good. It is heavier per atom than xenon, at 200.592 against 131.3, so each ion carries more push. It lets go of an electron more easily, at 10.44 electron volts against xenon's 12.13, so less power is wasted making ions. And it stores as a liquid at ordinary pressure, so the tank is a can, not a pressure vessel.</p>
+      <p>The trouble is what happens after the beam leaves. Some fraction of the mercury never gets ionised, and some ions swap charge on the way out and drift off slowly. Both land on whatever is cold and nearby: solar arrays, radiators, camera optics. Xenon is a gas at any temperature a spacecraft reaches, so it lands on nothing. The same difference shows up on the ground, where a mercury vacuum chamber has to be decontaminated after every run and a xenon one does not.</p>
+      <p class="pull">In the 1980 timeframe it was decided to replace the mercury engines with xenon engines because xenon was less contaminating to spacecraft surfaces, and ground-test operations were greatly simplified.<cite>NASA technical memorandum TM-1999-209439, "A Historical Perspective of the NASA Lewis Electric Propulsion Program"</cite></p>
+      <p>The propulsion numbers back that reading. On the same thirty centimetre hardware, mercury gave 128 millinewtons at about 3,000 seconds and xenon gave 92 millinewtons at 3,100. Mercury was not the weaker propellant. It was the harder one to live with.</p>
+      <p>Then costs moved. Xenon is rare and expensive to separate from air; krypton is cheaper, argon cheaper still at nearly one per cent of the atmosphere. The penalty is physics: argon weighs 39.95 units per atom against xenon's 131.3, and holds its electrons harder at 15.76 electron volts against 12.13, so more power goes into making each ion and less speed comes out per ion thrown. The ladder of flown propellants, mercury and caesium in the 1960s and 1970s, xenon through the 1990s and 2000s, krypton then argon in the 2020s, is a ladder of supply and handling, not of new physics.</p>
+
+      <h3>Mercury nearly came back</h3>
+      <p>In 2018 Bloomberg reported that a startup called Apollo Fusion was developing Hall thrusters running on liquid mercury, vaporised and ionised the same way as in 1964. The stated plan was up to 500 thrusters between 2019 and 2023, roughly ten tonnes of mercury over five years; critics put the possible release from mercury-fuelled satellite constellations at around twenty tonnes a year. The Minamata Convention on Mercury, which bans a long list of mercury uses, had nothing to say about spacecraft. Apollo Fusion withdrew the mercury plan in April 2021, and in March 2022 the parties to the convention adopted a resolution to phase out mercury as a satellite propellant by 2025.</p>
+      <div class="note"><strong>That episode answers a question directly.</strong> Could you build a mercury drive today? Someone was tooling up to build hundreds. What stopped it was a treaty and a toxicology argument, not a physics one.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The mercury passages in the <span class="hue">old sky-craft texts</span></h2>
+      <p>Two Sanskrit works carry the mercury material. The older is the <em>Samarangana Sutradhara</em>, attributed to King Bhoja of Dhar and usually placed in the eleventh century. Its chapter on made things describes a wooden craft with mercury pitchers set over iron ovens: the heavier variety carries four, the lighter one. The Sanskritist V. Raghavan discussed those passages directly. Heat mercury in vessels, the verses say, and the craft rises.</p>
+      <p>The younger is the <em>Vaimanika Shastra</em>, and its history is unusually well documented. Pandit Subbaraya Shastry of Anekal dictated about 3,000 verses to G. Venkatachala Sharma between 1918 and 1923, and said they had been delivered to him by the ancient sage Bharadvaja. One transcript found in Poona carries a signature and the date 9 August 1919. The manuscript was in the Rajakiya Sanskrit Library at Baroda by 1944. G.R. Josyer revealed its existence in a press release in 1952 and published the Sanskrit with an English translation in 1973. The technical drawings were made by T.K. Ellappa, a draughtsman at a Bangalore engineering college, working under Shastry's direction, and they appear only in the 1973 English edition.</p>
+      <p>The interesting part is what the text actually says about mercury. In the verses examined by a team at the Indian Institute of Science, mercury appears as an ingredient in metallurgy and in chemistry, not as a working fluid for propulsion. The floor board of the Shakuna craft is made of an alloy called <em>raja loha</em>, prepared from ammonium chloride, Bengal gram, benzoin, mercury borax, mica, silver and a mixture called <em>panchamrita</em>, all heated and poured. In the Sundara craft, one vessel used to make electricity is to be filled with three named plant and mineral ingredients soaked in elephant's urine mixed with mercury, and another with cow's urine. The propulsion described for that craft is not a mercury vortex at all: electricity from friction, heat, sunlight or falling water, used to vaporise oil, mixed with separately raised steam, and passed out through a pipe named for an elephant's trunk.</p>
+
+      <h3>Where the mercury vortex engine actually comes from</h3>
+      <p>The picture most people carry, a spinning bath of mercury driving a whirlwind, traces to two books published in the last decade of the twentieth century rather than to either Sanskrit source. W.D. Clendenon's <em>Mercury: UFO Messenger of the Gods</em> (1990) supplied the engine diagrams and a loose English rendering of the <em>Samarangana Sutradhara</em>. David Hatcher Childress's <em>Vimana Aircraft of Ancient India and Atlantis</em> (Adventures Unlimited Press, 1991) reprinted Josyer's translation and gave a chapter to mercury vortex propulsion and mercury gyroscopes. The Clendenon wording runs: inside the circular air frame, place the mercury engine with its electric or ultrasonic mercury boiler at the bottom centre, and the power latent in the mercury sets the driving whirlwind in motion.</p>
+      <p>Set that beside the Sanskrit and one thing stands out. The source says mercury is heated in vessels over fire. The phrases carrying the whole engineering claim, the ultrasonic boiler and the driving whirlwind, are twentieth century vocabulary. Which of them is translation and which is a modern engineering picture written into the gaps is a question a side-by-side reading against the critical edition of chapter 31 would answer, and nobody appears to have published one.</p>
+      <div class="note"><strong>The nearest built thing here is small but real.</strong> Mercury in an electrochemical cell works. The Weston cell of 1893 uses a mercury and mercurous sulphate electrode and held the world's standard of the volt at 1.018636 V for decades. That is a voltage reference of remarkable steadiness. It is not thrust.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What the 1974 study <span class="hue">measured</span></h2>
+      <p>In 1974, five staff at the Indian Institute of Science in Bangalore worked through the <em>Vaimanika Shastra</em> as an engineering document. H.S. Mukunda, S.M. Deshpande, A. Prabhu and S.P. Govindaraju were in aeronautical engineering, H.R. Nagendra in mechanical. They interviewed G.V. Sharma, the man who wrote the verses down, and Venkatarama Shastry, Subbaraya Shastry's adopted son. They published in <em>Scientific Opinion</em>, pages 5 to 12.</p>
+      <p>What they did next was take the numbers seriously enough to check them, which is more respect than the text usually gets. Four craft are described in enough detail to try. The results, in their arithmetic:</p>
+      <div class="panel">
+        <div class="drop"><span class="when">Shakuna</span><span class="what">The verses give a floor board 80 feet high and 56 feet wide and long. <b>The drawings give 80 and 25 feet.</b> The verse unit is the <i>vitasti</i>, silently treated as a foot throughout, though it runs closer to nine inches.</span></div>
+        <div class="drop"><span class="when">Sundara</span><span class="what">A cone on a cylinder: base 32 feet across, cylinder 20 feet, cone 29 feet. Its lift comes from air sucked in at the bottom and pushed out the top, which would <b>press the craft down rather than up</b>. A speed verse gives 400 <i>yojanas</i> in a <i>ghatika</i>: taking a ghatika as 24 minutes and a yojana at the low end of its range, about 12,900 kilometres an hour.</span></div>
+        <div class="drop"><span class="when">Rukma</span><span class="what">The drawing gives a 100 foot base with an 80 foot cone above 20 feet of cylinder. <b>The text says the base is 1,000 feet.</b> Stated speed is 105 <i>kroshas</i> per <i>ghatika</i>, about 1,006 kilometres an hour, against roughly 1,223 for the speed of sound at sea level.</span></div>
+        <div class="drop"><span class="when">Tripura</span><span class="what">An oval, 100 feet long, 24 feet at its widest, 30 feet high.</span></div>
+      </div>
+      <p>The finding they flagged as serious was not any single dimension. It was an absence: no weight is given anywhere, for any craft or any component, and the unit of mass does not appear in the text at all. For anything meant to leave the ground, weight is the number everything else answers to.</p>
+      <p>On dating they wrote that the work was brought into existence sometime between 1900 and 1922, and that the only evidence for Bharadvaja as its author is the text saying so. On the drawings they noted that Ellappa worked in an engineering college and the drawings point to a knowledge of modern machinery, and that the text and the drawings do not match each other even in theme. On the geometry they wrote that none of the craft has properties or capabilities of being flown, and that the principles of propulsion make them resist rather than assist flying.</p>
+      <p>The same paper settles one popular claim from the primary source. Shivkar Bapuji Talpade is often said to have flown a mercury-powered craft at Chowpatty in Mumbai in 1895. Shastry's own biography, as the 1974 team read it, says Talpade tried to make models under Shastry's guidance and did not succeed in making any of them fly. Shastry's autobiography also records that he was unsure of the practicality of the ideas in the work.</p>
+      <p>Forty-one years later, on 4 January 2015, a paper at the 102nd Indian Science Congress in Mumbai claimed Vedic-age aircraft able to reach other planets and to move backwards and sideways. Mukunda, by then long past the 1974 study, asked the plainest question available: if the claims hold, where are the working models? That question is still the one on the table, and it is answerable by anyone with a workshop.</p>
+      <p>For the craft themselves, and what a flying machine of that description would need in real units, see <a href="vimana.html">the vimana brief</a>.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Red mercury, and the <span class="hue">1990s trade</span></h2>
+      <p>The name surfaced in Soviet and Western media late in the 1980s. What it was said to be shifted with the telling. In 1992 <em>New Scientist</em> reported work at Lawrence Livermore National Laboratory describing it as a hoax that changed shape each time anyone looked. In 1993 the Russian newspaper <em>Pravda</em> described it as a superconductive material for high-precision explosives, stealth surfaces and self-guiding warheads. Two Channel 4 documentaries in 1993 and 1994 claimed evidence for a miniature device built around it.</p>
+      <p>The physical description stayed steady even as the story moved: a cherry to brick red semi-liquid, very dense, sometimes quoted above 20 grams per cubic centimetre. The formula usually attached to it is Hg<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub>, mercury pyroantimonate, a compound of mercury, antimony and oxygen.</p>
+      <p>The trade ran on those two claims. Asking prices sat between US$100,000 and US$300,000 a kilogram, which converts nominally to about A$139,000 to A$418,000 at 0.7181 AUD/USD on 27 August 2026, though those are 1990s dollars and are not inflation-adjusted. A British operation in September 2004 involved &pound;900,000 for a single kilogram. A rumour that ran through Saudi Arabia in 2009 held that red mercury was inside the needles of Singer sewing machines, and machines changed hands at up to 200,000 riyals each. C.J. Chivers reported in the <em>New York Times Magazine</em> on 22 November 2015 that prices had climbed to hundreds of thousands of dollars a kilogram or more.</p>
+      <p>Bulk mercury traded around US$19 a kilogram in 2006. The asking prices were therefore between about five thousand and sixteen thousand times the price of the metal.</p>
+
+      <h3>The claim as a spec</h3>
+      <p>Two numbers carry the whole thing, and both can be checked without a laboratory.</p>
+      <p><strong>Density above 20 grams per cubic centimetre.</strong> A compound of mercury, antimony and oxygen has to sit somewhere between its ingredients. Mercury is 13.546 grams per cubic centimetre. Antimony is 6.697. Oxygen in a solid oxide is lighter again. Packing them together cannot make something denser than the densest ingredient, so a mercury pyroantimonate would land well below 13.5, not above 20. The claimed figure is above uranium at 19.1 and plutonium at 19.8, which are elements, not mixtures of a heavy one with two lighter ones.</p>
+      <p><strong>Energy release without a detonation.</strong> The claim carried a coined word, ballotechnic, meaning a material that releases very large energy when shocked rather than when detonated, enough to compress and ignite a fusion reaction directly. Real shock-triggered reactions in powder mixtures do exist, and they release a few kilojoules per gram, which is the same order as ordinary high explosives. To stand in for a fission trigger you would need something around 10<sup>8</sup> kilojoules per gram. That gap is about twenty million times, and it is a gap in energy stored per atom, which is set by how tightly the atoms are bound. Chemistry works in the electron volts; that requirement lives in the millions of electron volts.</p>
+
+      <h3>What the analyses returned</h3>
+      <div class="panel">
+        <div class="drop"><span class="when">Dec 1992</span><span class="what">The firm Promekologia, holder of a February 1992 decree from Boris Yeltsin permitting production and export, delivered 5 kilograms to a Russian customs laboratory. The analysis found <b>metallic mercury mixed with mercury oxide</b>, the oxide giving the brick red colour.</span></div>
+        <div class="drop"><span class="when">May 1994</span><span class="what">German police seized a radioactive sample: about 10% plutonium by weight, 61% mercury, 11% antimony, 6% oxygen, 2% iodine, 1.6% gallium, and <b>fragments of glass and brush bristles</b>.</span></div>
+        <div class="drop"><span class="when">1998</span><span class="what">A published analysis returned a non-radioactive mixture of <b>elemental mercury, water and mercury iodide</b>, the iodide being the red part.</span></div>
+        <div class="drop"><span class="when">Nov 2003</span><span class="what">The Zagreb Police Authority confiscated a hand-sized metal cylinder. Two non-destructive methods were used: activation analysis with 14.1 MeV neutrons, and energy-dispersive X-ray fluorescence. Iron, chromium and nickel traced to the stainless steel capsule itself, leaving <b>mercury alone as the content. Antimony was not detected.</b> Published in <i>Nuclear Instruments and Methods in Physics Research B</i>, volume 261, 2007, from page 922.</span></div>
+      </div>
+      <p>Around the trade, the record is thinner than the story. An International Atomic Energy Agency spokesman said in 2004 that red mercury does not exist. A trial opened at the Old Bailey in April 2006 and in July three men were acquitted of the related charges, with the prosecution conceding that whether the substance existed was beside the point, because the charge turned on intent.</p>
+      <p>Thirty-odd years of seizures have produced a consistent chemical answer: mercury, mercury oxide, mercury iodide, and in one case a bristle. What has not been answered is a different question, and a more interesting one: why a story that returns the same result every time it is tested keeps finding new buyers. That is a question about people, and it is still open.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Spinning liquid metal, <span class="hue">for real</span></h2>
+      <p>There is a machine that really does spin metal and produce enormous electrical force, and it has been around since 1831. Michael Faraday built the first one: a copper disc turning between the poles of a magnet, with current drawn from the centre and the rim. It is called a homopolar generator, and its personality is the opposite of what you might expect. The voltage is tiny, a few volts on a demonstration unit and a few hundred on a research machine. The current can pass a million amperes.</p>
+      <p>At those currents an ordinary carbon brush or slip ring wastes too much power, so designers use liquid metal instead: mercury, gallium, or a sodium-potassium mixture that stays liquid at room temperature. The liquid gives continuous contact with almost no resistance. The engineering problem is heat: the current warms the liquid metal, so it has to be pumped out, cooled and returned continuously, and a bubble in the contact ruins the run. A run of United States patents through the 1970s and 1980s covers exactly that: field-compensated collectors, barriers against circulating current, porous surfaces to hold the interface stable.</p>
+
+      <h3>The Australian one</h3>
+      <p>Sir Mark Oliphant started the design of what was then the largest homopolar generator in the world, at the Research School of Physical Sciences and Engineering at the Australian National University in Canberra. Four steel discs of 20 tonnes each were spun to 1,000 revolutions a minute. The machine stored up to 500 megajoules and delivered up to 2 megaamperes, with 1.8 million amperes measured. Initial tests were reported in <em>Nature</em> in 1962. It ran until it was pulled apart in 1986, feeding experiments the whole time. Its liquid metal contacts used the sodium-potassium mixture; after an accident with that, it was rebuilt with carbon brushes.</p>
+      <p>Five hundred megajoules is about the energy in two large electric-car batteries, or enough to boil about 880 full kettles. It comes out in a pulse. And 1.8 million amperes is roughly ninety thousand household twenty-amp circuits carrying their limit at once.</p>
+      <div class="note"><strong>This is the closest built machine to the image of spinning liquid metal making enormous force.</strong> It is real, it was Australian, and what it produced was current, not lift. The energy came out of the discs' rotation, which is where it was put in by an electric motor over the preceding minutes.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Mercury really was a <span class="hue">working fluid</span></h2>
+      <p>Between 1922 and 1968, power stations on the American grid ran on mercury vapour. William Le Roy Emmet at General Electric designed the cycle: boil mercury, run the vapour through a turbine, and condense it at a temperature still hot enough to raise steam for a second turbine underneath. Two engines stacked, sharing one lot of heat.</p>
+      <p>At Hartford in Connecticut the mercury entered the turbine at 471 degrees and condensed at 229, and that condensing heat raised 129,000 pounds of steam an hour. Overall efficiency reached 34.8 per cent, held across a continuous four month run, with about 43 per cent of the output from the mercury side and 57 per cent from the steam side. Plants ran at South Meadow in Hartford from 1928, at Kearny in New Jersey from 1933, at Schenectady in New York, and at Schiller Station in Portsmouth, New Hampshire, which was commissioned in 1950 at 40 megawatts and retired in 1968. Schiller reached a little over 37 per cent, the best of them.</p>
+      <p>The inventories were the problem. A plant held 20 to 50 tonnes of liquid mercury, and one unit described in 1931 held 90. Twenty tonnes is about 1,476 litres: seven bathtubs of it, moving through pipes and turbine seals. The cycle was abandoned because the capital cost was high, because leaks were dangerous, and because by the mid 1950s better materials let a plain steam plant match it. A modern combined-cycle gas plant reaches about 61 per cent, which is why nobody has gone back. When Schiller was decommissioned, the residue left in boilers, turbines, tanks and pipework needed a dedicated dismantling project of its own.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">1922 to 1968</span><span class="lbl">mercury vapour turbines on the American grid</span></div>
+        <div class="stat"><span class="num">34.8%</span><span class="lbl">Hartford's efficiency over a four month run</span></div>
+        <div class="stat"><span class="num">7 baths</span><span class="lbl">the 20 tonne mercury inventory of one plant, by volume</span></div>
+        <div class="stat"><span class="num">~61%</span><span class="lbl">a modern combined-cycle gas plant, with no mercury at all</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Mercury and <span class="hue">the body</span></h2>
+      <p>Mercury vapour is invisible and has no smell, and about 80 per cent of what you breathe in crosses into the blood. Skin takes up roughly one per cent of that, so breathing is the route that matters. Autopsy work points to a half-life for inorganic mercury in the human brain of about 27.4 years, meaning half of what arrives is still there decades later.</p>
+      <p>Here is the number that governs everything else about handling the metal. At 20 degrees, mercury's vapour pressure gives a saturated concentration in air of 13.2 milligrams per cubic metre. The level the United States National Institute for Occupational Safety and Health marks as immediately dangerous to life or health is 10. The workplace ceiling is 0.1, and the recommended limit averaged over a shift is 0.05.</p>
+      <p>So still air over an open pool of mercury, at ordinary room temperature, with no heating and nothing stirred, sits above the immediately-dangerous line and at about 132 times the workplace ceiling. A small bedroom of air, fully saturated, would hold about four tenths of a gram of mercury: less than one old fever thermometer, spread through the room.</p>
+      <div class="note"><strong>Which is why a sealed cabin with a spinning open mercury bath in it would be the hazard, before any question of whether it flew.</strong> A crewed craft built that way would poison its own air with no fault occurring and no leak required.</div>
+      <p>The historical record is not abstract. At Minamata in Japan, the Chisso Corporation discharged methylmercury into the bay; more than 600 people died in Minamata alone, more than 21,000 filed claims and almost 3,000 were certified. New cases appeared at Niigata in 1965. The convention that now regulates mercury worldwide is named after that bay, and was adopted in 2013. In Iraq over 1971 and 1972, treated seed grain milled into bread produced at least 6,530 cases of poisoning and at least 459 deaths. At Saint Isaac's Cathedral in Saint Petersburg, 60 men died gilding the main dome, a process that drives mercury off a gold amalgam as vapour.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would have to be <span class="hue">true</span></h2>
+      <p>Two claims, two sets of conditions, each with a number attached.</p>
+
+      <h3>For a mercury drive that lifts</h3>
+      <p>Electric drives are rated by how much push you get per kilowatt. Every built one lands in the same band: SERT II gave 33 millinewtons per kilowatt, the NSTAR xenon engine 40, the XIPS-25 about 39, the Starlink argon Hall thruster 40.5. Call it 40.</p>
+      <p>To hold one kilogram against Earth's gravity you need 9.81 newtons, which at 40 millinewtons per kilowatt takes 245 kilowatts. The best space solar arrays deliver roughly 150 watts per kilogram, so the array alone would weigh about 1,634 kilograms to hold up that one kilogram. To hover a one tonne craft you would need about 297 megawatts on board, which is the draw of roughly 200,000 Australian homes, and about 350,000 SERT II thrusters.</p>
+      <p>So a drive of the built kind would need a power source about three orders of magnitude lighter per watt than anything flown before it could lift its own weight. That is the condition, stated as a number: <strong>a power supply near 150 kilowatts per kilogram, against about 0.15 today</strong>. It is a power-source problem, not a thruster problem, and it is the same problem whatever the propellant. Mercury does not change it.</p>
+
+      <h3>For red mercury</h3>
+      <p>Three things would have to hold at once. A compound of mercury, antimony and oxygen would have to pack denser than mercury itself, which would require a packing arrangement nobody has demonstrated in any oxide. Its atoms would have to store energy about twenty million times more tightly than the best chemical bonds, which would put a chemical compound into the energy range of a nuclear one. And having done both, it would have to release that energy on a mechanical shock rather than on a chain reaction.</p>
+      <p>Any one of those would be a genuinely new result in materials science, and worth chasing on its own. The compound itself is not exotic and can be made; what has never been published is a measurement of what it does when you hit it hard.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What you would <span class="hue">measure next</span></h2>
+      <p>Everything below uses instruments that exist today, in laboratories that already run them for other work.</p>
+      <div class="grid">
+        <div class="card"><span class="step-num">MEASUREMENT 01</span><h3>Hit the compound and watch</h3><p>Make Hg<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub>, put a sample in a light gas gun, and drive a plate into it while a laser velocimeter reads the back surface. The instrument returns energy released per gram and the shock pressure at which anything happens. University shock physics groups run this rig weekly. The number has never been published for this compound.</p></div>
+        <div class="card"><span class="step-num">MEASUREMENT 02</span><h3>Weigh the crystal</h3><p>Grow the compound, run it through X-ray diffraction, and read the density straight off the unit cell. That is an afternoon's work and it settles the 20 grams per cubic centimetre claim outright, in either direction.</p></div>
+        <div class="card"><span class="step-num">MEASUREMENT 03</span><h3>Run a mercury Hall thruster on a stand</h3><p>Apollo Fusion had the hardware path in 2019. On a thrust stand in a sealed chamber you would read thrust, exhaust speed, and how much mercury lands on witness plates around the plume rather than leaving. That last number is the one that decided the 1980 switch, and it has never been published for a modern Hall thruster.</p></div>
+        <div class="card"><span class="step-num">MEASUREMENT 04</span><h3>Read the Sanskrit side by side</h3><p>Set the Clendenon English against the critical edition of the <em>Samarangana Sutradhara</em>, chapter 31, line by line. The question is narrow and answerable: which English phrases have Sanskrit behind them and which do not.</p></div>
+        <div class="card"><span class="step-num">MEASUREMENT 05</span><h3>Chase watts per kilogram</h3><p>The lifting question reduces to one measurable ratio. Thrust per kilowatt is measured on a thrust stand; specific power is measured by weighing an array and reading its output. Both are routine. The target is a factor of about a thousand on the second one, and every step towards it is useful on its own.</p></div>
+        <div class="card"><span class="step-num">MEASUREMENT 06</span><h3>Test the next sample the same way</h3><p>Zagreb's method in 2003 needed no destruction of the object: neutron activation and X-ray fluorescence, together naming every element present. Any customs laboratory can repeat it, and the result arrives the same day.</p></div>
+      </div>
+      <p>Of those six, the one that would change the most is the third. A mercury Hall thruster measured properly would tell you exactly how much of the 1980 decision was contamination and how much was the ground-testing inconvenience, and that answer matters for every propellant the field might pick up next.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="vimana.html"><div class="card"><span class="card-glyph">🛕</span><h3>Vimana</h3><p>The sky-craft themselves, read as a design brief: what the verses describe, and what a machine of that description would need in real units.</p></div></a>
+        <a class="card-link" href="element-115.html"><div class="card"><span class="card-glyph">🜛</span><h3>Element 115</h3><p>Moscovium, the account given at Area S4, and the island of stability that superheavy chemistry is actually aiming at.</p></div></a>
+        <a class="card-link" href="engineering.html"><div class="card"><span class="card-glyph">🏗️</span><h3>Engineering</h3><p>Record-holding materials matched to jobs that need doing: energy, transport, ocean, medicine.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>Sovey, Rawlin and Patterson, "A Historical Perspective of the NASA Lewis Electric Propulsion Program", NASA/TM-1999-209439. Source of the SERT I and SERT II numbers, the mercury and caesium engine family, and the 1980 propellant decision &middot; <a href="https://ntrs.nasa.gov/api/citations/19990116725/downloads/19990116725.pdf" rel="noopener">ntrs.nasa.gov/api/citations/19990116725</a></li>
+        <li>"NASA's SERT II: A Genuine Space Success Story", NASA Glenn Research Center. Source of the eleven years, 18,000 hours and 500 restarts &middot; <a href="https://www.nasa.gov/centers-and-facilities/glenn/nasas-sert-ii-a-genuine-space-success-story/" rel="noopener">nasa.gov/centers-and-facilities/glenn</a></li>
+        <li>"Deep Space 1 validates the promise of ion thrusters", NASA Glenn, 2019, and mission summaries for the 16,265 hour total &middot; <a href="https://www.nasa.gov/feature/glenn/2019/deep-space-1-validates-the-promise-of-ion-thrusters" rel="noopener">nasa.gov/feature/glenn/2019</a></li>
+        <li>The Planetary Society and DLR mission pages for Dawn's 50,000 hours, 425 kg of xenon and 11 km/s &middot; <a href="https://www.planetary.org/articles/1476" rel="noopener">planetary.org/articles/1476</a></li>
+        <li>SpaceX published specifications for the argon Hall thruster on Starlink V2 mini, 27 February 2023, and contemporaneous reporting &middot; <a href="https://spacenews.com/spacex-launches-first-upgraded-starlink-satellites/" rel="noopener">spacenews.com/spacex-launches-first-upgraded-starlink-satellites</a></li>
+        <li>Minamata Convention on Mercury, submission and 2022 resolution on satellite propulsion &middot; <a href="https://minamataconvention.org/sites/default/files/documents/submission_from_government/compilation_09_satellite_propulsion.pdf" rel="noopener">minamataconvention.org, satellite propulsion compilation</a></li>
+        <li>Mukunda, Deshpande, Nagendra, Prabhu and Govindaraju, "A Critical Study of the Work 'Vymanika Shastra'", Indian Institute of Science, in <em>Scientific Opinion</em>, 1974, pages 5 to 12 &middot; <a href="https://hsmukunda.in/files/journal_other_papers/1974_hsm_etc_A%20Critical%20Study%20of%20the%20Work%20Vaimanika%20Shastra.pdf" rel="noopener">hsmukunda.in, 1974 critical study</a></li>
+        <li>Bhojadeva, <em>Samarangana Sutradhara</em>, chapter on mechanical contrivances and <em>dharu vimanas</em>, with V. Raghavan's discussion &middot; <a href="https://www.academia.edu/24001462/Mechanical_Contrivances_and_Dharu_Vimanas_described_in_Samarangana_Sutradhara_of_Bhojadeva" rel="noopener">academia.edu, mechanical contrivances and dharu vimanas</a></li>
+        <li>W.D. Clendenon, <em>Mercury: UFO Messenger of the Gods</em>, 1990, and David Hatcher Childress, <em>Vimana Aircraft of Ancient India and Atlantis</em>, Adventures Unlimited Press, 1991</li>
+        <li>Obhodas and colleagues, "Analysis of an object assumed to contain 'Red Mercury'", <em>Nuclear Instruments and Methods in Physics Research B</em>, volume 261, 2007, from page 922 &middot; <a href="https://ui.adsabs.harvard.edu/abs/2007NIMPB.261..922O/abstract" rel="noopener">ui.adsabs.harvard.edu, 2007NIMPB.261..922O</a></li>
+        <li>Jeffrey Lewis, "Curious case of red mercury", Arms Control Wonk, for the Promekologia decree and the customs analysis &middot; <a href="https://www.armscontrolwonk.com/archive/207001/curious-case-of-red-mercury/" rel="noopener">armscontrolwonk.com/archive/207001</a></li>
+        <li>C.J. Chivers, "The Doomsday Scam", <em>New York Times Magazine</em>, 22 November 2015 &middot; <a href="https://longform.org/posts/the-doomsday-scam" rel="noopener">longform.org/posts/the-doomsday-scam</a></li>
+        <li>"The Large Homopolar Generator at Canberra: Initial Tests", <em>Nature</em> 195, page 113, 1962, and the ANU thesis on its brush design &middot; <a href="https://www.nature.com/articles/195113a0" rel="noopener">nature.com/articles/195113a0</a></li>
+        <li>Mercury vapour turbine plant records for Hartford, Kearny and Schiller Station, including the Schiller mercury boiler decommissioning project &middot; <a href="https://www.manafort.com/schiller-power-station-mercury-boiler-decommissioning-dismantlement/" rel="noopener">manafort.com, Schiller mercury boiler decommissioning</a></li>
+        <li>NIOSH chemical listing for mercury vapour exposure limits, and the NIOSH immediately dangerous to life or health documentation &middot; <a href="https://www.cdc.gov/niosh/chemicals/pel88/pell-pages/7439-97.html" rel="noopener">cdc.gov/niosh/chemicals, 7439-97</a></li>
+        <li>United States Environmental Protection Agency mercury compounds summary, December 2021, for reference doses &middot; <a href="https://www.epa.gov/system/files/documents/2021-12/mercury-compounds_12-3-2021_final.pdf" rel="noopener">epa.gov, mercury compounds summary</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fmt = (window.EMA && window.EMA.fmt) || function (n) { return String(n); };
+  var G0 = 9.80665;
+
+  /* ================= ion drive schematic ================= */
+  var ic = document.getElementById("ionCanvas");
+  if (ic && ic.getContext) {
+    var ix = ic.getContext("2d");
+    var iW = 0, iH = 0, iDPR = 1, iOn = true, iRaf = 0;
+    var st = getComputedStyle(document.body);
+    var ACC = (st.getPropertyValue("--accent") || "#fb7185").trim();
+    var ACC2 = (st.getPropertyValue("--accent2") || "#7dd3fc").trim();
+    var LINE = (st.getPropertyValue("--line-bright") || "#2c3c6b").trim();
+    var MUT = (st.getPropertyValue("--muted") || "#93a3c4").trim();
+    var parts = [];
+
+    function seed(s) { var v = s; return function () { v = (v * 48271) % 2147483647; return v / 2147483647; }; }
+    var rnd = seed(19640720);
+
+    function iSize() {
+      var w = ic.clientWidth || 640;
+      var h = Math.max(200, Math.round(w * 0.3));
+      iDPR = Math.min(window.devicePixelRatio || 1, 2);
+      iW = w; iH = h;
+      ic.width = Math.round(w * iDPR);
+      ic.height = Math.round(h * iDPR);
+      ic.style.height = h + "px";
+      parts = [];
+      for (var i = 0; i < 46; i++) {
+        parts.push({ p: rnd(), y: 0.3 + rnd() * 0.4, sp: 0.10 + rnd() * 0.07, j: rnd() * 6.28 });
+      }
+    }
+
+    function iDraw(t) {
+      ix.setTransform(iDPR, 0, 0, iDPR, 0, 0);
+      ix.clearRect(0, 0, iW, iH);
+      var pad = 14;
+      var tankX = pad + 8, tankW = Math.max(46, iW * 0.09);
+      var chX = tankX + tankW + Math.max(18, iW * 0.05);
+      var chW = Math.max(120, iW * 0.30);
+      var gridX = chX + chW;
+      var gridGap = Math.max(12, iW * 0.022);
+      var midY = iH * 0.5;
+      var chH = Math.min(iH * 0.56, 150);
+
+      /* tank */
+      ix.strokeStyle = LINE; ix.lineWidth = 1.6;
+      ix.fillStyle = "rgba(148,163,184,0.16)";
+      roundRect(ix, tankX, midY - chH * 0.28, tankW, chH * 0.56, 10); ix.fill(); ix.stroke();
+      ix.fillStyle = "rgba(203,213,225,0.75)";
+      roundRect(ix, tankX + 5, midY + chH * 0.02, tankW - 10, chH * 0.24, 6); ix.fill();
+
+      /* feed pipe */
+      ix.strokeStyle = LINE; ix.lineWidth = 3;
+      ix.beginPath(); ix.moveTo(tankX + tankW, midY); ix.lineTo(chX, midY); ix.stroke();
+
+      /* chamber */
+      ix.strokeStyle = ACC2; ix.lineWidth = 1.8;
+      ix.fillStyle = "rgba(125,211,252,0.07)";
+      roundRect(ix, chX, midY - chH / 2, chW, chH, 14); ix.fill(); ix.stroke();
+
+      /* grids */
+      ix.lineWidth = 3;
+      for (var g = 0; g < 2; g++) {
+        ix.strokeStyle = g === 0 ? ACC : ACC2;
+        var gx = gridX + g * gridGap;
+        for (var s2 = 0; s2 < 7; s2++) {
+          var yy = midY - chH / 2 + 6 + s2 * ((chH - 12) / 6);
+          ix.beginPath(); ix.moveTo(gx - 3, yy - 3); ix.lineTo(gx + 3, yy + 3); ix.stroke();
+        }
+      }
+
+      /* neutraliser */
+      var nX = gridX + gridGap + Math.max(16, iW * 0.03);
+      var nY = midY + chH / 2 + 6;
+      ix.strokeStyle = MUT; ix.lineWidth = 1.6;
+      ix.beginPath(); ix.arc(nX, nY, 7, 0, 6.283); ix.stroke();
+
+      /* particles */
+      var beamEnd = iW - pad;
+      for (var i = 0; i < parts.length; i++) {
+        var q = parts[i];
+        var prog = REDUCED ? ((i / parts.length + 0.03) % 1) : ((q.p + t * 0.00006 * q.sp * 10) % 1);
+        var x, y, col, rad = 3;
+        if (prog < 0.22) {
+          x = tankX + tankW + (chX - tankX - tankW) * (prog / 0.22);
+          y = midY;
+          col = "rgba(203,213,225,0.85)";
+        } else if (prog < 0.55) {
+          var u = (prog - 0.22) / 0.33;
+          x = chX + chW * u;
+          y = midY + Math.sin(q.j + u * 7) * (chH * 0.30) * (1 - u * 0.45);
+          col = u > 0.4 ? ACC : "rgba(203,213,225,0.85)";
+          if (u > 0.4) rad = 3.4;
+        } else {
+          var v = (prog - 0.55) / 0.45;
+          x = gridX + (beamEnd - gridX) * v;
+          y = midY + (q.y - 0.5) * chH * 0.42 * v;
+          col = ACC;
+          rad = 3.4;
+        }
+        ix.globalAlpha = prog > 0.92 ? Math.max(0, (1 - prog) / 0.08) : 1;
+        ix.fillStyle = col;
+        ix.beginPath(); ix.arc(x, y, rad, 0, 6.283); ix.fill();
+        ix.globalAlpha = 1;
+      }
+
+      /* electron stream from neutraliser into the beam */
+      ix.strokeStyle = "rgba(125,211,252,0.55)";
+      ix.lineWidth = 1.4;
+      ix.setLineDash([4, 5]);
+      ix.beginPath();
+      ix.moveTo(nX, nY - 7);
+      ix.quadraticCurveTo(nX + (beamEnd - nX) * 0.35, midY + 18, beamEnd - 20, midY + 6);
+      ix.stroke();
+      ix.setLineDash([]);
+
+      /* number badges */
+      badge(ix, tankX + tankW / 2, midY - chH * 0.28 - 14, "1");
+      badge(ix, chX + chW * 0.5, midY - chH / 2 - 14, "2");
+      badge(ix, gridX + gridGap / 2, midY - chH / 2 - 14, "3");
+      badge(ix, Math.min(beamEnd - 14, nX + 60), midY - chH * 0.30, "4");
+    }
+
+    function badge(c, x, y, txt) {
+      c.fillStyle = "rgba(4,6,12,0.9)";
+      c.strokeStyle = ACC; c.lineWidth = 1.2;
+      c.beginPath(); c.arc(x, y, 10, 0, 6.283); c.fill(); c.stroke();
+      c.fillStyle = ACC;
+      c.font = "600 12px 'JetBrains Mono', monospace";
+      c.textAlign = "center"; c.textBaseline = "middle";
+      c.fillText(txt, x, y + 0.5);
+    }
+
+    function roundRect(c, x, y, w, h, r) {
+      c.beginPath();
+      c.moveTo(x + r, y);
+      c.arcTo(x + w, y, x + w, y + h, r);
+      c.arcTo(x + w, y + h, x, y + h, r);
+      c.arcTo(x, y + h, x, y, r);
+      c.arcTo(x, y, x + w, y, r);
+      c.closePath();
+    }
+
+    iSize();
+    iDraw(0);
+    function iLoop(ts) { if (!iOn) { iRaf = 0; return; } iDraw(ts || 0); iRaf = requestAnimationFrame(iLoop); }
+    if (!REDUCED) {
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            iOn = e.isIntersecting;
+            if (iOn && !iRaf) iRaf = requestAnimationFrame(iLoop);
+          });
+        }, { threshold: 0.05 }).observe(ic);
+      } else {
+        iRaf = requestAnimationFrame(iLoop);
+      }
+    }
+    var irt;
+    window.addEventListener("resize", function () {
+      clearTimeout(irt);
+      irt = setTimeout(function () { iSize(); iDraw(0); }, 150);
+    });
+  }
+
+  /* ================= thrust versus time simulator ================= */
+  var dc = document.getElementById("dvCanvas");
+  if (dc && dc.getContext) {
+    var cx = dc.getContext("2d");
+    var M0 = 500, PROP = 80;
+    var YEAR = 365.25 * 86400;
+    var TMAX = 5 * YEAR;
+
+    var DRIVES = [
+      { name: "Chemical rocket", short: "Chemical", F: 450, isp: 320, col: "#fb923c" },
+      { name: "Mercury ion thruster", short: "Mercury ion", F: 0.028, isp: 4200, col: "#e2e8f0" },
+      { name: "Xenon ion thruster", short: "Xenon ion", F: 0.092, isp: 3100, col: "#a78bfa" },
+      { name: "Argon Hall thruster", short: "Argon Hall", F: 0.170, isp: 2500, col: "#4ade80" }
+    ];
+    DRIVES.forEach(function (d) {
+      d.ve = d.isp * G0;
+      d.mdot = d.F / d.ve;
+      d.burn = PROP / d.mdot;
+      d.dvMax = d.ve * Math.log(M0 / (M0 - PROP));
+    });
+    var DVTOP = 7600;
+
+    /* speed and distance at time t, closed form during burn, coast after */
+    function stateAt(d, t) {
+      var tb = Math.min(t, d.burn);
+      var m = M0 - d.mdot * tb;
+      var v = d.ve * Math.log(M0 / m);
+      /* integral of ve*ln(M0/(M0-mdot*s)) ds, done exactly */
+      var x = d.ve * (tb + (m / d.mdot) * Math.log(m / M0));
+      if (t > d.burn) x += d.dvMax * (t - d.burn);
+      return { v: v, x: x, prop: Math.max(0, PROP - d.mdot * tb) };
+    }
+
+    var sel = document.getElementById("driveSel");
+    var tRange = document.getElementById("timeRange");
+    var sRange = document.getElementById("speedRange");
+    var playBtn = document.getElementById("playBtn");
+    var resetBtn = document.getElementById("resetBtn");
+    var timeOut = document.getElementById("timeOut");
+    var dvOut = document.getElementById("dvOut");
+    var thrustOut = document.getElementById("thrustOut");
+    var propOut = document.getElementById("propOut");
+    var distOut = document.getElementById("distOut");
+    var leadOut = document.getElementById("leadOut");
+    var caption = document.getElementById("simCaption");
+    var legend = document.getElementById("dvLegend");
+
+    legend.innerHTML = DRIVES.map(function (d, i) {
+      return '<span data-i="' + i + '"><i style="background:' + d.col + '"></i>' + d.short + "</span>";
+    }).join("");
+
+    var W = 0, H = 0, DPR = 1, visible = true, raf = 0, playing = false, last = 0;
+    var tNow = 0, which = 1;
+
+    function size() {
+      var w = dc.clientWidth || 640;
+      var h = Math.max(300, Math.min(460, Math.round(w * 0.44)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      dc.width = Math.round(w * DPR);
+      dc.height = Math.round(h * DPR);
+      dc.style.height = h + "px";
+    }
+
+    function niceTime(s) {
+      if (s < 86400) return Math.round(s / 3600) + " hours";
+      var d = s / 86400;
+      if (d < 90) return (d < 10 ? d.toFixed(1) : Math.round(d)) + " days";
+      if (d < 730) return (d / 30.44).toFixed(1) + " months";
+      return (d / 365.25).toFixed(2) + " years";
+    }
+    function niceDist(m) {
+      var km = m / 1000;
+      if (km < 1e6) return fmt(Math.round(km)) + " km";
+      if (km < 1.496e8) return (km / 1e6).toFixed(1) + " million km";
+      return (km / 1.496e8).toFixed(2) + " x Earth to Sun";
+    }
+
+    function axes(pl) {
+      cx.strokeStyle = "rgba(44,60,107,0.75)";
+      cx.lineWidth = 1;
+      cx.font = "500 10.5px 'JetBrains Mono', monospace";
+      cx.fillStyle = "rgba(147,163,196,0.9)";
+      cx.textBaseline = "middle";
+      cx.textAlign = "right";
+      for (var v = 0; v <= DVTOP; v += 2000) {
+        var y = pl.y + pl.h - (v / DVTOP) * pl.h;
+        cx.beginPath(); cx.moveTo(pl.x, y); cx.lineTo(pl.x + pl.w, y); cx.stroke();
+        cx.fillText(v === 0 ? "0" : fmt(v), pl.x - 7, y);
+      }
+      cx.save();
+      cx.translate(11, pl.y + pl.h / 2);
+      cx.rotate(-Math.PI / 2);
+      cx.textAlign = "center";
+      cx.fillText("speed gained, m/s", 0, 0);
+      cx.restore();
+    }
+
+    function draw() {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+      var padL = 62, padR = 16, padT = 14;
+      var laneH = 66;
+      var plotH = H - padT - laneH - 40;
+      var pl = { x: padL, y: padT, w: W - padL - padR, h: plotH };
+
+      axes(pl);
+
+      /* time window grows with the run so early days stay readable */
+      var win = Math.max(tNow * 1.06, 5 * 86400);
+      var tx = function (t) { return pl.x + (t / win) * pl.w; };
+      var vy = function (v) { return pl.y + pl.h - Math.min(1, v / DVTOP) * pl.h; };
+
+      /* x axis label */
+      cx.font = "500 10.5px 'JetBrains Mono', monospace";
+      cx.fillStyle = "rgba(147,163,196,0.9)";
+      cx.textAlign = "left"; cx.textBaseline = "top";
+      cx.fillText("0", pl.x, pl.y + pl.h + 7);
+      cx.textAlign = "right";
+      cx.fillText(niceTime(win), pl.x + pl.w, pl.y + pl.h + 7);
+      cx.textAlign = "center";
+      cx.fillText("mission time", pl.x + pl.w / 2, pl.y + pl.h + 7);
+
+      /* curves */
+      var i, k, N = 190;
+      for (i = 0; i < DRIVES.length; i++) {
+        var d = DRIVES[i];
+        var on = i === which;
+        cx.strokeStyle = d.col;
+        cx.globalAlpha = on ? 1 : 0.34;
+        cx.lineWidth = on ? 3 : 1.6;
+        cx.beginPath();
+        for (k = 0; k <= N; k++) {
+          var t = (tNow * k) / N;
+          var s = stateAt(d, t);
+          var X = tx(t), Y = vy(s.v);
+          if (k === 0) cx.moveTo(X, Y); else cx.lineTo(X, Y);
+        }
+        cx.stroke();
+        if (tNow > 0) {
+          var sh = stateAt(d, tNow);
+          cx.fillStyle = d.col;
+          cx.beginPath(); cx.arc(tx(tNow), vy(sh.v), on ? 5.5 : 3.2, 0, 6.283); cx.fill();
+          if (on) {
+            cx.globalAlpha = 0.22;
+            cx.beginPath(); cx.arc(tx(tNow), vy(sh.v), 12, 0, 6.283); cx.fill();
+          }
+        }
+        cx.globalAlpha = 1;
+      }
+
+      /* distance lane */
+      var ly = pl.y + pl.h + 30;
+      cx.fillStyle = "rgba(20,27,51,0.75)";
+      roundRect2(cx, pl.x, ly, pl.w, laneH - 6, 12);
+      cx.fill();
+      cx.strokeStyle = "rgba(44,60,107,0.9)"; cx.lineWidth = 1; cx.stroke();
+
+      var maxX = 1;
+      for (i = 0; i < DRIVES.length; i++) maxX = Math.max(maxX, stateAt(DRIVES[i], tNow).x);
+      var scale = Math.max(maxX * 1.12, 1e9);
+
+      /* Earth to Sun marker when it is in range */
+      var AU = 1.496e11;
+      if (AU < scale) {
+        var ax = pl.x + 16 + (AU / scale) * (pl.w - 44);
+        cx.strokeStyle = "rgba(147,163,196,0.5)";
+        cx.setLineDash([3, 4]);
+        cx.beginPath(); cx.moveTo(ax, ly + 6); cx.lineTo(ax, ly + laneH - 14); cx.stroke();
+        cx.setLineDash([]);
+        cx.fillStyle = "rgba(147,163,196,0.85)";
+        cx.font = "500 10px 'JetBrains Mono', monospace";
+        cx.textAlign = "center"; cx.textBaseline = "top";
+        cx.fillText("Earth to Sun", ax, ly + laneH - 12);
+      }
+
+      for (i = 0; i < DRIVES.length; i++) {
+        var dd = DRIVES[i];
+        var px = pl.x + 16 + (stateAt(dd, tNow).x / scale) * (pl.w - 44);
+        var py = ly + 13 + i * ((laneH - 32) / 3);
+        var onn = i === which;
+        cx.globalAlpha = onn ? 1 : 0.42;
+        cx.fillStyle = dd.col;
+        cx.beginPath(); cx.arc(px, py, onn ? 6 : 4, 0, 6.283); cx.fill();
+        cx.strokeStyle = dd.col;
+        cx.lineWidth = onn ? 2 : 1;
+        cx.globalAlpha = onn ? 0.5 : 0.22;
+        cx.beginPath(); cx.moveTo(pl.x + 16, py); cx.lineTo(px, py); cx.stroke();
+        cx.globalAlpha = 1;
+      }
+      cx.fillStyle = "rgba(147,163,196,0.9)";
+      cx.font = "500 10px 'JetBrains Mono', monospace";
+      cx.textAlign = "left"; cx.textBaseline = "top";
+      cx.fillText("distance run, straight line", pl.x + 16, ly - 12);
+    }
+
+    function roundRect2(c, x, y, w, h, r) {
+      c.beginPath();
+      c.moveTo(x + r, y);
+      c.arcTo(x + w, y, x + w, y + h, r);
+      c.arcTo(x + w, y + h, x, y + h, r);
+      c.arcTo(x, y + h, x, y, r);
+      c.arcTo(x, y, x + w, y, r);
+      c.closePath();
+    }
+
+    function readout() {
+      var d = DRIVES[which];
+      var s = stateAt(d, tNow);
+      timeOut.textContent = tNow === 0 ? "0 days" : niceTime(tNow);
+      dvOut.textContent = fmt(Math.round(s.v));
+      thrustOut.textContent = d.F >= 1
+        ? fmt(d.F) + " N" + (tNow > d.burn ? " (spent)" : "")
+        : Math.round(d.F * 1000) + " mN" + (tNow > d.burn ? " (spent)" : "");
+      propOut.textContent = s.prop.toFixed(1) + " kg";
+      distOut.textContent = niceDist(s.x);
+
+      var bestV = -1, bestName = "", bestX = -1, bestXName = "";
+      for (var i = 0; i < DRIVES.length; i++) {
+        var q = stateAt(DRIVES[i], tNow);
+        if (q.v > bestV) { bestV = q.v; bestName = DRIVES[i].short; }
+        if (q.x > bestX) { bestX = q.x; bestXName = DRIVES[i].short; }
+      }
+      leadOut.textContent = tNow === 0 ? "nobody yet" : bestName;
+
+      var days = tNow / 86400;
+      var msg;
+      if (tNow === 0) {
+        msg = "Press play, or drag the mission time slider yourself.";
+      } else if (days < 0.02) {
+        msg = "The chemical engine is still burning. It has about nine and a half minutes of propellant.";
+      } else if (days < 18.4) {
+        msg = "The chemical engine finished at nine and a half minutes and is coasting. The electric drives are still pushing.";
+      } else if (days < 34.1) {
+        msg = "The argon Hall thruster has passed the chemical engine on speed gained.";
+      } else if (days < 112.3) {
+        msg = "The xenon ion thruster has passed the chemical engine too. The mercury engine is slower to build speed and will end up fastest.";
+      } else if (days < 224.2) {
+        msg = "All three electric drives are now ahead on speed gained. On distance run, the chemical craft is still in front.";
+      } else if (tNow < DRIVES[1].burn) {
+        msg = "The mercury engine is still burning, and still gaining. It runs for about three years and eight months on 80 kg.";
+      } else {
+        msg = "The mercury engine's tanks are empty at 7,181 metres a second, thirteen times what the chemical engine bought from the same 80 kg.";
+      }
+      caption.textContent = msg + " Leading on distance: " + (tNow === 0 ? "nobody yet." : bestXName + ".");
+    }
+
+    function setTime(t) {
+      tNow = Math.max(0, Math.min(TMAX, t));
+      tRange.value = Math.round((tNow / TMAX) * 2000);
+      draw(); readout();
+    }
+
+    function loop(ts) {
+      if (!visible || !playing) { raf = 0; last = 0; return; }
+      if (!last) last = ts;
+      var dt = Math.min(0.1, (ts - last) / 1000);
+      last = ts;
+      tNow += dt * parseFloat(sRange.value) * 86400;
+      if (tNow >= TMAX) { tNow = TMAX; setPlaying(false); }
+      tRange.value = Math.round((tNow / TMAX) * 2000);
+      draw(); readout();
+      raf = requestAnimationFrame(loop);
+    }
+
+    function setPlaying(p) {
+      playing = p;
+      playBtn.textContent = p ? "Pause" : (tNow >= TMAX ? "Replay" : "Play");
+      if (p && !raf) { last = 0; raf = requestAnimationFrame(loop); }
+    }
+
+    playBtn.addEventListener("click", function () {
+      if (!playing && tNow >= TMAX) setTime(0);
+      setPlaying(!playing);
+    });
+    resetBtn.addEventListener("click", function () { setPlaying(false); setTime(0); playBtn.textContent = "Play"; });
+    tRange.addEventListener("input", function () {
+      setPlaying(false);
+      playBtn.textContent = "Play";
+      setTime((parseInt(tRange.value, 10) / 2000) * TMAX);
+    });
+    sel.addEventListener("change", function () { which = parseInt(sel.value, 10); draw(); readout(); });
+
+    size();
+    setTime(0);
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible && playing && !raf) { last = 0; raf = requestAnimationFrame(loop); }
+        });
+      }, { threshold: 0.02 }).observe(dc);
+    }
+
+    var rt2;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt2);
+      rt2 = setTimeout(function () { size(); draw(); }, 150);
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zero Point · Extreme Matter Atlas</title>
+<meta name="description" content="Two mirrors a whisker apart are pushed together by empty space: the measured Casimir force, the photons pulled out of the vacuum in 2011, and what a working zero point module would need.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="zeropoint"] { --accent: #67e8f9; --accent2: #c084fc; }
+
+body[data-page="zeropoint"] .hero {
+  background-image:
+    radial-gradient(1px 1px at 30px 40px, rgba(103, 232, 249, 0.5), transparent 55%),
+    radial-gradient(1.3px 1.3px at 140px 95px, rgba(192, 132, 252, 0.5), transparent 55%),
+    radial-gradient(1px 1px at 220px 30px, rgba(242, 245, 255, 0.35), transparent 55%);
+  background-size: 190px 170px, 260px 240px, 330px 300px;
+}
+
+body[data-page="zeropoint"] .cv-caps {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 9px 8px 2px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+}
+body[data-page="zeropoint"] .cv-caps b { color: var(--accent); font-weight: 600; }
+
+body[data-page="zeropoint"] .ptrack {
+  position: relative; height: 18px; border-radius: 999px; overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, var(--line-bright) 0 1px, transparent 1px calc(100% / 14)),
+    var(--bg2);
+  border: 1px solid var(--line);
+}
+body[data-page="zeropoint"] .ptrack .bar { height: 100%; border-radius: 999px 0 0 999px; }
+body[data-page="zeropoint"] .ptrack .bar.ref {
+  background: linear-gradient(90deg, var(--line-bright), var(--muted));
+  box-shadow: none; opacity: 0.85;
+}
+body[data-page="zeropoint"] .pscale {
+  display: flex; justify-content: space-between; gap: 10px;
+  margin-top: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+}
+body[data-page="zeropoint"] .preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="zeropoint"] .preset-row .btn { padding: 8px 14px; font-size: 13.5px; }
+body[data-page="zeropoint"] .control input[type="range"] { width: min(340px, 68vw); }
+body[data-page="zeropoint"] .readout {
+  font-family: var(--font-mono); font-size: 14px; color: var(--ink);
+  padding: 9px 15px; border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2);
+}
+body[data-page="zeropoint"] .readout b { color: var(--accent); font-weight: 600; }
+
+body[data-page="zeropoint"] .ladder {
+  display: grid; grid-template-columns: 46px 1fr; gap: 16px;
+  padding: 16px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="zeropoint"] .ladder:last-child { border-bottom: 0; }
+body[data-page="zeropoint"] .ladder .lnum {
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px; color: var(--accent);
+  padding-top: 2px;
+}
+body[data-page="zeropoint"] .ladder h3 { margin-bottom: 6px; }
+body[data-page="zeropoint"] .ladder p { font-size: 15px; color: var(--muted); }
+body[data-page="zeropoint"] .ladder p strong { color: var(--ink); font-weight: 600; }
+
+body[data-page="zeropoint"] .bench {
+  border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+}
+body[data-page="zeropoint"] .bench .when {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent2); display: block; margin-bottom: 6px;
+}
+body[data-page="zeropoint"] .bench p { font-size: 15px; }
+body[data-page="zeropoint"] .bench dl { margin-top: 14px; font-size: 14px; }
+body[data-page="zeropoint"] .bench dt {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-top: 10px;
+}
+body[data-page="zeropoint"] .bench dd { color: var(--ink); }
+
+body[data-page="zeropoint"] .scalebar {
+  display: grid; gap: 10px; margin: 22px 0;
+}
+body[data-page="zeropoint"] .scalebar .rung {
+  display: grid; grid-template-columns: 190px 1fr; gap: 14px; align-items: baseline;
+  padding: 12px 16px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--panel);
+}
+body[data-page="zeropoint"] .scalebar .rung .lab {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--accent);
+}
+body[data-page="zeropoint"] .scalebar .rung .txt { font-size: 14.5px; color: var(--muted); }
+body[data-page="zeropoint"] .scalebar .rung .txt strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="zeropoint"] .scalebar .rung { grid-template-columns: 1fr; gap: 4px; }
+}
+body[data-page="zeropoint"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap; }
+</style>
+</head>
+<body data-page="zeropoint">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Vacuum energy · the Casimir force · the ZPM</span>
+      <h1 class="display">Zero Point</h1>
+      <p class="lede">Hold two mirrors a whisker apart in a vacuum and <strong>empty space pushes them together</strong>. At a gap of ten nanometres the push is about 1.3 times the air pressure holding you to the ground. Hendrik Casimir wrote that force down in 1948 at Philips Research in the Netherlands; Steve Lamoreaux measured it on a torsion balance in 1997, and Umar Mohideen and Anushree Roy measured it to about one per cent with an atomic force microscope in 1998. It is the real, weighed thing sitting under the fictional power source that borrowed the words <em>zero point</em>.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">1.3 atm</span><span class="lbl">the push between two ideal mirrors ten nanometres apart, a gap about 35 gold atoms across</span></div>
+        <div class="stat"><span class="num">160 pN</span><span class="lbl">the force Mohideen and Roy read at closest approach, close to the pull that unfolds one protein</span></div>
+        <div class="stat"><span class="num">2011</span><span class="lbl">the year a team at Chalmers shook a mirror electrically and real photons came out</span></div>
+        <div class="stat"><span class="num">10<sup>122</sup></span><span class="lbl">the factor by which the calculated and measured energy of empty space disagree</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The module in <span class="hue">the story</span></h2>
+      <p>In <em>Stargate SG-1</em> and <em>Stargate Atlantis</em>, the Zero Point Module is the thing everyone is short of. It is a cylinder about 28 centimetres long, the size of a large thermos, glowing orange, and it powers a city. Rodney McKay explains it on screen in the 2004 episode "Lost City": the module generates its power from vacuum energy drawn from a self-contained region of subspace time. The reference material built around the show adds that the cylinder holds a large region of that vacuum rather than ordinary space, which is how something you can carry under one arm is meant to hold what it holds.</p>
+      <p>There is a detail in the fiction worth noticing, because it is the part most free-energy talk drops. A ZPM runs down. It draws on its enclosed region until that region reaches maximum entropy, and then it is spent. The writers gave their miracle a fuel gauge. Whatever else it is, it is a battery in the story's own telling, not a machine that runs forever.</p>
+      <p>The fan-summarised figure for its capacity is that one cubic centimetre of the contained space, about a sugar cube, holds enough energy to boil all the world's oceans. That number is worked through further down, because it turns out to sit in a very interesting place.</p>
+      <div class="note"><strong>The nearest built thing with that shape.</strong> A sealed cylinder, no moving parts, holding a reservoir that quietly runs down over decades: that is a radioisotope thermoelectric generator. Voyager 1 carries three of them, each holding about 4.5 kilograms of plutonium-238. Together they made 470 watts at launch in 1977, about a fifth of a kitchen kettle, and in 2025 they were still delivering roughly 220 watts from more than 25 billion kilometres away. It is not vacuum energy. It is the only power source humans have built that keeps a promise for that long, unattended.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The push you <span class="hue">can measure</span></h2>
+      <p>Start with the piece that is on the bench rather than in the script, because it is stranger than the fiction and it comes with numbers.</p>
+      <p>Take two flat metal plates, both electrically neutral, both uncharged, and set them facing each other in a vacuum with nothing between them. They attract. Not by gravity, which at these sizes is far too weak to notice, and not by static, which careful work can cancel. They attract because of what the gap does to the waves that are always there.</p>
+      <p>Electromagnetic waves fill space at every wavelength, all the time, even with the lights off and the air pumped out. Between two conducting plates only certain wavelengths fit, the way only certain notes fit on a guitar string of a given length. Outside the plates every wavelength is allowed. More waves pressing in from outside than from inside gives a net push inward, and the plates move together.</p>
+      <p>The size of that push depends on nothing but the gap and two constants of nature. Divide 1.300 &times; 10<sup>-27</sup> by the gap in metres, to the fourth power, and the answer is the pressure in pascals. No material properties in the ideal case, no chemistry, no temperature term. Just the geometry, Planck's constant and the speed of light.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Gap between the plates</th><th>What that gap is</th><th>Push per square metre</th><th>Set beside something</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="figure">10 micrometres</td>
+              <td>a seventh of a human hair's width</td>
+              <td class="figure">0.00000013 Pa</td>
+              <td>far below anything a bench barometer would notice</td>
+            </tr>
+            <tr>
+              <td class="figure">1 micrometre</td>
+              <td>a seventieth of a hair's width</td>
+              <td class="figure">0.0013 Pa</td>
+              <td>about five grains of rice spread over a whole square metre</td>
+            </tr>
+            <tr>
+              <td class="figure">100 nanometres</td>
+              <td>about a thousandth of a hair's width</td>
+              <td class="figure">13 Pa</td>
+              <td>about the drop in air pressure when you stand up from a chair</td>
+            </tr>
+            <tr>
+              <td class="figure">10 nanometres</td>
+              <td>about 35 gold atoms stacked up</td>
+              <td class="figure">130,000 Pa</td>
+              <td>about 1.3 times the air pressure at sea level</td>
+            </tr>
+            <tr>
+              <td class="figure">1 nanometre</td>
+              <td>about 3 gold atoms stacked up</td>
+              <td class="figure">1,300,000,000 Pa</td>
+              <td>close to the pressure 45 kilometres down inside the Earth's crust</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>That fourth power is the whole story. Move the plates ten times closer and the pressure climbs ten thousand times. It is why the effect was a curiosity on paper for fifty years and is a design constraint now: ten nanometres is a real manufacturing scale, roughly a seventh of the gate length in a leading-edge 2026 logic transistor. Engineers building micromachines meet the Casimir force as stiction, the tendency of tiny moving parts to snap together and stay stuck once their gaps drop under about a hundred nanometres. A team at Bell Labs, Chan and colleagues, reported in <em>Science</em> in 2001 that they had driven a micromachined torsional plate with it, using the vacuum as the spring.</p>
+      <p>Two things about the force are still argued, and both are the productive kind of argument. The sign is not fixed by the physics: for a thin conducting spherical shell sliced in half, the same calculation says the two halves push apart rather than together, so "the vacuum pulls things in" is a description of one geometry, not a rule. And what the force is <em>about</em> is open. Julian Schwinger showed the same number falls out of source theory, treating it as a relativistic version of the ordinary van der Waals attraction between the charges in the two plates, with no zero-point energy invoked at any step. Both routes return the pressure that gets measured.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Two benches, <span class="hue">two answers</span></h2>
+      <p>The prediction waited forty-nine years for an instrument fine enough to catch it.</p>
+      <div class="two-col">
+        <div class="bench">
+          <span class="when">Seattle · published January 1997</span>
+          <h3>A torsion balance</h3>
+          <p>Steve Lamoreaux at the University of Washington hung a 397 gram body from a tungsten fibre 66 centimetres long and 76 micrometres thick, about the width of a human hair. One arm carried a quartz optical flat; facing it sat a lens of 11.3 centimetre curvature. Both were coated with half a micrometre of copper and half a micrometre of gold.</p>
+          <p>He tried flat plates first and gave up on them: holding two one-centimetre plates parallel to within a hundred-thousandth of a radian proved impractical, so he used a sphere against a flat instead, where the geometry changes the maths but not the physics.</p>
+          <dl>
+            <dt>Gap range</dt><dd>0.6 to 6 micrometres</dd>
+            <dt>Force at closest approach</dt><dd>about 1.5 nanonewtons, roughly one six-billionth of the weight of a bag of sugar</dd>
+            <dt>Calculated for that geometry</dt><dd>1.43 nanonewtons at 0.6 micrometres</dd>
+            <dt>Stated agreement</dt><dd>5 per cent</dd>
+            <dt>The weak point, named later</dt><dd>the leftover electrostatic force was five times the Casimir force, and conductivity corrections above 20 per cent were not separated out</dd>
+          </dl>
+        </div>
+        <div class="bench">
+          <span class="when">Riverside · published December 1998</span>
+          <h3>An atomic force microscope</h3>
+          <p>Umar Mohideen and Anushree Roy at the University of California Riverside glued a polystyrene sphere 200 micrometres across, about two hair widths, to the tip of a bendy cantilever, and drove it towards a polished sapphire disc in steps of 3.6 nanometres. Both surfaces wore 300 nanometres of aluminium under a 20 nanometre skin of gold and palladium to stop them oxidising.</p>
+          <p>They measured, then compared against the full calculation including the metal's real conductivity, the 35 nanometre roughness of the surfaces, and temperature. The leftover disagreement was 1.6 piconewtons.</p>
+          <dl>
+            <dt>Gap range</dt><dd>0.1 to 0.9 micrometres</dd>
+            <dt>Force at closest approach</dt><dd>of order 160 piconewtons, close to the pull that unfolds a single titin protein domain in an AFM experiment</dd>
+            <dt>Agreement with full theory</dt><dd>1 per cent at the smallest gap</dd>
+            <dt>Drop the corrections</dt><dd>conductivity only leaves 5.5 piconewtons of disagreement; roughness only leaves 48, which is 40 per cent off at closest approach</dd>
+            <dt>Stray electrostatics</dt><dd>under 3 per cent of the Casimir force from 350 nanometres in to contact</dd>
+          </dl>
+        </div>
+      </div>
+      <p>Two different instruments, two different geometries, two laboratories, and a force that only exists because of what a gap does to waves nobody put there. Later torsion and microscope work has tightened it further.</p>
+      <p>Where it is still loose is worth saying plainly, because it points at a bench job rather than a debate. Below roughly a hundred nanometres, real metals stop behaving like perfect mirrors: short waves start passing through rather than reflecting, and the measured force sits below the ideal line, which is why the one nanometre row in the table above is the formula's answer rather than a reading. Above roughly a micrometre, the correction for the plates being warm rather than at absolute zero is unsettled: two standard descriptions of how electrons move in a metal, the Drude model and the plasma model, differ there by as much as a factor of two, and no experiment has cleanly separated them.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Drive the gap <span class="hue">yourself</span></h2>
+      <p>Two ideal mirrors, one square metre each, facing each other in a vacuum. Move them together and watch the fourth power do its work. The gap on screen is drawn on a squashed scale so it stays visible at every setting; the numbers are the real ones.</p>
+
+      <div class="canvas-frame">
+        <canvas id="casimirCanvas" width="1000" height="380" aria-label="Two plates facing each other. Between them, only waves that fit the gap are drawn; outside them, waves of every length. Arrows show the net push pressing the plates together."></canvas>
+        <div class="cv-caps">
+          <span>outside: <b>waves of every length</b></span>
+          <span>between: <b>only the ones that fit</b></span>
+          <span>net push: <b>inward</b></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="gapRange">Gap between the plates</label>
+            <input type="range" id="gapRange" min="0" max="1000" value="500" step="1"
+                   aria-describedby="gapReadout">
+          </div>
+          <div class="readout" id="gapReadout" aria-live="polite">Gap <b id="gapOut">31.6 nm</b> · push <b id="presOut">1.30 kPa</b></div>
+        </div>
+        <div class="control">
+          <label id="presetLabel">Jump to a gap</label>
+          <div class="preset-row" role="group" aria-labelledby="presetLabel">
+            <button type="button" class="btn ghost" data-nm="1">1 nm</button>
+            <button type="button" class="btn ghost" data-nm="10">10 nm</button>
+            <button type="button" class="btn ghost" data-nm="100">100 nm</button>
+            <button type="button" class="btn ghost" data-nm="1000">1 &micro;m</button>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat"><span class="num" id="statPres">1.30 kPa</span><span class="lbl" id="statPresLbl">push on every square metre of plate</span></div>
+          <div class="stat"><span class="num" id="statAtm">one 78th</span><span class="lbl">of the air pressure at sea level</span></div>
+          <div class="stat"><span class="num" id="statMass">13 mL</span><span class="lbl" id="statMassLbl">pull on a stamp-sized pair, one square centimetre, as a weight of water</span></div>
+        </div>
+
+        <h3>Set beside pressures you already know</h3>
+        <div class="bar-row">
+          <span class="who">These plates</span>
+          <div class="ptrack"><div class="bar" id="casBar" style="width:50.8%"></div></div>
+          <span class="val" id="casVal">1.3 kPa</span>
+        </div>
+        <div class="bar-row">
+          <span class="who">Car tyre</span>
+          <div class="ptrack"><div class="bar ref" style="width:67.0%"></div></div>
+          <span class="val">240 kPa</span>
+        </div>
+        <div class="bar-row">
+          <span class="who">Air at sea level</span>
+          <div class="ptrack"><div class="bar ref" style="width:64.3%"></div></div>
+          <span class="val">101 kPa</span>
+        </div>
+        <div class="bar-row">
+          <span class="who">A firm hand press</span>
+          <div class="ptrack"><div class="bar ref" style="width:54.9%"></div></div>
+          <span class="val">4.9 kPa</span>
+        </div>
+        <div class="pscale"><span>0.0001 Pa</span><span>each tick is ten times the last</span><span>10 GPa</span></div>
+        <p class="note">The track is squashed so fourteen steps of ten fit across it, which is the only way a millipascal and a gigapascal share a picture. The hand press is five kilograms of force spread over a palm ten centimetres square; the tyre is 35 psi above the air around it.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What <span class="hue">zero point</span> means</h2>
+      <p>Cool anything down far enough and its parts stop moving. That is the everyday picture, and it is close but not right. A quantum object cannot be brought fully to rest, because being fully at rest would mean knowing exactly where it is and exactly how fast it is going at the same time, and quantum mechanics does not allow a thing to hold both those facts at once. So there is a floor to how still it can get, and the leftover motion at that floor is the zero point.</p>
+      <p>The size of the floor is half a quantum: for a mode wobbling five billion times a second, roughly the frequency your microwave oven runs at, the leftover energy is about 1.7 &times; 10<sup>-24</sup> joules. Small enough that a single grain of sugar carries about ten thousand million million million million times more, and yet it never goes away.</p>
+      <p>You can see it without any of this maths. Liquid helium does not freeze. Cool helium-4 to a hair above absolute zero under its own vapour pressure and it stays liquid, because the leftover jiggle keeps the atoms from settling into a lattice. To make it solid you have to squeeze it at about 25 atmospheres. It is the one element on the shelf that behaves that way, and the reason is the floor.</p>
+
+      <div class="note"><strong>Where the trouble starts.</strong> Quantum field theory says every mode of every field carries that same half quantum, and space has modes at every wavelength. Add them all up and the total does not settle on a number: it grows without limit. Practice is to declare the vacuum to be the zero of the scale and measure everything from there, which works for every laboratory prediction ever tested, because benches only ever measure differences. It stops working when gravity joins in, because general relativity responds to how much energy is actually there, not to differences from a chosen zero.</div>
+
+      <p>The same machinery that hides that infinity also produces the sharpest predictions in physics. It gives the Lamb shift, a 1,057 megahertz split in hydrogen that would not exist without the vacuum jostling the electron, and it gives the electron's magnetic moment, where calculation and the 2022 measurement agree to about one part in a million million.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Photons pulled <span class="hue">out of nothing</span></h2>
+      <p>Gerald Moore worked out in 1970 that a mirror moving fast enough should convert the vacuum's virtual waves into real light: shake the boundary hard, and photons come off it. That is the dynamical Casimir effect, and for forty years it stayed on paper because no mirror can be shaken anywhere near fast enough.</p>
+      <p>In 2011 a team led by Chris Wilson at Chalmers University of Technology in Sweden, working with colleagues at RIKEN in Japan, UNSW Sydney and Michigan, stopped trying to move anything. They built a superconducting circuit ending in a SQUID, a small loop whose electrical properties can be swung by a magnetic field, and swung it about eleven billion times a second. To the waves in the line, an electrical boundary sliding back and forth is the same thing as a mirror sliding back and forth, and this one had an effective speed of about five per cent of light.</p>
+      <p>Microwave photons came out. The paper, published in <em>Nature</em> in November 2011, reports them arriving in pairs whose two frequencies add up to the drive frequency, spread broadly rather than at one note, which is what tells them apart from a simple amplifier ringing. The chip sat at 50 millikelvin, cold enough that the expected number of stray heat photons at five gigahertz was 0.008, so the light was not warmth leaking in. The pairs also arrived correlated in the particular way that only vacuum-born pairs are, with cross-correlations about a hundred times the amplifier's own.</p>
+      <p>The team named their own limitation in the paper: stray resonances in the cabling, with quality factors of 30 to 50, boosted the photon production rate by a factor of 1,000 to 2,000 over what a clean line would have given. The effect is there. The rate they measured is the enhanced one.</p>
+      <div class="note"><strong>The nearest built thing is already in the rack.</strong> The SQUID amplifiers that made this possible are now ordinary parts: Josephson parametric amplifiers read out the qubits in superconducting quantum computers every day. The squeezed vacuum they produce also does a job at the LIGO gravitational wave detectors, where injecting it improved strain sensitivity by about 3 decibels during the O3 observing run. Handling the vacuum's fluctuations as an engineering material is a thing several laboratories now do before lunch.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The mirror you would <span class="hue">have to shake</span></h2>
+      <p>The Wilson paper opens by explaining why they went electrical, and the figure it cites is the one to keep. Take an ordinary microwave mirror and shake it mechanically at two billion times a second with a swing of about a nanometre, which is already far beyond what any material would survive. The expected yield is about <strong>one photon per day</strong>. To sustain the shaking you would need to supply roughly <strong>100 megawatts</strong> of mechanical power, and hold the whole thing near 20 millikelvin at the same time so the field is genuinely in its ground state.</p>
+      <p>One hundred megawatts is about the continuous output of a mid-size gas turbine, or the draw of roughly 42,000 kettles boiling at once. Run it for a full day and you have put in about 8.6 million million joules. Out comes one microwave photon, carrying about 6.6 &times; 10<sup>-25</sup> joules. The ratio is roughly one part in 10<sup>37</sup>.</p>
+      <p>That figure is not a statement about how much energy the vacuum holds. It is a statement about the cost of stirring it. The circuit version sidesteps the mechanical bill entirely, and it is still a driven amplifier: microwave power goes in, microwave photons come out, and the paper makes no claim of getting back more than was put in.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Two numbers for empty space, <span class="hue">and they do not match</span></h2>
+      <p>Here is the crack in the settled picture, and it is a wide one.</p>
+      <p>Quantum field theory says the vacuum carries an energy density. General relativity says energy density bends space and shows up in how the universe expands. So the two can be compared. Add up the half quanta over every mode, stopping at the Planck scale because the theory has nothing to say above it, and the answer is about 4.6 &times; 10<sup>113</sup> joules in every cubic metre. Measure how the universe actually expands, and the answer is about 6 &times; 10<sup>-10</sup> joules in every cubic metre.</p>
+      <p>The two differ by a factor of about 10<sup>122</sup>. Physicists writing about it call it the largest gap between a calculation and a measurement anywhere in science.</p>
+
+      <div class="stat-row">
+        <div class="stat"><span class="num">4.6 &times; 10<sup>113</sup></span><span class="lbl">joules per cubic metre: the sum over modes, cut off at the Planck scale</span></div>
+        <div class="stat"><span class="num">6 &times; 10<sup>-10</sup></span><span class="lbl">joules per cubic metre: what the expanding universe actually shows</span></div>
+        <div class="stat"><span class="num">10<sup>122</sup></span><span class="lbl">the factor between them, on that reading of the cutoff</span></div>
+      </div>
+
+      <p>For the size of that gap: hold the width of the observable universe against the width of one atom, and you have crossed about 37 steps of ten. This disagreement is that whole comparison, a bit more than three times over.</p>
+      <p>Sean Carroll makes the counter-reading worth keeping in view, and it is not a softening so much as a change of ruler. Energy density goes as the fourth power of an energy scale, so 120 steps of ten in density is 30 steps of ten in the scale itself, which he argues is the more physically meaningful statement. And the Planck scale is a choice of where to stop counting. Stop instead at the electroweak scale, around a thousand giga-electronvolts, on the assumption that supersymmetry breaks near there, and the gap comes down to about 15 steps of ten. That is a millimetre set against the distance from here out past Jupiter's orbit. Smaller. Still a gap nobody has closed.</p>
+
+      <h3>How little the measured number is, and how much of it there is</h3>
+      <p>The measured density deserves a picture, because it is not what the phrase "energy of the vacuum" makes people imagine.</p>
+      <div class="scalebar">
+        <div class="rung"><span class="lab">1 cubic metre</span><span class="txt">holds <strong>0.0000000006 joules</strong>. In particle terms, about four protons' worth of mass-energy per cubic metre of space.</span></div>
+        <div class="rung"><span class="lab">An Olympic pool</span><span class="txt">2,500 cubic metres of empty space holds <strong>1.5 microjoules</strong>: about the energy of one mosquito flying at walking pace.</span></div>
+        <div class="rung"><span class="lab">One kettle</span><span class="txt">boiling 1.7 litres from 20 degrees takes about 570 kilojoules. Harvesting that from the vacuum would take <strong>a cube of empty space 98 kilometres on a side</strong>, and there is no known way to harvest any of it.</span></div>
+        <div class="rung"><span class="lab">Against a battery</span><span class="txt">a charged lithium cell packs about 2.5 &times; 10<sup>9</sup> joules per cubic metre. The measured vacuum is <strong>about four billion billion times thinner</strong> than that.</span></div>
+        <div class="rung"><span class="lab">Across the sky</span><span class="txt">and yet it holds about 2 &times; 10<sup>71</sup> joules in the observable universe: enough to boil the world's oceans some <strong>10<sup>43</sup> times over</strong>. It dominates because there is a great deal of universe.</span></div>
+      </div>
+      <p>It is measured by shape, not by a sample. Supernova distances, the size of the ripples frozen into the microwave background, and the spacing of galaxies all bend the same way if the number is right. Planck's 2018 data with galaxy surveys puts dark energy at 0.6889 plus or minus 0.0056 of the universe's critical density. Nobody has published a way to read the number on a bench.</p>
+      <p>It may not even be a constant. The DESI survey's 2024 and 2025 data releases hint that dark energy has changed with time, at somewhere between 2.8 and 4.2 sigma depending on which datasets are combined, which is interesting rather than decided. If it holds up, the biggest disagreement in the ledger changes shape rather than closing.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The module <span class="hue">as a spec</span></h2>
+      <p>Now the fiction can be priced, because both real numbers are on the table.</p>
+      <p>Boiling the world's oceans: 1.335 &times; 10<sup>21</sup> kilograms of water, lifted about 85 degrees and then turned to steam, comes to roughly <strong>3.5 &times; 10<sup>27</sup> joules</strong>. That is about 5.8 million years of total world energy use at the current rate of 6 &times; 10<sup>20</sup> joules a year. It is around 17 billion Tsar Bombas, the largest device ever detonated. The Sun radiates that much every nine seconds.</p>
+      <p>Put that in one cubic centimetre and the implied energy density is 3.5 &times; 10<sup>33</sup> joules per cubic metre: about a hundred thousand million million million times the energy density of petrol.</p>
+      <p>Set that against the two real numbers and it lands <em>between</em> them, which is the genuinely interesting part.</p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>Against the measured density</h3>
+          <p>At 6 &times; 10<sup>-10</sup> joules per cubic metre, boiling the oceans would take the vacuum energy stripped from 5.8 &times; 10<sup>36</sup> cubic metres: a cube of empty space about 12 astronomical units on a side, reaching from the Sun out past Saturn's orbit. Squeezing that into a thermos-sized cylinder is the whole trick, and the fiction does exactly that by saying the cylinder holds subspace rather than space.</p>
+        </div>
+        <div class="panel">
+          <h3>Against the calculated density</h3>
+          <p>At 4.6 &times; 10<sup>113</sup> joules per cubic metre, one cubic centimetre already holds 4.6 &times; 10<sup>107</sup> joules: about 10<sup>80</sup> ocean-boilings, which is roughly one for every atom in the observable universe. On this number the ZPM is not ambitious. It is drastically under-using its cubic centimetre.</p>
+        </div>
+      </div>
+
+      <p>So the story is quietly picking the Planck-scale figure and assuming it is real, local and reachable. That is precisely the assumption the 10<sup>122</sup> disagreement is about. The fiction is not making up its physics; it is betting on one side of an open question, which is a more interesting thing to do.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What a working module would need, and <span class="hue">where the cycle breaks</span></h2>
+      <p>Write the requirements out as a brief and the obstacle stops being philosophical and becomes a piece of engineering with a number on it.</p>
+
+      <div class="panel">
+        <div class="ladder">
+          <span class="lnum">01</span>
+          <div><h3>A reservoir at a lower energy than its surroundings</h3><p>Every power source works down a gradient: hot to cold, charged to flat, high to low. <strong>The vacuum is the field's ground state</strong>, the bottom rung. There is no known lower rung to fall to, so the gradient has to be manufactured rather than found.</p></div>
+        </div>
+        <div class="ladder">
+          <span class="lnum">02</span>
+          <div><h3>A way to lower the vacuum energy in one region</h3><p>Casimir plates do exactly this: the region between them holds fewer allowed modes than open space, so its energy is lower, and the difference is real enough to weigh. <strong>This part already works.</strong> It is the one step of the brief with a laboratory receipt.</p></div>
+        </div>
+        <div class="ladder">
+          <span class="lnum">03</span>
+          <div><h3>Collect the difference as work</h3><p>Also fine, once. Collapsing a square metre of ideal plates down to a ten nanometre gap releases <strong>0.43 millijoules</strong>. The force does real work on whatever it is attached to, and that work can be stored.</p></div>
+        </div>
+        <div class="ladder">
+          <span class="lnum">04</span>
+          <div><h3>Get back to the start without spending what you gained</h3><p>This is the unsolved one. The Casimir force comes from a potential, which means it is a spring: whatever it gives you on the way in, it takes back on the way out, and friction, sticking and hysteresis make the round trip cost more than it returned. <strong>The cycle, not the force, is the open problem.</strong></p></div>
+        </div>
+      </div>
+
+      <h3>The energy budget, written out</h3>
+      <p>Numbers make step four concrete. A cubic metre packed with plates ten nanometres apart holds a hundred million gaps, and collapsing all of them releases about <strong>43 kilojoules</strong>: the chemical energy in one gram of petrol, once, and that is before subtracting the volume the metal itself takes up. Matching a single AA alkaline cell, about 13,500 joules, would take 31 square kilometres of perfectly flat, perfectly clean plate, collapsed once. As an energy store that is about 58,000 times thinner than a charged lithium cell and about 780,000 times thinner than petrol.</p>
+      <p>What the Casimir effect offers, on its own numbers, is a spring rather than a fuel.</p>
+
+      <div class="note"><strong>Robert Forward saw this first, and wrote it down that way.</strong> In <em>Physical Review B</em> in 1984, Forward, a physicist at Hughes Research Laboratories and a science fiction novelist, proposed a "vacuum-fluctuation battery": a spiral of very thin metal leaves, every leaf charged to the same polarity so electrostatic repulsion pushes them apart, tuned to sit just under the Casimir attraction. The stack then collapses, and the Casimir force does work on the electric field, raising the stored charge energy. Forward called it a battery, not an engine. Recharging means making the electric forces slightly stronger to re-expand the stack, which costs at least what was gained. The paper claims no net gain anywhere in it, which is worth knowing, because it is the paper most often cited by people claiming one.</div>
+
+      <p>The nearest built thing to Forward's design needs no quantum mechanics at all: a variable-capacitance electrostatic generator with a movable dielectric does the same job with a much larger force, and returns what was put in. It is a useful comparison because it shows the shape of the problem is old and familiar rather than exotic.</p>
+      <p>Garret Moddel and Dmitri Dmitriyeva sorted the proposals in a 2019 review in <em>Atoms</em>. They group them in three: nonlinear processing of the vacuum's fluctuations, mechanical extraction using Casimir cavities, and pumping gas atoms through a Casimir cavity under stochastic electrodynamics. The first two run into the same wall, which is that a system already in thermal equilibrium offers no gradient for a diode or any other one-way part to work with. The third they judge not obviously ruled out, and they describe the experimental results in that class as inconclusive. Inconclusive is where an experiment belongs, not where it ends.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would move <span class="hue">the question</span></h2>
+      <p>Six things with instruments attached. Each returns a number somebody could read next year.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">📡</span>
+          <h3>Run 2011 again, cleanly</h3>
+          <p>Repeat the dynamical Casimir measurement in a transmission line without the stray resonances that raised the rate a thousandfold, so the raw production rate is what gets counted. Josephson metamaterials and cold-atom analogues have shown related effects since; a clean rate would let all of them be compared on one scale.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🌡️</span>
+          <h3>Settle the warm-plate correction</h3>
+          <p>Between about one and seven micrometres, the Drude and plasma descriptions of a metal disagree about the force by as much as a factor of two. A torsion balance at that spacing, with the stray electrostatic force properly separated, would return a number that picks one.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔬</span>
+          <h3>Take the precision path already mapped</h3>
+          <p>Mohideen and Roy pointed at a further factor of a thousand: lithographic cantilevers with a larger radius of curvature, interferometric readout of the bend rather than optical lever, and lower temperatures to cut thermal noise. Nothing on that list needs inventing.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">💨</span>
+          <h3>Chase the one class not ruled out</h3>
+          <p>Pump gas atoms through a Casimir cavity and measure the temperature and spectrum of what comes out, with every watt of input power counted on the same ledger. The published attempts are inconclusive, which is exactly what makes them worth repeating properly.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔭</span>
+          <h3>Watch DESI</h3>
+          <p>If dark energy turns out to change with time, the energy of empty space is not a fixed number and the 10<sup>122</sup> comparison has to be rewritten. The data releases are already leaning that way at a few sigma; more sky and more redshifts will decide it.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔁</span>
+          <h3>Build the cycle rig</h3>
+          <p>The instrument nobody has built: a Casimir cavity whose gap can be driven and read at once, so the work put in to open it and the work recovered as it closes are counted on the same clock, in the same run. Whatever that rig returns, it turns an argument into a measurement.</p>
+        </div>
+      </div>
+      <p>The vacuum has already been weighed at 1.6 piconewtons, and shaken hard enough to give up light. Those are the two receipts. The open question is not whether empty space carries energy; it is whether a gradient can be made in it and closed around, and that question has a bench, an instrument list, and a number waiting at the end of it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="sci-fi-lab.html"><div class="card"><span class="card-glyph">🛸</span><h3>Sci-Fi Lab</h3><p>Named fictional technology given a spec sheet, with the numbers each one implies and the nearest built thing that rhymes with it.</p></div></a>
+        <a class="card-link" href="resonance.html"><div class="card"><span class="card-glyph">〰️</span><h3>Resonance</h3><p>Why only certain waves fit in a given space, from a tuning fork to an atom. The same rule that gives the plates their push.</p></div></a>
+        <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where the paths could lead next: the exploration routes still open, told in could and would.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>H. B. G. Casimir, "On the attraction between two perfectly conducting plates", <em>Proceedings of the Koninklijke Nederlandse Akademie van Wetenschappen</em> 51, 793, 1948.</li>
+        <li>S. K. Lamoreaux, "Demonstration of the Casimir force in the 0.6 to 6 &micro;m range", <em>Physical Review Letters</em> 78, 5, January 1997 · <a href="https://link.aps.org/doi/10.1103/PhysRevLett.78.5" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.78.5</a></li>
+        <li>U. Mohideen and A. Roy, "Precision measurement of the Casimir force from 0.1 to 0.9 &micro;m", <em>Physical Review Letters</em> 81, 4549, December 1998 · <a href="https://arxiv.org/pdf/physics/9805038" rel="noopener">arxiv.org/pdf/physics/9805038</a></li>
+        <li>H. B. Chan et al., "Quantum mechanical actuation of microelectromechanical systems by the Casimir force", <em>Science</em> 291, 1941, 2001.</li>
+        <li>C. M. Wilson, G. Johansson, A. Pourkabirian, J. R. Johansson, T. Duty, F. Nori and P. Delsing, "Observation of the dynamical Casimir effect in a superconducting circuit", <em>Nature</em> 479, 376, November 2011 · <a href="https://arxiv.org/abs/1105.4714" rel="noopener">arxiv.org/abs/1105.4714</a></li>
+        <li>R. L. Forward, "Extracting electrical energy from the vacuum by cohesion of charged foliated conductors", <em>Physical Review B</em> 30, 1700, 1984 · <a href="https://link.aps.org/doi/10.1103/PhysRevB.30.1700" rel="noopener">link.aps.org/doi/10.1103/PhysRevB.30.1700</a></li>
+        <li>G. Moddel and O. Dmitriyeva, "Extraction of zero-point energy from the vacuum: assessment of stochastic electrodynamics-based approach as compared to other methods", <em>Atoms</em> 7, 51, 2019 · <a href="https://www.mdpi.com/2218-2004/7/2/51" rel="noopener">mdpi.com/2218-2004/7/2/51</a></li>
+        <li>S. M. Carroll, "The cosmological constant", <em>Living Reviews in Relativity</em>, 2001 · <a href="https://ned.ipac.caltech.edu/level5/March01/Carroll/Carroll1.html" rel="noopener">ned.ipac.caltech.edu/level5/March01/Carroll/Carroll1.html</a></li>
+        <li>Planck Collaboration, "Planck 2018 results. VI. Cosmological parameters", <em>Astronomy &amp; Astrophysics</em> 641, A6, 2020.</li>
+        <li>Rodney McKay's on-screen explanation, <em>Stargate SG-1</em>, "Lost City", 2004; module description drawn from the show's published reference material · <a href="https://stargate-sg1-solutions.com/wiki/Zero_Point_Module_(ZPM)" rel="noopener">stargate-sg1-solutions.com/wiki/Zero_Point_Module_(ZPM)</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fmt = (window.EMA && window.EMA.fmt) || function (n) { return String(n); };
+
+  /* ---------- physics ---------- */
+  var HBAR = 1.054571817e-34;
+  var CLIGHT = 299792458;
+  var KP = Math.PI * Math.PI * HBAR * CLIGHT / 240;   /* J.m : P = KP / a^4 */
+  var ATM = 101325;
+  var G = 9.80665;
+
+  /* slider 0 to 1000 maps to 1 nm ... 1000 nm, evenly in steps of ten */
+  function sepFromSlider(v) { return Math.pow(10, -9 + (v / 1000) * 3); }
+  function sliderFromSep(a) { return Math.round(((Math.log10(a) + 9) / 3) * 1000); }
+  function pressure(a) { return KP / Math.pow(a, 4); }
+
+  /* log track: 1e-4 Pa at the left, 1e10 Pa at the right, 14 steps of ten */
+  function trackPct(P) {
+    var f = (Math.log10(P) + 4) / 14;
+    return Math.max(0.8, Math.min(100, f * 100));
+  }
+
+  function sig(x, n) {
+    var s = Number(x).toPrecision(n || 3);
+    if (s.indexOf("e") >= 0) return Number(s).toString();
+    if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+    return s;
+  }
+
+  function pressureWords(P) {
+    if (P >= 1e9) return sig(P / 1e9) + " GPa";
+    if (P >= 1e6) return sig(P / 1e6) + " MPa";
+    if (P >= 1e3) return sig(P / 1e3) + " kPa";
+    if (P >= 1)   return sig(P) + " Pa";
+    if (P >= 1e-3) return sig(P * 1e3) + " mPa";
+    return sig(P * 1e6) + " µPa";
+  }
+
+  function gapWords(a) {
+    var nm = a * 1e9;
+    if (nm >= 1000) return sig(nm / 1000) + " µm";
+    return sig(nm) + " nm";
+  }
+
+  /* how the gap compares with sea-level air pressure */
+  function atmWords(P) {
+    var r = P / ATM;
+    if (r >= 1) return sig(r) + " times";
+    var inv = 1 / r;
+    if (inv >= 1e9) return "one " + sig(inv / 1e9, 2) + " billionth";
+    if (inv >= 1e6) return "one " + sig(inv / 1e6, 2) + " millionth";
+    if (inv >= 1e3) return "one " + sig(inv / 1e3, 2) + " thousandth";
+    return "one " + Math.round(inv) + "th";
+  }
+
+  /* a force expressed as the weight of that much water, which stays true at every size */
+  function waterWords(kg) {
+    var L = kg;                       /* one litre of water weighs one kilogram */
+    var drops = L * 1000 / 0.05;      /* a drop is about 0.05 millilitres */
+    if (L >= 1000) return fmt(Math.round(L / 240)) + " wheelie bins";
+    if (L >= 5) return fmt(Math.round(L)) + " litres";
+    if (L >= 0.05) return sig(L, 2) + " litres";
+    if (L >= 0.0005) return sig(L * 1000, 2) + " mL";
+    if (drops >= 1.5) return Math.round(drops) + " drops";
+    if (drops >= 0.9) return "one drop";
+    if (drops >= 0.4) return "half a drop";
+    if (drops >= 0.15) return "a quarter of a drop";
+    if (drops >= 0.05) return "a tenth of a drop";
+    var n = 1 / drops;
+    n = n > 100 ? Number(n.toPrecision(2)) : Math.round(n);
+    return "one " + fmt(n) + "th of a drop";
+  }
+
+  /* ---------- controls ---------- */
+  var range = document.getElementById("gapRange");
+  var gapOut = document.getElementById("gapOut");
+  var presOut = document.getElementById("presOut");
+  var statPres = document.getElementById("statPres");
+  var statAtm = document.getElementById("statAtm");
+  var statMass = document.getElementById("statMass");
+  var casBar = document.getElementById("casBar");
+  var casVal = document.getElementById("casVal");
+
+  var sep = 3.162e-8;   /* current separation in metres */
+
+  function refresh() {
+    sep = sepFromSlider(parseInt(range.value, 10));
+    var P = pressure(sep);
+    var kgOnStamp = P * 1e-4 / G;   /* one square centimetre of plate */
+
+    gapOut.textContent = gapWords(sep);
+    presOut.textContent = pressureWords(P);
+    statPres.textContent = pressureWords(P);
+    statAtm.textContent = atmWords(P);
+    statMass.textContent = waterWords(kgOnStamp);
+    casBar.style.width = trackPct(P) + "%";
+    casVal.textContent = pressureWords(P);
+  }
+
+  if (range) {
+    range.addEventListener("input", refresh);
+    [].slice.call(document.querySelectorAll(".preset-row .btn")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        range.value = sliderFromSep(parseFloat(b.getAttribute("data-nm")) * 1e-9);
+        refresh();
+        range.focus();
+      });
+    });
+    refresh();
+  }
+
+  /* ---------- canvas: plates, the waves that fit, the waves outside ---------- */
+  var cv = document.getElementById("casimirCanvas");
+  if (cv && cv.getContext) {
+    var cx = cv.getContext("2d");
+    var css = getComputedStyle(document.body);
+    var ACC = (css.getPropertyValue("--accent") || "#67e8f9").trim();
+    var ACC2 = (css.getPropertyValue("--accent2") || "#c084fc").trim();
+    var MUT = (css.getPropertyValue("--muted") || "#93a3c4").trim();
+    var LINE = (css.getPropertyValue("--line-bright") || "#2c3c6b").trim();
+    var W = 0, H = 0, DPR = 1;
+    var outer = [];
+    var visible = true, raf = 0;
+
+    function lcg(seed) {
+      var s = seed;
+      return function () { s = (s * 48271) % 2147483647; return s / 2147483647; };
+    }
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 640;
+      var h = Math.max(280, Math.min(400, Math.round(w * 0.38)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+
+      var rnd = lcg(19480529);
+      outer = [];
+      var n = Math.max(9, Math.round(W / 62));
+      for (var i = 0; i < n; i++) {
+        outer.push({
+          x: 22 + (i + 0.5) * ((W - 44) / n),
+          lam: 16 + rnd() * 82,
+          amp: 5 + rnd() * 8,
+          ph: rnd() * Math.PI * 2,
+          sp: 0.7 + rnd() * 1.6,
+          col: rnd() > 0.45 ? ACC2 : ACC,
+          a: 0.3 + rnd() * 0.4
+        });
+      }
+    }
+
+    /* a wave running along a vertical strip */
+    function freeWave(x, y0, y1, lam, amp, phase, colour, alpha) {
+      cx.strokeStyle = colour;
+      cx.globalAlpha = alpha;
+      cx.lineWidth = 1.4;
+      cx.beginPath();
+      for (var y = y0; y <= y1; y += 2) {
+        var off = amp * Math.sin((2 * Math.PI * y) / lam + phase);
+        if (y === y0) cx.moveTo(x + off, y); else cx.lineTo(x + off, y);
+      }
+      cx.stroke();
+      cx.globalAlpha = 1;
+    }
+
+    /* a standing mode pinned at both plates: n half waves across the gap */
+    function fittedMode(x, y0, y1, n, amp, phase, colour) {
+      var span = y1 - y0;
+      cx.strokeStyle = colour;
+      cx.lineWidth = 1.8;
+      cx.globalAlpha = 0.9;
+      cx.beginPath();
+      for (var y = y0; y <= y1; y += 1.5) {
+        var t = (y - y0) / span;
+        var off = amp * Math.sin(n * Math.PI * t) * Math.cos(phase);
+        if (y === y0) cx.moveTo(x + off, y); else cx.lineTo(x + off, y);
+      }
+      cx.stroke();
+      cx.globalAlpha = 1;
+    }
+
+    function arrow(x, yFrom, yTo, colour, alpha, wide) {
+      var dir = yTo > yFrom ? 1 : -1;
+      cx.strokeStyle = colour;
+      cx.fillStyle = colour;
+      cx.globalAlpha = alpha;
+      cx.lineWidth = wide;
+      cx.beginPath();
+      cx.moveTo(x, yFrom);
+      cx.lineTo(x, yTo - dir * 7);
+      cx.stroke();
+      cx.beginPath();
+      cx.moveTo(x, yTo);
+      cx.lineTo(x - 5, yTo - dir * 8);
+      cx.lineTo(x + 5, yTo - dir * 8);
+      cx.closePath();
+      cx.fill();
+      cx.globalAlpha = 1;
+    }
+
+    function draw(t) {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+
+      var nm = sep * 1e9;
+      /* the gap is drawn on a squashed scale so it stays visible at every setting */
+      var frac = (Math.log10(nm)) / 3;                 /* 0 at 1 nm, 1 at 1000 nm */
+      var gapPx = 30 + frac * (Math.min(210, H * 0.5) - 30);
+      var plateT = 15;
+      var topY = Math.round((H - gapPx) / 2);
+      var botY = Math.round(topY + gapPx);
+      var ph = REDUCED ? 0.7 : t / 260;
+
+      /* waves outside, every length allowed */
+      for (var i = 0; i < outer.length; i++) {
+        var o = outer[i];
+        var p = REDUCED ? o.ph : o.ph + (t / 900) * o.sp;
+        freeWave(o.x, 8, topY - plateT - 3, o.lam, o.amp, p, o.col, o.a);
+        freeWave(o.x, botY + plateT + 3, H - 8, o.lam, o.amp, -p, o.col, o.a);
+      }
+
+      /* the plates */
+      var grad = cx.createLinearGradient(0, 0, W, 0);
+      grad.addColorStop(0, LINE);
+      grad.addColorStop(0.5, MUT);
+      grad.addColorStop(1, LINE);
+      cx.fillStyle = grad;
+      cx.fillRect(18, topY - plateT, W - 36, plateT);
+      cx.fillRect(18, botY, W - 36, plateT);
+      cx.fillStyle = ACC;
+      cx.globalAlpha = 0.55;
+      cx.fillRect(18, topY - 2, W - 36, 2);
+      cx.fillRect(18, botY, W - 36, 2);
+      cx.globalAlpha = 1;
+
+      /* only the modes that fit, between the plates */
+      var amp = Math.max(4, Math.min(gapPx * 0.3, 24));
+      var slots = [0.18, 0.34, 0.5, 0.66, 0.82];
+      for (var k = 0; k < slots.length; k++) {
+        fittedMode(W * slots[k], topY + 1, botY - 1, k + 1, amp, ph + k * 0.5,
+                   k % 2 === 0 ? ACC : ACC2);
+      }
+
+      /* the push, thicker and longer as the pressure climbs */
+      var P = pressure(sep);
+      var strength = Math.max(0, Math.min(1, (Math.log10(P) + 4) / 14));
+      var reach = 12 + strength * 26;
+      var wide = 1.6 + strength * 3.2;
+      var xs = [W * 0.1, W * 0.3, W * 0.5, W * 0.7, W * 0.9];
+      for (var j = 0; j < xs.length; j++) {
+        arrow(xs[j], topY - plateT - reach - 6, topY - plateT - 4, ACC, 0.45 + strength * 0.5, wide);
+        arrow(xs[j], botY + plateT + reach + 6, botY + plateT + 4, ACC, 0.45 + strength * 0.5, wide);
+      }
+
+      /* the gap, labelled */
+      cx.strokeStyle = ACC2;
+      cx.globalAlpha = 0.75;
+      cx.lineWidth = 1;
+      cx.beginPath();
+      cx.moveTo(W - 46, topY + 1);
+      cx.lineTo(W - 46, botY - 1);
+      cx.moveTo(W - 51, topY + 1); cx.lineTo(W - 41, topY + 1);
+      cx.moveTo(W - 51, botY - 1); cx.lineTo(W - 41, botY - 1);
+      cx.stroke();
+      cx.globalAlpha = 1;
+      cx.fillStyle = ACC2;
+      cx.font = "600 12px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "right";
+      cx.fillText(gapWords(sep), W - 56, (topY + botY) / 2 + 4);
+      cx.fillStyle = MUT;
+      cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "left";
+      cx.fillText("about " + Math.max(1, Math.round(nm / 0.288)) + " gold atoms across", 24, H - 12);
+      cx.textAlign = "right";
+      cx.fillText(pressureWords(P) + " pushing in", W - 24, H - 12);
+      cx.textAlign = "left";
+    }
+
+    function loop(ts) {
+      draw(ts || 0);
+      if (visible && !REDUCED) raf = requestAnimationFrame(loop);
+      else raf = 0;
+    }
+
+    function start() {
+      if (!raf && !REDUCED) raf = requestAnimationFrame(loop);
+    }
+
+    sizeCanvas();
+    draw(0);
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible) start(); else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0.05 });
+      io.observe(cv);
+    } else {
+      start();
+    }
+    if (!REDUCED) start();
+
+    if (range) {
+      range.addEventListener("input", function () { if (REDUCED) draw(0); });
+      [].slice.call(document.querySelectorAll(".preset-row .btn")).forEach(function (b) {
+        b.addEventListener("click", function () { if (REDUCED) draw(0); });
+      });
+    }
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeCanvas(); draw(0); }, 150);
+    });
+  }
+})();
+</script>
+</body>
+</html>

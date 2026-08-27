@@ -610,20 +610,23 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
     out.closesOnPower = alpha < 1;
 
     if (out.closesOnPower) {
+      // the sum settles: enough plant to hover the hull, the crew and the plant itself
       out.total = (lift.id === "rotors") ? total : out.dry / (1 - alpha);
-      // rotors: alpha was worked at the settled mass, so recompute cleanly
       if (lift.id === "rotors") {
         out.npkw = rotorNpkW(d, out.total * G);
         out.alpha = G / ((out.npkw / 1000) * s);
       }
+      out.liftedMass = out.total;
     } else {
-      // no settled answer: show the first pass, sized for hull and crew alone
-      out.total = out.dry * (1 + alpha);
+      // no settled answer: size the plant for the hull and crew alone, and show that first pass
+      out.total = out.dry;
+      out.liftedMass = out.dry;
     }
 
-    out.weight = out.total * G;
+    out.weight = out.liftedMass * G;              // what the plant was sized to hold
     out.power = out.weight / (out.npkw / 1000);   // watts
     out.plant = out.power / s;
+    out.budget = (out.closesOnPower ? out.total : out.dry + out.plant) * G;
 
     // what the lift method can actually hold up at this size
     if (lift.ceil === null) {
@@ -633,7 +636,8 @@ body[data-page="vimana"] .sum-steps { counter-reset: step; }
     } else {
       out.ceiling = lift.ceil.v * G;
     }
-    out.ceilFactor = (out.ceiling === null) ? null : out.ceiling / out.weight;
+    out.capacity = (out.ceiling === null) ? out.weight : Math.min(out.ceiling, out.weight);
+    out.ceilFactor = (out.ceiling === null) ? null : out.ceiling / out.budget;
     out.mode = "full";
     return out;
   }
