@@ -249,7 +249,7 @@ body[data-page="table"] .drawer .drawer-note {
         <li><b>K</b> Kelvin, a temperature scale that starts at the coldest anything can get. Ice melts at 273 K and a kettle boils at 373 K. Each card gives the everyday Celsius figure alongside.</li>
         <li><b>g/cm³</b> What one cubic centimetre weighs, about a sugar cube's worth. Water is 1, so anything under 1 is lighter than water.</li>
         <li><b>u</b> How heavy one atom is, measured against a carbon atom set at 12.</li>
-        <li><b>pm</b> A picometre: a millionth of a millionth of a metre. Atoms measure a hundred or two of them across.</li>
+        <li><b>pm</b> A picometre: a millionth of a millionth of a metre. A reach from the middle of one atom to the middle of a bonded partner runs a hundred or two of them.</li>
         <li><b>ppm</b> Parts per million, which works out as grams in a tonne. Ten ppm means ten grams of it in a tonne of rock.</li>
         <li><b>kJ/mol</b> The energy needed to pull one electron away, counted over a standard batch of atoms rather than a single one.</li>
       </ul>
@@ -434,7 +434,7 @@ body[data-page="table"] .drawer .drawer-note {
       tile: function (v) { return fmt(v, 0); },
       end: function (v) { return fmt(v, 0) + " pm"; } },
     { key: "abundCrust", label: "Share of Earth's crust", log: true,
-      note: "How much of the ground is made of it, in grams per tonne. Oxygen runs to 461,000 of them, close to half the weight of the crust. Astatine is the scarcest, with estimates putting the whole crust's supply at under a gram, about the weight of a paperclip.",
+      note: "How much of the ground is made of it, in grams per tonne. Oxygen runs to 461,000 of them, close to half the weight of the crust. Astatine is the scarcest, and the standard tables carry no crust figure for it at all: reported estimates of the whole crust's supply run from under a gram, about the weight of a paperclip, up to a few dozen grams.",
       tile: function (v) { return compact(v); },
       end: function (v) { return perTonne(v); } },
     { key: "discovered", label: "Year first found",

@@ -692,7 +692,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
         <span class="built-kick">On the bench right now</span>
         <h3>Cloaking works, in narrow bands, and the theory behind it is now ordinary optical engineering</h3>
         <p>John Pendry, David Schurig and David Smith published transformation optics in <em>Science</em> in May 2006. The idea is a coordinate change: write down the path you want light to take, and the mathematics hands you the material properties that would make light take it. Six months later, in November 2006, Schurig and colleagues built one. Ten concentric rings of copper split-ring resonators printed on circuit board, wrapped around a five centimetre copper cylinder, measured at <b>8.5 gigahertz</b>. Both the shadow behind the cylinder and the reflection in front of it dropped.</p>
-        <p>Then it moved to light. Jason Valentine and colleagues in Xiang Zhang's group at Berkeley reported a carpet cloak made entirely of non-conducting material in <em>Nature Materials</em> in 2009: a patterned silicon slab 250 nanometres thick that hid a bump <b>3.8 micrometres wide and 400 nanometres tall</b>, and did it across the whole band from <b>1,400 to 1,800 nanometres</b>. That is a quarter of the centre wavelength, a genuinely broad band, and it uses no metal and so loses almost nothing to heat.</p>
+        <p>Then it moved to light. Jason Valentine and colleagues in Xiang Zhang's group at Berkeley reported a carpet cloak, which flattens a bump so a mirror over it reads as bare floor, made entirely of non-conducting material in <em>Nature Materials</em> in 2009: a patterned silicon slab 250 nanometres thick that hid a bump <b>3.8 micrometres wide and 400 nanometres tall</b>, and did it across the whole band from <b>1,400 to 1,800 nanometres</b>. That is a quarter of the centre wavelength, a genuinely broad band, and it uses no metal and so loses almost nothing to heat.</p>
         <p>And the trick is not limited to light. Stéphane Brûlé and colleagues drilled a grid of boreholes into soil near Grenoble in 2012, shook the ground at 50 hertz, and measured the surface wave being turned away from the region behind the grid. Reported in <em>Physical Review Letters</em> in 2014. That is a full-size cloak, built in dirt, deflecting a wave you could feel, and it has a civil engineering job waiting for it.</p>
         <dl class="figs">
           <div><dt>First built cloak</dt><dd>copper split rings, 8.5 GHz, November 2006</dd></div>
@@ -718,7 +718,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
         </div>
         <div class="step">
           <span class="slab">What you would measure</span>
-          <p>Scattering cross-section across a full octave, published as one curve rather than one frequency. Almost every disagreement about cloaking would be settled by that plot, because it shows at a glance where the bandwidth was borrowed from.</p>
+          <p>How much of the wave the object still throws back, measured right across a doubling of frequency, published as one curve rather than one point on the dial. Almost every disagreement about cloaking would be settled by that plot, because it shows at a glance where the bandwidth was borrowed from.</p>
         </div>
       </div>
 
@@ -982,7 +982,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
     tri: "How many conditions a non-invasive sensor set can separate, published as a full confusion table. And the greatest stand-off distance that still returns a usable spectrum.",
     trans: "Entangled pairs per second across a working link, and how that falls with distance. Memories and repeaters are the bottleneck, so that number is the whole story.",
     sabre: "How long a self-pinched plasma column holds before instability, against current and gas mixture. The same measurement every fusion machine on Earth is built around.",
-    cloak: "Scattering cross-section across a full octave, as one curve rather than one frequency. That single plot shows where the bandwidth was borrowed from."
+    cloak: "How much of the wave the object still throws back, measured right across a doubling of frequency, as one curve rather than one point on the dial. That single plot shows where the bandwidth was borrowed from."
   };
 
   function choose(i) {
@@ -1166,17 +1166,22 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
       cx.fillStyle = sel2.h;
       cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
       if (sel2.gap >= 10000) {
-        var expo = String(Math.round(Math.log10(sel2.gap)));
+        var expo = String(Math.floor(Math.log10(sel2.gap)));
+        var man = sel2.gap / Math.pow(10, Number(expo));
+        var head = man < 1.05 ? "" : (Math.round(man * 10) / 10) + " × ";
         var tail = " times short";
         cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+        var wMan = cx.measureText(head).width;
         var wTail = cx.measureText(tail).width;
-        var wHead = cx.measureText("10").width + cx.measureText(expo).width * 0.72;
+        var wHead = wMan + cx.measureText("10").width + cx.measureText(expo).width * 0.72;
         var startX = align === "right" ? selX - (wHead + wTail)
                    : (align === "left" ? selX : selX - (wHead + wTail) / 2);
-        var used = drawPower(startX, 30, expo, 11, "left");
+        cx.textAlign = "left";
+        cx.fillText(head, startX, 30);
+        var used = drawPower(startX + wMan, 30, expo, 11, "left");
         cx.textAlign = "left";
         cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
-        cx.fillText(tail, startX + used, 30);
+        cx.fillText(tail, startX + wMan + used, 30);
       } else {
         cx.textAlign = align;
         cx.fillText(Math.round(sel2.gap).toLocaleString("en-AU") + " times short", selX, 30);
