@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Records · Extreme Matter Atlas</title>
+<meta name="description" content="The record-holding atoms: heaviest, hottest, coldest, greediest and rarest, with the numbers put into pictures you can hold.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page-specific styles, scoped to this page */
+body[data-page="extremes"] .rec-grid {
+  grid-template-columns: repeat(auto-fit, minmax(322px, 1fr));
+}
+body[data-page="extremes"] .rec-card { padding-top: 22px; }
+body[data-page="extremes"] .rec-top {
+  display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;
+}
+body[data-page="extremes"] .rec-tile {
+  flex: 0 0 auto; width: 58px; height: 58px; border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #04060c; line-height: 1.05;
+  box-shadow: 0 8px 26px -12px rgba(0, 0, 0, 0.9);
+}
+body[data-page="extremes"] .rec-tile .s { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; }
+body[data-page="extremes"] .rec-tile .z { font-size: 10px; font-weight: 600; opacity: 0.72; }
+body[data-page="extremes"] .rec-tile.duo { background: linear-gradient(135deg, var(--c1), var(--c2)); }
+body[data-page="extremes"] .rec-tile.duo .s { font-size: 17px; }
+body[data-page="extremes"] .rec-head { min-width: 0; }
+body[data-page="extremes"] .rec-what {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 5px;
+}
+body[data-page="extremes"] .rec-who {
+  font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 1.2;
+}
+body[data-page="extremes"] .rec-val {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(23px, 3.1vw, 30px); line-height: 1.14; margin-bottom: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="extremes"] .rec-unit {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  letter-spacing: 0.05em; margin-bottom: 12px; display: block;
+}
+body[data-page="extremes"] .card p + .rec-more { margin-top: 12px; }
+body[data-page="extremes"] .rec-more {
+  display: block; font-size: 13.5px; font-weight: 600; padding-top: 12px;
+  border-top: 1px dashed var(--line-bright);
+}
+body[data-page="extremes"] .rank-no {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  width: 18px; flex: 0 0 auto; text-align: right;
+}
+
+/* picker chips */
+body[data-page="extremes"] .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
+body[data-page="extremes"] .chip {
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
+  color: var(--muted); background: var(--panel2);
+  border: 1px solid var(--line-bright); border-radius: 999px;
+  padding: 7px 15px; cursor: pointer;
+  transition: transform .14s ease, color .14s ease, border-color .14s ease;
+}
+body[data-page="extremes"] .chip:hover { color: var(--ink); border-color: var(--accent); transform: translateY(-2px); }
+body[data-page="extremes"] .chip[aria-pressed="true"] {
+  color: #04060c; border-color: transparent;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 20px -4px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+body[data-page="extremes"] .seg {
+  display: inline-flex; gap: 4px; padding: 4px;
+  background: var(--panel); border: 1px solid var(--line-bright); border-radius: 999px;
+}
+body[data-page="extremes"] .seg button {
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  color: var(--muted); background: none; border: 0; border-radius: 999px;
+  padding: 6px 14px; cursor: pointer;
+}
+body[data-page="extremes"] .seg button[aria-pressed="true"] {
+  color: #04060c; background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+/* leaderboard rows */
+body[data-page="extremes"] .board { min-height: 300px; }
+body[data-page="extremes"] .board .bar-row {
+  grid-template-columns: 206px 1fr 122px;
+  margin: 11px 0; align-items: center;
+}
+body[data-page="extremes"] .board .who { display: flex; align-items: center; gap: 9px; min-width: 0; }
+body[data-page="extremes"] .board .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body[data-page="extremes"] .el-chip {
+  flex: 0 0 auto; width: 30px; height: 26px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12.5px; font-weight: 800; color: #04060c;
+}
+body[data-page="extremes"] .board .tag.est {
+  flex: 0 0 auto; font-size: 10px; padding: 1px 7px; letter-spacing: 0.04em;
+}
+body[data-page="extremes"] .board .val { font-size: 12px; }
+body[data-page="extremes"] .board .bar-row[data-rank="1"] .nm { color: var(--accent); }
+body[data-page="extremes"] .board .bar { height: 18px; }
+body[data-page="extremes"] .lb-caption { font-size: 15px; color: var(--muted); margin-top: 18px; max-width: 62em; }
+body[data-page="extremes"] .lb-caption b { color: var(--ink); font-weight: 600; }
+body[data-page="extremes"] .scale-note {
+  margin-top: 10px; font-family: var(--font-mono); font-size: 11.5px;
+  color: var(--muted); line-height: 1.6;
+}
+body[data-page="extremes"] .lb-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 19px;
+  margin: 6px 0 2px;
+}
+body[data-page="extremes"] .lb-sub {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: block;
+}
+@media (max-width: 680px) {
+  body[data-page="extremes"] .board .bar-row { grid-template-columns: 1fr auto; row-gap: 7px; }
+  body[data-page="extremes"] .board .bar { grid-column: 1 / -1; }
+}
+body[data-page="extremes"] .data-table td.lead { font-weight: 600; }
+body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono); font-size: 12.5px; }
+</style>
+</head>
+<body data-page="extremes">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">The record book of the elements</span>
+      <h1 class="display">Every extreme has a name</h1>
+      <p class="lede">One element is heavier for its size than anything else you could pick up. One stays liquid when the rest of creation has frozen solid. One pulls electrons off its neighbours so hard it will burn sand. Here are the record holders, the measured numbers behind them, and a picture for each number you can hold in your hand.</p>
+      <div class="stat-row" id="heroStats"></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Start with what is already <span class="hue">in the house</span></h2>
+      <p>Records sound like trivia until you notice where they live. The globe in the shed with the coiled wire inside it burns at white heat because that wire is made of the metal with the highest melting point. The scanner at the hospital works because one element refuses to freeze. The battery in your pocket carries charge on the lightest metal there is.</p>
+      <p>None of these were chosen for the record. They were chosen because a job needed doing, and one element happened to sit further along that scale than anything else. That is what a record is good for: it marks the edge of what matter can be asked to do.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The <span class="hue">record board</span></h2>
+      <p>Twelve records, each with the number as it was measured and a picture to hold it in. Where a figure is a calculated estimate rather than a settled measurement, it says so.</p>
+
+      <div class="grid rec-grid">
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-transition"><span class="s">Os</span><span class="z">76</span></div>
+            <div class="rec-head"><span class="rec-what">Heaviest for its size</span><span class="rec-who">Osmium</span></div>
+          </div>
+          <div class="rec-val">22.587</div>
+          <span class="rec-unit">grams per cubic centimetre</span>
+          <p>Fill a 375 millilitre soft drink can with water and it weighs 375 grams. Fill the same can with osmium and it weighs about 8.5 kilograms: near enough to a nine litre bucket of water, shrunk down to something you can close one hand around. Fill it with hydrogen gas instead and you get about 34 milligrams, a couple of grains of rice. That is the full span of everyday matter, and osmium sits at the top of it.</p>
+          <p>Its weight comes with hardness. Alloyed with iridium it tips fountain pen nibs and the pivots inside instruments, where a soft point would wear flat in a year.</p>
+          <a class="rec-more" href="periodic-table.html">See osmium's neighbours on the table</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-alkali"><span class="s">Li</span><span class="z">3</span></div>
+            <div class="rec-head"><span class="rec-what">Lightest metal</span><span class="rec-who">Lithium</span></div>
+          </div>
+          <div class="rec-val">0.534</div>
+          <span class="rec-unit">grams per cubic centimetre</span>
+          <p>The same soft drink can, filled with lithium, comes to about 200 grams: an apple. Water is 1.0 on this scale, so lithium floats, and it floats high, riding with close to half of itself standing clear of the surface. An ice cube manages about eight per cent. Drop lithium in and it fizzes as it goes, shedding hydrogen into the air.</p>
+          <p>That lightness is the whole reason your phone lasts a day. A battery has to carry its charge carrier around with it, and lithium is the least weight per unit of charge that any metal can offer.</p>
+          <a class="rec-more" href="engineering.html">Where lightness is the job</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-transition"><span class="s">W</span><span class="z">74</span></div>
+            <div class="rec-head"><span class="rec-what">Highest melting metal</span><span class="rec-who">Tungsten</span></div>
+          </div>
+          <div class="rec-val">3,422 &deg;C</div>
+          <span class="rec-unit">melting point, 3,695 kelvin</span>
+          <p>The hottest setting on a kitchen oven is around 250 degrees. Tungsten does not soften until about fourteen times that number. Steel puddles into a bright orange pool at roughly 1,500 degrees; at that heat a tungsten bar is still a bar, and stays one for another 1,900 degrees.</p>
+          <p>Which is why a coiled tungsten wire can sit inside a glass globe glowing white and simply keep glowing, and why the black tip on a masonry drill bit is tungsten locked to carbon.</p>
+          <a class="rec-more" href="engineering.html">Records matched to real jobs</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-noble"><span class="s">He</span><span class="z">2</span></div>
+            <div class="rec-head"><span class="rec-what">Lowest boiling point</span><span class="rec-who">Helium</span></div>
+          </div>
+          <div class="rec-val">-268.9 &deg;C</div>
+          <span class="rec-unit">boiling point, 4.22 kelvin</span>
+          <p>The coldest air ever recorded at a weather station on Earth was about 89 degrees below zero, at Vostok in Antarctica. Helium boils about 180 degrees colder again, a bare four degrees above the coldest anything can get.</p>
+          <p>Keep cooling it and nothing else happens. At ordinary air pressure helium never freezes, however far down you go; to make it solid you also have to squeeze it, to roughly 25 times the pressure of the air around you. Alone among the elements, it just stays liquid. Hospitals lean on that: the magnet inside an MRI scanner sits in a bath of liquid helium so it can carry current without heating up.</p>
+          <a class="rec-more" href="engineering.html">The cold end of engineering</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile duo" style="--c1: var(--cat-halogen); --c2: var(--cat-alkali);"><span class="s">F / Fr</span></div>
+            <div class="rec-head"><span class="rec-what">Greediest and most generous</span><span class="rec-who">Fluorine and francium</span></div>
+          </div>
+          <div class="rec-val">3.98 <span style="font-size:0.6em; color:var(--muted); -webkit-text-fill-color: var(--muted);">to</span> 0.70</div>
+          <span class="rec-unit">pull on shared electrons, Pauling scale</span>
+          <p>When two atoms share electrons, one of them usually pulls harder. The Pauling scale rates that pull, and it runs from about 0.7 at the meek end to 3.98 at fluorine, which wins every tug of war it enters. Nothing outpulls it, which is why fluorine will strip oxygen out of ordinary sand.</p>
+          <p>Tie that pull down inside a stable chain and it turns useful and calm: the slippery grey coating on a frypan is carbon wrapped in fluorine, and the fluoride in toothpaste locks fluorine into tooth enamel to harden it.</p>
+          <p>At the other end sits francium at about 0.70, though that figure is a calculated estimate <span class="tag est">est.</span> rather than a bench measurement. Caesium at 0.79 is the lowest settled value.</p>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile duo" style="--c1: var(--cat-noble); --c2: var(--cat-alkali);"><span class="s">He / Cs</span></div>
+            <div class="rec-head"><span class="rec-what">Tightest and loosest grip</span><span class="rec-who">Helium and caesium</span></div>
+          </div>
+          <div class="rec-val">2,372 <span style="font-size:0.6em; color:var(--muted); -webkit-text-fill-color: var(--muted);">to</span> 376</div>
+          <span class="rec-unit">kilojoules per mole to pull one electron off</span>
+          <p>Every atom holds its own electrons at some grip strength, and that strength can be measured as energy. Take the same count of atoms of each, which works out to a bit over four grams of helium and about 133 grams of caesium. Freeing one electron from every helium atom takes about seven kettles' worth of energy, taking a kettle as one litre going from tap to boil. The same job on the caesium takes a bit over one kettle.</p>
+          <p>Caesium's loose hold is what makes it useful. Shine light on it and electrons come away, which is how some light sensors work; and the wobble of its outer electron is so steady that caesium clocks define the length of a second, keeping every phone and every bank transfer in step.</p>
+          <p>Francium is usually expected to beat caesium here, and it does not: its measured value sits about five per cent higher, so caesium keeps the record.</p>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile duo" style="--c1: var(--cat-alkali); --c2: var(--cat-noble);"><span class="s">Cs / He</span></div>
+            <div class="rec-head"><span class="rec-what">Widest and narrowest atom</span><span class="rec-who">Caesium and helium</span></div>
+          </div>
+          <div class="rec-val">244 <span style="font-size:0.6em; color:var(--muted); -webkit-text-fill-color: var(--muted);">to</span> 28 pm</div>
+          <span class="rec-unit">across, in picometres</span>
+          <p>A picometre is a millionth of a millionth of a metre, so both ends of this record are past imagining until you scale them up. Blow a helium atom out to the size of a twenty cent coin, 28.5 millimetres across, and a caesium atom on that same scale comes out about 249 millimetres wide: a dinner plate beside a coin.</p>
+          <p>Back at real size, a hundred million caesium atoms shoulder to shoulder would stretch about 49 millimetres, roughly the length of your thumb. Francium is calculated to be wider still at about 260 picometres <span class="tag est">est.</span>, but nobody has ever gathered enough of it to check.</p>
+          <a class="rec-more" href="periodic-table.html">Colour the table by atom size</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-transition"><span class="s">Ag</span><span class="z">47</span></div>
+            <div class="rec-head"><span class="rec-what">Best electrical conductor</span><span class="rec-who">Silver</span></div>
+          </div>
+          <div class="rec-val">63 million</div>
+          <span class="rec-unit">siemens per metre at room temperature</span>
+          <p>Siemens per metre is simply a rating of how easily a metre of something passes a current. Silver tops it at about 63 million, with copper just behind at about 59.6 million. So silver runs a little under six per cent ahead of copper, and it leads on heat too: a silver teaspoon warms along its handle faster than any other metal.</p>
+          <p>Six per cent is a real margin and still not worth the price, which is why the wiring in your walls is copper. Silver goes where a few grams do the work of a kilometre of wire: the fine grey lines printed across the face of a rooftop solar panel, and the contacts inside a light switch that must not pit after twenty thousand flicks.</p>
+          <a class="rec-more" href="engineering.html">Why copper wins the wall anyway</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-nonmetal"><span class="s">H</span><span class="z">1</span></div>
+            <div class="rec-head"><span class="rec-what">Most of the universe</span><span class="rec-who">Hydrogen</span></div>
+          </div>
+          <div class="rec-val">about 75%</div>
+          <span class="rec-unit">of ordinary matter, by weight</span>
+          <p>Weigh out a tonne of the ordinary matter in the universe and about 750 kilograms of it is hydrogen, another 230 is helium, and everything else in existence shares the last twenty. Count atoms instead of weighing them and it is starker still: scoop up a hundred atoms at random and about 93 are hydrogen and 7 are helium. You would need to scoop about 1,300 before expecting a single atom of oxygen.</p>
+          <p>It is close to hand as well as far away. Two atoms in every three in the water you drink are hydrogen.</p>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-nonmetal"><span class="s">O</span><span class="z">8</span></div>
+            <div class="rec-head"><span class="rec-what">Most of the ground</span><span class="rec-who">Oxygen</span></div>
+          </div>
+          <div class="rec-val">46.1%</div>
+          <span class="rec-unit">of Earth's crust, by weight</span>
+          <p>Load a ute tray with a tonne of ordinary rock and you are carrying about 461 kilograms of oxygen, none of it breathable. It is locked into the minerals, bound tight to silicon and to metals.</p>
+          <p>Look at what that becomes. Beach sand is silicon with two oxygens on it. Window glass is the same pairing melted and cooled. The concrete in the driveway is oxygen bound to calcium, silicon and aluminium. Nearly everything solid you stand on or build with is mostly oxygen by weight, which is a strange thing to know about a gas.</p>
+          <a class="rec-more" href="periodic-table.html">Colour the table by crust abundance</a>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile cat-halogen"><span class="s">At</span><span class="z">85</span></div>
+            <div class="rec-head"><span class="rec-what">Rarest element in nature</span><span class="rec-who">Astatine</span></div>
+          </div>
+          <div class="rec-val">8.1 hours</div>
+          <span class="rec-unit">half-life of its longest-lasting form</span>
+          <p>Astatine forms in trace amounts as heavier elements break down, and it leaves almost as fast as it arrives. Reported estimates of how much exists in the entire crust at any one moment range from under a gram to a few dozen grams <span class="tag est">est.</span>: on the low reading, every rock on the planet between them holds less astatine than would sit on the tip of a teaspoon. The dataset behind this atlas lists no crust figure for it at all, and nor does it for francium.</p>
+          <p>Nobody has seen a visible piece. Gather enough in one place and its own radioactive heat would boil it away before you could look at it. Its bulk numbers, the density and the melting point, are all calculated rather than weighed. One isotope, astatine-211, is being studied as a cancer treatment that would carry radiation to a tumour cell by cell.</p>
+        </div>
+
+        <div class="card rec-card">
+          <div class="rec-top">
+            <div class="rec-tile duo" style="--c1: var(--cat-post-transition); --c2: var(--cat-unknown);"><span class="s">113 · 118</span></div>
+            <div class="rec-head"><span class="rec-what">Newest confirmed elements</span><span class="rec-who">Nihonium to oganesson</span></div>
+          </div>
+          <div class="rec-val">2016</div>
+          <span class="rec-unit">four elements named, row seven complete</span>
+          <p>In November 2016 the names nihonium, moscovium, tennessine and oganesson were confirmed for elements 113, 115, 117 and 118, closing the last four gaps in the bottom row of the table. They are made an atom at a time by firing one beam of nuclei at another and waiting, sometimes for months, for a single fusion to land.</p>
+          <p>They do not stay. Oganesson's known form has a half-life under a millisecond, and a blink of your eye takes around 300 milliseconds: hundreds of half-lives pass while your eyelid is down. Their densities, melting points and atom sizes are all calculated, because the total ever made would not cover a pinhead.</p>
+          <a class="rec-more" href="periodic-table.html">Walk the full table</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Rank the <span class="hue">whole table</span></h2>
+      <p>Twelve properties, all 118 elements, sorted the moment you pick one. Flip the direction to see who sits at the other end, and switch to settled measurements to drop the values that are calculated rather than weighed.</p>
+
+      <div class="panel">
+        <div class="chips" id="propChips" role="group" aria-label="Choose a property"></div>
+        <div class="control-row">
+          <div class="seg" id="dirSeg" role="group" aria-label="Sort direction">
+            <button type="button" data-dir="hi" aria-pressed="true">Highest first</button>
+            <button type="button" data-dir="lo" aria-pressed="false">Lowest first</button>
+          </div>
+          <div class="seg" id="estSeg" role="group" aria-label="Which values to include">
+            <button type="button" data-est="all" aria-pressed="true">All values</button>
+            <button type="button" data-est="settled" aria-pressed="false">Settled only</button>
+          </div>
+        </div>
+
+        <div class="lb-title" id="lbTitle">Loading</div>
+        <span class="lb-sub" id="lbSub">top eight</span>
+        <div class="board" id="board" aria-live="polite"></div>
+        <p class="lb-caption" id="lbCaption"></p>
+        <p class="scale-note" id="lbScale"></p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What the <span class="hue">units mean</span></h2>
+      <p>Every measure on the board in plain words, with the leader as it stands in the data.</p>
+      <div class="table-scroll">
+        <table class="data-table" id="unitTable">
+          <thead>
+            <tr><th>Measure</th><th>In plain words</th><th>Shown as</th><th>Top of the list</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Limits</span></h2>
+      <div class="panel">
+        <p>The heaviest elements have never been made in weighable amounts, so most of their bulk numbers are calculated from theory rather than measured on a bench. Everything from rutherfordium at 104 up to oganesson at 118 carries estimated values for density, and for melting and boiling points where any are listed at all. Those entries wear an <span class="tag est">est.</span> tag wherever they appear.</p>
+        <p>This matters most on the density board. Hassium is calculated at about 40.7 grams per cubic centimetre, well past osmium, and several of its neighbours are calculated past it too. Not one of those figures comes from weighing anything: hassium exists for about ten seconds at a time, as single atoms. Osmium at 22.587 is the densest thing anyone has actually put on a scale, and switching the board to settled measurements puts it back on top.</p>
+        <p>Francium and astatine sit in the same position for a different reason. Both occur in nature only in traces that decay within hours or minutes, so their densities, melting points, boiling points and atom sizes are estimates, and francium's electronegativity of 0.70 is an old calculated value. Later work suggests francium may in fact pull slightly harder than caesium, which would hand the low record to caesium at 0.79. Its measured ionisation energy already sits above caesium's.</p>
+        <p>A few values are honest oddities of pressure rather than errors. Helium's listed melting point of 0.95 kelvin only applies under squeeze; at ordinary air pressure it does not freeze. Carbon tops the melting list at 3,823 kelvin, but at ordinary pressure it turns straight from solid to vapour without a liquid stage in between, as arsenic does. Elements that sublime that way have no liquid span to report, so they sit out that board.</p>
+        <p>Abundance figures are averages over a whole crust or a whole universe, rounded in the sources to one or two significant figures. They are good for ranking and for order of magnitude, not for splitting hairs between neighbours. The comparison of crust share against universe share inherits that rounding twice over, so read it as a pattern rather than a league ladder.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li><span class="tag tier-1">T1</span> CRC Handbook of Chemistry and Physics, physical constants of the elements and abundance tables (CRC Press, current edition)</li>
+        <li><span class="tag tier-1">T1</span> Atomic Spectra Database, ionisation energies, National Institute of Standards and Technology &middot; <a href="https://physics.nist.gov/asd" rel="noopener">physics.nist.gov/asd</a></li>
+        <li><span class="tag tier-1">T1</span> Standard atomic weights, Commission on Isotopic Abundances and Atomic Weights &middot; <a href="https://ciaaw.org" rel="noopener">ciaaw.org</a></li>
+        <li><span class="tag tier-1">T1</span> Periodic table of elements and the 2016 naming of elements 113, 115, 117 and 118, International Union of Pure and Applied Chemistry &middot; <a href="https://iupac.org" rel="noopener">iupac.org</a></li>
+        <li><span class="tag tier-2">T2</span> Simmons et al., measurement of the first ionisation energy of francium, reported 1995</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="periodic-table.html"><div class="card"><span class="card-glyph">🧪</span><h3>The table</h3><p>All 118 laid out, coloured by whichever property you are chasing, with a card for each one.</p></div></a>
+        <a class="card-link" href="engineering.html"><div class="card"><span class="card-glyph">🔧</span><h3>Engineering</h3><p>Nine everyday jobs, each one solved by an element sitting at the far end of a scale.</p></div></a>
+        <a class="card-link" href="gnome.html"><div class="card"><span class="card-glyph">💎</span><h3>GNoME</h3><p>Past single elements: a flood of predicted crystals, and what a prediction is worth.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/elements.js"></script>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var EL = window.ELEMENTS || [];
+  if (!EL.length) return;
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- number helpers ---------- */
+  function num(v, dp) {
+    var s = Number(v).toFixed(dp);
+    var parts = s.split(".");
+    if (parts[1]) parts[1] = parts[1].replace(/0+$/, "");
+    var head = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts[1] ? head + "." + parts[1] : head;
+  }
+  function auto(v) {
+    var a = Math.abs(v);
+    return num(v, a >= 100 ? 0 : a >= 10 ? 1 : a >= 1 ? 2 : 3);
+  }
+  function celsius(k) { return num(k - 273.15, Math.abs(k - 273.15) >= 100 ? 0 : 1) + " °C"; }
+  /* abundance in parts per million reads as grams in a tonne, stepped into friendly units */
+  function perTonne(ppm) {
+    var g = ppm, u = "g";
+    if (g >= 1000) { g = g / 1000; u = "kg"; }
+    else if (g >= 1) { u = "g"; }
+    else if (g >= 1e-3) { g = g * 1e3; u = "mg"; }
+    else if (g >= 1e-6) { g = g * 1e6; u = "µg"; }
+    else if (g >= 1e-9) { g = g * 1e9; u = "ng"; }
+    else { g = g * 1e12; u = "pg"; }
+    return auto(g) + " " + u + "/t";
+  }
+
+  /* ---------- the twelve boards ---------- */
+  var PROPS = [
+    {
+      id: "density", chip: "Heavy for its size", title: "Heaviest for its size",
+      titleLo: "Lightest for its size", sub: "density",
+      get: function (e) { return e.density; },
+      est: function (e) { return e.est.indexOf("density") >= 0; },
+      fmt: function (v) { return v >= 0.01 ? num(v, v >= 10 ? 3 : 3) + " g/cm³" : auto(v * 1000) + " g/L"; },
+      gloss: "Density: how much a fixed lump of it weighs. Water sits at 1 gram per cubic centimetre, so anything above that sinks in a bucket and anything below floats. The gases at the bottom of this scale are shown in grams per litre instead, since a cubic centimetre of them weighs almost nothing."
+    },
+    {
+      id: "melt", chip: "Melting point", title: "Highest melting point",
+      titleLo: "Lowest melting point", sub: "melting point",
+      get: function (e) { return e.melt; },
+      est: function (e) { return e.est.indexOf("melt") >= 0; },
+      fmt: celsius,
+      gloss: "The temperature at which a solid gives way and turns liquid. A kitchen oven tops out near 250 degrees; steel puddles at about 1,500. Carbon leads this board, though at ordinary air pressure it skips the liquid stage and turns straight to vapour."
+    },
+    {
+      id: "boil", chip: "Boiling point", title: "Highest boiling point",
+      titleLo: "Lowest boiling point", sub: "boiling point",
+      get: function (e) { return e.boil; },
+      est: function (e) { return e.est.indexOf("boil") >= 0; },
+      fmt: celsius,
+      gloss: "The temperature at which a liquid gives up and turns to gas. Water goes at 100 degrees at sea level. The top of this board runs past 5,000 degrees, which is hotter than the visible surface of the Sun."
+    },
+    {
+      id: "span", chip: "Liquid span", title: "Longest run as a liquid",
+      titleLo: "Shortest run as a liquid", sub: "degrees between melting and boiling",
+      get: function (e) {
+        if (e.melt === null || e.boil === null) return null;
+        var d = e.boil - e.melt;
+        return d > 0 ? d : null;
+      },
+      est: function (e) { return e.est.indexOf("melt") >= 0 || e.est.indexOf("boil") >= 0; },
+      fmt: function (v) { return num(v, 0) + " deg"; },
+      gloss: "How wide a temperature window an element stays liquid in. Gallium melts in a warm hand at about 30 degrees and holds on until about 2,400, a span of roughly 2,370 degrees starting at body heat. A step in kelvin and a step in Celsius are the same size, so a span reads the same either way."
+    },
+    {
+      id: "mass", chip: "Weight of one atom", title: "Heaviest single atom",
+      titleLo: "Lightest single atom", sub: "atomic mass",
+      get: function (e) { return e.mass; },
+      est: function () { return false; },
+      fmt: function (v) { return num(v, v >= 100 ? 1 : 3) + " u"; },
+      gloss: "The weight of one atom, counted in atomic mass units. One carbon atom is defined as 12, so the whole scale hangs off the charcoal in a barbecue. The heaviest atoms here weigh close to 300 times a hydrogen atom."
+    },
+    {
+      id: "radius", chip: "Atom width", title: "Widest atom",
+      titleLo: "Narrowest atom", sub: "covalent radius",
+      get: function (e) { return e.radius; },
+      est: function (e) { return e.est.indexOf("radius") >= 0; },
+      fmt: function (v) { return num(v, 0) + " pm"; },
+      gloss: "How far the atom reaches when it bonds to a neighbour, in picometres: millionths of a millionth of a metre. Blow the narrowest atom up to a twenty cent coin and the widest one, on the same scale, is a dinner plate."
+    },
+    {
+      id: "en", chip: "Pull on shared electrons", title: "Hardest pull on shared electrons",
+      titleLo: "Weakest pull on shared electrons", sub: "electronegativity, Pauling scale",
+      get: function (e) { return e.en; },
+      est: function (e) { return e.est.indexOf("en") >= 0; },
+      fmt: function (v) { return num(v, 2); },
+      gloss: "When two atoms share electrons, one pulls harder. This is the rating for that pull, running from about 0.7 up to 3.98. The high end grabs; the low end gives. Elements with no rating at all, mostly the noble gases that rarely bond, sit this board out."
+    },
+    {
+      id: "ion1", chip: "Grip on its own electron", title: "Tightest grip on its own electron",
+      titleLo: "Loosest grip on its own electron", sub: "first ionisation energy",
+      get: function (e) { return e.ion1; },
+      est: function (e) { return e.est.indexOf("ion1") >= 0; },
+      fmt: function (v) { return num(v, 0) + " kJ/mol"; },
+      gloss: "The energy needed to pull one electron off every atom in a fixed parcel of them. Take a one litre kettle boil as your unit, about 335 kilojoules: the tightest grip costs about seven kettles, the loosest a bit over one."
+    },
+    {
+      id: "abundCrust", chip: "How much in the crust", title: "Most of Earth's crust",
+      titleLo: "Rarest in Earth's crust", sub: "abundance in the crust",
+      get: function (e) { return e.abundCrust; },
+      est: function () { return false; },
+      fmt: perTonne,
+      gloss: "Read as weight in a tonne of crust, which is about a ute tray piled with ordinary rock. The top of the board is measured in kilograms per tonne; the bottom runs down to picograms, which is millionths of a millionth of a gram. Thirty elements are so scarce or so short-lived that no crust figure is listed for them at all."
+    },
+    {
+      id: "abundUni", chip: "How much in the universe", title: "Most of the universe",
+      titleLo: "Scarcest in the universe", sub: "abundance in ordinary matter",
+      get: function (e) { return e.abundUni; },
+      est: function () { return false; },
+      fmt: perTonne,
+      gloss: "The same reading, applied to a tonne of the universe's ordinary matter. Two elements take about 980 kilograms of that tonne between them, and everything else shares what is left."
+    },
+    {
+      id: "ratio", chip: "Piled up on Earth", title: "Most concentrated by Earth",
+      titleLo: "Least concentrated by Earth", sub: "crust share against universe share",
+      get: function (e) {
+        if (!e.abundCrust || !e.abundUni) return null;
+        return e.abundCrust / e.abundUni;
+      },
+      est: function () { return false; },
+      fmt: function (v) { return (v >= 1 ? num(v, 0) : num(v, 3)) + "×"; },
+      gloss: "How many times richer the crust is in an element than the universe as a whole. Rock-forming elements settle into a young planet and stay; light gases mostly drift away. Both sets of figures are rounded, so this one shows a pattern rather than an exact order."
+    },
+    {
+      id: "discovered", chip: "Year first identified", title: "Most recently identified",
+      titleLo: "Longest known", sub: "year first identified",
+      get: function (e) { return e.discovered === null ? 0 : e.discovered; },
+      est: function () { return false; },
+      fmt: function (v) { return v === 0 ? "ancient" : String(v); },
+      spread: true,
+      gloss: "The year an element was first picked out as its own substance. Ten of them, including gold, iron and sulfur, were worked long before anyone recorded a date, so they simply read as ancient. At the other end, the newest arrivals were confirmed within living memory."
+    }
+  ];
+
+  var activeIdx = 0, dir = "hi", settledOnly = false;
+
+  /* ---------- hero stats, read from the data ---------- */
+  var hero = document.getElementById("heroStats");
+  if (hero) {
+    var METALS = ["alkali", "alkaline", "transition", "post-transition", "lanthanide", "actinide"];
+    function best(fieldFn, filterFn) {
+      var pool = EL.filter(filterFn);
+      pool.sort(function (a, b) { return fieldFn(b) - fieldFn(a); });
+      return pool[0];
+    }
+    var densest = best(function (e) { return e.density; }, function (e) {
+      return e.density !== null && e.est.indexOf("density") < 0;
+    });
+    var hotMetal = best(function (e) { return e.melt; }, function (e) {
+      return e.melt !== null && e.est.indexOf("melt") < 0 && METALS.indexOf(e.cat) >= 0;
+    });
+    var coldest = EL.filter(function (e) { return e.boil !== null; })
+      .sort(function (a, b) { return a.boil - b.boil; })[0];
+    var cards = [
+      [String(EL.length), "elements on the table, from hydrogen to oganesson"],
+      [num(densest.density, 3), "grams per cubic centimetre: " + densest.name + ", the densest ever weighed"],
+      [celsius(hotMetal.melt), hotMetal.name + " melts here, the highest of any metal"],
+      [celsius(coldest.boil), coldest.name + " boils here, closer to absolute zero than anything else"]
+    ];
+    hero.innerHTML = cards.map(function (c) {
+      return '<div class="stat"><span class="num">' + c[0] + '</span><span class="lbl">' + c[1] + "</span></div>";
+    }).join("");
+  }
+
+  /* ---------- picker chips ---------- */
+  var chipWrap = document.getElementById("propChips");
+  PROPS.forEach(function (p, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.textContent = p.chip;
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.addEventListener("click", function () {
+      activeIdx = i;
+      Array.prototype.forEach.call(chipWrap.children, function (c, j) {
+        c.setAttribute("aria-pressed", j === i ? "true" : "false");
+      });
+      render();
+    });
+    chipWrap.appendChild(b);
+  });
+
+  function wireSeg(id, handler) {
+    var seg = document.getElementById(id);
+    Array.prototype.forEach.call(seg.querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(seg.querySelectorAll("button"), function (o) {
+          o.setAttribute("aria-pressed", o === b ? "true" : "false");
+        });
+        handler(b);
+        render();
+      });
+    });
+  }
+  wireSeg("dirSeg", function (b) { dir = b.getAttribute("data-dir"); });
+  wireSeg("estSeg", function (b) { settledOnly = b.getAttribute("data-est") === "settled"; });
+
+  /* ---------- the board ---------- */
+  var board = document.getElementById("board");
+  var lbTitle = document.getElementById("lbTitle");
+  var lbSub = document.getElementById("lbSub");
+  var lbCaption = document.getElementById("lbCaption");
+  var lbScale = document.getElementById("lbScale");
+  var TOP = 8;
+
+  function ranked(p) {
+    var rows = [];
+    EL.forEach(function (e) {
+      var v = p.get(e);
+      if (v === null || v === undefined || isNaN(v)) return;
+      var isEst = p.est(e);
+      if (settledOnly && isEst) return;
+      rows.push({ e: e, v: v, est: isEst });
+    });
+    rows.sort(function (a, b) { return dir === "hi" ? b.v - a.v : a.v - b.v; });
+    return rows;
+  }
+
+  function render() {
+    var p = PROPS[activeIdx];
+    var all = ranked(p);
+    var rows = all.slice(0, TOP);
+    lbTitle.textContent = dir === "hi" ? p.title : p.titleLo;
+    lbSub.textContent = p.sub + " · top eight of " + all.length + " with a value";
+
+    if (!rows.length) {
+      board.innerHTML = '<p class="lb-caption">No settled measurements are listed for this one.</p>';
+      lbCaption.textContent = "";
+      lbScale.textContent = "";
+      return;
+    }
+
+    var vals = rows.map(function (r) { return r.v; });
+    var max = Math.max.apply(null, vals), min = Math.min.apply(null, vals);
+    var proportional = dir === "hi" && !p.spread && min >= 0;
+
+    board.innerHTML = rows.map(function (r, i) {
+      var w;
+      if (proportional) {
+        w = max > 0 ? Math.max(5, (r.v / max) * 100) : 100;
+      } else {
+        w = max === min ? 100 : 100 - 68 * ((r.v - min) / (max - min));
+        if (dir === "hi") w = max === min ? 100 : 32 + 68 * ((r.v - min) / (max - min));
+      }
+      var cat = "cat-" + (r.e.cat || "unknown");
+      var tag = r.est ? ' <span class="tag est">est.</span>' : "";
+      return '<div class="bar-row" data-rank="' + (i + 1) + '">' +
+        '<span class="who"><span class="rank-no">' + (i + 1) + '</span>' +
+        '<span class="el-chip ' + cat + '">' + r.e.sym + "</span>" +
+        '<span class="nm">' + r.e.name + "</span>" + tag + "</span>" +
+        '<div class="bar" data-w="' + w.toFixed(2) + '" style="width:0; background: linear-gradient(90deg, var(--' + cat + '), var(--accent2)); box-shadow: 0 0 16px -3px color-mix(in srgb, var(--' + cat + ') 65%, transparent);"></div>' +
+        '<span class="val">' + p.fmt(r.v) + "</span>" +
+        "</div>";
+    }).join("");
+
+    var bars = board.querySelectorAll(".bar");
+    Array.prototype.forEach.call(bars, function (b, i) {
+      b.style.transitionDelay = REDUCED ? "0ms" : (i * 45) + "ms";
+    });
+    if (REDUCED) {
+      Array.prototype.forEach.call(bars, function (b) { b.style.width = b.getAttribute("data-w") + "%"; });
+    } else {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          Array.prototype.forEach.call(bars, function (b) { b.style.width = b.getAttribute("data-w") + "%"; });
+        });
+      });
+    }
+
+    var lead = rows[0];
+    lbCaption.innerHTML = p.gloss + " Top of this list: <b>" + lead.e.name + "</b> at <b>" +
+      p.fmt(lead.v) + "</b>" + (lead.est ? ", a calculated estimate" : "") + ".";
+
+    var estCount = rows.filter(function (r) { return r.est; }).length;
+    var scale = proportional
+      ? "Bar lengths are drawn against the leader, so you can read the gaps straight off them."
+      : "In this direction the bars show the running order; the numbers carry the size of the gaps.";
+    if (estCount) {
+      scale += " " + estCount + " of the eight values shown " + (estCount === 1 ? "is an estimate" : "are estimates") +
+        " rather than a settled measurement.";
+    }
+    if (settledOnly) scale += " Estimated values are set aside.";
+    lbScale.textContent = scale;
+  }
+
+  render();
+
+  /* ---------- unit decoder table, built from the same list ---------- */
+  var tbody = document.querySelector("#unitTable tbody");
+  if (tbody) {
+    tbody.innerHTML = PROPS.map(function (p) {
+      var saveDir = dir, saveSettled = settledOnly;
+      dir = "hi"; settledOnly = false;
+      var top1 = ranked(p)[0];
+      dir = saveDir; settledOnly = saveSettled;
+      var plain = p.gloss.split(". ")[0].replace(/^[^:]*: /, "");
+      plain = plain.charAt(0).toUpperCase() + plain.slice(1);
+      return "<tr>" +
+        '<td class="lead">' + p.chip + "</td>" +
+        "<td>" + plain + ".</td>" +
+        '<td class="mono-cell">' + p.sub + "</td>" +
+        '<td class="mono-cell">' + (top1 ? top1.e.name + " · " + p.fmt(top1.v) : "–") + "</td>" +
+        "</tr>";
+    }).join("");
+  }
+})();
+</script>
+</body>
+</html>
