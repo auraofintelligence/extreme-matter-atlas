@@ -741,7 +741,7 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
     if (e.abundCrust !== null) chip("In the crust", abundWords(e.abundCrust), isEst(e, "abundCrust"));
     if (e.halfLife) chip("Half-life", e.halfLife, false);
     if (e.discovered) chip("Discovered", String(e.discovered), false);
-    else if (e.abundCrust !== null) chip("Discovered", "known since antiquity", false);
+    else if (e.abundCrust !== null) chip("Known since", "antiquity", false);
     host.innerHTML = out.join("");
   });
 
