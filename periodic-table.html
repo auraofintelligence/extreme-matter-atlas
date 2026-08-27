@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Periodic Table · Extreme Matter Atlas</title>
+<meta name="description" content="All 118 elements on one chart: colour the boxes by density, melting point, size or how common they are, and open any box for its full card.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page-specific styles, scoped to this page */
+body[data-page="table"] .ptable {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0, 1fr));
+  gap: 4px;
+  min-width: 980px;
+  padding: 12px;
+}
+body[data-page="table"] .ptable .el-tile {
+  aspect-ratio: 1 / 1;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden; padding: 4px 4px 5px;
+}
+body[data-page="table"] .ptable .el-tile .z { font-size: 9px; letter-spacing: 0.02em; }
+body[data-page="table"] .ptable .el-tile .sym {
+  font-size: clamp(13px, 1.4vw, 17px); letter-spacing: -0.01em; margin: 1px 0;
+}
+body[data-page="table"] .ptable .el-tile .nm {
+  display: block; font-size: 7.5px; font-weight: 600; opacity: 0.78;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body[data-page="table"] .ptable .el-tile .pv {
+  display: none; font-family: var(--font-mono); font-size: 8px; font-weight: 600;
+  opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body[data-page="table"] .ptable.mode-prop .el-tile .nm { display: none; }
+body[data-page="table"] .ptable.mode-prop .el-tile .pv { display: block; }
+body[data-page="table"] .el-tile.dim { opacity: 0.13; filter: saturate(0.25); }
+body[data-page="table"] .el-tile.dim:hover, body[data-page="table"] .el-tile.dim:focus-visible { opacity: 0.5; }
+body[data-page="table"] .ptable.show-records .el-tile.has-rec {
+  box-shadow: 0 0 0 2px var(--ink), 0 0 22px 1px rgba(242, 245, 255, 0.55);
+  z-index: 3;
+}
+body[data-page="table"] .el-tile.picked { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+body[data-page="table"] .el-ph {
+  aspect-ratio: 1 / 1; border: 1px dashed var(--line-bright); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: var(--font-mono); font-size: 8.5px; line-height: 1.2; color: var(--muted);
+}
+body[data-page="table"] .ser-label {
+  grid-column: 1 / 4; display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 10px; text-align: right; line-height: 1.25;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.04em; color: var(--muted);
+}
+body[data-page="table"] .ptable-gap { grid-column: 1 / -1; height: 18px; }
+
+body[data-page="table"] .legend {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 6px 0 10px;
+}
+body[data-page="table"] .legend .ramp {
+  height: 14px; flex: 1 1 200px; min-width: 160px; border-radius: 999px;
+  border: 1px solid var(--line-bright);
+  background: linear-gradient(90deg, #60a5fa, #2dd4bf, #a3e635, #fbbf24, #fb7185);
+}
+body[data-page="table"] .legend .end {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink); white-space: nowrap;
+}
+body[data-page="table"] .legend .nodata {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+body[data-page="table"] .legend .nodata i {
+  width: 15px; height: 15px; border-radius: 4px; display: inline-block;
+  background: #121b33; border: 1px solid var(--line-bright);
+}
+body[data-page="table"] .legend-note { font-size: 14.5px; color: var(--muted); max-width: 64em; }
+body[data-page="table"] .hint {
+  font-size: 13.5px; color: var(--muted); margin-top: 6px;
+}
+body[data-page="table"] #searchStatus {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); min-height: 1.2em;
+}
+
+body[data-page="table"] .fam-key {
+  list-style: none; display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); margin-top: 18px;
+}
+body[data-page="table"] .fam-key li {
+  display: grid; grid-template-columns: 36px 1fr; gap: 13px; align-items: start;
+  padding: 13px 15px; border: 1px solid var(--line); border-radius: 14px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+}
+body[data-page="table"] .fam-key .sw {
+  width: 36px; height: 36px; border-radius: 10px; display: flex;
+  align-items: center; justify-content: center;
+  color: #04060c; font-weight: 800; font-size: 12px;
+}
+body[data-page="table"] .fam-key b { display: block; font-size: 14.5px; margin-bottom: 2px; }
+body[data-page="table"] .fam-key .d { font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+
+body[data-page="table"] .unit-list {
+  list-style: none; display: grid; gap: 9px; margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+body[data-page="table"] .unit-list li {
+  font-size: 14px; color: var(--muted); line-height: 1.5;
+  padding: 12px 15px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel);
+}
+body[data-page="table"] .unit-list b {
+  font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-right: 8px;
+}
+
+body[data-page="table"] .scrim {
+  position: fixed; inset: 0; z-index: 70; background: rgba(4, 6, 12, 0.62);
+  opacity: 0; pointer-events: none; transition: opacity .28s ease;
+}
+body[data-page="table"] .scrim.on { opacity: 1; pointer-events: auto; }
+body[data-page="table"] .drawer .el-head {
+  display: flex; gap: 15px; align-items: flex-start; padding-right: 44px; margin-bottom: 14px;
+}
+body[data-page="table"] .drawer .el-badge {
+  width: 78px; height: 78px; flex: 0 0 auto; border-radius: 16px; color: #04060c;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+body[data-page="table"] .drawer .el-badge .s {
+  font-family: var(--font-display); font-weight: 900; font-size: 27px; line-height: 1;
+}
+body[data-page="table"] .drawer .el-badge .n { font-family: var(--font-mono); font-size: 10px; margin-top: 4px; }
+body[data-page="table"] .drawer .el-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 25px; line-height: 1.1; margin-bottom: 9px;
+}
+body[data-page="table"] .drawer .prop {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; align-items: baseline;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+body[data-page="table"] .drawer .prop .k { font-size: 13.5px; color: var(--muted); }
+body[data-page="table"] .drawer .prop .v { font-family: var(--font-mono); font-size: 14px; text-align: right; }
+body[data-page="table"] .drawer .prop .plain {
+  grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); line-height: 1.45;
+}
+body[data-page="table"] .drawer .sec-h {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent); margin: 22px 0 8px;
+}
+body[data-page="table"] .drawer .rec-list { list-style: none; }
+body[data-page="table"] .drawer .rec-list li {
+  font-size: 14px; padding: 10px 13px; margin-bottom: 8px; border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+  border-left: 3px solid var(--accent);
+}
+body[data-page="table"] .drawer .drawer-note {
+  margin-top: 18px; font-size: 12.5px; color: var(--muted); line-height: 1.5;
+}
+@media (max-width: 620px) {
+  body[data-page="table"] .drawer .el-badge { width: 64px; height: 64px; }
+  body[data-page="table"] .drawer .el-badge .s { font-size: 22px; }
+}
+</style>
+</head>
+<body data-page="table">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Periodic table · 118 elements</span>
+      <h1 class="display">One chart, every ingredient</h1>
+      <p class="lede">The steel in a kitchen sink, the lithium in a phone battery, the aluminium in a stubby can, the copper in the wire behind your wall: nearly everything you can point at is built from the <strong>118</strong> boxes below, and most of it from a couple of dozen of them. Colour the chart by whatever you are curious about, then click a box for the full card.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">118</span><span class="lbl">boxes on the chart, one per element</span></div>
+        <div class="stat"><span class="num">94</span><span class="lbl">turn up in nature, a few only as traces</span></div>
+        <div class="stat"><span class="num">10</span><span class="lbl">known since ancient times, gold and iron among them</span></div>
+        <div class="stat"><span class="num">2010</span><span class="lbl">the most recent box filled, tennessine</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chart">
+    <div class="wrap">
+      <h2>The <span class="hue">chart</span></h2>
+      <p>Two figures on it are worth holding on to. Carbon melts at 3,823 K, about 3,550 °C: a wood-fired pizza oven runs near 450 °C, so carbon needs roughly eight of those stacked before it gives in. And osmium is the heaviest stuff here that anyone has ever weighed. Fill a 600 mL drink bottle with it and you would be holding about 13.5 kg, more than a full slab of cans.</p>
+      <p>Colour the chart by share of the crust and one box burns brightest: oxygen, which is about 46 per cent of the weight of the ground under your feet, locked into rock rather than floating about as air.</p>
+
+      <div class="control-row">
+        <div class="control">
+          <label for="colourBy">Colour by</label>
+          <select id="colourBy"></select>
+        </div>
+        <div class="control">
+          <label for="elSearch">Find an element</label>
+          <input type="search" id="elSearch" placeholder="name, symbol or number" autocomplete="off" spellcheck="false">
+        </div>
+        <button type="button" class="btn ghost" id="recBtn" aria-pressed="false">Highlight record holders</button>
+      </div>
+      <p id="searchStatus" role="status" aria-live="polite"></p>
+
+      <div class="legend" id="legend"></div>
+      <p class="legend-note" id="legendNote"></p>
+
+      <div class="table-scroll">
+        <div class="ptable" id="ptable" role="group" aria-label="Periodic table of the 118 elements"></div>
+      </div>
+      <p class="hint">Click or tap a box for its card. Arrow keys walk the chart, Enter opens a card, Escape closes it. On a narrow screen the chart slides sideways inside its own frame.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>How to <span class="hue">read it</span></h2>
+      <p>The chart is a seating plan. Every element gets one box, and where that box sits tells you how the atom is put together.</p>
+      <div class="two-col">
+        <div class="panel">
+          <h3>The small number</h3>
+          <p>The number in the corner counts the protons packed into the middle of the atom: one for hydrogen, six for carbon, seventy-nine for gold. That count is the whole identity of an element. Change it and you are holding something else entirely, which is why turning lead into gold was never going to work over a kitchen stove.</p>
+        </div>
+        <div class="panel">
+          <h3>Reading across</h3>
+          <p>Start top left and read like a page of text: left to right, then drop down. Each new row wraps one more layer of electrons around the middle, so atoms further down the chart are bigger and heavier than the ones above them. The top row holds only two boxes because the first layer has room for only two.</p>
+        </div>
+        <div class="panel">
+          <h3>Reading down</h3>
+          <p>Now read straight down a column instead. A column is a family: its members carry the same number of electrons out on the rim, so they behave alike. The far left column holds metals soft enough to cut with a butter knife. The far right column holds gases that mostly keep to themselves.</p>
+        </div>
+        <div class="panel">
+          <h3>The two loose rows</h3>
+          <p>The two rows sitting below the chart belong inside it, at the dashed gaps in rows six and seven. They are lifted out so the whole thing fits on a page. Slot them back where they belong and the chart would be close to twice as wide.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:28px">Units on the cards</h3>
+      <ul class="unit-list">
+        <li><b>K</b> Kelvin, a temperature scale that starts at the coldest anything can get. Ice melts at 273 K and a kettle boils at 373 K. Each card gives the everyday Celsius figure alongside.</li>
+        <li><b>g/cm³</b> What one cubic centimetre weighs, about a sugar cube's worth. Water is 1, so anything under 1 is lighter than water.</li>
+        <li><b>u</b> How heavy one atom is, measured against a carbon atom set at 12.</li>
+        <li><b>pm</b> A picometre: a millionth of a millionth of a metre. Atoms measure a hundred or two of them across.</li>
+        <li><b>ppm</b> Parts per million, which works out as grams in a tonne. Ten ppm means ten grams of it in a tonne of rock.</li>
+        <li><b>kJ/mol</b> The energy needed to pull one electron away, counted over a standard batch of atoms rather than a single one.</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The <span class="hue">families</span></h2>
+      <p>The starting colours group the boxes into families that behave alike. Here is what each family gets up to, and where you have already met it.</p>
+      <ul class="fam-key" id="famKey"></ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Limits</span></h2>
+      <div class="panel">
+        <p>Every figure on a card describes the element in its ordinary form, near room temperature, with gases measured at normal air pressure. Squeeze an element, chill it, or catch it in a different form, and the numbers move. Carbon is the clearest example: at normal air pressure it goes straight from solid to vapour instead of melting, so the melting figure listed for it comes from work done under pressure.</p>
+        <p>A dashed <span class="tag est">est.</span> tag beside a figure means it was worked out from theory rather than weighed at a bench. Those cluster among the heaviest boxes, where only a handful of atoms have ever existed and each one fell apart in a moment. Nobody has held a gram of hassium to put on a scale.</p>
+        <p>Crustal shares vary between surveys, since the crust is not the same everywhere you drill. Read them as a good guide to the order of size rather than to the last digit. Sizes on the cards are covalent radii: how far the middle of an atom sits from the middle of a partner it is bonded to. Measure an atom another way and you get a different number for the same element.</p>
+        <p>Records listed on a card are measured records held under ordinary conditions. Change the conditions and some of them change hands.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li><span class="tag tier-1">T1</span> Periodic Table of the Elements, International Union of Pure and Applied Chemistry · <a href="https://iupac.org/what-we-do/periodic-table-of-elements/" rel="noopener">iupac.org/what-we-do/periodic-table-of-elements</a></li>
+        <li><span class="tag tier-1">T1</span> Standard Atomic Weights, IUPAC Commission on Isotopic Abundances and Atomic Weights · <a href="https://ciaaw.org" rel="noopener">ciaaw.org</a></li>
+        <li><span class="tag tier-1">T1</span> Atomic Weights and Isotopic Compositions, National Institute of Standards and Technology · <a href="https://physics.nist.gov/Comp" rel="noopener">physics.nist.gov/Comp</a></li>
+        <li><span class="tag tier-1">T1</span> CRC Handbook of Chemistry and Physics, CRC Press: physical constants of the elements and crustal abundances</li>
+        <li><span class="tag tier-1">T1</span> Half-lives from the National Nuclear Data Center, Brookhaven National Laboratory · <a href="https://www.nndc.bnl.gov" rel="noopener">nndc.bnl.gov</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏆</span><h3>Records</h3><p>The boxes that hold the extremes: densest, hottest, rarest, most stubborn. Ranked side by side, with an analogy for each figure.</p></div></a>
+        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">🧊</span><h3>Crystal Lab</h3><p>Take a handful of these elements and stack them into lattices yourself, then twist the layers and watch the patterns bloom.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerName" aria-hidden="true">
+  <button type="button" class="close-x" id="drawerClose" aria-label="Close the element card">✕</button>
+  <div id="drawerBody"></div>
+</aside>
+
+<div id="site-footer"></div>
+<script src="assets/elements.js"></script>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var E = (window.ELEMENTS || []).slice();
+  if (!E.length) return;
+
+  var EMA = window.EMA || {};
+  var fmt = EMA.fmt || function (n, dp) {
+    if (n === null || n === undefined || isNaN(n)) return "?";
+    return Number(n).toFixed(dp === undefined ? 0 : dp).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+  var catClass = EMA.catClass || function (c) { return "cat-" + (c || "unknown"); };
+
+  /* ---------- family names and plain descriptions ---------- */
+  var FAMILIES = [
+    { key: "alkali", name: "Alkali metals",
+      d: "Soft, light metals that react hard with water. Lithium from this column is the moving part of a phone battery; sodium is half of table salt." },
+    { key: "alkaline", name: "Alkaline earth metals",
+      d: "Still keen to react, but steadier than their neighbours. Calcium from here makes up most of your bones; magnesium goes into light bike frames." },
+    { key: "transition", name: "Transition metals",
+      d: "The workhorse metals: iron, copper, titanium, nickel, gold. Most of the metal you touch in a day comes out of this block." },
+    { key: "post-transition", name: "Post-transition metals",
+      d: "Softer metals that melt at friendlier temperatures. Aluminium in a drink can, tin in the solder holding a circuit board together, lead in a car battery." },
+    { key: "metalloid", name: "Metalloids",
+      d: "In-between materials, part metal and part not, which is exactly why they are useful. Silicon from here is the chip in your phone." },
+    { key: "nonmetal", name: "Other nonmetals",
+      d: "The stuff of air, water and living things. Oxygen to breathe, carbon for the frame of every living cell, sulfur for the tyres on your car." },
+    { key: "halogen", name: "Halogens",
+      d: "Keen reactors that pair up with metals to make salts. Chlorine keeps a pool clean; fluorine goes into toothpaste; iodine goes into table salt." },
+    { key: "noble", name: "Noble gases",
+      d: "Loners that mostly refuse to react with anything. Helium in a party balloon, argon sealed inside double glazing, neon glowing in an old shop sign." },
+    { key: "lanthanide", name: "Lanthanides, often called rare earths",
+      d: "Metals that give small magnets and bright screens their punch. Neodymium drives the speakers in your headphones; europium lit the red in older televisions." },
+    { key: "actinide", name: "Actinides",
+      d: "Heavy metals, mostly radioactive, meaning their atoms break down over time. Uranium fuels a power station; a speck of americium sits in most smoke alarms." },
+    { key: "unknown", name: "Family not yet settled",
+      d: "The newest and heaviest boxes. Only a handful of atoms of each have ever been made, and they fall apart in a blink, so where they belong is still an open question." }
+  ];
+  var CAT_LABEL = {};
+  FAMILIES.forEach(function (f) { CAT_LABEL[f.key] = f.name; });
+
+  /* ---------- number helpers ---------- */
+  function trim(n) {
+    var a = Math.abs(n);
+    var dp = a >= 100 ? 0 : a >= 10 ? 1 : a >= 1 ? 2 : 3;
+    return String(parseFloat(Number(n).toFixed(dp)));
+  }
+  function compact(n) {
+    var a = Math.abs(n);
+    if (n === 0) return "0";
+    if (a >= 1e6) return trim(n / 1e6) + "M";
+    if (a >= 1e4) return trim(n / 1e3) + "k";
+    if (a < 0.001) return Number(n).toExponential(0);
+    return trim(n);
+  }
+  function kelvinPair(k) {
+    return fmt(k, k < 100 ? 2 : 0) + " K (" + fmt(k - 273.15, 0) + " °C)";
+  }
+  function ppmLong(v) {
+    if (v >= 1000) return fmt(v, 0) + " ppm";
+    if (v >= 1) return trim(v) + " ppm";
+    return Number(v).toExponential(1) + " ppm";
+  }
+  function ppmPlain(v, what) {
+    if (v >= 1000) return "About " + trim(v / 1000) + " kg in every tonne of " + what + ".";
+    if (v >= 1) return "About " + trim(v) + " g in every tonne of " + what + ".";
+    if (v >= 0.001) return "About " + trim(v * 1000) + " mg in every tonne of " + what + ".";
+    return "Less than a milligram in every tonne of " + what + ".";
+  }
+  function densityPlain(d) {
+    if (d < 0.02) return "A gas in its ordinary form, so this figure is the gas at normal air pressure.";
+    if (d < 1) return "Lighter than the same amount of water.";
+    return "About " + trim(d) + " times as heavy as the same amount of water.";
+  }
+
+  /* ---------- colour-by modes ---------- */
+  var MODES = [
+    { key: "cat", label: "Family",
+      note: "Colours group the boxes into families that behave alike. The full key sits further down the page." },
+    { key: "density", label: "Density", log: true,
+      note: "Density is what a fixed amount weighs. Water sits at 1 g/cm³, the gases at the top of the chart sit near zero, and osmium tops it at 22.6.",
+      tile: function (v) { return compact(v); },
+      end: function (v) { return compact(v) + " g/cm³"; } },
+    { key: "melt", label: "Melting point",
+      note: "The temperature where a solid gives up and turns liquid. Ice does it at 273 K; caesium melts in a warm hand; carbon holds out past 3,800 K.",
+      tile: function (v) { return fmt(v, 0); },
+      end: function (v) { return fmt(v, v < 100 ? 1 : 0) + " K"; } },
+    { key: "boil", label: "Boiling point",
+      note: "The temperature where a liquid turns to vapour. A kettle gets water there at 373 K. Helium needs 4 K, colder than deep space; rhenium needs 5,869 K.",
+      tile: function (v) { return fmt(v, 0); },
+      end: function (v) { return fmt(v, v < 100 ? 1 : 0) + " K"; } },
+    { key: "en", label: "Pull on shared electrons",
+      note: "When two atoms share electrons, one usually pulls harder. That tug is scored on the Pauling scale, from 0.7 for caesium up to 3.98 for fluorine. Six boxes hold no score, because they hardly share at all.",
+      tile: function (v) { return trim(v); },
+      end: function (v) { return trim(v) + " on the scale"; } },
+    { key: "ion1", label: "Energy to strip one electron",
+      note: "How tightly the outermost electron is held. Caesium lets one go for 376 kJ/mol; helium clings on until 2,372. Metals sit low, and that looseness is what makes them conduct.",
+      tile: function (v) { return fmt(v, 0); },
+      end: function (v) { return fmt(v, 0) + " kJ/mol"; } },
+    { key: "radius", label: "Atom size",
+      note: "How far the middle of an atom sits from the middle of a partner it is bonded to, in picometres. Helium is the tightest at 28; francium spreads to about 260, roughly nine times as far.",
+      tile: function (v) { return fmt(v, 0); },
+      end: function (v) { return fmt(v, 0) + " pm"; } },
+    { key: "abundCrust", label: "Share of Earth's crust", log: true,
+      note: "How much of the ground is made of it, in grams per tonne. Oxygen runs to 461,000 of them, close to half the weight of the crust; astatine is so scarce the whole crust may hold less than a teaspoon at any moment.",
+      tile: function (v) { return compact(v); },
+      end: function (v) { return compact(v) + " ppm"; } },
+    { key: "discovered", label: "Year first found",
+      note: "The year each element was pinned down. Ten boxes stay dark here: gold, iron, carbon and seven others have been worked since ancient times, long before anyone wrote a date on it.",
+      tile: function (v) { return String(v); },
+      end: function (v) { return String(v); } }
+  ];
+
+  var RAMP = [[96, 165, 250], [45, 212, 191], [163, 230, 53], [251, 191, 36], [251, 113, 133]];
+  function rampColour(t) {
+    t = Math.max(0, Math.min(1, t));
+    var s = t * (RAMP.length - 1);
+    var i = Math.min(RAMP.length - 2, Math.floor(s));
+    var f = s - i, a = RAMP[i], b = RAMP[i + 1];
+    return "rgb(" + Math.round(a[0] + (b[0] - a[0]) * f) + "," +
+                    Math.round(a[1] + (b[1] - a[1]) * f) + "," +
+                    Math.round(a[2] + (b[2] - a[2]) * f) + ")";
+  }
+  var NO_DATA_BG = "#121b33";
+
+  function extent(key) {
+    var lo = null, hi = null, loEl = null, hiEl = null;
+    E.forEach(function (e) {
+      var v = e[key];
+      if (v === null || v === undefined) return;
+      if (lo === null || v < lo) { lo = v; loEl = e; }
+      if (hi === null || v > hi) { hi = v; hiEl = e; }
+    });
+    return { lo: lo, hi: hi, loEl: loEl, hiEl: hiEl };
+  }
+
+  /* ---------- build the grid ---------- */
+  var grid = document.getElementById("ptable");
+  var tiles = [];
+  var byPos = {};
+  var recordCount = 0;
+
+  function tileFor(e) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "el-tile " + catClass(e.cat);
+    b.style.gridColumn = String(e.xpos);
+    b.style.gridRow = String(e.ypos);
+    b.setAttribute("data-x", e.xpos);
+    b.setAttribute("data-y", e.ypos);
+    b.setAttribute("aria-label", e.name + ", symbol " + e.sym + ", atomic number " + e.z + ", " + CAT_LABEL[e.cat]);
+    b.innerHTML = '<span class="z">' + e.z + '</span>' +
+                  '<span class="sym">' + e.sym + '</span>' +
+                  '<span class="nm">' + e.name + '</span>' +
+                  '<span class="pv"></span>';
+    if (e.records && e.records.length) { b.classList.add("has-rec"); recordCount++; }
+    b.addEventListener("click", function () { openCard(e, b); });
+    b._el = e;
+    tiles.push(b);
+    byPos[e.xpos + "," + e.ypos] = b;
+    return b;
+  }
+
+  E.forEach(function (e) { grid.appendChild(tileFor(e)); });
+
+  function placeholder(row, text) {
+    var d = document.createElement("div");
+    d.className = "el-ph";
+    d.setAttribute("aria-hidden", "true");
+    d.style.gridColumn = "3";
+    d.style.gridRow = String(row);
+    d.innerHTML = text;
+    grid.appendChild(d);
+  }
+  placeholder(6, "57<br>to<br>71");
+  placeholder(7, "89<br>to<br>103");
+
+  var gap = document.createElement("div");
+  gap.className = "ptable-gap";
+  gap.style.gridRow = "8";
+  gap.setAttribute("aria-hidden", "true");
+  grid.appendChild(gap);
+
+  function seriesLabel(row, text) {
+    var d = document.createElement("div");
+    d.className = "ser-label";
+    d.style.gridRow = String(row);
+    d.innerHTML = text;
+    grid.appendChild(d);
+  }
+  seriesLabel(9, "Lanthanides<br>57 to 71");
+  seriesLabel(10, "Actinides<br>89 to 103");
+
+  /* ---------- family key ---------- */
+  var famKey = document.getElementById("famKey");
+  FAMILIES.forEach(function (f) {
+    var n = E.filter(function (e) { return e.cat === f.key; }).length;
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="sw ' + catClass(f.key) + '">' + n + '</span>' +
+                   '<span><b>' + f.name + '</b><span class="d">' + f.d + '</span></span>';
+    famKey.appendChild(li);
+  });
+
+  /* ---------- colour-by control ---------- */
+  var select = document.getElementById("colourBy");
+  MODES.forEach(function (m, i) {
+    var o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = m.label;
+    select.appendChild(o);
+  });
+
+  var legend = document.getElementById("legend");
+  var legendNote = document.getElementById("legendNote");
+
+  function applyMode(mode) {
+    if (mode.key === "cat") {
+      grid.classList.remove("mode-prop");
+      tiles.forEach(function (b) {
+        b.style.backgroundColor = "";
+        b.classList.remove("no-data");
+        b.querySelector(".pv").textContent = "";
+      });
+      legend.innerHTML = FAMILIES.map(function (f) {
+        return '<span class="nodata"><i class="' + catClass(f.key) + '" style="border-color:transparent"></i>' +
+               f.name.split(",")[0] + "</span>";
+      }).join("");
+      legendNote.textContent = mode.note;
+      return;
+    }
+    grid.classList.add("mode-prop");
+    var ex = extent(mode.key);
+    var useLog = !!mode.log;
+    var lo = useLog ? Math.log10(ex.lo) : ex.lo;
+    var hi = useLog ? Math.log10(ex.hi) : ex.hi;
+    var span = (hi - lo) || 1;
+
+    tiles.forEach(function (b) {
+      var v = b._el[mode.key];
+      var pv = b.querySelector(".pv");
+      if (v === null || v === undefined) {
+        b.style.backgroundColor = NO_DATA_BG;
+        b.classList.add("no-data");
+        b.style.color = "";
+        pv.textContent = "";
+        return;
+      }
+      b.classList.remove("no-data");
+      var t = ((useLog ? Math.log10(v) : v) - lo) / span;
+      b.style.backgroundColor = rampColour(t);
+      b.style.color = "";
+      pv.textContent = mode.tile(v);
+    });
+
+    var darkLabel = mode.key === "discovered" ? "known since ancient times" : "no settled figure";
+    legend.innerHTML =
+      '<span class="end">' + mode.end(ex.lo) + " · " + ex.loEl.sym + "</span>" +
+      '<span class="ramp" role="img" aria-label="Colour ramp running from low on the left to high on the right"></span>' +
+      '<span class="end">' + mode.end(ex.hi) + " · " + ex.hiEl.sym + "</span>" +
+      '<span class="nodata"><i></i>' + darkLabel + "</span>";
+    legendNote.textContent = mode.note;
+  }
+
+  select.addEventListener("change", function () {
+    applyMode(MODES[parseInt(select.value, 10) || 0]);
+  });
+  applyMode(MODES[0]);
+
+  /* ---------- search ---------- */
+  var search = document.getElementById("elSearch");
+  var status = document.getElementById("searchStatus");
+
+  function runSearch() {
+    var q = (search.value || "").trim().toLowerCase();
+    if (!q) {
+      tiles.forEach(function (b) { b.classList.remove("dim"); });
+      status.textContent = "";
+      return;
+    }
+    var hits = 0;
+    var numeric = /^\d+$/.test(q);
+    tiles.forEach(function (b) {
+      var e = b._el;
+      var match = numeric
+        ? String(e.z) === q
+        : (e.sym.toLowerCase().indexOf(q) === 0 || e.name.toLowerCase().indexOf(q) >= 0);
+      b.classList.toggle("dim", !match);
+      if (match) hits++;
+    });
+    status.textContent = hits
+      ? hits + " of 118 boxes match"
+      : "No box matches that";
+  }
+  search.addEventListener("input", runSearch);
+
+  /* ---------- records toggle ---------- */
+  var recBtn = document.getElementById("recBtn");
+  recBtn.textContent = "Highlight record holders (" + recordCount + ")";
+  recBtn.addEventListener("click", function () {
+    var on = grid.classList.toggle("show-records");
+    recBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    recBtn.textContent = (on ? "Hide record holders (" : "Highlight record holders (") + recordCount + ")";
+  });
+
+  /* ---------- arrow key walking ---------- */
+  grid.addEventListener("keydown", function (ev) {
+    var t = document.activeElement;
+    if (!t || !t.classList || !t.classList.contains("el-tile")) return;
+    var dx = 0, dy = 0;
+    if (ev.key === "ArrowLeft") dx = -1;
+    else if (ev.key === "ArrowRight") dx = 1;
+    else if (ev.key === "ArrowUp") dy = -1;
+    else if (ev.key === "ArrowDown") dy = 1;
+    else return;
+    ev.preventDefault();
+    var x = parseInt(t.getAttribute("data-x"), 10);
+    var y = parseInt(t.getAttribute("data-y"), 10);
+    for (var i = 0; i < 20; i++) {
+      x += dx; y += dy;
+      if (x < 1 || x > 18 || y < 1 || y > 10) return;
+      var n = byPos[x + "," + y];
+      if (n) { n.focus(); return; }
+    }
+  });
+
+  /* ---------- detail drawer ---------- */
+  var drawer = document.getElementById("drawer");
+  var drawerBody = document.getElementById("drawerBody");
+  var drawerClose = document.getElementById("drawerClose");
+  var scrim = document.getElementById("scrim");
+  var opener = null;
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function propRow(k, v, plain, isEst) {
+    return '<div class="prop"><span class="k">' + k +
+      (isEst ? ' <span class="tag est">est.</span>' : "") + "</span>" +
+      '<span class="v">' + v + "</span>" +
+      (plain ? '<span class="plain">' + plain + "</span>" : "") + "</div>";
+  }
+
+  function openCard(e, from) {
+    opener = from || null;
+    var isEst = function (k) { return e.est && e.est.indexOf(k) >= 0; };
+    var h = "";
+
+    h += '<div class="el-head">' +
+      '<div class="el-badge ' + catClass(e.cat) + '"><span class="s">' + e.sym + '</span>' +
+      '<span class="n">' + e.z + "</span></div>" +
+      '<div><div class="el-name" id="drawerName">' + esc(e.name) + "</div>" +
+      '<span class="tag">' + CAT_LABEL[e.cat] + "</span></div></div>";
+
+    h += propRow("Atomic number", fmt(e.z, 0), "Protons in the middle of the atom.");
+    h += propRow("Atomic mass", trim(e.mass) + " u", null);
+    h += propRow("Density", trim(e.density) + " g/cm³", densityPlain(e.density), isEst("density"));
+    h += propRow("Melting point",
+      e.melt === null ? "no settled figure" : kelvinPair(e.melt), null, isEst("melt"));
+    h += propRow("Boiling point",
+      e.boil === null ? "no settled figure" : kelvinPair(e.boil), null, isEst("boil"));
+    h += propRow("Pull on shared electrons",
+      e.en === null ? "none assigned" : trim(e.en),
+      e.en === null ? "It hardly shares electrons at all, so it sits off the scale."
+                    : "On a scale that runs from 0.7 to 3.98.", isEst("en"));
+    h += propRow("Energy to strip one electron", fmt(e.ion1, 1) + " kJ/mol", null, isEst("ion1"));
+    h += propRow("Atom size", fmt(e.radius, 0) + " pm",
+      e.radius === 28 ? "The tightest atom on the chart."
+                      : "About " + trim(e.radius / 28) + " times helium's reach, the tightest on the chart.",
+      isEst("radius"));
+    h += propRow("Share of Earth's crust",
+      e.abundCrust === null ? "not found in the crust" : ppmLong(e.abundCrust),
+      e.abundCrust === null ? "It does not turn up in ordinary rock." : ppmPlain(e.abundCrust, "crust"));
+    h += propRow("Share of the universe",
+      e.abundUni === null ? "no settled figure" : ppmLong(e.abundUni),
+      e.abundUni === null ? null : ppmPlain(e.abundUni, "ordinary matter"));
+    h += propRow("First found",
+      e.discovered === null ? "ancient times" : String(e.discovered),
+      e.discovered === null ? "Worked and named long before anyone kept records of it." : null);
+    if (e.radioactive) {
+      h += propRow("Radioactive", "yes",
+        e.halfLife ? "Its longest-lived form takes " + esc(e.halfLife) + " for half of a sample to break down."
+                   : "Its atoms break down over time.");
+    }
+
+    if (e.records && e.records.length) {
+      h += '<div class="sec-h">Records it holds</div><ul class="rec-list">' +
+        e.records.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + "</ul>";
+    }
+    if (e.est && e.est.length) {
+      h += '<p class="drawer-note">Figures marked est. were worked out from theory rather than weighed at a bench.</p>';
+    }
+
+    drawerBody.innerHTML = h;
+    drawer.classList.add("open");
+    drawer.setAttribute("aria-hidden", "false");
+    scrim.classList.add("on");
+    tiles.forEach(function (b) { b.classList.toggle("picked", b === from); });
+    drawerClose.focus();
+  }
+
+  function closeCard() {
+    if (!drawer.classList.contains("open")) return;
+    drawer.classList.remove("open");
+    drawer.setAttribute("aria-hidden", "true");
+    scrim.classList.remove("on");
+    tiles.forEach(function (b) { b.classList.remove("picked"); });
+    if (opener) { opener.focus(); opener = null; }
+  }
+
+  drawerClose.addEventListener("click", closeCard);
+  scrim.addEventListener("click", closeCard);
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape") closeCard();
+  });
+})();
+</script>
+</body>
+</html>
