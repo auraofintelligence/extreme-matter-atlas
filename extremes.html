@@ -89,7 +89,7 @@ body[data-page="extremes"] .seg button[aria-pressed="true"] {
 /* leaderboard rows */
 body[data-page="extremes"] .board { min-height: 300px; }
 body[data-page="extremes"] .board .bar-row {
-  grid-template-columns: 206px 1fr 122px;
+  grid-template-columns: 202px 1fr 150px;
   margin: 11px 0; align-items: center;
 }
 body[data-page="extremes"] .board .who { display: flex; align-items: center; gap: 9px; min-width: 0; }
@@ -136,7 +136,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     <div class="wrap">
       <span class="kicker">The record book of the elements</span>
       <h1 class="display">Every extreme has a name</h1>
-      <p class="lede">One element is heavier for its size than anything else you could pick up. One stays liquid when the rest of creation has frozen solid. One pulls electrons off its neighbours so hard it will burn sand. Here are the record holders, the measured numbers behind them, and a picture for each number you can hold in your hand.</p>
+      <p class="lede">One element is heavier for its size than anything else you could pick up. One stays liquid when everything else has frozen solid. One takes electrons off its neighbours so hard that nothing can take them back. Here are the record holders, the measured numbers behind them, and a picture for each number you can hold in your hand.</p>
       <div class="stat-row" id="heroStats"></div>
     </div>
   </section>
@@ -213,7 +213,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
           </div>
           <div class="rec-val">3.98 <span style="font-size:0.6em; color:var(--muted); -webkit-text-fill-color: var(--muted);">to</span> 0.70</div>
           <span class="rec-unit">pull on shared electrons, Pauling scale</span>
-          <p>When two atoms share electrons, one of them usually pulls harder. The Pauling scale rates that pull, and it runs from about 0.7 at the meek end to 3.98 at fluorine, which wins every tug of war it enters. Nothing outpulls it, which is why fluorine will strip oxygen out of ordinary sand.</p>
+          <p>When two atoms share electrons, one of them usually pulls harder. The Pauling scale rates that pull, and it runs from about 0.7 at the meek end to 3.98 at fluorine, which wins every tug of war it enters. Nothing outpulls it: fluorine takes electrons off almost anything it meets, and it is fluorine chemistry that etches frosted patterns into glass.</p>
           <p>Tie that pull down inside a stable chain and it turns useful and calm: the slippery grey coating on a frypan is carbon wrapped in fluorine, and the fluoride in toothpaste locks fluorine into tooth enamel to harden it.</p>
           <p>At the other end sits francium at about 0.70, though that figure is a calculated estimate <span class="tag est">est.</span> rather than a bench measurement. Caesium at 0.79 is the lowest settled value.</p>
         </div>
@@ -357,9 +357,9 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       <h2><span class="hue">Limits</span></h2>
       <div class="panel">
         <p>The heaviest elements have never been made in weighable amounts, so most of their bulk numbers are calculated from theory rather than measured on a bench. Everything from rutherfordium at 104 up to oganesson at 118 carries estimated values for density, and for melting and boiling points where any are listed at all. Those entries wear an <span class="tag est">est.</span> tag wherever they appear.</p>
-        <p>This matters most on the density board. Hassium is calculated at about 40.7 grams per cubic centimetre, well past osmium, and several of its neighbours are calculated past it too. Not one of those figures comes from weighing anything: hassium exists for about ten seconds at a time, as single atoms. Osmium at 22.587 is the densest thing anyone has actually put on a scale, and switching the board to settled measurements puts it back on top.</p>
+        <p>This matters most on the density board. Hassium is calculated at about 40.7 grams per cubic centimetre, well past osmium, and several of its neighbours are calculated past it too. Not one of those figures comes from weighing anything: hassium arrives as single atoms, and its longest-lasting known form is half gone in about ten seconds. Osmium at 22.587 is the densest thing anyone has actually put on a scale, and switching the board to settled measurements puts it back on top.</p>
         <p>Francium and astatine sit in the same position for a different reason. Both occur in nature only in traces that decay within hours or minutes, so their densities, melting points, boiling points and atom sizes are estimates, and francium's electronegativity of 0.70 is an old calculated value. Later work suggests francium may in fact pull slightly harder than caesium, which would hand the low record to caesium at 0.79. Its measured ionisation energy already sits above caesium's.</p>
-        <p>A few values are honest oddities of pressure rather than errors. Helium's listed melting point of 0.95 kelvin only applies under squeeze; at ordinary air pressure it does not freeze. Carbon tops the melting list at 3,823 kelvin, but at ordinary pressure it turns straight from solid to vapour without a liquid stage in between, as arsenic does. Elements that sublime that way have no liquid span to report, so they sit out that board.</p>
+        <p>A few values are quirks of pressure rather than errors. Helium's listed melting point of 0.95 kelvin only applies under squeeze; at ordinary air pressure it does not freeze. Carbon tops the melting list at 3,823 kelvin, but at ordinary pressure it turns straight from solid to vapour without a liquid stage in between, as arsenic does. Elements that skip the liquid stage that way have no span to report, so they sit out that board.</p>
         <p>Abundance figures are averages over a whole crust or a whole universe, rounded in the sources to one or two significant figures. They are good for ranking and for order of magnitude, not for splitting hairs between neighbours. The comparison of crust share against universe share inherits that rounding twice over, so read it as a pattern rather than a league ladder.</p>
       </div>
     </div>
@@ -416,6 +416,11 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     return num(v, a >= 100 ? 0 : a >= 10 ? 1 : a >= 1 ? 2 : 3);
   }
   function celsius(k) { return num(k - 273.15, Math.abs(k - 273.15) >= 100 ? 0 : 1) + " °C"; }
+  function compact(n) {
+    if (n >= 1e9) return auto(n / 1e9) + " billion";
+    if (n >= 1e6) return auto(n / 1e6) + " million";
+    return num(n, 0);
+  }
   /* abundance in parts per million reads as grams in a tonne, stepped into friendly units */
   function perTonne(ppm) {
     var g = ppm, u = "g";
@@ -435,8 +440,9 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       titleLo: "Lightest for its size", sub: "density",
       get: function (e) { return e.density; },
       est: function (e) { return e.est.indexOf("density") >= 0; },
-      fmt: function (v) { return v >= 0.01 ? num(v, v >= 10 ? 3 : 3) + " g/cm³" : auto(v * 1000) + " g/L"; },
-      gloss: "Density: how much a fixed lump of it weighs. Water sits at 1 gram per cubic centimetre, so anything above that sinks in a bucket and anything below floats. The gases at the bottom of this scale are shown in grams per litre instead, since a cubic centimetre of them weighs almost nothing."
+      fmt: function (v) { return v >= 0.01 ? num(v, 3) + " g/cm³" : auto(v * 1000) + " g/L"; },
+      plain: "How much a fixed lump of it weighs. Water sits at 1, so anything above sinks and anything below floats.",
+      gloss: "Density is how much a fixed lump of something weighs. Water sits at 1 gram per cubic centimetre, so anything above that sinks in a bucket and anything below floats. The gases at the bottom of this scale are shown in grams per litre instead, since a cubic centimetre of them weighs almost nothing."
     },
     {
       id: "melt", chip: "Melting point", title: "Highest melting point",
@@ -444,6 +450,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.melt; },
       est: function (e) { return e.est.indexOf("melt") >= 0; },
       fmt: celsius,
+      plain: "The heat at which a solid gives way and turns liquid. A kitchen oven tops out near 250 degrees.",
       gloss: "The temperature at which a solid gives way and turns liquid. A kitchen oven tops out near 250 degrees; steel puddles at about 1,500. Carbon leads this board, though at ordinary air pressure it skips the liquid stage and turns straight to vapour."
     },
     {
@@ -452,7 +459,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.boil; },
       est: function (e) { return e.est.indexOf("boil") >= 0; },
       fmt: celsius,
-      gloss: "The temperature at which a liquid gives up and turns to gas. Water goes at 100 degrees at sea level. The top of this board runs past 5,000 degrees, which is hotter than the visible surface of the Sun."
+      plain: "The heat at which a liquid gives up and turns to gas. Water goes at 100 degrees at sea level.",
+      gloss: "The temperature at which a liquid gives up and turns to gas. Water goes at 100 degrees at sea level. The top of this board runs past 5,500 degrees, which is about the temperature of the Sun's visible surface."
     },
     {
       id: "span", chip: "Liquid span", title: "Longest run as a liquid",
@@ -463,7 +471,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
         return d > 0 ? d : null;
       },
       est: function (e) { return e.est.indexOf("melt") >= 0 || e.est.indexOf("boil") >= 0; },
-      fmt: function (v) { return num(v, 0) + " deg"; },
+      fmt: function (v) { return auto(v) + " degrees"; },
+      plain: "How wide a temperature window it stays liquid in, from the moment it melts to the moment it boils.",
       gloss: "How wide a temperature window an element stays liquid in. Gallium melts in a warm hand at about 30 degrees and holds on until about 2,400, a span of roughly 2,370 degrees starting at body heat. A step in kelvin and a step in Celsius are the same size, so a span reads the same either way."
     },
     {
@@ -471,8 +480,9 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       titleLo: "Lightest single atom", sub: "atomic mass",
       get: function (e) { return e.mass; },
       est: function () { return false; },
-      fmt: function (v) { return num(v, v >= 100 ? 1 : 3) + " u"; },
-      gloss: "The weight of one atom, counted in atomic mass units. One carbon atom is defined as 12, so the whole scale hangs off the charcoal in a barbecue. The heaviest atoms here weigh close to 300 times a hydrogen atom."
+      fmt: function (v) { return num(v, 3) + " u"; },
+      plain: "The weight of a single atom, on a scale where the common form of carbon is set at exactly 12.",
+      gloss: "The weight of one atom, counted in atomic mass units. The common form of carbon is set at exactly 12, so the whole scale hangs off the charcoal in a barbecue. The heaviest atoms here weigh close to 300 times a hydrogen atom."
     },
     {
       id: "radius", chip: "Atom width", title: "Widest atom",
@@ -480,7 +490,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.radius; },
       est: function (e) { return e.est.indexOf("radius") >= 0; },
       fmt: function (v) { return num(v, 0) + " pm"; },
-      gloss: "How far the atom reaches when it bonds to a neighbour, in picometres: millionths of a millionth of a metre. Blow the narrowest atom up to a twenty cent coin and the widest one, on the same scale, is a dinner plate."
+      plain: "How far the atom reaches when it bonds to a neighbour, in millionths of a millionth of a metre.",
+      gloss: "How far the atom reaches when it bonds to a neighbour, measured in picometres, which are millionths of a millionth of a metre. Blow the narrowest atom up to the size of a twenty cent coin and the widest one, on that same scale, is a dinner plate."
     },
     {
       id: "en", chip: "Pull on shared electrons", title: "Hardest pull on shared electrons",
@@ -488,7 +499,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.en; },
       est: function (e) { return e.est.indexOf("en") >= 0; },
       fmt: function (v) { return num(v, 2); },
-      gloss: "When two atoms share electrons, one pulls harder. This is the rating for that pull, running from about 0.7 up to 3.98. The high end grabs; the low end gives. Elements with no rating at all, mostly the noble gases that rarely bond, sit this board out."
+      plain: "When two atoms share electrons, one pulls harder. This rates that pull, from about 0.7 up to 3.98.",
+      gloss: "When two atoms share electrons, one of them pulls harder. This is the rating for that pull, running from about 0.7 up to 3.98. The high end grabs; the low end gives. Elements with no rating at all, mostly the noble gases that rarely bond with anything, sit this board out."
     },
     {
       id: "ion1", chip: "Grip on its own electron", title: "Tightest grip on its own electron",
@@ -496,7 +508,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       get: function (e) { return e.ion1; },
       est: function (e) { return e.est.indexOf("ion1") >= 0; },
       fmt: function (v) { return num(v, 0) + " kJ/mol"; },
-      gloss: "The energy needed to pull one electron off every atom in a fixed parcel of them. Take a one litre kettle boil as your unit, about 335 kilojoules: the tightest grip costs about seven kettles, the loosest a bit over one."
+      plain: "The energy it takes to pull one electron off every atom in a fixed parcel of them.",
+      gloss: "The energy needed to pull one electron off every atom in a fixed parcel of them. Take a one litre kettle boil as the unit, about 335 kilojoules: the tightest grip costs about seven kettles, the loosest a bit over one."
     },
     {
       id: "abundCrust", chip: "How much in the crust", title: "Most of Earth's crust",
