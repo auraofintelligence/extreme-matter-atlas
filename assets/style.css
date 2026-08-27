@@ -177,10 +177,13 @@ section { padding: 56px 0; }
   .pill-nav a.active { border-color: transparent; }
 }
 
-@media (max-width: 380px) {
-  .pill-nav { grid-template-columns: 1fr; }
+@media (max-width: 430px) {
   .menu-word { display: none; }
   .menu-btn { padding: 8px 14px; }
+}
+
+@media (max-width: 330px) {
+  .pill-nav { grid-template-columns: 1fr; }
 }
 
 /* ---------- hero ---------- */

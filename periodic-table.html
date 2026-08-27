@@ -369,8 +369,15 @@ body[data-page="table"] .drawer .drawer-note {
     if (n === 0) return "0";
     if (a >= 1e6) return trim(n / 1e6) + "M";
     if (a >= 1e4) return trim(n / 1e3) + "k";
+    if (a >= 1000) return fmt(n, 0);
     if (a < 0.001) return Number(n).toExponential(0);
     return trim(n);
+  }
+  function perTonne(v) {
+    if (v >= 1000) return trim(v / 1000) + " kg per tonne";
+    if (v >= 1) return trim(v) + " g per tonne";
+    if (v >= 0.001) return trim(v * 1000) + " mg per tonne";
+    return "under a milligram per tonne";
   }
   function kelvinPair(k) {
     return fmt(k, k < 100 ? 2 : 0) + " K (" + fmt(k - 273.15, 0) + " °C)";
@@ -404,8 +411,8 @@ body[data-page="table"] .drawer .drawer-note {
       note: "Colours group the boxes into families that behave alike. The full key sits further down the page." },
     { key: "density", label: "Density", log: true,
       note: "Density is what a fixed amount weighs. Water sits at 1 g/cm³, the gases at the top of the chart sit near zero, and osmium tops it at 22.6.",
-      tile: function (v) { return compact(v); },
-      end: function (v) { return compact(v) + " g/cm³"; } },
+      tile: function (v) { return densFmt(v); },
+      end: function (v) { return densFmt(v) + " g/cm³"; } },
     { key: "melt", label: "Melting point",
       note: "The temperature where a solid gives up and turns liquid. Ice does it at 273 K; caesium melts in a warm hand; carbon holds out past 3,800 K.",
       tile: function (v) { return fmt(v, 0); },
@@ -429,7 +436,7 @@ body[data-page="table"] .drawer .drawer-note {
     { key: "abundCrust", label: "Share of Earth's crust", log: true,
       note: "How much of the ground is made of it, in grams per tonne. Oxygen runs to 461,000 of them, close to half the weight of the crust. Astatine is the scarcest, with estimates putting the whole crust's supply at under a gram, about the weight of a paperclip.",
       tile: function (v) { return compact(v); },
-      end: function (v) { return compact(v) + " ppm"; } },
+      end: function (v) { return perTonne(v); } },
     { key: "discovered", label: "Year first found",
       note: "The year each element was pinned down. Ten boxes stay dark here: gold, iron, carbon and seven others have been worked since ancient times, long before anyone wrote a date on it.",
       tile: function (v) { return String(v); },
@@ -576,10 +583,13 @@ body[data-page="table"] .drawer .drawer-note {
     });
 
     var darkLabel = mode.key === "discovered" ? "known since ancient times" : "no settled figure";
+    function endTag(el) {
+      return (el.est && el.est.indexOf(mode.key) >= 0) ? ' <span class="tag est">est.</span>' : "";
+    }
     legend.innerHTML =
-      '<span class="end">' + mode.end(ex.lo) + " · " + ex.loEl.sym + "</span>" +
+      '<span class="end">' + mode.end(ex.lo) + " · " + ex.loEl.sym + endTag(ex.loEl) + "</span>" +
       '<span class="ramp" role="img" aria-label="Colour ramp running from low on the left to high on the right"></span>' +
-      '<span class="end">' + mode.end(ex.hi) + " · " + ex.hiEl.sym + "</span>" +
+      '<span class="end">' + mode.end(ex.hi) + " · " + ex.hiEl.sym + endTag(ex.hiEl) + "</span>" +
       '<span class="nodata"><i></i>' + darkLabel + "</span>";
     legendNote.textContent = mode.note;
   }
@@ -685,7 +695,8 @@ body[data-page="table"] .drawer .drawer-note {
       e.en === null ? "none assigned" : trim(e.en),
       e.en === null ? "It hardly shares electrons at all, so it sits off the scale."
                     : "On a scale that runs from 0.7 to 3.98.", isEst("en"));
-    h += propRow("Energy to strip one electron", fmt(e.ion1, 1) + " kJ/mol", null, isEst("ion1"));
+    h += propRow("Energy to strip one electron",
+      fmt(e.ion1, e.ion1 % 1 === 0 ? 0 : 1) + " kJ/mol", null, isEst("ion1"));
     h += propRow("Atom size", fmt(e.radius, 0) + " pm",
       e.radius === 28 ? "The tightest atom on the chart."
                       : "About " + trim(e.radius / 28) + " times helium's reach, the tightest on the chart.",
