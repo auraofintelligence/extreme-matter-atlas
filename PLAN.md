@@ -145,6 +145,20 @@ values wear a small "est." tag in any UI that shows them.
 - 2026-08-28: the hub's element ribbon wraps into 46px tiles carrying number and symbol,
   and each tile deep-links to `periodic-table.html#el-<Sym>`, which opens that element's
   drawer on arrival.
+- 2026-08-28: review round, 49 findings applied. The ones worth remembering:
+  - The atlas had been calling fluorine the element that "grips its electrons hardest",
+    which is this site's plain wording for first ionisation energy, and that record is
+    helium's. Fluorine's record is the pull on shared electrons. Keep those two apart.
+  - The atom-size figures are covalent radii, a reach from centre to centre when bonded,
+    not the width of an atom. Any analogy built on them has to double the reach to get a
+    span, and the label must not say "across".
+  - Conductivity comparisons scale with cross-section, not thickness: silver's six per
+    cent lead over copper is six per cent more metal in the cross-section, about three
+    per cent fatter.
+  - Population and price analogies drift. Date them in the copy ("passed 2.4 million in
+    2025", "at 2026 prices") so the next reader can see how old the comparison is.
+  - When a page's prose and `assets/elements.js` disagree, fix both. Half the second-round
+    findings were a page and the dataset drifting apart after a one-file edit.
 
 ## 7. Checks run before each publish
 
