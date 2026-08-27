@@ -239,7 +239,7 @@ body[data-page="anomalies"] .settle .card::before {
   <section class="reveal">
     <div class="wrap">
       <h2>What came back, and the everyday thing <span class="hue">with the same recipe</span></h2>
-      <p>The most useful column in the whole collection is the last one. For nearly every sample that reached an instrument, there is a material already made by the tonne somewhere on Earth with the same list of ingredients in roughly the same proportions, and most of them are made within a few kilometres of where the sample turned up.</p>
+      <p>The last column is where most of the work lands. For nearly every sample that reached an instrument, there is a material already made by the tonne somewhere on Earth with the same list of ingredients in roughly the same proportions, and several of them are made within a few kilometres of where the sample turned up.</p>
 
       <div class="table-scroll">
         <table class="data-table">
@@ -730,7 +730,7 @@ body[data-page="anomalies"] .settle .card::before {
   <section class="reveal">
     <div class="wrap">
       <h2>What would move <span class="hue">the question</span></h2>
-      <p>Read across nine cases and the shape of a decisive result comes into focus. Six things would do it, they can be done in any order, and not one of them needs an invention. Two are running in meteorite laboratories this week.</p>
+      <p>Read across nine cases and the shape of a decisive result comes into focus. Six things would do it, they can be done in any order, and not one of them needs an invention. Two of the six are ordinary weekly work in meteorite laboratories already.</p>
       <div class="grid settle">
         <div class="card">
           <h3>A blend off the line</h3>
@@ -758,7 +758,7 @@ body[data-page="anomalies"] .settle .card::before {
         </div>
       </div>
       <div class="note"><strong>The hopeful part is the instruments.</strong> A multicollector mass spectrometer, which weighs atoms one kind at a time and separates the three magnesium weights cleanly, is not exotic kit. Universities and geology labs around Australia and the world run them daily on rocks, seawater and meteorites, and the reference numbers they check against are already agreed. So the missing pieces are a notebook, an agreement between two labs, and a sample somebody is willing to cut in half. If those three ever line up, the reading itself would take an afternoon.</div>
-      <p>Nine samples have already given up their chemistry. The measurement that has not been taken yet is the one that would say where the atoms were made, and the machine that takes it is booked out on meteorites the rest of the week.</p>
+      <p>Nine samples have already given up their chemistry. The measurement still waiting is the one that would say where the atoms themselves were made, and the instruments that take it are running already, on meteorites, in laboratories here and overseas.</p>
     </div>
   </section>
 
@@ -862,8 +862,11 @@ body[data-page="anomalies"] .settle .card::before {
       }
 
       srcOut.textContent = r.src;
-      totalOut.innerHTML = "Three weights add to <b>" + total.toFixed(2) +
-        "%</b>. Published figures are rounded, so a careful reading lands near a hundred rather than exactly on it.";
+      var gap = Math.abs(100 - total);
+      totalOut.innerHTML = "Three weights add to <b>" + total.toFixed(2) + "%</b>. " +
+        (gap > 0.5
+          ? "That is " + gap.toFixed(0) + " percentage points off a hundred, and the three parts of one blend have to add to a hundred."
+          : "Published figures are rounded, so a careful reading lands near a hundred rather than exactly on it.");
       noteOut.textContent = r.note;
     }
 
