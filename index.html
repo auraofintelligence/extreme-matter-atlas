@@ -56,6 +56,14 @@ body[data-page="index"] .ribbon-cap {
 }
 body[data-page="index"] #ribbon-read { color: var(--ink); font-weight: 600; }
 body[data-page="index"] .door-glyph { font-size: 30px; }
+body[data-page="index"] .door-group {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 20px; margin: 44px 0 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="index"] .door-blurb { color: var(--muted); font-size: 15px; margin-bottom: 16px; }
+body[data-page="index"] .door-grid { margin-bottom: 6px; }
 body[data-page="index"] .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 body[data-page="index"] .why-grid { margin-top: 26px; }
 body[data-page="index"] .why-grid .card p { color: var(--muted); }
@@ -126,81 +134,94 @@ body[data-page="index"] .why-grid .card p { color: var(--muted); }
   <section>
     <div class="wrap">
       <h2>Choose <span class="hue">your door</span></h2>
-      <p>Nine ways in. Each one stands on its own.</p>
-      <div class="grid" style="margin-top:26px;">
+      <p>
+        Eighteen ways in, sorted by what they are about rather than by how settled they are.
+        Plenty of what is on the shelf now arrived as somebody's wild idea, so the arguments
+        sit in the same drawers as the answers. There is no right order.
+      </p>
 
-        <a class="card-link reveal" href="periodic-table.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🧊</span>
-            <h3>Table</h3>
-            <p>Meet all 118 and colour them by any property you like: weight, heat, size, how common they are.</p>
-          </article>
-        </a>
+      <h3 class="door-group">Elements</h3>
+      <p class="door-blurb">The shelf everything is built from, and the pieces people argue about.</p>
+      <div class="grid door-grid">
+        <a class="card-link reveal" href="periodic-table.html"><article class="card">
+          <span class="card-glyph door-glyph">&#129482;</span><h3>The Table</h3>
+          <p>Meet all 118 and colour them by any property you like: weight, heat, size, how common they are.</p>
+        </article></a>
+        <a class="card-link reveal" href="extremes.html"><article class="card">
+          <span class="card-glyph door-glyph">&#127942;</span><h3>Records</h3>
+          <p>The heaviest, hottest, rarest and strangest, with numbers you can picture.</p>
+        </article></a>
+        <a class="card-link reveal" href="claimed-elements.html"><article class="card">
+          <span class="card-glyph door-glyph">&#10067;</span><h3>Claimed Elements</h3>
+          <p>Every element named in a strange story, and what it actually does when you measure it.</p>
+        </article></a>
+        <a class="card-link reveal" href="anomalous-materials.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128300;</span><h3>Samples</h3>
+          <p>Fragments that arrived with a story attached, and what the instruments returned.</p>
+        </article></a>
+      </div>
 
-        <a class="card-link reveal" href="extremes.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🏆</span>
-            <h3>Records</h3>
-            <p>The heaviest, hottest, rarest and strangest, with numbers you can picture.</p>
-          </article>
-        </a>
+      <h3 class="door-group">Patterns</h3>
+      <p class="door-blurb">Structure, vibration, and the shapes waves leave behind.</p>
+      <div class="grid door-grid">
+        <a class="card-link reveal" href="crystal-lab.html"><article class="card">
+          <span class="card-glyph door-glyph">&#129704;</span><h3>Crystal Lab</h3>
+          <p>Sketch a flat pattern, stack it, twist it, break it on purpose, and watch it vibrate.</p>
+        </article></a>
+        <a class="card-link reveal" href="metamaterials.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128376;</span><h3>Metamaterials</h3>
+          <p>Shapes that change what a material does without changing the ingredients.</p>
+        </article></a>
+        <a class="card-link reveal" href="cymatics.html"><article class="card">
+          <span class="card-glyph door-glyph">&#127900;</span><h3>Cymatics</h3>
+          <p>Drive a plate with a note and watch sand find the places that hold still.</p>
+        </article></a>
+        <a class="card-link reveal" href="resonance.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128225;</span><h3>Resonance</h3>
+          <p>One idea from a playground swing to a hospital scanner to a single atom.</p>
+        </article></a>
+      </div>
 
-        <a class="card-link reveal" href="gnome.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🔮</span>
-            <h3>GNoME</h3>
-            <p>The computer model that guessed millions of new crystals, and the robot kitchen that started cooking them.</p>
-          </article>
-        </a>
+      <h3 class="door-group">Engines</h3>
+      <p class="door-blurb">Ways of moving, from old stories to open physics.</p>
+      <div class="grid door-grid">
+        <a class="card-link reveal" href="vimana.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128760;</span><h3>Vimana</h3>
+          <p>Old sky-craft stories read as a design brief, on a bench that does the sums.</p>
+        </article></a>
+        <a class="card-link reveal" href="red-mercury.html"><article class="card">
+          <span class="card-glyph door-glyph">&#127777;</span><h3>Red Mercury</h3>
+          <p>Mercury engines from the old texts, and the mercury ion drives that really flew.</p>
+        </article></a>
+        <a class="card-link reveal" href="element-115.html"><article class="card">
+          <span class="card-glyph door-glyph">&#9883;</span><h3>Element 115</h3>
+          <p>Moscovium, the island of stability, and what bending gravity would actually cost.</p>
+        </article></a>
+        <a class="card-link reveal" href="zero-point.html"><article class="card">
+          <span class="card-glyph door-glyph">&#9889;</span><h3>Zero Point</h3>
+          <p>Empty space pushes on two mirrors, and it has been measured. Now what?</p>
+        </article></a>
+      </div>
 
-        <a class="card-link reveal" href="crystal-lab.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🪟</span>
-            <h3>Crystal Lab</h3>
-            <p>Sketch a flat pattern, stack it, twist it, and watch a whole new pattern appear out of nowhere.</p>
-          </article>
-        </a>
-
-        <a class="card-link reveal" href="metamaterials.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🕸️</span>
-            <h3>Metamaterials</h3>
-            <p>Shapes that change what a material does without changing the ingredients: pull them and they get fatter, not thinner.</p>
-          </article>
-        </a>
-
-        <a class="card-link reveal" href="engineering.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🛠️</span>
-            <h3>Engineering</h3>
-            <p>Records put to work on real jobs: your phone screen, a hospital scanner, a jet engine, a deep-sea sub.</p>
-          </article>
-        </a>
-
-        <a class="card-link reveal" href="frontiers.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🚀</span>
-            <h3>Frontiers</h3>
-            <p>Where the search could head next, and what it would change at your place.</p>
-          </article>
-        </a>
-
-        <a class="card-link reveal" href="anomalous-materials.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🔬</span>
-            <h3>Samples</h3>
-            <p>Claimed fragments on the bench, paperwork and all: what was said, and what the instruments read.</p>
-          </article>
-        </a>
-
-        <a class="card-link reveal" href="vimana.html">
-          <article class="card">
-            <span class="card-glyph door-glyph">🛸</span>
-            <h3>Vimana</h3>
-            <p>Old sky-craft stories read as a design brief, with physics holding the ruler.</p>
-          </article>
-        </a>
-
+      <h3 class="door-group">Making</h3>
+      <p class="door-blurb">Finding new materials and building with them.</p>
+      <div class="grid door-grid">
+        <a class="card-link reveal" href="gnome.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128302;</span><h3>GNoME</h3>
+          <p>The model that guessed millions of new crystals, and the robot kitchen cooking them.</p>
+        </article></a>
+        <a class="card-link reveal" href="engineering.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128736;</span><h3>Engineering</h3>
+          <p>Records put to work: your phone screen, a hospital scanner, a jet engine, a deep-sea sub.</p>
+        </article></a>
+        <a class="card-link reveal" href="sci-fi-lab.html"><article class="card">
+          <span class="card-glyph door-glyph">&#128640;</span><h3>Sci-Fi Lab</h3>
+          <p>Warp drives, tractor beams and replicators, each given a spec sheet and a real nearest thing.</p>
+        </article></a>
+        <a class="card-link reveal" href="frontiers.html"><article class="card">
+          <span class="card-glyph door-glyph">&#127756;</span><h3>Frontiers</h3>
+          <p>Where the search could head next, and what it would change at your place.</p>
+        </article></a>
       </div>
     </div>
   </section>
