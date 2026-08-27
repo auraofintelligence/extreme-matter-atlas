@@ -241,7 +241,7 @@ body[data-page="cymatics"] .twin-note {
 
         <div class="control-row">
           <div class="readout" id="modeReadout" aria-live="polite">
-            Mode <b id="modeOut">2 by 3</b> · about <i id="freqOut">540 Hz</i> on a brass plate 20 centimetres square and a millimetre thick
+            Mode <b id="modeOut">2 by 3</b> · about <i id="freqOut">538 Hz</i> on a brass plate 20 centimetres square and a millimetre thick
           </div>
         </div>
 
@@ -929,7 +929,7 @@ body[data-page="cymatics"] .twin-note {
       modeOut.textContent = shape === "square"
         ? mVal + " by " + nVal
         : mVal + " through, " + nVal + " round";
-      freqOut.textContent = "about " + freqWords(f);
+      freqOut.textContent = freqWords(f);
       modeSay.textContent = describe();
 
       var twinsExist = shape === "square" ? (mVal !== nVal) : (mVal > 0);
