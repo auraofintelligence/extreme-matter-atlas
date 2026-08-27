@@ -735,6 +735,22 @@ body[data-page="table"] .drawer .drawer-note {
   document.addEventListener("keydown", function (ev) {
     if (ev.key === "Escape") closeCard();
   });
+
+  /* arriving from another page with #el-Os opens that element straight away */
+  function openFromHash() {
+    var m = /^#el-([A-Za-z]{1,3})$/.exec(window.location.hash || "");
+    if (!m) return;
+    var want = m[1].toLowerCase();
+    for (var i = 0; i < tiles.length; i++) {
+      if (tiles[i]._el.sym.toLowerCase() === want) {
+        openCard(tiles[i]._el, tiles[i]);
+        tiles[i].scrollIntoView({ block: "nearest", inline: "center" });
+        return;
+      }
+    }
+  }
+  openFromHash();
+  window.addEventListener("hashchange", openFromHash);
 })();
 </script>
 </body>

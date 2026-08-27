@@ -21,17 +21,27 @@ body[data-page="index"] .ribbon-wrap {
 }
 body[data-page="index"] .ribbon {
   display: grid;
-  grid-template-columns: repeat(59, minmax(15px, 1fr));
-  gap: 3px;
-  min-width: 620px;
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  gap: 5px;
 }
 body[data-page="index"] .ribbon a {
-  aspect-ratio: 1 / 1.15;
-  border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 800; color: #04060c;
+  aspect-ratio: 1 / 1;
+  border-radius: 7px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1px;
+  font-size: 15px; font-weight: 800; color: #04060c;
   text-decoration: none; line-height: 1;
   transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+body[data-page="index"] .ribbon a .num {
+  font-size: 9px; font-weight: 600; opacity: .7;
+}
+@media (min-width: 900px) {
+  body[data-page="index"] .ribbon {
+    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    gap: 6px;
+  }
+  body[data-page="index"] .ribbon a { font-size: 16px; }
 }
 body[data-page="index"] .ribbon a:hover,
 body[data-page="index"] .ribbon a:focus-visible {
@@ -83,12 +93,10 @@ body[data-page="index"] .why-grid .card p { color: var(--muted); }
         Every element, in order, coloured by family. Hover one to see who it is, or click through to the full table.
       </p>
       <div class="ribbon-wrap">
-        <div class="table-scroll" style="border:0;margin:0;">
-          <div class="ribbon" id="ribbon"></div>
-        </div>
+        <div class="ribbon" id="ribbon"></div>
         <div class="ribbon-cap">
-          <span id="ribbon-read">Hover an element</span>
-          <span>1 to 118, left to right</span>
+          <span id="ribbon-read">Tap or hover an element</span>
+          <span>1 to 118, in order</span>
         </div>
       </div>
 
@@ -249,13 +257,14 @@ body[data-page="index"] .why-grid .card p { color: var(--muted); }
   var frag = document.createDocumentFragment();
   els.forEach(function (el) {
     var a = document.createElement("a");
-    a.href = "periodic-table.html";
+    a.href = "periodic-table.html#el-" + el.sym;
     a.className = "el-tile " + (window.EMA ? window.EMA.catClass(el.cat) : "cat-" + el.cat);
-    a.textContent = el.sym;
+    a.innerHTML = '<span class="num">' + el.z + "</span>" + el.sym;
     a.setAttribute("title", el.z + " " + el.name);
     a.setAttribute("aria-label", el.name + ", atomic number " + el.z);
     a.addEventListener("mouseenter", function () { show(el); });
     a.addEventListener("focus", function () { show(el); });
+    a.addEventListener("touchstart", function () { show(el); }, { passive: true });
     frag.appendChild(a);
   });
   host.appendChild(frag);
@@ -265,7 +274,7 @@ body[data-page="index"] .why-grid .card p { color: var(--muted); }
     read.textContent = el.z + " · " + el.name + " · " + (CAT_LABEL[el.cat] || el.cat) + extra;
   }
 
-  host.addEventListener("mouseleave", function () { read.textContent = "Hover an element"; });
+  host.addEventListener("mouseleave", function () { read.textContent = "Tap or hover an element"; });
 })();
 </script>
 </body>
