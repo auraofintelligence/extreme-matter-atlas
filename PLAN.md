@@ -135,4 +135,23 @@ values wear a small "est." tag in any UI that shows them.
 ## 6. Build log
 
 - 2026-08-27: repo created, skeleton, licence, design system, ten-page swarm build, first
-  publish.
+  publish. All ten pages live.
+- 2026-08-28: header row class renamed `.bar` to `.nav-bar`. The header shared `.bar` with
+  the leaderboard progress bar, whose 16px height collapsed the header on every page and
+  dropped the nav over the hero. Do not reuse `.bar` for layout.
+- 2026-08-28: narrow screens get a drop-down menu (button plus two-column panel, 44px+ tap
+  targets) instead of a wrapping or sideways-scrolling pill row. Pill row tightened so ten
+  items sit on one line inside the 1160px container.
+- 2026-08-28: the hub's element ribbon wraps into 46px tiles carrying number and symbol,
+  and each tile deep-links to `periodic-table.html#el-<Sym>`, which opens that element's
+  drawer on arrival.
+
+## 7. Checks run before each publish
+
+- All internal `href` and `src` resolve; every page has the header div, footer div,
+  stylesheet, nav script, unique title, meta description, and a `data-page` from §4.
+- No external resources beyond Google Fonts.
+- Prose scanned for em and en dashes, American spellings, hype words, honesty-preaching,
+  backstage talk. Quoted document titles keep their original spelling.
+- Analogy arithmetic recomputed against `assets/elements.js`.
+- Every page loaded at 375px and at desktop width: no sideways scroll on the body.
