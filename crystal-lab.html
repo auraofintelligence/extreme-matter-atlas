@@ -1352,6 +1352,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
     size();
     slideLabel();
     setMode("perfect");
+    draw();
   })();
 
   /* ==================================================================
@@ -1745,7 +1746,8 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
         "Smallest repeat: <b>" + repTxt + "</b><br>" +
         "<span class=\"r2\">" + tail + "</span>";
       capEl.textContent = fmtNum(set.xy.length / 2) + " points tested · " +
-        found.centres.length + " kinds of centre · " + LAT_NAMES[lat];
+        found.centres.length + " centre" + (found.centres.length === 1 ? "" : "s") +
+        " marked in one repeat · " + LAT_NAMES[lat];
     }
 
     var pending = false;
@@ -2173,6 +2175,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
     buildBars();
     size();
     setCell("fcc");
+    draw();
   })();
 
 })();
