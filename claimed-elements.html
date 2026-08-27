@@ -679,8 +679,9 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
   function abundWords(v) {
     if (v >= 10000) return sig(v / 10000, 3) + " %";
     if (v >= 1) return sig(v, 3) + " ppm";
-    if (v >= 0.001) return sig(v * 1000, 3) + " ppb";
-    return sig(v * 1e6, 3) + " ppt";
+    if (v >= 0.001) return sig(v * 1e3, 3) + " ppb";
+    if (v >= 1e-6) return sig(v * 1e6, 3) + " ppt";
+    return "under 1 ppt";
   }
 
   function ord(n) {
@@ -754,63 +755,63 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
 
   var PROPS = [
     {
-      id: "density", field: "density", label: "Density",
+      id: "density", phrase: "density", field: "density", label: "Density",
       note: "how much a given volume of it weighs",
       logOK: true, defLog: true,
       val: function (e) { return e.density; },
       words: function (v) { return sig(v, 3) + " g/cm³"; }
     },
     {
-      id: "melt", field: "melt", label: "Melting point",
+      id: "melt", phrase: "melting point", field: "melt", label: "Melting point",
       note: "the temperature at which it turns liquid",
       logOK: false, defLog: false,
       val: function (e) { return e.melt; },
       words: function (v) { return degWords(v); }
     },
     {
-      id: "boil", field: "boil", label: "Boiling point",
+      id: "boil", phrase: "boiling point", field: "boil", label: "Boiling point",
       note: "the temperature at which it turns to vapour",
       logOK: false, defLog: false,
       val: function (e) { return e.boil; },
       words: function (v) { return degWords(v); }
     },
     {
-      id: "crust", field: "abundCrust", label: "How much is in Earth's crust",
-      note: "by weight, where one part per million is a gram in a tonne",
+      id: "crust", phrase: "how much is in Earth's crust", field: "abundCrust", label: "How much is in Earth's crust",
+      note: "measured by weight, where one part per million is a gram in a tonne",
       logOK: true, defLog: true,
       val: function (e) { return e.abundCrust; },
       words: function (v) { return abundWords(v); }
     },
     {
-      id: "uni", field: "abundUni", label: "How much is in the universe",
-      note: "by weight, counting everything the telescopes can add up",
+      id: "uni", phrase: "how much is in the universe", field: "abundUni", label: "How much is in the universe",
+      note: "measured by weight, counting everything the telescopes can add up",
       logOK: true, defLog: true,
       val: function (e) { return e.abundUni; },
       words: function (v) { return abundWords(v); }
     },
     {
-      id: "ion1", field: "ion1", label: "Grip on its own outer electron",
+      id: "ion1", phrase: "grip on its own outer electron", field: "ion1", label: "Grip on its own outer electron",
       note: "the energy needed to pull one electron off a loose atom",
       logOK: true, defLog: false,
       val: function (e) { return e.ion1; },
       words: function (v) { return EMA.fmt(v, 0) + " kJ/mol"; }
     },
     {
-      id: "en", field: "en", label: "Pull on electrons it shares",
+      id: "en", phrase: "pull on electrons it shares", field: "en", label: "Pull on electrons it shares",
       note: "how hard it tugs at the electrons in a bond",
       logOK: true, defLog: false,
       val: function (e) { return e.en; },
       words: function (v) { return sig(v, 3); }
     },
     {
-      id: "mass", field: "mass", label: "Weight of one atom",
+      id: "mass", phrase: "weight of one atom", field: "mass", label: "Weight of one atom",
       note: "on the scale where a carbon atom is 12",
       logOK: true, defLog: false,
       val: function (e) { return e.mass; },
       words: function (v) { return sig(v, 5) + " u"; }
     },
     {
-      id: "radius", field: "radius", label: "Reach when bonded",
+      id: "radius", phrase: "reach when bonded", field: "radius", label: "Reach when bonded",
       note: "from the centre of the atom out to the centre of a partner it bonds with",
       logOK: true, defLog: false,
       val: function (e) { return e.radius; },
@@ -876,11 +877,14 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
 
     var missing = NAMED.filter(function (s) { return !rankOf[s]; });
     if (popNote) {
+      var spacing = log
+        ? "Spacing runs in steps of ten, so each equal stretch of strip is a tenfold change."
+        : "Spacing runs in even steps, so equal stretches of strip are equal amounts.";
+      if (!prop.logOK) {
+        spacing += " Steps of ten are unavailable for a temperature in degrees Celsius, because these values run below zero and there is no way to take a tenfold step down through it.";
+      }
       popNote.innerHTML = "Each mark is one of the <strong>" + n + "</strong> elements that carries a figure for " +
-        prop.label.toLowerCase() + ", which is " + prop.note + ". The bright marks are the thirteen. " +
-        (log
-          ? "Spacing runs in steps of ten, so each equal stretch of strip is a tenfold change."
-          : "Spacing runs in even steps, so equal stretches of strip are equal amounts.");
+        prop.phrase + ", which is " + prop.note + ". The bright marks are the thirteen. " + spacing;
     }
 
     /* the rows, highest first, with anything unmeasured gathered at the end */
@@ -918,7 +922,7 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
     if (summary) {
       var placed = rows.filter(function (e) { return rankOf[e.sym]; });
       var top = placed[0], bottom = placed[placed.length - 1];
-      var txt = "Of the <b>" + n + "</b> elements carrying a figure for " + prop.label.toLowerCase() +
+      var txt = "Of the <b>" + n + "</b> elements carrying a figure for " + prop.phrase +
         ", " + top.name.toLowerCase() + " sits <b>" + ord(rankOf[top.sym]) + "</b> and " +
         bottom.name.toLowerCase() + " sits <b>" + ord(rankOf[bottom.sym]) + "</b>.";
       if (missing.length) {

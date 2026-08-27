@@ -637,9 +637,9 @@ body[data-page="resonance"] .step p strong { color: var(--ink); font-weight: 600
       gOut.textContent = g >= 10 ? sig(g, 3) : g.toFixed(2);
       statGain.textContent = (g >= 10 ? sig(g, 3) : g.toFixed(2)) + "×";
       statQ.textContent = q >= 10 ? String(Math.round(q)) : q.toFixed(1);
-      statRing.textContent = rings < 1
+      statRing.textContent = rings < 0.9
         ? "under one swing"
-        : (rings < 2 ? "about one swing" : Math.round(rings) + " swings");
+        : (rings < 1.5 ? "about one swing" : Math.round(rings) + " swings");
       statLag.textContent = Math.round(lag(r, z) * 180 / Math.PI) + "°";
       if (REDUCED) {
         st.peak = g;

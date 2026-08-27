@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sci-Fi Lab · Extreme Matter Atlas</title>
+<meta name="description" content="Eight named fictional machines given a proper spec sheet: the warp drive, the tractor beam, the replicator, the force field, the tricorder, the transporter, the light sabre and the cloaking device, each set beside the nearest built thing with real figures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="scifi"] { --accent: #fb7185; --accent2: #38bdf8; }
+
+body[data-page="scifi"] .hero {
+  background-image:
+    linear-gradient(115deg, transparent 0 42%, rgba(251, 113, 133, 0.09) 42% 44%, transparent 44%),
+    linear-gradient(115deg, transparent 0 66%, rgba(56, 189, 248, 0.09) 66% 67.4%, transparent 67.4%),
+    radial-gradient(1.2px 1.2px at 44px 60px, rgba(251, 113, 133, 0.55), transparent 55%),
+    radial-gradient(1px 1px at 168px 120px, rgba(56, 189, 248, 0.5), transparent 55%);
+  background-size: auto, auto, 220px 200px, 310px 280px;
+}
+
+/* ---- entry blocks ---- */
+body[data-page="scifi"] .rig { --h: var(--accent); --h2: var(--accent2); }
+body[data-page="scifi"] .rig[data-hue="warp"]     { --h: #a78bfa; --h2: #38bdf8; }
+body[data-page="scifi"] .rig[data-hue="tractor"]  { --h: #22d3ee; --h2: #a3e635; }
+body[data-page="scifi"] .rig[data-hue="repl"]     { --h: #818cf8; --h2: #f472b6; }
+body[data-page="scifi"] .rig[data-hue="field"]    { --h: #2dd4bf; --h2: #fbbf24; }
+body[data-page="scifi"] .rig[data-hue="tri"]      { --h: #a3e635; --h2: #22d3ee; }
+body[data-page="scifi"] .rig[data-hue="trans"]    { --h: #67e8f9; --h2: #c084fc; }
+body[data-page="scifi"] .rig[data-hue="sabre"]    { --h: #fbbf24; --h2: #fb7185; }
+body[data-page="scifi"] .rig[data-hue="cloak"]    { --h: #e879f9; --h2: #60a5fa; }
+
+body[data-page="scifi"] .rig-head {
+  display: flex; gap: 16px; align-items: flex-start; margin-bottom: 18px;
+}
+body[data-page="scifi"] .rig-glyph {
+  flex: 0 0 auto;
+  width: 56px; height: 56px; border-radius: 16px;
+  display: grid; place-items: center; font-size: 27px; line-height: 1;
+  background: color-mix(in srgb, var(--h) 16%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--h) 50%, transparent);
+  box-shadow: 0 0 26px -8px var(--h);
+}
+body[data-page="scifi"] .rig-tag {
+  display: block; margin-bottom: 4px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.13em; text-transform: uppercase; color: var(--h);
+}
+body[data-page="scifi"] .rig-head h2 { margin-bottom: 0; }
+body[data-page="scifi"] .rig-head h2 .hue {
+  background: linear-gradient(90deg, var(--h), var(--h2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="scifi"] .rig-story { font-size: 17px; }
+
+/* the payload block: what already exists */
+body[data-page="scifi"] .built {
+  margin: 26px 0 22px; padding: 26px 24px; border-radius: 20px;
+  background:
+    radial-gradient(120% 130% at 8% 0%, color-mix(in srgb, var(--h) 14%, transparent), transparent 62%),
+    linear-gradient(160deg, var(--panel2), var(--panel));
+  border: 1px solid color-mix(in srgb, var(--h) 42%, var(--line));
+  box-shadow: 0 20px 60px -34px var(--h);
+}
+body[data-page="scifi"] .built-kick {
+  display: inline-block; margin-bottom: 12px; padding: 4px 13px;
+  border-radius: 999px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: #04060c; background: linear-gradient(90deg, var(--h), var(--h2));
+}
+body[data-page="scifi"] .built h3 {
+  font-size: clamp(19px, 2.6vw, 24px); font-weight: 700; margin-bottom: 12px;
+  line-height: 1.25;
+}
+body[data-page="scifi"] .built p { font-size: 16px; }
+body[data-page="scifi"] .built p + p { margin-top: 13px; }
+
+body[data-page="scifi"] .figs {
+  display: grid; gap: 0 26px; margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+body[data-page="scifi"] .figs > div {
+  padding: 11px 0; border-top: 1px dashed color-mix(in srgb, var(--h) 30%, var(--line));
+}
+body[data-page="scifi"] .figs dt {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.11em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 3px;
+}
+body[data-page="scifi"] .figs dd { font-size: 15px; color: var(--ink); }
+body[data-page="scifi"] .figs dd b { color: var(--h); font-weight: 700; }
+
+/* the four remaining steps of the brief */
+body[data-page="scifi"] .brief {
+  display: grid; gap: 14px; margin: 22px 0;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 760px) { body[data-page="scifi"] .brief { grid-template-columns: 1fr; } }
+body[data-page="scifi"] .brief .step {
+  padding: 17px 19px; border-radius: 15px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-left: 3px solid color-mix(in srgb, var(--h) 70%, transparent);
+}
+body[data-page="scifi"] .brief .slab {
+  display: block; margin-bottom: 7px;
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.13em; text-transform: uppercase; color: var(--h);
+}
+body[data-page="scifi"] .brief p { font-size: 15px; color: var(--muted); }
+body[data-page="scifi"] .brief p strong { color: var(--ink); font-weight: 600; }
+
+body[data-page="scifi"] .gapline {
+  margin: 22px 0 0; padding: 16px 20px; border-radius: 0 15px 15px 0;
+  border-left: 3px solid var(--h);
+  background: color-mix(in srgb, var(--h) 8%, var(--panel));
+  font-size: 15.5px; color: var(--muted);
+}
+body[data-page="scifi"] .gapline b { color: var(--ink); }
+body[data-page="scifi"] .gapline .big {
+  font-family: var(--font-mono); color: var(--h); font-weight: 600;
+}
+
+/* ---- the picker ---- */
+body[data-page="scifi"] .pick-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="scifi"] .pick-row .pick {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px; padding: 8px 15px; border-radius: 999px; cursor: pointer;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  color: var(--muted); background: var(--panel);
+  border: 1px solid var(--line-bright);
+  transition: color .16s ease, border-color .16s ease, background .16s ease;
+}
+body[data-page="scifi"] .pick-row .pick:hover { color: var(--ink); border-color: var(--accent); }
+body[data-page="scifi"] .pick-row .pick[aria-pressed="true"] {
+  color: #04060c; border-color: transparent;
+  background: linear-gradient(90deg, var(--pk, var(--accent)), var(--pk2, var(--accent2)));
+  box-shadow: 0 0 20px -4px var(--pk, var(--accent));
+}
+
+body[data-page="scifi"] .sheet {
+  --h: var(--accent); --h2: var(--accent2);
+  margin-top: 20px; padding: 24px 22px; border-radius: 20px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  border: 1px solid color-mix(in srgb, var(--h) 45%, var(--line));
+}
+body[data-page="scifi"] .sheet-head {
+  display: flex; gap: 13px; align-items: center; flex-wrap: wrap;
+  padding-bottom: 14px; margin-bottom: 6px;
+  border-bottom: 1px solid color-mix(in srgb, var(--h) 30%, var(--line));
+}
+body[data-page="scifi"] .sheet-head .sg { font-size: 28px; line-height: 1; }
+body[data-page="scifi"] .sheet-head h3 {
+  margin-bottom: 0; font-size: clamp(19px, 2.8vw, 25px); font-weight: 700;
+  background: linear-gradient(90deg, var(--h), var(--h2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="scifi"] .sheet-row {
+  display: grid; grid-template-columns: 150px 1fr; gap: 6px 20px;
+  padding: 14px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="scifi"] .sheet-row:last-of-type { border-bottom: 0; }
+@media (max-width: 620px) {
+  body[data-page="scifi"] .sheet-row { grid-template-columns: 1fr; gap: 4px; }
+}
+body[data-page="scifi"] .sheet-row .k {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--h);
+  padding-top: 4px;
+}
+body[data-page="scifi"] .sheet-row .v { font-size: 15.5px; color: var(--muted); }
+body[data-page="scifi"] .sheet-row .v strong { color: var(--ink); font-weight: 600; }
+body[data-page="scifi"] .sheet-row.payload .v { color: var(--ink); }
+
+body[data-page="scifi"] .logtrack {
+  position: relative; height: 20px; border-radius: 999px; overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, var(--line-bright) 0 1px, transparent 1px 12.5%),
+    var(--bg2);
+  border: 1px solid var(--line); margin: 4px 0 8px;
+}
+body[data-page="scifi"] .logtrack .bar {
+  height: 100%; border-radius: 999px 0 0 999px;
+  background: linear-gradient(90deg, var(--h), var(--h2));
+  box-shadow: 0 0 16px -2px var(--h);
+}
+body[data-page="scifi"] .logscale {
+  display: flex; justify-content: space-between; gap: 10px;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
+}
+body[data-page="scifi"] .sheet-link {
+  display: inline-block; margin-top: 6px;
+  font-weight: 600; font-size: 15px; color: var(--h);
+}
+
+body[data-page="scifi"] .ladder-list {
+  list-style: none; display: grid; gap: 8px; margin: 18px 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+body[data-page="scifi"] .ladder-list li {
+  display: flex; gap: 10px; align-items: baseline;
+  padding: 10px 14px; border-radius: 12px;
+  background: var(--panel); border: 1px solid var(--line);
+  font-size: 14px; color: var(--muted);
+}
+body[data-page="scifi"] .ladder-list li b { color: var(--ink); font-weight: 600; }
+body[data-page="scifi"] .ladder-list li .n {
+  margin-left: auto; font-family: var(--font-mono); font-size: 12.5px;
+  color: var(--accent); white-space: nowrap;
+}
+
+body[data-page="scifi"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="scifi"] .data-table td.figure {
+  font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap;
+}
+body[data-page="scifi"] .lineage {
+  display: grid; gap: 14px; margin: 22px 0;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+body[data-page="scifi"] .lineage .item {
+  padding: 18px 20px; border-radius: 16px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  border: 1px solid var(--line);
+}
+body[data-page="scifi"] .lineage .item .yr {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em;
+  color: var(--accent2); display: block; margin-bottom: 6px;
+}
+body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted); }
+</style>
+</head>
+<body data-page="scifi">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Eight machines · the spec they imply · the bench they already sit on</span>
+      <h1 class="display">Sci-Fi Lab</h1>
+      <p class="lede">A story that names a machine has done half an engineer's job: it has written the requirement. What is left is to <strong>put units on it</strong> and go looking for the nearest thing already running. That search keeps coming back with something. Sound really does lift and carry a sixteen millimetre bead through open air. A wall made of nothing but hot gas really does hold a vacuum against the atmosphere. A quantum state really has been moved fourteen hundred kilometres to a satellite. Eight fictional machines here, each with the built thing that rhymes with it, and a number on the distance still to go.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">1994</span><span class="lbl">the year a warp drive first appeared as a solution to Einstein's equations, in a physics journal</span></div>
+        <div class="stat"><span class="num">16 mm</span><span class="lbl">the polystyrene sphere held and spun in mid-air by 192 small loudspeakers, nearly twice the sound's own wavelength</span></div>
+        <div class="stat"><span class="num">1,400 km</span><span class="lbl">the distance a quantum state was moved from a Tibetan ground station up to the Micius satellite</span></div>
+        <div class="stat"><span class="num">2 sec</span><span class="lbl">what a handheld reader takes to name the elements in a piece of metal you point it at</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Fiction goes first more often than <span class="hue">the order suggests</span></h2>
+      <p>The habit of treating a made-up machine as a design brief is older than most of the machines. It works because a story has to make its device do something specific, and specific is what an engineer needs.</p>
+
+      <div class="lineage">
+        <div class="item">
+          <span class="yr">October 1945</span>
+          <h3>Three relays in a high orbit</h3>
+          <p>Arthur C. Clarke published a four-page piece in <em>Wireless World</em> working out that three stations parked 35,800 kilometres up, going round once a day, would cover the whole populated world. Syncom 2 reached that orbit in July 1963, and Intelsat I began carrying paying traffic in April 1965, nineteen and a half years after the article.</p>
+        </div>
+        <div class="item">
+          <span class="yr">1942</span>
+          <h3>The waldo</h3>
+          <p>Robert Heinlein's story of that name gave remote manipulators their nickname before anyone built a good one. Master-slave arms behind thick glass are now standard in nuclear handling cells and in keyhole surgery, and the people who use them still call them waldos.</p>
+        </div>
+        <div class="item">
+          <span class="yr">April 1973</span>
+          <h3>A phone that flips open</h3>
+          <p>Martin Cooper made the first handheld mobile phone call for Motorola on a New York footpath. He has said many times since that the communicator flipped open on <em>Star Trek</em> was on his mind, and Motorola's StarTAC of 1996 wore the shape openly.</p>
+        </div>
+      </div>
+
+      <p>None of that makes fiction a forecast. It makes fiction a place where requirements get written down early, in plain language, before anyone knows whether they can be met. The eight below are handled that way: the story told straight, the numbers it implies pulled out, and the closest working machine set beside it with its own figures. Where the fiction asks for more than anything built, the shortfall gets a factor rather than a shrug.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Eight machines on <span class="hue">one ruler</span></h2>
+      <p>Pick one and the sheet fills in. The bar underneath is how many times short the nearest built thing falls on the single quantity the story leans on hardest, drawn so that each step across the track is ten times the last, because a factor of three hundred and a factor of a thousand million million million million cannot share a picture any other way.</p>
+
+      <div class="canvas-frame">
+        <canvas id="ladder" width="1000" height="240" aria-label="A horizontal scale marked in steps of ten, from one at the left to ten to the power of thirty-two at the right. Eight technologies sit on it as marked pins. The same figures are listed as text below."></canvas>
+      </div>
+
+      <ul class="ladder-list" id="ladderList"></ul>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="techPick">Choose a technology</label>
+            <select id="techPick"></select>
+          </div>
+        </div>
+        <div class="control">
+          <label id="pickLabel">Or jump straight to one</label>
+          <div class="pick-row" id="pickRow" role="group" aria-labelledby="pickLabel"></div>
+        </div>
+
+        <div class="sheet" id="sheet" aria-live="polite">
+          <div class="sheet-head"><span class="sg" id="shGlyph" aria-hidden="true">🌌</span><h3 id="shName">The warp drive</h3></div>
+          <div class="sheet-row"><span class="k">The story says</span><span class="v" id="shStory"></span></div>
+          <div class="sheet-row"><span class="k">As a spec</span><span class="v" id="shSpec"></span></div>
+          <div class="sheet-row payload"><span class="k">Nearest built thing</span><span class="v" id="shBuilt"></span></div>
+          <div class="sheet-row"><span class="k">Physics needed</span><span class="v" id="shPhys"></span></div>
+          <div class="sheet-row">
+            <span class="k">Size of the gap</span>
+            <span class="v">
+              <div class="logtrack"><div class="bar" id="shBar" style="width:94%"></div></div>
+              <div class="logscale"><span>1&times;</span><span>each step across is ten times the last</span><span>10<sup>32</sup>&times;</span></div>
+              <p id="shGap" style="margin-top:9px"></p>
+            </span>
+          </div>
+          <div class="sheet-row"><span class="k">Next measurement</span><span class="v" id="shNext"></span></div>
+          <a class="sheet-link" id="shLink" href="zero-point.html">Keep going &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="warp" data-hue="warp">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">🌌</span>
+        <div>
+          <span class="rig-tag">Star Trek, 1966 onward · Classical and Quantum Gravity, 1994</span>
+          <h2>The <span class="hue">warp drive</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">A ship at warp does not travel through space. The space around it travels, contracting ahead and expanding behind, and the ship rides in a flat pocket where nothing local is moving fast at all. That is how the fiction has always described it, and in May 1994 Miguel Alcubierre, then at Cardiff, wrote it out as a solution to Einstein's field equations and published it in <em>Classical and Quantum Gravity</em>. The warp drive is one of the few pieces of screen technology with a peer-reviewed metric to its name.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>Space really does stretch and squeeze, and the stretching has been measured</h3>
+        <p>On 14 September 2015 the two LIGO detectors recorded a passing gravitational wave from a pair of black holes merging about 1.3 billion light years away. As it went through, it stretched one four kilometre arm and squeezed the other. The change in length was about <b>four billionths of a billionth of a nanometre</b>, four times ten to the minus eighteen of a metre, roughly one four-hundredth of the width of a proton. Both detectors saw the same shape seven milliseconds apart, which is how long light takes to cross the United States.</p>
+        <p>The larger version is going on everywhere at once. Every million parsecs of space between distant galaxies grows by about seventy kilometres each second, which is what the redshift of far-off light reports. Stretching spacetime is not the speculative part of the brief. It is measured, twice over, by two different kinds of instrument.</p>
+        <p>What is unbuilt is doing it on purpose, in one place, on demand. Nothing anyone has made moves spacetime by an amount an instrument could pick up.</p>
+        <dl class="figs">
+          <div><dt>Instrument</dt><dd>LIGO Hanford and LIGO Livingston, 4 km arms</dd></div>
+          <div><dt>Arm length change</dt><dd><b>4 &times; 10<sup>-18</sup> m</b>, about a four-hundredth of a proton's width</dd></div>
+          <div><dt>Strain measured</dt><dd>about one part in 10<sup>21</sup></dd></div>
+          <div><dt>Published</dt><dd><em>Physical Review Letters</em> 116, 061102, February 2016</dd></div>
+        </dl>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>A bubble roughly 100 metres across, carrying a crew compartment, holding a steady apparent speed well above light. Alcubierre's own worked example takes a bubble of about that size and asks what stress-energy the metric would need on its wall.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>Negative energy density on the bubble wall, in bulk. Michael Pfenning and Larry Ford applied quantum inequalities in 1997 and found the wall would have to be a few hundred Planck lengths thick, with a total negative energy about <strong>ten orders of magnitude beyond the mass-energy of the visible universe</strong>. Chris Van Den Broeck changed the geometry in 1999, shrinking the outside of the bubble to about 10<sup>-15</sup> metres while keeping the inside roomy, and brought the requirement down to <strong>a few solar masses</strong>. Harold White's sensitivity work at NASA in 2011 reported that thickening the wall and oscillating it brings the figure towards the mass-energy of Voyager 1, about <strong>700 kilograms</strong>.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>Negative energy would have to be producible in quantity, held steady, and shaped. That is a materials problem before it is a relativity problem. Alexey Bobrick and Gianni Martire argued in 2021 that a general class of slower-than-light warp shells can be built from ordinary positive energy, and a 2024 solution by Jared Fuchs and colleagues gives a constant-velocity shell that satisfies every energy condition. Whether such a shell can be accelerated, and at what cost, is open.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>Gravitational wave detectors are already the right instrument. Katy Clough, Tim Dietrich and Sebastian Khan simulated what a warp shell losing containment would radiate and published the waveform in July 2024: a short burst, at frequencies above the band LIGO listens in. Building detectors for that higher band turns a thought experiment into a search with a null result or a signal at the end of it.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> the most optimistic published requirement, 700 kilograms of mass-energy, is <span class="big">6.3 &times; 10<sup>19</sup> joules</span>, about five weeks of everything the world uses. But it has to be negative. The largest negative energy density anyone has produced sits between Casimir plates, and a stamp-sized pair at a hundred nanometre gap holds about <span class="big">43 picojoules</span> of it. The ratio is <span class="big">1.5 &times; 10<sup>30</sup></span>: thirty steps of ten, which is an atom's width set against sixteen thousand light years, a sixth of the way across the Milky Way. <a href="zero-point.html">The plates that make that negative energy are on the Zero Point page.</a></p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="tractor" data-hue="tractor">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">🧲</span>
+        <div>
+          <span class="rig-tag">Star Trek · a hand made of field</span>
+          <h2>The <span class="hue">tractor beam</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">A beam goes out, takes hold of something at a distance, and pulls it in. No cable, no contact. On screen it is used to catch a drifting shuttle and to hold a rock still while somebody looks at it. Stripped of the drama, the requirement is a projected force that grips a specific object and can be steered.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>Two working tractor beams, one made of light and one made of sound</h3>
+        <p>Arthur Ashkin at Bell Laboratories pushed small transparent spheres about with laser light in 1970, and in 1986 built the single-beam gradient trap that holds a particle in three dimensions at the focus of one beam. In 1987 he found live bacteria caught in the trap, unharmed, still dividing. Optical tweezers now hold single cells, stretch single strands of DNA and measure the step of a motor protein. The forces are one to a hundred piconewtons, which is the weight of about ten nanograms, a thousandth of a grain of table salt. Ashkin received half the 2018 Nobel Prize in Physics for it, at ninety-six.</p>
+        <p>Sound does the heavy lifting. Asier Marzo, Mihai Caleap and Bruce Drinkwater reported in <em>Physical Review Letters</em> in January 2018 that an array of 192 small ultrasound loudspeakers running at 40 kilohertz, in ordinary air, trapped and held a polystyrene sphere <b>16 millimetres across</b>: nearly twice the sound's own wavelength of 8.6 millimetres, which had been the practical ceiling. The trick was to alternate two oppositely winding acoustic vortices about a thousand times a second, so the bead feels only the average and stops spinning itself out of the trap. It can be held, moved and rotated on command, from one side, with nothing touching it.</p>
+        <dl class="figs">
+          <div><dt>Sound array</dt><dd>192 transducers, 40 kHz, air</dd></div>
+          <div><dt>Largest held</dt><dd><b>16 mm</b> polystyrene sphere, about 54 milligrams</dd></div>
+          <div><dt>Light trap force</dt><dd>1 to 100 piconewtons, the weight of about 10 nanograms</dd></div>
+          <div><dt>What light holds</dt><dd>single cells, bacteria, viruses, nanospheres</dd></div>
+        </dl>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>Hold a shuttle, tens of tonnes, at a range of hundreds of metres, and tow it. Call it 10,000 kilograms held against a gentle acceleration, with the beam crossing vacuum.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>Light carries momentum, so a perfectly reflecting surface feels a push of twice the power divided by the speed of light. To hold one adult of 70 kilograms up against gravity by reflected light takes about <strong>103 gigawatts</strong>, roughly three and a third times what Australia's whole electricity system delivers on an average day. Sound gives far more force per watt, but only through a fluid: acoustic levitation needs air or water to push against, so it stops at the edge of the atmosphere.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>Either a coupling to ordinary neutral matter that does not come with the momentum bill, and nothing known behaves that way, or the beam is used where it already works: small things, short range, in a fluid, with the array scaled up in transducer count rather than in raw power.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>Trap stiffness against object size. Push the transducer count up and record the largest mass held and the force at the edge of the trap, which is the number that decides what else could ever be held. In vacuum, the equivalent measurement is on levitated nanospheres: a Vienna group cooled one to its quantum ground state in an optical trap in 2020, so the control is already finer than the force is strong.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> the built beam holds <span class="big">54 milligrams</span>. A person is <span class="big">70 kilograms</span>. That is a factor of <span class="big">1.3 million</span>, which is the step from a poppy seed to the person holding it. The distance is not the hard part; the mass is. <a href="resonance.html">Why only certain waves fit a given space, which is what makes the trap, is on the Resonance page.</a></p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="replicator" data-hue="repl">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">🍲</span>
+        <div>
+          <span class="rig-tag">Star Trek: The Next Generation, 1987 onward</span>
+          <h2>The <span class="hue">replicator</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">Ask a wall for a hot meal and it appears. The show set its own limit carefully: the replicator works at molecular resolution rather than the finer quantum kind, which is the in-story reason it can make a cup of tea but not a person. Read as a brief, that is a machine holding a library of patterns and a way of laying matter down to match one, fast enough to be worth waiting for.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>A design travelled as data and the object appeared where it was needed</h3>
+        <p>On 17 December 2014 the astronaut Barry Wilmore printed a ratchet spanner aboard the International Space Station. The design was drawn by Noah Paul-Gin at Made In Space, checked by safety reviewers, and the file was sent up from Marshall Space Flight Center. From idea on the ground to tool in orbit took under a week, and the print itself took about four hours. Nothing physical was launched. That is the replicator's actual shape: the pattern moves, the matter is already there.</p>
+        <p>The scale runs both ways. Two-photon printing lays polymer down in voxels about <b>100 nanometres</b> across, small enough to build a working lens on the end of an optical fibre. At the other end, Relativity Space's Terran 1, thirty-four metres tall and <b>85 per cent 3D printed by mass</b>, flew from Cape Canaveral on 22 March 2023 and held together through the worst aerodynamic loading of the climb before its second stage failed to reach orbit.</p>
+        <p>And the front half of the machine, the pattern library, is being filled right now. Google DeepMind's GNoME release put <b>2.2 million</b> predicted crystal structures into the open, about <b>380,000</b> of them judged likely to hold together. Berkeley's A-Lab, a set of robot arms that weigh out powders, load furnaces, bake, cool and read their own results, made 41 of 58 attempted targets in 17 days. Knowing what to make, and having a machine make it without being told how, is running.</p>
+        <dl class="figs">
+          <div><dt>Finest print voxel</dt><dd><b>100 nm</b> in every direction</dd></div>
+          <div><dt>Printed in orbit</dt><dd>ratchet spanner, 17 December 2014, about 4 hours</dd></div>
+          <div><dt>Largest printed flier</dt><dd>Terran 1, 85 per cent by mass, March 2023</dd></div>
+          <div><dt>Pattern library</dt><dd>2.2 million predicted crystals, 380,000 judged stable</dd></div>
+        </dl>
+        <p style="margin-top:16px"><a href="gnome.html">The prediction side of the replicator has its own page: GNoME &rarr;</a></p>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>Four hundred grams of hot, structured, edible matter delivered in about thirty seconds from a stored pattern, repeatable, with no feedstock visible to the user.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>Placement at the scale of molecules. Placing atoms one at a time is possible and has been since 1989, when Don Eigler and Erhard Schweizer at IBM Almaden nudged 35 xenon atoms into three letters with a scanning tunnelling microscope, roughly 22 hours of work. At that rate, one gram of carbon, about a pencil lead's worth and 5 &times; 10<sup>22</sup> atoms, would take <strong>3.6 &times; 10<sup>18</sup> years</strong>, some 260 million times the age of the universe.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>Assembly would have to be massively parallel, the way chemistry already is. A saucepan beats a needle because every one of those 10<sup>22</sup> molecules reacts at once without being addressed individually. A replicator is therefore a chemistry problem wearing a printer's clothes: the question is not how to place an atom, it is how to make 10<sup>22</sup> of them place themselves correctly.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>Two numbers set everything else: placements per second per print head, and errors per placement. Published together they say exactly how big an object a given technique can finish before the defect count ruins it. On the pattern side, the number to watch is how many of GNoME's 380,000 survive contact with a furnace, which A-Lab is finding out one batch at a time.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> the finest printer's smallest brick, a cube 100 nanometres on a side, still contains about <span class="big">176 million</span> carbon atoms at diamond density: six and a half times Australia's population, in one voxel. Molecular resolution means placing every one of those. That is a factor of <span class="big">1.8 &times; 10<sup>8</sup></span> between the smallest thing a printer can put down and the smallest thing the fiction says it puts down.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="forcefield" data-hue="field">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">🛡️</span>
+        <div>
+          <span class="rig-tag">Star Trek and everywhere since · a wall of nothing</span>
+          <h2>The <span class="hue">force field</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">A hangar with its doors wide open to vacuum, and the air stays in. A doorway you can see through and cannot walk through. The screen version is one field doing two jobs at once: holding gas on one side, and stopping solid objects. Those two jobs are worth separating, because one of them is done.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>A wall made of nothing but hot gas really does hold a vacuum against the atmosphere</h3>
+        <p>Ady Hershcovitch at Brookhaven National Laboratory built the plasma window: a wall-stabilised electric arc struck across a small opening, running in argon or helium, at 12,000 kelvin at the edges and 15,000 in the centre. At that temperature the gas is about forty times thinner than room-temperature gas at the same pressure, and much more viscous, and those two facts together make it a plug. A <b>3 millimetre</b> opening holds a pressure difference of more than <b>2.5 atmospheres</b>, about what a car tyre carries above the air around it. A 2.36 millimetre arc, four centimetres long, separated a vacuum chamber from open air, and an electron beam at 175 thousand electronvolts passed straight through and out into the room. It ran steadily for 2,000 hours without maintenance.</p>
+        <p>There is no solid material in the beam path at any point. That is the hangar door, at three millimetres.</p>
+        <p>The other half of the fiction is also real, in its own way. At the Joint European Torus in Oxfordshire a plasma far hotter than the Sun's core sat clear of the vessel wall on magnetic field alone, and in October 2023 it produced <b>69 megajoules</b> of fusion energy over 5.2 seconds from 0.2 milligrams of fuel. EAST in Hefei held a plasma near 70 million degrees for <b>1,066 seconds</b> in January 2025, close to eighteen minutes. Wendelstein 7-X in Greifswald set a record for the fusion triple product over 43 seconds in May 2025. Holding something violently hot away from a wall, with nothing but a field, is a solved and improving art.</p>
+        <dl class="figs">
+          <div><dt>Plasma window aperture</dt><dd>2 to 11 mm arcs tested, 3 mm holding &gt;2.5 atmospheres</dd></div>
+          <div><dt>Arc temperature</dt><dd>12,000 K at the edge, 15,000 K in the centre</dd></div>
+          <div><dt>Power scaling</dt><dd>about <b>10 kW per centimetre</b> of arc diameter, 7.5 with a venturi</dd></div>
+          <div><dt>Magnetic version</dt><dd>JET, 69 MJ in 5.2 s, October 2023</dd></div>
+        </dl>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>A doorway two metres by nine hundred millimetres, holding one atmosphere of pressure difference indefinitely, transparent, and stopping a thrown object as firmly as it stops the air.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>For gas, nothing new: the arc already does it, and the published scaling is about ten kilowatts for every centimetre of arc diameter. A 900 millimetre doorway on that scaling comes to <strong>900 kilowatts</strong>, roughly 375 kettles boiling without a break, and it would be a 12,000 kelvin wall. That is an extrapolation three hundred times beyond the largest arc tested, an estimate for comparison rather than a design anyone has drawn.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>The second job has no known mechanism at all, and saying why is more useful than saying it is hard. Magnetic and electric fields push on charges and currents. A thrown rock is electrically neutral overall, so a field of any strength that a laboratory can make passes through it and it passes through the field. The only force that acts on neutral mass at a distance is gravity, and at the mass of a rock it is far too weak to notice. Stopping solids at a distance would need a coupling nobody has found.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>Build the widest plasma window anyone has attempted and record whether the ten kilowatts per centimetre holds past a centimetre, and where cooling rather than power becomes the wall. That single curve, power against aperture, decides whether the hangar door is a scaling job or a different machine.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> the air-holding job is short by a factor of <span class="big">300</span> in aperture, which is a scaling problem with a published law attached to it. The object-stopping job is short by an unknown mechanism, which is a different kind of shortfall and worth naming as one. <a href="engineering.html">Real materials doing real structural jobs are on the Engineering page.</a></p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="tricorder" data-hue="tri">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">📟</span>
+        <div>
+          <span class="rig-tag">Star Trek, 1966 · point it and it tells you</span>
+          <h2>The <span class="hue">tricorder</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">A box the size of a paperback. Point it at a rock and it names the minerals; point it at a person and it names what is wrong with them. It is the least glamorous device on the list and the one that has come closest, because both halves of it turned out to be spectroscopy, and spectroscopy got small.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>Point a handheld reader at a piece of metal and it names the elements in under two seconds</h3>
+        <p>An X-ray fluorescence reader fires a small X-ray source at whatever it touches, and every element in the sample answers with light at its own particular energies. Current handhelds read from magnesium to uranium, from single parts per million up to pure, in <b>under two seconds</b> for a standard alloy and under ten for a rock. Scrap yards use them to sort stainless grades by eye-speed. Archaeologists use them to read pigments without taking a sample. They weigh about as much as a full water bottle.</p>
+        <p>Raman readers do the molecular half. Shine a 785 nanometre laser at a substance, and a tiny fraction of the light comes back shifted by the vibrations of its bonds, which is a fingerprint. A handheld matches that fingerprint against an onboard library in seconds. Spatially offset Raman, invented by Pavel Matousek and colleagues at the Rutherford Appleton Laboratory in 2004, shines the laser at one spot and collects from a spot beside it, which reaches deeper into the sample: enough to read the contents of a sealed container without opening it, and enough to read bone chemistry through skin.</p>
+        <p>The version working furthest from home is on Mars. SuperCam on the Perseverance rover points a laser at a rock <b>two to seven metres away</b>, reads the flash it makes, and reports the composition, with Raman and infrared spectrometers and a microphone alongside. Its five hundred thousandth shot was fired on 18 February 2025.</p>
+        <p>The medical half has a name and a date too. The Qualcomm Tricorder XPRIZE was judged in April 2017, and the top prize went to Final Frontier Medical Devices, a family-led team out of Pennsylvania, for DxtER: a set of non-invasive sensors that diagnosed <b>13 conditions</b> and tracked five vital signs, in a person's own home, without a clinician.</p>
+        <dl class="figs">
+          <div><dt>Elements read</dt><dd>magnesium to uranium, parts per million to 100 per cent</dd></div>
+          <div><dt>Time to an answer</dt><dd><b>under 2 seconds</b> for an alloy, under 10 for a rock</dd></div>
+          <div><dt>Working range on Mars</dt><dd>2 to 7 metres, 500,000 laser shots by February 2025</dd></div>
+          <div><dt>Medical version</dt><dd>13 conditions, 5 vital signs, judged April 2017</dd></div>
+        </dl>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>Handheld. Names any material by pointing. Names any condition in a person by pointing. Works at a distance, through containers, and on screen it is also used to survey a whole planet from orbit.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>Signal has to reach the sensor, and that is where the two halves part company. Light of the right colour gets in and out of a rock easily. Tissue scatters visible light within a few millimetres, so most of what a diagnosis needs, the chemistry deep inside a body, never sends anything to the surface. Range is the other limit: light returned falls with the square of the distance, so reading from a 400 kilometre orbit rather than seven metres means <strong>3.3 thousand million times less light</strong> coming back, nine and a half steps of ten.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>For the medical half, either a wavelength that penetrates tissue and still carries chemical detail, which is what deep-tissue Raman and photoacoustic work are chasing, or an accepted set of surface signals that stands in for the inside. For the range half, a much larger collecting aperture or a much brighter probe, which is simply a bigger telescope with a laser on it.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>How many conditions a non-invasive sensor set can separate, and at what error rate, published as a full confusion table rather than a headline count. And for the pointing instruments, the greatest stand-off distance at which a usable spectrum still comes back, measured rather than specified.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> the materials half is close to done, and the readers are on tool belts. The medical half handles <span class="big">13</span> conditions against roughly <span class="big">70,000</span> diagnosis codes in the current international code book, a factor of about <span class="big">5,400</span>. That is a hypothesis about what sensors can reach, not a ceiling anyone has proved.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="transporter" data-hue="trans">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">✨</span>
+        <div>
+          <span class="rig-tag">Star Trek, 1966 · Physical Review Letters, 1993</span>
+          <h2>The <span class="hue">transporter</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">A person stands on a pad, dissolves into light, and reassembles somewhere else about five seconds later. The device was reportedly invented for the show because landing a ship every week was too expensive to film, which is a fine origin for the piece of screen technology that ended up sharing a name with a real and working protocol.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>A quantum state has been moved from a Tibetan mountain to a satellite fourteen hundred kilometres up</h3>
+        <p>Charles Bennett and five colleagues wrote the protocol down in <em>Physical Review Letters</em> in 1993. Anton Zeilinger's group in Innsbruck and Francesco De Martini's in Rome ran it on single photons in 1997. Then it went outdoors, and then it went up.</p>
+        <p>Ji-Gang Ren, Jian-Wei Pan and colleagues teleported single-photon states from a ground observatory at Ngari in Tibet, 5,100 metres up, to the Micius satellite passing overhead, across distances from 500 to <b>1,400 kilometres</b>. The ground source produced about 8,000 attempts each second; enough survived the climb through the atmosphere to give an average fidelity of <b>0.80 plus or minus 0.01</b> across six input states, well above what any classical copying could reach. Published in <em>Nature</em>, August 2017. In December 2024 a group at Northwestern reported teleportation through a fibre that was carrying ordinary internet traffic at the same time.</p>
+        <p>Here is what actually moves, said plainly, because the name misleads. The state travels; the particle does not. The original state is destroyed in the act of sending, so nothing is copied. An ordinary classical message has to travel alongside it at light speed for the receiver to finish the job, so nothing outruns light. And the receiving end must already hold a particle of the right kind, waiting. Quantum teleportation moves <strong>what a thing is doing</strong> onto a thing that is already there. That is a real and useful trick, and it is not the same trick as moving the thing.</p>
+        <dl class="figs">
+          <div><dt>Greatest distance</dt><dd><b>1,400 km</b>, ground to satellite, August 2017</dd></div>
+          <div><dt>Fidelity</dt><dd>0.80 &plusmn; 0.01, averaged over six input states</dd></div>
+          <div><dt>Source rate</dt><dd>about 8,000 attempts per second</dd></div>
+          <div><dt>Largest composite state</dt><dd>a two-particle system, reported 2006</dd></div>
+        </dl>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>One adult, about 7 &times; 10<sup>27</sup> atoms, moved 40,000 kilometres in roughly five seconds, arriving alive and continuous.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>One entangled pair for every quantum state moved, distributed in advance, plus a classical channel wide enough to carry the measurement results. Write a person down as data and the scale appears: recording each atom's position to a tenth of a nanometre plus which element it is takes about 110 bits an atom, so roughly <strong>7.7 &times; 10<sup>29</sup> bits</strong>, near enough to 96 million zettabytes. All the traffic crossing the internet in a year is around five zettabytes, so one person is about <strong>19 million years of everything the world sends</strong>.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>Entanglement would have to be produced and stored at something like 10<sup>27</sup> pairs per event, and the destination would need the matter already assembled and waiting in the right arrangement, since teleportation writes a state onto matter rather than delivering matter. Whether continuity of a person survives that is a question about persons rather than about physics, and the fiction has been arguing with itself about it for sixty years.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>Entangled pairs per second across a working link, and how that rate falls with distance. Quantum memories and repeaters are the bottleneck and the whole field knows it: every improvement in memory lifetime shows up directly in that one number. Watch it, and you are watching the only quantity that could ever grow towards the fiction.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> the largest composite system teleported is <span class="big">two particles</span>. A person is <span class="big">7 &times; 10<sup>27</sup> atoms</span>: one for every grain of sand on a billion Earths' worth of beaches. The factor is <span class="big">3.5 &times; 10<sup>27</sup></span>. The protocol is not the obstacle; the protocol works. The count is. <a href="frontiers.html">Where the paths could lead from here is on the Frontiers page.</a></p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="sabre" data-hue="sabre">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">⚡</span>
+        <div>
+          <span class="rig-tag">Star Wars, 1977 · a metre of plasma that stops at a metre</span>
+          <h2>The <span class="hue">light sabre</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">A hilt about thirty centimetres long throws a blade a metre long, and the blade stops there. A crystal inside sets the colour. It is the most copied object in film, and underneath the sound design it is a serious four-part brief: make a plasma, hold it in a shape, stop it at a fixed distance in open air, and carry the power for all three in one hand.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>A handheld plasma blade that cuts steel is a tool you can hire from a hardware shop</h3>
+        <p>A plasma cutter strikes an electric arc through a jet of compressed gas and turns it into a column of ionised gas above <b>20,000 degrees</b>. A common workshop machine, drawing about 10 kilowatts to deliver 45 amps, cuts through 16 millimetres of mild steel, hand-held, with a real plasma column steered by a person. Every part of the light sabre's blade behaviour except its length and its lack of a cable is on that bench already.</p>
+        <p>The shaping is real too. Push a big enough current down a plasma column and its own magnetic field squeezes it inward: that is a Z-pinch, and it needs no external magnet at all. Dense plasma focus machines make a pinched column a few millimetres long, and it lasts about <b>a hundred nanoseconds</b> before the sausage and kink instabilities pull it apart. A self-holding rod of plasma exists. It is short and it is brief.</p>
+        <p>Even the light has been persuaded to behave a little like matter. Ofer Firstenberg, Mikhail Lukin and colleagues reported in <em>Nature</em> in September 2013 that photons sent through a cloud of rubidium chilled to a whisker above absolute zero attract one another and travel out as a bound pair, behaving on the way through as though they had mass. Lukin told the Harvard Gazette at the time that the comparison with light sabres was not far off. The photons come out of the cloud as ordinary light again, which is the part the analogy has to leave behind.</p>
+        <dl class="figs">
+          <div><dt>Workshop plasma arc</dt><dd>over <b>20,000 &deg;C</b>, cuts 16 mm steel</dd></div>
+          <div><dt>Power to run it</dt><dd>about 10 kW input for 45 amps out</dd></div>
+          <div><dt>Self-confined column</dt><dd>a few millimetres, about <b>100 nanoseconds</b></dd></div>
+          <div><dt>Bound photon pairs</dt><dd>reported September 2013, in ultracold rubidium</dd></div>
+        </dl>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>A blade one metre long and about three centimetres across, hot enough to cut steel, on for minutes at a time, ending at a fixed length in open air, powered entirely from a hilt about 30 centimetres long and 4 centimetres across.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>That blade has about 0.096 square metres of surface. If it shed heat like a hot solid at 20,000 degrees it would need about <strong>870 megawatts</strong>, roughly one large power station unit's whole output. Real arc plasma is partly see-through to its own light, so it sheds less; scaling a six kilowatt cutter arc up by volume to blade size gives about <strong>60 megawatts</strong>, some 25,000 kettles. Somewhere between those two, then: engineering estimates for comparison, not a design anyone has drawn.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>Three things. A return path for the current, because a plasma column is part of a circuit and open air is not. A confinement scheme stable for seconds rather than nanoseconds, which is the same problem fusion has been working on since the 1950s. And an energy store far denser than anything on the market: a 30 by 4 centimetre hilt holds 377 millilitres, which filled with the best lithium cells sold today comes to about <strong>940 kilojoules</strong>, or 262 watt-hours, roughly three of the largest power tool batteries.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>How long a self-pinched plasma column can be held before instability takes it, plotted against current and gas mixture. That number has been climbing slowly for seventy years and it decides the whole brief. It is also, not coincidentally, the central measurement in every magnetic fusion machine on Earth, which means the light sabre and the power station are waiting on the same result.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap, twice:</b> running a 60 megawatt blade for three seconds takes 180 megajoules, which is <span class="big">190 times</span> what the hilt can hold, close to the step from a single AA cell to a car battery. And holding a self-confined column for three seconds is <span class="big">30 million times</span> longer than the built one lasts, which is close to the step from one second to one year. The second number is the harder one, and it is the one being worked on daily.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal rig" id="cloak" data-hue="cloak">
+    <div class="wrap">
+      <div class="rig-head">
+        <span class="rig-glyph" aria-hidden="true">🫥</span>
+        <div>
+          <span class="rig-tag">Star Trek, December 1966 · Science, 2006</span>
+          <h2>The <span class="hue">cloaking device</span></h2>
+        </div>
+      </div>
+      <p class="rig-story">In the episode "Balance of Terror", first broadcast in December 1966, a ship simply is not there to be seen. The requirement underneath is exact and rather beautiful: send the light around the object and put it back on the far side travelling as though nothing had been in the way, with the right phase, so there is no shadow behind and no glint in front.</p>
+
+      <div class="built">
+        <span class="built-kick">On the bench right now</span>
+        <h3>Cloaking works, in narrow bands, and the theory behind it is now ordinary optical engineering</h3>
+        <p>John Pendry, David Schurig and David Smith published transformation optics in <em>Science</em> in May 2006. The idea is a coordinate change: write down the path you want light to take, and the mathematics hands you the material properties that would make light take it. Six months later, in November 2006, Schurig and colleagues built one. Ten concentric rings of copper split-ring resonators printed on circuit board, wrapped around a five centimetre copper cylinder, measured at <b>8.5 gigahertz</b>. Both the shadow behind the cylinder and the reflection in front of it dropped.</p>
+        <p>Then it moved to light. Jason Valentine and colleagues in Xiang Zhang's group at Berkeley reported an all-dielectric carpet cloak in <em>Nature Materials</em> in 2009: a patterned silicon slab 250 nanometres thick that hid a bump <b>3.8 micrometres wide and 400 nanometres tall</b>, and did it across the whole band from <b>1,400 to 1,800 nanometres</b>. That is a quarter of the centre wavelength, a genuinely broad band, and it uses no metal and so loses almost nothing to heat.</p>
+        <p>And the trick is not limited to light. Stéphane Brûlé and colleagues drilled a grid of boreholes into soil near Grenoble in 2012, shook the ground at 50 hertz, and measured the surface wave being turned away from the region behind the grid. Reported in <em>Physical Review Letters</em> in 2014. That is a full-size cloak, built in dirt, deflecting a wave you could feel, and it has a civil engineering job waiting for it.</p>
+        <dl class="figs">
+          <div><dt>First built cloak</dt><dd>copper split rings, 8.5 GHz, November 2006</dd></div>
+          <div><dt>Optical carpet cloak</dt><dd>hid a 3.8 &micro;m bump across <b>1,400 to 1,800 nm</b></dd></div>
+          <div><dt>Ground version</dt><dd>boreholes near Grenoble, 50 Hz surface waves, 2012</dd></div>
+          <div><dt>Proven limit</dt><dd>passive cloaks trade bandwidth for depth, Optica, 2016</dd></div>
+        </dl>
+        <p style="margin-top:16px"><a href="metamaterials.html">Geometry doing the work of chemistry has its own page: Metamaterials &rarr;</a></p>
+      </div>
+
+      <div class="brief">
+        <div class="step">
+          <span class="slab">The claim as a spec</span>
+          <p>An object the size of a person or a ship, unseen across the whole visible band, from every angle, in daylight, while moving, with the crew able to see out.</p>
+        </div>
+        <div class="step">
+          <span class="slab">The physics it would need</span>
+          <p>Bandwidth and feature size. A resonant split ring works over roughly a couple of per cent of its centre frequency, so about <strong>200 megahertz</strong> around 8.5 gigahertz: an estimate from how resonators behave, not a figure the 2006 paper reports. Visible light spans 400 to 790 terahertz, a band <strong>390,000 gigahertz</strong> wide and about 66 per cent of its own centre. And the structures have to shrink with the wavelength: rings for 8.5 gigahertz are millimetres, while green light needs features about 64,000 times smaller, tens of nanometres, at sizes where metals turn light into heat.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What would have to be true</span>
+          <p>Francesco Monticone and Andrea Alù proved a bound in <em>Optica</em> in 2016 using an old result from radio matching theory: any passive cloak that reduces scattering in one band increases it elsewhere, added up across the spectrum. So broadband invisibility cannot simply be designed into a passive shell; bandwidth has to be bought. Cloaks that put energy in are not bound the same way, and that is where the room is.</p>
+        </div>
+        <div class="step">
+          <span class="slab">What you would measure</span>
+          <p>Scattering cross-section across a full octave, published as one curve rather than one frequency. Almost every disagreement about cloaking would be settled by that plot, because it shows at a glance where the bandwidth was borrowed from.</p>
+        </div>
+      </div>
+
+      <p class="gapline"><b>The gap:</b> a narrow microwave cloak covers about 200 megahertz, which is roughly a thousand FM radio channels side by side. Visible light needs 390,000 gigahertz, about <span class="big">two million times</span> as much. The carpet cloak closed a good part of that at infrared wavelengths on a bump four micrometres wide, which is why the argument now is about size and bandwidth together, not about whether it works.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Where the eight <span class="hue">sit against each other</span></h2>
+      <p>Lined up, the shortfalls sort themselves into three kinds, and the kind matters more than the size.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Machine</th><th>The quantity that decides it</th><th>Nearest built figure</th><th>Times short</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Light sabre</td><td>seconds a self-confined plasma column holds</td><td class="figure">100 nanoseconds</td><td class="figure">3 &times; 10<sup>7</sup></td></tr>
+            <tr><td>Force field</td><td>aperture the arc can bridge</td><td class="figure">3 mm at 3 kW</td><td class="figure">300</td></tr>
+            <tr><td>Tricorder</td><td>conditions a sensor set can separate</td><td class="figure">13</td><td class="figure">5,400</td></tr>
+            <tr><td>Tractor beam</td><td>mass held at a distance</td><td class="figure">54 mg</td><td class="figure">1.3 &times; 10<sup>6</sup></td></tr>
+            <tr><td>Cloaking device</td><td>bandwidth covered</td><td class="figure">about 200 MHz</td><td class="figure">2 &times; 10<sup>6</sup></td></tr>
+            <tr><td>Replicator</td><td>atoms in the smallest placeable brick</td><td class="figure">176 million</td><td class="figure">1.8 &times; 10<sup>8</sup></td></tr>
+            <tr><td>Transporter</td><td>particles in the largest state moved</td><td class="figure">2</td><td class="figure">3.5 &times; 10<sup>27</sup></td></tr>
+            <tr><td>Warp drive</td><td>negative energy available</td><td class="figure">43 picojoules</td><td class="figure">1.5 &times; 10<sup>30</sup></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>Scaling problems</h3>
+          <p>The force field, the tricorder and the tractor beam are short on quantity, not on mechanism. Every one of them has a published scaling law or a clear engineering path, and the shortfalls run from a few hundred to a few million: large, and of a kind that industry closes routinely when there is a reason to. The plasma window's power law is written down. The transducer count in an acoustic trap can go up.</p>
+        </div>
+        <div class="panel">
+          <h3>Counting problems</h3>
+          <p>The replicator and the transporter work already, once. The obstacle is doing it 10<sup>27</sup> times at once, which is a different animal from doing it once better. Chemistry solves exactly this problem every time a pot of soup thickens, by never addressing an individual molecule. Whether an assembler or an entanglement source can be made to work that way is the open question, and it is a good one.</p>
+        </div>
+      </div>
+
+      <div class="note"><strong>And one that waits on something else entirely.</strong> The warp drive is short on a substance rather than a quantity: negative energy density, which exists, has been measured between plates, and has never been made in bulk or held in place. The light sabre's harder half sits next to it, because a plasma column that holds itself for seconds is the same measurement the whole fusion effort is built around. Both of those get answered somewhere else, by people working on something else, and that is usually how this goes.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="zero-point.html"><div class="card"><span class="card-glyph">🌀</span><h3>Zero Point</h3><p>The Casimir force, the photons pulled out of empty space in 2011, and the only place negative energy density has ever been weighed.</p></div></a>
+        <a class="card-link" href="metamaterials.html"><div class="card"><span class="card-glyph">🔷</span><h3>Metamaterials</h3><p>Geometry doing the work of chemistry: cloaks, flat lenses and materials that get fatter when you stretch them.</p></div></a>
+        <a class="card-link" href="gnome.html"><div class="card"><span class="card-glyph">💎</span><h3>GNoME</h3><p>2.2 million predicted crystals, 380,000 judged stable, and a robot kitchen cooking the first batches. The front half of a replicator.</p></div></a>
+        <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where discovery could head next, told in could and would, with the instruments that would settle it.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>M. Alcubierre, "The warp drive: hyper-fast travel within general relativity", <em>Classical and Quantum Gravity</em> 11, L73, May 1994.</li>
+        <li>M. J. Pfenning and L. H. Ford, "The unphysical nature of 'warp drive'", <em>Classical and Quantum Gravity</em> 14, 1743, 1997.</li>
+        <li>C. Van Den Broeck, "A 'warp drive' with more reasonable total energy requirements", <em>Classical and Quantum Gravity</em> 16, 3973, 1999 · <a href="https://arxiv.org/abs/gr-qc/9905084" rel="noopener">arxiv.org/abs/gr-qc/9905084</a></li>
+        <li>J. Fuchs, C. Helmerich, A. Bobrick, L. Sellers, B. Melcher and G. Martire, "Constant velocity physical warp drive solution", <em>Classical and Quantum Gravity</em> 41, 095013, 2024 · <a href="https://arxiv.org/abs/2405.02709" rel="noopener">arxiv.org/abs/2405.02709</a></li>
+        <li>K. Clough, T. Dietrich and S. Khan, "What no one has seen before: gravitational waveforms from warp drive collapse", <em>The Open Journal of Astrophysics</em>, July 2024 · <a href="https://arxiv.org/abs/2406.02466" rel="noopener">arxiv.org/abs/2406.02466</a></li>
+        <li>LIGO Scientific Collaboration and Virgo Collaboration, "Observation of gravitational waves from a binary black hole merger", <em>Physical Review Letters</em> 116, 061102, February 2016.</li>
+        <li>A. Ashkin, "Acceleration and trapping of particles by radiation pressure", <em>Physical Review Letters</em> 24, 156, 1970; single-beam gradient trap, <em>Optics Letters</em> 11, 288, 1986; Nobel Prize in Physics 2018.</li>
+        <li>A. Marzo, M. Caleap and B. W. Drinkwater, "Acoustic virtual vortices with tunable orbital angular momentum for trapping of Mie particles", <em>Physical Review Letters</em> 120, 044301, January 2018 · <a href="https://link.aps.org/doi/10.1103/PhysRevLett.120.044301" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.120.044301</a></li>
+        <li>A. I. Hershcovitch, E. D. Johnson and R. C. Lanza, "The plasma window: a windowless high pressure-vacuum interface for various accelerator applications", <em>Proceedings of the 1999 Particle Accelerator Conference</em>, New York, 584 · <a href="https://proceedings.jacow.org/p99/PAPERS/FRAL3.PDF" rel="noopener">proceedings.jacow.org/p99/PAPERS/FRAL3.PDF</a></li>
+        <li>EUROfusion, JET DTE3 result: 69 megajoules over 5.2 seconds from 0.2 milligrams of fuel, October 2023, announced February 2024. EAST 1,066 second high-confinement plasma, January 2025. Wendelstein 7-X triple product record over 43 seconds, May 2025.</li>
+        <li>D. M. Eigler and E. K. Schweizer, "Positioning single atoms with a scanning tunnelling microscope", <em>Nature</em> 344, 524, 1990.</li>
+        <li>NASA, "Space station 3-D printer builds ratchet wrench to complete first phase of operations", December 2014 · <a href="https://www.nasa.gov/missions/station/space-station-3-d-printer-builds-ratchet-wrench-to-complete-first-phase-of-operations/" rel="noopener">nasa.gov</a></li>
+        <li>R. C. Wiens et al., "The SuperCam instrument suite on the NASA Mars 2020 rover", <em>Space Science Reviews</em> 217, 4, 2021; 500,000th laser shot reported by CNES, February 2025.</li>
+        <li>P. Matousek et al., "Subsurface probing in diffusely scattering media using spatially offset Raman spectroscopy", <em>Applied Spectroscopy</em> 59, 393, 2005.</li>
+        <li>Qualcomm Tricorder XPRIZE final results, April 2017; DxtER by Final Frontier Medical Devices · <a href="https://www.xprize.org/competitions/tricorder" rel="noopener">xprize.org/competitions/tricorder</a></li>
+        <li>C. H. Bennett, G. Brassard, C. Crépeau, R. Jozsa, A. Peres and W. K. Wootters, "Teleporting an unknown quantum state via dual classical and Einstein-Podolsky-Rosen channels", <em>Physical Review Letters</em> 70, 1895, 1993.</li>
+        <li>J.-G. Ren et al., "Ground-to-satellite quantum teleportation", <em>Nature</em> 549, 70, August 2017 · <a href="https://arxiv.org/abs/1707.00934" rel="noopener">arxiv.org/abs/1707.00934</a></li>
+        <li>Q. Zhang et al., "Experimental quantum teleportation of a two-qubit composite system", <em>Nature Physics</em> 2, 678, 2006.</li>
+        <li>O. Firstenberg, T. Peyronel, Q.-Y. Liang, A. V. Gorshkov, M. D. Lukin and V. Vuletić, "Attractive photons in a quantum nonlinear medium", <em>Nature</em> 502, 71, September 2013.</li>
+        <li>J. B. Pendry, D. Schurig and D. R. Smith, "Controlling electromagnetic fields", <em>Science</em> 312, 1780, 2006; D. Schurig et al., "Metamaterial electromagnetic cloak at microwave frequencies", <em>Science</em> 314, 977, November 2006.</li>
+        <li>J. Valentine, J. Li, T. Zentgraf, G. Bartal and X. Zhang, "An optical cloak made of dielectrics", <em>Nature Materials</em> 8, 568, 2009 · <a href="https://arxiv.org/abs/0904.3602" rel="noopener">arxiv.org/abs/0904.3602</a></li>
+        <li>F. Monticone and A. Alù, "Invisibility exposed: physical bounds on passive cloaking", <em>Optica</em> 3, 718, 2016 · <a href="https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-7-718" rel="noopener">opg.optica.org/optica/fulltext.cfm?uri=optica-3-7-718</a></li>
+        <li>S. Brûlé, E. H. Javelaud, S. Enoch and S. Guenneau, "Experiments on seismic metamaterials: molding surface waves", <em>Physical Review Letters</em> 112, 133901, 2014.</li>
+        <li>A. C. Clarke, "Extra-terrestrial relays: can rocket stations give world-wide radio coverage?", <em>Wireless World</em>, October 1945.</li>
+        <li>Relativity Space Terran 1 first flight, 22 March 2023, Cape Canaveral. Nanoscribe two-photon polymerisation feature size, manufacturer specification.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- the eight sheets ---------- */
+  var TECH = [
+    {
+      key: "sabre", name: "The light sabre", glyph: "⚡",
+      h: "#fbbf24", h2: "#fb7185",
+      story: "A metre of plasma thrown from a hilt about 30 centimetres long, hot enough to cut, stopping at a fixed length in open air.",
+      spec: "Blade 1 m long and 3 cm across, on for minutes, powered from a hilt holding about 377 millilitres.",
+      built: "A workshop plasma cutter runs an arc above 20,000 degrees and cuts 16 millimetres of mild steel, hand-held, on about 10 kilowatts. A Z-pinch holds a plasma column with the magnetic field of its own current: a few millimetres long, lasting about 100 nanoseconds before instability takes it.",
+      phys: "Between 60 and 870 megawatts to keep a blade that size hot, depending on how much of its own light it lets through. A hilt filled with the best lithium cells sold today holds about 940 kilojoules, or 262 watt-hours.",
+      gap: 3e7, gapWhat: "seconds a self-confined plasma column holds",
+      gapLine: "A built column lasts about 100 nanoseconds. Three seconds of blade is <b>30 million times</b> longer, which is close to the step from one second to one year. The power shortfall is smaller: 190 times what the hilt can hold, about the step from an AA cell to a car battery.",
+      href: "engineering.html", hrefLabel: "See what materials really do: Engineering"
+    },
+    {
+      key: "field", name: "The force field", glyph: "🛡️",
+      h: "#2dd4bf", h2: "#fbbf24",
+      story: "A hangar with its doors open to vacuum and the air staying in. A doorway you can see through and cannot walk through.",
+      spec: "A doorway 2 metres by 900 millimetres holding one atmosphere of difference indefinitely, and stopping thrown objects as firmly as it stops air.",
+      built: "The plasma window at Brookhaven National Laboratory: a wall-stabilised arc at 12,000 to 15,000 kelvin across a 3 millimetre opening, holding more than 2.5 atmospheres of difference, about a car tyre's worth. It ran 2,000 hours unattended, and an electron beam at 175 thousand electronvolts passed straight through it into open air. Magnetic confinement does the other half: JET produced 69 megajoules in 5.2 seconds in October 2023 with the plasma held clear of the wall.",
+      phys: "Arc power scales at roughly 10 kilowatts per centimetre of arc diameter, 7.5 with a venturi. A 900 millimetre doorway on that law comes to about 900 kilowatts, some 375 kettles boiling without a break.",
+      gap: 300, gapWhat: "aperture the arc can bridge",
+      gapLine: "Three hundred times wider than the largest arc tested: a scaling problem with a published law attached. The object-stopping half is short of a mechanism instead. Fields push on charges, and a thrown rock is neutral, so it goes straight through.",
+      href: "engineering.html", hrefLabel: "See what materials really do: Engineering"
+    },
+    {
+      key: "tri", name: "The tricorder", glyph: "📟",
+      h: "#a3e635", h2: "#22d3ee",
+      story: "A box the size of a paperback. Point it at a rock and it names the minerals; point it at a person and it names what is wrong.",
+      spec: "Handheld, names any material and any condition by pointing, at a distance, through containers, and from orbit as well.",
+      built: "Handheld X-ray fluorescence readers name every element from magnesium to uranium, parts per million to pure, in under two seconds for an alloy. Handheld Raman readers match a substance against an onboard library in seconds. Spatially offset Raman reads through a sealed container and through skin. SuperCam on Perseverance points a laser at a Martian rock 2 to 7 metres away and reports what it is made of; it passed 500,000 shots in February 2025.",
+      phys: "Signal has to reach the sensor. Tissue scatters visible light within a few millimetres, so the chemistry a diagnosis needs mostly never reaches the surface. Reading from a 400 kilometre orbit rather than seven metres means 3.3 thousand million times less light coming back.",
+      gap: 5385, gapWhat: "conditions a sensor set can separate",
+      gapLine: "The prize-winning medical version handles <b>13 conditions</b> against roughly 70,000 diagnosis codes in the current international code book: about 5,400 times. The materials half is close to finished and already on tool belts.",
+      href: "engineering.html", hrefLabel: "See what materials really do: Engineering"
+    },
+    {
+      key: "tractor", name: "The tractor beam", glyph: "🧲",
+      h: "#22d3ee", h2: "#a3e635",
+      story: "A beam goes out, takes hold of something at a distance, and pulls it in. No cable, no contact, and it can be steered.",
+      spec: "Hold a shuttle of tens of tonnes at a range of hundreds of metres, across vacuum, and tow it.",
+      built: "Optical tweezers, Arthur Ashkin's single-beam gradient trap of 1986, hold single living cells in a laser focus with forces of 1 to 100 piconewtons, the weight of about ten nanograms. Half the 2018 Nobel Prize in Physics went to that work. And 192 ultrasound loudspeakers at 40 kilohertz held, moved and spun a 16 millimetre polystyrene sphere in open air, nearly twice the sound's own wavelength, reported in January 2018.",
+      phys: "Reflected light pushes with twice the power divided by the speed of light. Holding one adult of 70 kilograms against gravity that way takes about 103 gigawatts, three and a third times Australia's average electricity draw. Sound is far cheaper per watt but needs a fluid to push through.",
+      gap: 1.306e6, gapWhat: "mass held at a distance",
+      gapLine: "The built beam holds <b>54 milligrams</b>; a person is 70 kilograms. That is 1.3 million times, the step from a poppy seed to the person holding it. Range is not the hard part. Mass is.",
+      href: "resonance.html", hrefLabel: "Why only certain waves fit: Resonance"
+    },
+    {
+      key: "cloak", name: "The cloaking device", glyph: "🫥",
+      h: "#e879f9", h2: "#60a5fa",
+      story: "Send the light around the object and put it back on the far side as though nothing had been in the way: no shadow behind, no glint in front.",
+      spec: "A person or a ship, unseen across the whole visible band, from every angle, in daylight, while moving.",
+      built: "Ten concentric rings of copper split-ring resonators around a five centimetre cylinder, measured at 8.5 gigahertz in November 2006, dropped both the shadow and the reflection. A patterned silicon slab 250 nanometres thick hid a bump 3.8 micrometres wide across the whole 1,400 to 1,800 nanometre band in 2009. And a grid of boreholes in soil near Grenoble turned a 50 hertz ground wave aside in 2012, full size, in dirt.",
+      phys: "A resonant split ring works over roughly a couple of per cent of its centre frequency, about 200 megahertz at 8.5 gigahertz. Visible light spans 390,000 gigahertz. The structures must shrink with the wavelength too: green light needs features about 64,000 times smaller than microwave rings, where metals turn light into heat.",
+      gap: 1.95e6, gapWhat: "bandwidth covered",
+      gapLine: "About <b>two million times</b> more bandwidth than a narrow microwave cloak covers. Monticone and Alù proved in 2016 that a passive cloak buys quiet in one band by scattering more elsewhere, so the bandwidth has to come from somewhere. Cloaks that put energy in are not bound the same way.",
+      href: "metamaterials.html", hrefLabel: "Geometry doing chemistry's job: Metamaterials"
+    },
+    {
+      key: "repl", name: "The replicator", glyph: "🍲",
+      h: "#818cf8", h2: "#f472b6",
+      story: "Ask a wall for a hot meal and it appears, built to a stored pattern at the scale of molecules.",
+      spec: "Four hundred grams of hot structured matter in about 30 seconds, repeatable, with no feedstock visible.",
+      built: "On 17 December 2014 an astronaut printed a ratchet spanner aboard the International Space Station from a file sent up from the ground: idea to tool in orbit in under a week, four hours of printing, nothing launched. Two-photon printers lay polymer down in 100 nanometre voxels. Terran 1, 85 per cent printed by mass, flew in March 2023. And GNoME's 2.2 million predicted crystals with 380,000 judged stable, plus A-Lab making 41 of 58 targets in 17 days, are the pattern library filling up.",
+      phys: "Single atoms have been placed since 1989, when 35 xenon atoms were arranged with a scanning tunnelling microscope over about 22 hours. At that rate one gram of carbon would take 3.6 × 10^18 years, some 260 million times the age of the universe. Chemistry gets round it by never addressing a molecule individually.",
+      gap: 1.76e8, gapWhat: "atoms in the smallest placeable brick",
+      gapLine: "The finest printer's smallest brick, a cube 100 nanometres on a side, holds about <b>176 million</b> carbon atoms: six and a half times Australia's population, in one voxel. Molecular resolution means placing every one.",
+      href: "gnome.html", hrefLabel: "The pattern library: GNoME"
+    },
+    {
+      key: "trans", name: "The transporter", glyph: "✨",
+      h: "#67e8f9", h2: "#c084fc",
+      story: "A person stands on a pad, dissolves, and reassembles somewhere else about five seconds later.",
+      spec: "One adult, about 7 × 10^27 atoms, moved 40,000 kilometres in roughly five seconds, arriving alive.",
+      built: "Quantum teleportation, written down in 1993 and first run on photons in 1997. Single-photon states have been moved from a ground observatory at Ngari in Tibet up to the Micius satellite, across 500 to 1,400 kilometres, with an average fidelity of 0.80 across six input states, published August 2017. In December 2024 it was done through a fibre carrying ordinary internet traffic at the same time. The state travels; the particle does not, the original is destroyed, and a classical message rides alongside at light speed.",
+      phys: "One entangled pair for every state moved, distributed in advance. Written as data, a person at a tenth of a nanometre of precision comes to about 7.7 × 10^29 bits, near enough to 96 million zettabytes, or about 19 million years of all the traffic crossing the internet.",
+      gap: 3.5e27, gapWhat: "particles in the largest state moved",
+      gapLine: "The largest composite system teleported is <b>two particles</b>. A person is 7 × 10^27 atoms, one for every grain of sand on a billion Earths' worth of beaches. The protocol works; the count is the obstacle.",
+      href: "frontiers.html", hrefLabel: "Where the paths lead next: Frontiers"
+    },
+    {
+      key: "warp", name: "The warp drive", glyph: "🌌",
+      h: "#a78bfa", h2: "#38bdf8",
+      story: "The ship does not move. The space around it contracts ahead and expands behind, and the crew ride in a flat pocket where nothing local moves fast at all.",
+      spec: "A bubble about 100 metres across carrying a crew compartment, holding a steady apparent speed above light.",
+      built: "Spacetime stretching is measured. On 14 September 2015 a passing gravitational wave changed LIGO's four kilometre arms by about four times ten to the minus eighteen of a metre, roughly a four-hundredth of a proton's width, and both detectors saw the same shape seven milliseconds apart. On the large scale, every million parsecs of space between distant galaxies grows by about 70 kilometres every second.",
+      phys: "Negative energy density on the bubble wall, in bulk. Pfenning and Ford put the original requirement ten orders of magnitude beyond the mass-energy of the visible universe. Van Den Broeck's 1999 geometry brought it to a few solar masses; Harold White's 2011 sensitivity work brought it towards 700 kilograms of mass-energy, about five weeks of world energy use.",
+      gap: 1.452e30, gapWhat: "negative energy available",
+      gapLine: "A stamp-sized pair of Casimir plates at a hundred nanometre gap holds about <b>43 picojoules</b> of negative energy. The most optimistic requirement is 6.3 × 10^19 joules of it. That is 30 steps of ten: an atom's width against sixteen thousand light years.",
+      href: "zero-point.html", hrefLabel: "Where negative energy is weighed: Zero Point"
+    }
+  ];
+
+  var MAXLOG = 32;
+  var current = 0;
+  var redraw = function () {};
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  /* turn 3.5 × 10^27 style plain text into marked-up powers */
+  function pow(s) {
+    return esc(s).replace(/10\^(-?\d+)/g, function (m, e) { return "10<sup>" + e + "</sup>"; });
+  }
+  function factorWords(n) {
+    if (n < 10000) return Math.round(n).toLocaleString("en-AU") + " times";
+    var e = Math.floor(Math.log10(n));
+    var m = n / Math.pow(10, e);
+    var mm = m < 1.05 ? "" : (Math.round(m * 10) / 10) + " &times; ";
+    return mm + "10<sup>" + e + "</sup> times";
+  }
+
+  /* ---------- fill the picker ---------- */
+  var sel = document.getElementById("techPick");
+  var row = document.getElementById("pickRow");
+  var list = document.getElementById("ladderList");
+
+  TECH.forEach(function (t, i) {
+    var o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = t.name;
+    sel.appendChild(o);
+
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "pick";
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.style.setProperty("--pk", t.h);
+    b.style.setProperty("--pk2", t.h2);
+    b.innerHTML = '<span aria-hidden="true">' + t.glyph + "</span>" + esc(t.name.replace(/^The /, ""));
+    b.addEventListener("click", function () { choose(i); });
+    row.appendChild(b);
+
+    var li = document.createElement("li");
+    li.innerHTML = '<span aria-hidden="true">' + t.glyph + "</span> <b>" + esc(t.name) +
+      "</b> <span class=\"n\">" + factorWords(t.gap) + " short</span>";
+    list.appendChild(li);
+  });
+
+  var el = {
+    glyph: document.getElementById("shGlyph"),
+    name: document.getElementById("shName"),
+    story: document.getElementById("shStory"),
+    spec: document.getElementById("shSpec"),
+    built: document.getElementById("shBuilt"),
+    phys: document.getElementById("shPhys"),
+    gap: document.getElementById("shGap"),
+    bar: document.getElementById("shBar"),
+    next: document.getElementById("shNext"),
+    link: document.getElementById("shLink"),
+    sheet: document.getElementById("sheet")
+  };
+
+  var NEXT = {
+    warp: "Detectors tuned above LIGO's band. A collapsing warp shell would ring at high frequency, and the waveform was published in July 2024, so there is a shape to look for.",
+    tractor: "Trap stiffness against object size, as transducer count goes up. In vacuum, the same measurement on levitated nanospheres, where the control is already finer than the force is strong.",
+    repl: "Placements per second per print head, and errors per placement, published together. Those two set the largest object a technique can finish before defects ruin it.",
+    field: "Power against aperture, measured past a centimetre of arc diameter, to see whether the published scaling holds or cooling becomes the wall first.",
+    tri: "How many conditions a non-invasive sensor set can separate, published as a full confusion table. And the greatest stand-off distance that still returns a usable spectrum.",
+    trans: "Entangled pairs per second across a working link, and how that falls with distance. Memories and repeaters are the bottleneck, so that number is the whole story.",
+    sabre: "How long a self-pinched plasma column holds before instability, against current and gas mixture. The same measurement every fusion machine on Earth is built around.",
+    cloak: "Scattering cross-section across a full octave, as one curve rather than one frequency. That single plot shows where the bandwidth was borrowed from."
+  };
+
+  function choose(i) {
+    current = i;
+    var t = TECH[i];
+    el.sheet.style.setProperty("--h", t.h);
+    el.sheet.style.setProperty("--h2", t.h2);
+    el.glyph.textContent = t.glyph;
+    el.name.textContent = t.name;
+    el.story.innerHTML = pow(t.story);
+    el.spec.innerHTML = pow(t.spec);
+    el.built.innerHTML = pow(t.built);
+    el.phys.innerHTML = pow(t.phys);
+    el.gap.innerHTML = "Short by about " + factorWords(t.gap) + " on " + esc(t.gapWhat) + ". " + t.gapLine;
+    el.bar.style.width = Math.max(3, Math.min(100, (Math.log10(t.gap) / MAXLOG) * 100)) + "%";
+    el.next.innerHTML = pow(NEXT[t.key] || "");
+    el.link.setAttribute("href", t.href);
+    el.link.innerHTML = esc(t.hrefLabel) + " &rarr;";
+
+    sel.value = String(i);
+    [].slice.call(row.querySelectorAll(".pick")).forEach(function (b, k) {
+      b.setAttribute("aria-pressed", k === i ? "true" : "false");
+    });
+    redraw();
+  }
+
+  sel.addEventListener("change", function () { choose(parseInt(sel.value, 10) || 0); });
+  choose(7);
+
+  /* ---------- the ladder canvas ---------- */
+  var cv = document.getElementById("ladder");
+  if (cv && cv.getContext) {
+    var cx = cv.getContext("2d");
+    var css = getComputedStyle(document.body);
+    var MUT = (css.getPropertyValue("--muted") || "#93a3c4").trim();
+    var LINE = (css.getPropertyValue("--line-bright") || "#2c3c6b").trim();
+    var INK = (css.getPropertyValue("--ink") || "#f2f5ff").trim();
+    var W = 0, H = 0, DPR = 1, PADL = 26, PADR = 26;
+    var visible = true, raf = 0;
+    var LANES = [84, 56, 28];
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 640;
+      var h = Math.max(200, Math.min(250, Math.round(w * 0.24)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+    }
+
+    function xOf(logv) {
+      var f = Math.max(0, Math.min(1, logv / MAXLOG));
+      return PADL + f * (W - PADL - PADR);
+    }
+
+    function draw(t) {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+      var baseY = H - 46;
+
+      /* decade ticks */
+      cx.strokeStyle = LINE;
+      cx.lineWidth = 1;
+      for (var d = 0; d <= MAXLOG; d++) {
+        var x = xOf(d);
+        var big = d % 8 === 0;
+        cx.globalAlpha = big ? 0.9 : 0.35;
+        cx.beginPath();
+        cx.moveTo(x, baseY);
+        cx.lineTo(x, baseY + (big ? 10 : 5));
+        cx.stroke();
+      }
+      cx.globalAlpha = 1;
+
+      /* baseline with a slow travelling shimmer */
+      var grad = cx.createLinearGradient(PADL, 0, W - PADR, 0);
+      grad.addColorStop(0, LINE);
+      grad.addColorStop(0.5, MUT);
+      grad.addColorStop(1, LINE);
+      cx.strokeStyle = grad;
+      cx.lineWidth = 2;
+      cx.beginPath();
+      cx.moveTo(PADL, baseY);
+      cx.lineTo(W - PADR, baseY);
+      cx.stroke();
+
+      if (!REDUCED) {
+        var sx = PADL + ((t / 32) % (W - PADL - PADR + 220)) - 110;
+        var sh = cx.createLinearGradient(sx - 60, 0, sx + 60, 0);
+        sh.addColorStop(0, "rgba(255,255,255,0)");
+        sh.addColorStop(0.5, "rgba(255,255,255,0.5)");
+        sh.addColorStop(1, "rgba(255,255,255,0)");
+        cx.strokeStyle = sh;
+        cx.lineWidth = 2;
+        cx.beginPath();
+        cx.moveTo(Math.max(PADL, sx - 60), baseY);
+        cx.lineTo(Math.min(W - PADR, sx + 60), baseY);
+        cx.stroke();
+      }
+
+      /* axis labels */
+      cx.fillStyle = MUT;
+      cx.font = "600 10.5px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "left";
+      cx.fillText("1x", PADL, baseY + 26);
+      cx.textAlign = "center";
+      cx.fillText("10^8", xOf(8), baseY + 26);
+      cx.fillText("10^16", xOf(16), baseY + 26);
+      cx.fillText("10^24", xOf(24), baseY + 26);
+      cx.textAlign = "right";
+      cx.fillText("10^32", W - PADR, baseY + 26);
+
+      /* pins */
+      var pulse = REDUCED ? 1 : 0.72 + 0.28 * Math.sin(t / 380);
+      for (var i = 0; i < TECH.length; i++) {
+        var tech = TECH[i];
+        var lx = xOf(Math.log10(tech.gap));
+        var lane = LANES[i % LANES.length];
+        var on = i === current;
+        var topY = baseY - (on ? lane + 14 : lane);
+
+        cx.strokeStyle = tech.h;
+        cx.globalAlpha = on ? 0.95 : 0.4;
+        cx.lineWidth = on ? 2.4 : 1.2;
+        cx.beginPath();
+        cx.moveTo(lx, baseY);
+        cx.lineTo(lx, topY + 12);
+        cx.stroke();
+
+        cx.fillStyle = tech.h;
+        cx.globalAlpha = on ? 1 : 0.55;
+        cx.beginPath();
+        cx.arc(lx, baseY, on ? 5.5 : 3.2, 0, Math.PI * 2);
+        cx.fill();
+
+        if (on) {
+          cx.globalAlpha = 0.28 * pulse;
+          cx.beginPath();
+          cx.arc(lx, baseY, 13 * pulse, 0, Math.PI * 2);
+          cx.fill();
+        }
+
+        cx.globalAlpha = 1;
+        cx.font = on ? "17px 'Inter', sans-serif" : "13px 'Inter', sans-serif";
+        cx.textAlign = "center";
+        cx.fillText(tech.glyph, lx, topY + 6);
+      }
+
+      /* the selected one, named */
+      var sel2 = TECH[current];
+      var selX = xOf(Math.log10(sel2.gap));
+      cx.fillStyle = INK;
+      cx.font = "700 13px 'Inter', sans-serif";
+      cx.textAlign = selX > W * 0.66 ? "right" : (selX < W * 0.24 ? "left" : "center");
+      cx.fillText(sel2.name, Math.max(PADL, Math.min(W - PADR, selX)), 20);
+      cx.fillStyle = sel2.h;
+      cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+      var lab = sel2.gap >= 10000
+        ? "10^" + Math.round(Math.log10(sel2.gap)) + " times short"
+        : Math.round(sel2.gap).toLocaleString("en-AU") + " times short";
+      cx.fillText(lab, Math.max(PADL, Math.min(W - PADR, selX)), 36);
+      cx.textAlign = "left";
+    }
+
+    function loop(ts) {
+      draw(ts || 0);
+      if (visible && !REDUCED) raf = requestAnimationFrame(loop); else raf = 0;
+    }
+    function start() { if (!raf && !REDUCED) raf = requestAnimationFrame(loop); }
+
+    sizeCanvas();
+    draw(0);
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible) start(); else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0.05 });
+      io.observe(cv);
+    } else {
+      start();
+    }
+
+    var origChoose = choose;
+    choose = function (i) { origChoose(i); if (REDUCED || !raf) draw(0); };
+    sel.addEventListener("change", function () { if (REDUCED || !raf) draw(0); });
+    [].slice.call(row.querySelectorAll(".pick")).forEach(function (b) {
+      b.addEventListener("click", function () { if (REDUCED || !raf) draw(0); });
+    });
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeCanvas(); draw(0); }, 150);
+    });
+  }
+})();
+</script>
+</body>
+</html>
