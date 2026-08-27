@@ -1039,6 +1039,24 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
       return PADL + f * (W - PADL - PADR);
     }
 
+    /* "10" with a raised smaller exponent, drawn as one centred unit */
+    function drawPower(x, y, expo, size, align) {
+      var base = "10";
+      var esz = Math.round(size * 0.72);
+      cx.font = "600 " + size + "px 'JetBrains Mono', Consolas, monospace";
+      var wBase = cx.measureText(base).width;
+      cx.font = "600 " + esz + "px 'JetBrains Mono', Consolas, monospace";
+      var wExp = cx.measureText(expo).width;
+      var total = wBase + wExp;
+      var left = align === "right" ? x - total : (align === "left" ? x : x - total / 2);
+      cx.textAlign = "left";
+      cx.font = "600 " + size + "px 'JetBrains Mono', Consolas, monospace";
+      cx.fillText(base, left, y);
+      cx.font = "600 " + esz + "px 'JetBrains Mono', Consolas, monospace";
+      cx.fillText(expo, left + wBase, y - Math.round(size * 0.42));
+      return total;
+    }
+
     function draw(t) {
       cx.setTransform(DPR, 0, 0, DPR, 0, 0);
       cx.clearRect(0, 0, W, H);
@@ -1086,15 +1104,13 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
 
       /* axis labels */
       cx.fillStyle = MUT;
-      cx.font = "600 10.5px 'JetBrains Mono', Consolas, monospace";
+      cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
       cx.textAlign = "left";
-      cx.fillText("1x", PADL, baseY + 26);
-      cx.textAlign = "center";
-      cx.fillText("10^8", xOf(8), baseY + 26);
-      cx.fillText("10^16", xOf(16), baseY + 26);
-      cx.fillText("10^24", xOf(24), baseY + 26);
-      cx.textAlign = "right";
-      cx.fillText("10^32", W - PADR, baseY + 26);
+      cx.fillText("1x", PADL, baseY + 27);
+      drawPower(xOf(8), baseY + 27, "8", 11, "centre");
+      drawPower(xOf(16), baseY + 27, "16", 11, "centre");
+      drawPower(xOf(24), baseY + 27, "24", 11, "centre");
+      drawPower(W - PADR, baseY + 27, "32", 11, "right");
 
       /* pins */
       var pulse = REDUCED ? 1 : 0.72 + 0.28 * Math.sin(t / 380);
@@ -1134,17 +1150,30 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
 
       /* the selected one, named */
       var sel2 = TECH[current];
-      var selX = xOf(Math.log10(sel2.gap));
+      var selX = Math.max(PADL, Math.min(W - PADR, xOf(Math.log10(sel2.gap))));
+      var align = selX > W * 0.66 ? "right" : (selX < W * 0.26 ? "left" : "center");
       cx.fillStyle = INK;
       cx.font = "700 13px 'Inter', sans-serif";
-      cx.textAlign = selX > W * 0.66 ? "right" : (selX < W * 0.24 ? "left" : "center");
-      cx.fillText(sel2.name, Math.max(PADL, Math.min(W - PADR, selX)), 20);
+      cx.textAlign = align;
+      cx.fillText(sel2.name, selX, 17);
       cx.fillStyle = sel2.h;
       cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
-      var lab = sel2.gap >= 10000
-        ? "10^" + Math.round(Math.log10(sel2.gap)) + " times short"
-        : Math.round(sel2.gap).toLocaleString("en-AU") + " times short";
-      cx.fillText(lab, Math.max(PADL, Math.min(W - PADR, selX)), 36);
+      if (sel2.gap >= 10000) {
+        var expo = String(Math.round(Math.log10(sel2.gap)));
+        var tail = " times short";
+        cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+        var wTail = cx.measureText(tail).width;
+        var wHead = cx.measureText("10").width + cx.measureText(expo).width * 0.72;
+        var startX = align === "right" ? selX - (wHead + wTail)
+                   : (align === "left" ? selX : selX - (wHead + wTail) / 2);
+        var used = drawPower(startX, 33, expo, 11, "left");
+        cx.textAlign = "left";
+        cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+        cx.fillText(tail, startX + used, 33);
+      } else {
+        cx.textAlign = align;
+        cx.fillText(Math.round(sel2.gap).toLocaleString("en-AU") + " times short", selX, 33);
+      }
       cx.textAlign = "left";
     }
 
@@ -1169,12 +1198,8 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
       start();
     }
 
-    var origChoose = choose;
-    choose = function (i) { origChoose(i); if (REDUCED || !raf) draw(0); };
-    sel.addEventListener("change", function () { if (REDUCED || !raf) draw(0); });
-    [].slice.call(row.querySelectorAll(".pick")).forEach(function (b) {
-      b.addEventListener("click", function () { if (REDUCED || !raf) draw(0); });
-    });
+    redraw = function () { if (REDUCED || !raf) draw(0); };
+    redraw();
 
     var rt;
     window.addEventListener("resize", function () {
