@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Element 115 · Extreme Matter Atlas</title>
+<meta name="description" content="Moscovium, the 1989 S4 account, the island of stability, and what bending spacetime on purpose would actually cost, with an interactive chart of the heavy nuclei.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="elements115"] { --accent: #fb923c; --accent2: #c084fc; }
+
+body[data-page="elements115"] .hero {
+  background-image:
+    radial-gradient(1.3px 1.3px at 40px 50px, rgba(251, 146, 60, 0.55), transparent 55%),
+    radial-gradient(1px 1px at 130px 140px, rgba(192, 132, 252, 0.5), transparent 55%),
+    radial-gradient(1.1px 1.1px at 220px 70px, rgba(242, 245, 255, 0.4), transparent 55%);
+  background-size: 240px 210px, 300px 260px, 360px 320px;
+}
+
+body[data-page="elements115"] .quote {
+  border-left: 3px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 8%, var(--panel));
+  border-radius: 0 14px 14px 0;
+  padding: 16px 22px; margin: 20px 0;
+  font-size: 16.5px; line-height: 1.6;
+}
+body[data-page="elements115"] .quote p { font-style: normal; }
+body[data-page="elements115"] .quote .who {
+  display: block; margin-top: 10px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
+  color: var(--muted); font-style: normal;
+}
+
+body[data-page="elements115"] .spec-line {
+  display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: baseline;
+  padding: 13px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="elements115"] .spec-line:last-child { border-bottom: 0; }
+body[data-page="elements115"] .spec-line .what { font-weight: 600; font-size: 15px; }
+body[data-page="elements115"] .spec-line .num {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--accent);
+  white-space: nowrap; text-align: right;
+}
+@media (max-width: 560px) {
+  body[data-page="elements115"] .spec-line { grid-template-columns: 1fr; }
+  body[data-page="elements115"] .spec-line .num { text-align: left; }
+}
+
+/* the nuclear chart */
+body[data-page="elements115"] .chart-scroll {
+  overflow-x: auto; overflow-y: hidden;
+  border-radius: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-page="elements115"] .chart-scroll canvas {
+  display: block; border-radius: 10px; touch-action: pan-y;
+  cursor: crosshair; max-width: none;
+}
+body[data-page="elements115"] .chart-scroll canvas:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+body[data-page="elements115"] .legend {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+  padding: 12px 4px 2px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+}
+body[data-page="elements115"] .legend .swatch {
+  display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+  margin-right: 6px; vertical-align: -2px;
+}
+body[data-page="elements115"] .legend .ramp {
+  display: inline-block; width: 120px; height: 12px; border-radius: 3px;
+  margin: 0 6px; vertical-align: -2px;
+}
+body[data-page="elements115"] .chk {
+  display: inline-flex; align-items: center; gap: 9px;
+  min-height: 40px; padding: 6px 14px 6px 12px;
+  border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2); cursor: pointer;
+  font-size: 14.5px; font-weight: 600;
+}
+body[data-page="elements115"] .chk:hover { border-color: var(--accent); }
+body[data-page="elements115"] .chk input { width: 18px; height: 18px; accent-color: var(--accent2); cursor: pointer; }
+
+body[data-page="elements115"] .readout {
+  display: grid; gap: 16px; margin-top: 16px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+}
+@media (max-width: 760px) { body[data-page="elements115"] .readout { grid-template-columns: 1fr; } }
+body[data-page="elements115"] .readout .box {
+  border: 1px solid var(--line-bright); border-radius: 14px;
+  padding: 16px 18px; background: var(--panel);
+}
+body[data-page="elements115"] .readout .iso-name {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(19px, 2.6vw, 25px); line-height: 1.2; margin-bottom: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="elements115"] .readout .iso-sub {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
+  letter-spacing: 0.04em; margin-bottom: 12px;
+}
+body[data-page="elements115"] .kv {
+  display: grid; grid-template-columns: 118px 1fr; gap: 4px 12px;
+  font-size: 14.5px; align-items: baseline;
+}
+body[data-page="elements115"] .kv dt {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); padding-top: 3px;
+}
+body[data-page="elements115"] .kv dd { color: var(--ink); }
+body[data-page="elements115"] .gap-line {
+  margin-top: 14px; padding-top: 13px; border-top: 1px dashed var(--line);
+  font-size: 14.5px; color: var(--muted);
+}
+body[data-page="elements115"] .gap-line b { color: var(--accent); font-weight: 600; }
+body[data-page="elements115"] .jump-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+body[data-page="elements115"] .jump-row .btn { padding: 9px 16px; font-size: 14px; }
+
+/* fuel clock */
+body[data-page="elements115"] .clock-read {
+  display: grid; gap: 12px; margin: 16px 0 6px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+body[data-page="elements115"] .clock-read .cell {
+  border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+}
+body[data-page="elements115"] .clock-read .cell .big {
+  display: block; font-family: var(--font-mono); font-weight: 600;
+  font-size: clamp(18px, 2.4vw, 23px); color: var(--accent); line-height: 1.2;
+  margin-bottom: 5px; overflow-wrap: anywhere;
+}
+body[data-page="elements115"] .clock-read .cell .cap { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+body[data-page="elements115"] .logbar-row {
+  display: grid; grid-template-columns: 152px 1fr; gap: 12px; align-items: center;
+  margin: 9px 0; font-size: 14px;
+}
+body[data-page="elements115"] .logbar-row .who { font-weight: 600; }
+body[data-page="elements115"] .logbar-track {
+  height: 18px; border-radius: 999px; background: var(--bg2);
+  border: 1px solid var(--line); overflow: hidden;
+}
+body[data-page="elements115"] .logbar {
+  height: 100%; width: 2%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 16px -3px color-mix(in srgb, var(--accent) 65%, transparent);
+  transition: width .25s ease;
+}
+body[data-page="elements115"] .logbar.steady { background: linear-gradient(90deg, #34d399, #22d3ee); box-shadow: none; }
+@media (max-width: 560px) { body[data-page="elements115"] .logbar-row { grid-template-columns: 108px 1fr; } }
+
+body[data-page="elements115"] .two-col .panel { margin-top: 0; }
+body[data-page="elements115"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="elements115"] .data-table td.num,
+body[data-page="elements115"] .data-table th.num { font-family: var(--font-mono); font-size: 13px; }
+body[data-page="elements115"] .ask {
+  counter-reset: ask;
+}
+body[data-page="elements115"] .ask li {
+  list-style: none; position: relative;
+  padding: 14px 0 14px 46px; border-bottom: 1px dashed var(--line);
+  font-size: 15.5px;
+}
+body[data-page="elements115"] .ask li:last-child { border-bottom: 0; }
+body[data-page="elements115"] .ask li::before {
+  counter-increment: ask; content: counter(ask, decimal-leading-zero);
+  position: absolute; left: 0; top: 15px;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--accent);
+}
+body[data-page="elements115"] .ask li b { color: var(--ink); }
+</style>
+</head>
+<body data-page="elements115">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Element 115 · moscovium · Mc</span>
+      <h1 class="display">The element that arrived fourteen years late</h1>
+      <p class="lede">In 1989 a man told a Las Vegas television station that a craft he had worked on ran on element 115, and that the element was stable. In 2003 a team in Russia made element 115: <strong>four atoms of it</strong>, each gone in less than a second. Both of those things are on the record. Everything interesting sits in the distance between them.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">0.65 s</span><span class="lbl">longest half-life measured for any moscovium isotope, about the length of a slow blink</span></div>
+        <div class="stat"><span class="num">~100 atoms</span><span class="lbl">all the moscovium made anywhere, by everyone, since 2003</span></div>
+        <div class="stat"><span class="num">9 neutrons</span><span class="lbl">the gap between the heaviest moscovium made and the count the shell models point at</span></div>
+        <div class="stat"><span class="num">1 in 10<sup>21</sup></span><span class="lbl">the stretch LIGO reads: spacetime bending, measured directly</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Three things that are <span class="hue">already built</span></h2>
+      <p>Before any of the argument, here is the equipment. Every one of these runs today, and each one is the closest working relative of something in the account that follows.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">⚛️</span>
+          <h3>New elements really are made, one atom at a time</h3>
+          <p>At the Flerov Laboratory in Dubna, near Moscow, a beam of calcium-48 was fired at a target of americium-243 from 14 July to 10 August 2003. Four atoms of element 115 came out of four weeks of continuous firing. The team was led by Yuri Oganessian, working with Lawrence Livermore and Oak Ridge in the United States. This is not a thought experiment; it is a machine, a target, a beam and a detector, and it works.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🫧</span>
+          <h3>Antimatter really is made and held still</h3>
+          <p>CERN's Antimatter Factory in Geneva delivers around 400 million antiprotons an hour to its experiments. The ALPHA collaboration builds whole antihydrogen atoms at up to about 3,000 an hour and holds them in a magnetic bottle. In 2011 they kept a batch for more than 16 minutes. Antimatter is a stock item in a working laboratory.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">〰️</span>
+          <h3>Spacetime bending really is measured</h3>
+          <p>On 14 September 2015 the two LIGO detectors in the United States recorded a passing ripple in the shape of space itself. It stretched their 4 kilometre arms by about 4 billionths of a billionth of a millimetre, and the pattern matched two black holes falling together. Bending spacetime is not a wish. Reading it is now routine.</p>
+        </div>
+      </div>
+
+      <div class="note"><strong>Hold those three.</strong> The account below asks for a stable superheavy element, an antimatter reactor and a bent spacetime around a craft. Each of those has a working relative on a bench somewhere, and the size of the step from the bench to the claim is the whole question.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The account, <span class="hue">as told</span></h2>
+      <p>Robert Scott Lazar, born in Coral Gables, Florida in 1959, first appeared on KLAS-TV in Las Vegas in May 1989, in silhouette, under the name Dennis, interviewed by the investigative reporter George Knapp. He came back unmasked and under his own name that November. A transcript of a KLAS-TV interview carries the date 9 December 1989, and a radio interview on KVEG in Las Vegas is dated 28 December 1989. Two later recordings fill the account out: a video known as The Lazar Tape from mid-1991, and a seminar given at Rachel, Nevada on 1 May 1993.</p>
+      <p>He described a facility he called S4, dug into the side of a mountain roughly 10 to 15 miles south of Groom Lake and about 125 miles north of Las Vegas, with hangar doors angled and faced to match the slope. Nine discs, he said. He worked on one of them, which he called the Sport Model: about 52 feet 9 inches across, which is 16.1 metres, roughly the frontage of a suburban block, and about 16 feet tall. The skin he described as a metal like unpolished stainless steel.</p>
+      <p>The part that concerns matter is the reactor. He described a plate about 18 inches across with a sphere on top, a chip of element 115 in the tower, and three gravity amplifiers at the base of the craft that took a wave from the reactor and pointed it. On radio in December 1989 he corrected his own wording: it was not a gravity generator, he said, it was a gravity amplifier.</p>
+
+      <div class="quote">
+        <p>"Element 113 to 116, somewhere in there, they should again become stable. This is in fact true. That's what Element 115 is; it's a stable element."</p>
+        <span class="who">KLAS-TV interview transcript, 9 December 1989</span>
+      </div>
+
+      <p>He said the element could not be synthesised, that it would have to be made in nature, perhaps on the fringes of a supernova. He said the element itself is not antimatter but has the property of producing it. In The Lazar Tape he gave its melting point as 1740 degrees C. Each craft, he said, carried 223 grams of it, good for twenty to thirty years, drawn from a government stockpile of about 500 pounds.</p>
+      <p>On his own background he claimed master's degrees from MIT in physics and from Caltech in electronics. Neither institution holds a record of them. He attended Pierce Junior College in Los Angeles, and a 1982 piece in the Los Alamos Monitor places him at the Los Alamos Meson Physics Facility as a contractor technician. He said he was hired through the contractor EG&amp;G and employed by the US Navy; EG&amp;G has stated it holds no records on him.</p>
+      <p>Papoose Lake is a real dry lake bed inside the Nevada Test and Training Range. Commercial satellite imagery of it has been public since the 1990s, and declassified U-2 and CORONA photographs cover the ground back to the 1950s and 1960s. No hangar complex appears on the western Papoose slope in any of them.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The claim, written out <span class="hue">as a spec</span></h2>
+      <p>Strip the story back to numbers and you get a parts list. An engineer handed this sheet would start pricing it immediately, because every line on it is checkable.</p>
+
+      <div class="panel">
+        <div class="spec-line"><span class="what">Element identity</span><span class="num">Z = 115</span></div>
+        <div class="spec-line"><span class="what">Nuclear stability</span><span class="num">indefinite, storable, machinable</span></div>
+        <div class="spec-line"><span class="what">Route to obtain it</span><span class="num">natural only, near a supernova</span></div>
+        <div class="spec-line"><span class="what">Melting point</span><span class="num">1740 °C</span></div>
+        <div class="spec-line"><span class="what">Fuel charge per craft</span><span class="num">223 g</span></div>
+        <div class="spec-line"><span class="what">Service life of that charge</span><span class="num">20 to 30 years</span></div>
+        <div class="spec-line"><span class="what">Stockpile held</span><span class="num">500 lb = 227 kg</span></div>
+        <div class="spec-line"><span class="what">Energy density claimed</span><span class="num">470 Mt TNT per kg</span></div>
+        <div class="spec-line"><span class="what">Reactor output</span><span class="num">antimatter reaction, full conversion</span></div>
+        <div class="spec-line"><span class="what">Craft diameter</span><span class="num">16.1 m</span></div>
+        <div class="spec-line"><span class="what">Reactor pulse rate</span><span class="num">about 7.46 Hz</span></div>
+        <div class="spec-line"><span class="what">Field emitted</span><span class="num">amplified gravity wave, three emitters</span></div>
+      </div>
+
+      <p>Four of those lines can be settled with a bench and a stopwatch: is it stable, can it be made, what is its melting point, and how long does 223 grams last. Two can be settled with arithmetic alone, no laboratory needed: the energy density and the reactor's energy balance. The rest are questions about gravity, and gravity has its own price list.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Moscovium, <span class="hue">as it is</span></h2>
+      <p>Element 115 was made on purpose. From 14 July to 10 August 2003, calcium-48 ions at 248 million electronvolts were fired into a target of americium-243 at Dubna. Three atoms of moscovium-288 appeared, and one of moscovium-287. The result was published in Physical Review C on 2 February 2004.</p>
+      <p>The rate tells you what kind of work this is. A cross-section is a way of saying how small a target a nucleus presents to an incoming beam, and at three picobarns the fusion that made moscovium-288 was about as likely as it gets down there. Four weeks of continuous firing returned four atoms. Nothing accumulates. Each atom is born, decays and is gone before the next one arrives.</p>
+      <p>Dirk Rudolph of Lund University and colleagues at the GSI centre in Darmstadt repeated the work and published in Physical Review Letters on 27 August 2013, with more than thirty decay chains and an X-ray fingerprint of the daughter nucleus. The joint working party of IUPAC and IUPAP accepted the discovery on 30 December 2015. The name moscovium, after the Moscow region where Dubna sits, was proposed on 8 June 2016, opened for five months of public comment, and approved on 28 November 2016.</p>
+
+      <h3>Every moscovium isotope known</h3>
+      <p>An isotope is the same element with a different number of neutrons in the nucleus. Five of them have been seen. All five decay by alpha emission, which means the nucleus spits out a small clump of two protons and two neutrons and becomes nihonium, element 113.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Isotope</th><th class="num">Neutrons</th><th class="num">Half-life</th><th class="num">Measured spread</th><th>First seen</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Moscovium-286</td><td class="num">171</td><td class="num">20 ms</td><td class="num">11 to 118 ms</td><td>2022</td></tr>
+            <tr><td>Moscovium-287</td><td class="num">172</td><td class="num">38 ms</td><td class="num">28 to 60 ms</td><td>2004</td></tr>
+            <tr><td>Moscovium-288</td><td class="num">173</td><td class="num">193 ms</td><td class="num">180 to 208 ms</td><td>2004</td></tr>
+            <tr><td>Moscovium-289</td><td class="num">174</td><td class="num">250 ms</td><td class="num">215 to 301 ms</td><td>2010</td></tr>
+            <tr><td>Moscovium-290</td><td class="num">175</td><td class="num">650 ms</td><td class="num">450 to 1140 ms</td><td>2010</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Those spreads are worth a moment. A half-life is the time it takes half a sample to decay, and normally you measure it on a sample. Here there is no sample. Each figure comes from timing a handful of individual decay chains, which is why moscovium-290 is quoted as 650 milliseconds with the true value somewhere between about 450 and about 1140. The uncertainty is not sloppiness; it is what counting a dozen atoms gives you.</p>
+
+      <div class="note"><strong>What has been measured about moscovium, and what has not.</strong> The half-lives and decay energies are measured. Density, melting point, boiling point and chemistry are not: every one of those on a standard database is a calculation. The predicted melting point is about 670 kelvin, which is around 400 degrees C. The 1740 degrees C in the account is more than four times that, and no melting point has been measured for element 115 by anyone, because a melting point needs a lump and nobody has ever had one.</p>
+      </div>
+
+      <p>Put the quantities side by side. A 223 gram charge of moscovium-290 would hold about 4.6 × 10<sup>23</sup> atoms: roughly sixty thousand times the number of grains of sand commonly estimated for every beach and desert on Earth. Around a hundred atoms of moscovium have been made in total. The ratio between those two numbers is about 4.6 × 10<sup>21</sup>, which is close to three and a half times the number of litres of water in all the world's oceans.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The island of <span class="hue">stability</span></h2>
+      <p>Here is the idea in plain words. A nucleus is a crowd of protons and neutrons, and they do not just pile in: they fill up shells, the way seats in a stadium fill row by row. When a shell fills exactly, the nucleus is bound a little tighter and lasts a little longer. The counts where that happens have been read off decades of measurements: 2, 8, 20, 28, 50, 82 and 126.</p>
+      <p>Lead-208 is the showpiece. Eighty-two protons and 126 neutrons, both shells exactly full, and the result simply sits there for as long as anyone cares to watch. It is the heaviest nucleus that does.</p>
+      <p>Past lead, everything decays. Push further and it gets worse fast, because the electrical push between protons grows with every proton added while the glue that holds nucleons together only reaches as far as the next-door neighbour. By about a hundred protons the arithmetic says a nucleus should tear itself apart on the spot. That anything above element 102 exists at all is owed to those shells.</p>
+      <p>So the question became obvious: where is the next full shell? For neutrons the answer models keep returning is <strong>184</strong>. For protons the answer is not settled: calculations put it at 114, or at 120, or at 126, and they have been arguing about it since the late 1960s. William Myers and Wladyslaw Swiatecki appear to have named the region the island of stability around then, and Glenn Seaborg took up the phrase and carried it. Richard Swinne had guessed at long-lived nuclei up around element 108 as early as 1914, and John Archibald Wheeler proposed superheavy nuclei in 1955.</p>
+      <p>The island is offshore. Everything made so far sits on the mainland, in the shallows near the coast, and the water in between has not been crossed.</p>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="zRange">Protons (Z)</label>
+            <input type="range" id="zRange" min="89" max="126" value="115" step="1">
+          </div>
+          <div class="control">
+            <label for="nRange">Neutrons (N)</label>
+            <input type="range" id="nRange" min="136" max="196" value="175" step="1">
+          </div>
+          <div class="control">
+            <label for="colourMode">Colour the squares by</label>
+            <select id="colourMode">
+              <option value="half">How long it lasts</option>
+              <option value="mode">How it comes apart</option>
+            </select>
+          </div>
+          <label class="chk" for="showIsland">
+            <input type="checkbox" id="showIsland" checked>
+            Show the predicted island
+          </label>
+        </div>
+
+        <div class="canvas-frame">
+          <div class="chart-scroll" id="chartScroll">
+            <canvas id="nuclideChart" tabindex="0" role="img"
+              aria-label="Chart of the heavy nuclei. Neutron count runs left to right, proton count runs bottom to top. Use the arrow keys, or the two sliders above, to move the crosshair and read out each nucleus."></canvas>
+          </div>
+          <div class="legend" id="chartLegend"></div>
+        </div>
+
+        <div class="readout">
+          <div class="box" aria-live="polite">
+            <div class="iso-name" id="isoName">Moscovium-290</div>
+            <div class="iso-sub" id="isoSub">Z = 115 protons · N = 175 neutrons</div>
+            <dl class="kv" id="isoFacts"></dl>
+            <div class="gap-line" id="gapLine"></div>
+          </div>
+          <div class="box">
+            <h3>Reading the chart</h3>
+            <p style="font-size:14.5px;color:var(--muted)">Each square is one nucleus that has been made and timed. Along the bottom is the neutron count; up the side is the proton count, which is the element. The dashed line at 184 neutrons is the shell count the models point at, and the glow around it is the island: predicted, not visited.</p>
+            <div class="jump-row">
+              <button class="btn" type="button" data-jump="115,175">Moscovium-290</button>
+              <button class="btn ghost" type="button" data-jump="115,184">Moscovium-299</button>
+              <button class="btn ghost" type="button" data-jump="114,184">Flerovium-298</button>
+              <button class="btn ghost" type="button" data-jump="92,146">Uranium-238</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p>Drive the crosshair up to 184 neutrons and the squares stop. There is nothing there. The chart holds what people have made, and the offshore glow holds what the calculations say should be there if the shells close where they are expected to.</p>
+      <p>How long would a nucleus on the island last? The answers have swung with the decades. Flerovium-298, with 114 protons and 184 neutrons, is the classic candidate. A 1966 estimate put it above a hundred million years. A 1972 estimate gave it about a year. Current estimates land somewhere over ten days. Those are calculations, not measurements, and the spread between them is the point: the island's height above the water is genuinely unknown.</p>
+      <p>Against that, look at what has been measured. The longest-lived nucleus above element 100 that anyone has timed is dubnium-268 at around 16 hours. Rutherfordium-267 runs about 48 minutes; copernicium-285 about 28 seconds. Nothing measured has reached even the modest end of the island predictions, and the reason is not effort.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Why 184 neutrons is <span class="hue">out of reach</span></h2>
+      <p>The gap is not vagueness. It is arithmetic you can do on the back of an envelope, and it comes from the ingredients.</p>
+      <p>Americium-243 brings 148 neutrons. Calcium-48 brings 28. Fuse them and the merged nucleus starts with 176 neutrons, and then it is far too hot to keep them: it boils off three or four before it settles, landing at 172 or 173. That is exactly where the moscovium isotopes sit on the chart. To land at moscovium-299, with 184 neutrons, the merged nucleus would have to start with at least 187, which is eleven to fifteen more neutrons than the best pair of ingredients supplies.</p>
+      <p>The obvious fix is a heavier target. Californium, element 98, is the heaviest actinide a target can practically be made from. Einsteinium and fermium exist in microgram quantities against the ten milligrams or so a target needs, and the longest-lived einsteinium isotope lasts 470 days, which is not long enough to accumulate that much. Californium plus calcium-48 reaches elements 114 to 118 with neutron counts of 172 to 177. That is the ceiling of the current road.</p>
+      <p>Across every superheavy element, the most neutron-rich nuclei confirmed are livermorium-293 and tennessine-294, both at 177 neutrons: seven short. Moscovium-290 is nine short.</p>
+
+      <div class="note"><strong>The move past the ceiling that has actually happened.</strong> In July 2024 a team at Berkeley Lab made element 116 using a beam of titanium-50 instead of calcium-48. That is a real step, and it opens a road toward heavier elements. It does not add neutrons, so it does not close the gap to 184 on its own. The stated route to the island is intense beams of neutron-rich radioactive nuclei, and the problem there is beam intensity: those beams exist, at nothing like the strength this needs.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What a stable 115 <span class="hue">would need</span></h2>
+      <p>Stable in the chemical sense means what a lump of copper means: it sits in a drawer, you can machine it, and it is the same thing next year. For element 115 that would take three things to fail at once, and each of them is a different escape route.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">💥</span>
+          <h3>Splitting shut</h3>
+          <p>The nucleus has to not tear in half. That needs a tall fission barrier, which is the hill a nucleus has to climb before it can split, and above about a hundred protons the smooth part of that hill is gone. Only a full shell puts it back. Element 115 would need a proton shell closing right at 115, and no calculation puts one there.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🎯</span>
+          <h3>Alpha decay shut</h3>
+          <p>The nucleus also has to not spit out a helium core. That happens when the leftovers weigh less than the original, and for every moscovium isotope measured, they do. Closing this route means the energy bookkeeping has to come out the other way at Z equals 115, which is a much stronger condition than being near a shell.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚖️</span>
+          <h3>Beta decay shut</h3>
+          <p>And the neutron-to-proton mix has to already be the one that costs least, or a neutron will flip into a proton and the nucleus will slide sideways off the spot. All three shut at once, at Z equals 115, is the specification. No published shell calculation returns it.</p>
+        </div>
+      </div>
+
+      <p>It is worth seeing what a nearly stable heavy element actually looks like, because the answer is startling. Bismuth-209 was on the stable list for a century. In 2003 a French team measured it decaying, with a half-life of about 2 × 10<sup>19</sup> years: roughly a billion times longer than the universe has been running. That is the real texture of stability up in the heavy end. The most optimistic island predictions sit twenty orders of magnitude below it.</p>
+      <p>There is one more line in the account worth separating out. Moscovium was predicted long before it was made to behave as a heavy relative of bismuth: a soft metal in the same column of the table as nitrogen and phosphorus. Nothing in shell structure ties a proton count to an emitted field of any kind. The element's number sets its chemistry, not its gravity.</p>
+      <p><a href="periodic-table.html#el-Mc">See moscovium on the table</a>, alongside the neighbours it was predicted from.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Twenty to thirty <span class="hue">years, or seconds</span></h2>
+      <p>Take the account's own quantities and run them against the measured half-life. A 223 gram charge of moscovium-290, decaying at about 10 million electronvolts per alpha, would put out about 790 gigawatts in its first instant. That is roughly twenty-five times everything Australia's power stations deliver on average, or better than three hundred million kettles at once, a dozen for every person in the country.</p>
+      <p>And then it would fall off a cliff. Drag the clock.</p>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="clockRange">Seconds since the charge is lit</label>
+            <input type="range" id="clockRange" min="0" max="60" value="0" step="0.25">
+          </div>
+          <div class="control">
+            <label for="clockOut">Clock</label>
+            <output id="clockOut" class="mono" style="padding:8px 14px;border:1px solid var(--line-bright);border-radius:12px;background:var(--panel2);display:block;min-width:96px">0.00 s</output>
+          </div>
+        </div>
+
+        <div class="clock-read">
+          <div class="cell"><span class="big" id="cPower">791 GW</span><span class="cap">power the charge would be putting out at that moment</span></div>
+          <div class="cell"><span class="big" id="cMass">223.00 g</span><span class="cap">moscovium-290 left, out of the original 223 grams</span></div>
+          <div class="cell"><span class="big" id="cKettle">330 million</span><span class="cap">kettles that power would boil at once</span></div>
+          <div class="cell"><span class="big" id="cLife">1</span><span class="cap">fraction of the charge still there, as one part in this many</span></div>
+        </div>
+
+        <div class="logbar-row">
+          <span class="who">Moscovium-290</span>
+          <div class="logbar-track"><div class="logbar" id="mcBar"></div></div>
+        </div>
+        <div class="logbar-row">
+          <span class="who">Plutonium-238</span>
+          <div class="logbar-track"><div class="logbar steady" style="width:34%"></div></div>
+        </div>
+        <p class="note" id="clockCaption"></p>
+      </div>
+
+      <p>The comparison bar is the point. Plutonium-238 is the workhorse fuel in the generators aboard Voyager, Cassini and the Perseverance rover: a half-life of 87.7 years and about 0.54 watts per gram. The same 223 grams of it gives roughly 120 watts, which is two old-style light bulbs, and it does that for decades. That is the shape of a long-duration nuclear fuel. A long half-life buys you steady low power. It cannot buy you high power for a long time, because the same atoms cannot be spent twice.</p>
+      <p>Run the account's stockpile through the same arithmetic. 227 kilograms of moscovium-290, decaying down its full alpha chain at around 55 million electronvolts per atom, carries about 4.2 × 10<sup>15</sup> joules: close to a megatonne, about a fiftieth of the largest device ever set off, and it would deliver essentially all of it inside half a minute.</p>
+      <p>The account says 223 grams lasts twenty to thirty years. The measured half-life makes it twenty to thirty seconds.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The energy figure, checked with <span class="hue">nothing but arithmetic</span></h2>
+      <p>One line of the spec needs no laboratory at all. The account gives 2.2 pounds, which is one kilogram, as the energy equivalent of 47 ten-megatonne hydrogen bombs. That is 470 megatonnes of TNT, or about 2.0 × 10<sup>18</sup> joules.</p>
+      <p>The ceiling on what any kilogram of anything can give up is its own mass, converted completely: one kilogram times the speed of light squared, which is 9.0 × 10<sup>16</sup> joules, or 21.5 megatonnes. There is no arrangement of matter that beats it, because past that there is nothing left to spend.</p>
+
+      <p class="mono" style="color:var(--muted);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:22px 0 10px">Megatonnes of TNT, same scale</p>
+      <div class="bar-row"><span class="who">The 1989 figure</span><div class="bar" style="width:100%"></div><span class="val">470 Mt</span></div>
+      <div class="bar-row"><span class="who">Tsar Bomba, 1961</span><div class="bar" style="width:10.6%"></div><span class="val">~50 Mt</span></div>
+      <div class="bar-row"><span class="who">1 kg + 1 kg, all of it</span><div class="bar" style="width:9.1%"></div><span class="val">43 Mt</span></div>
+      <div class="bar-row"><span class="who">1 kg, all of it</span><div class="bar" style="width:4.6%"></div><span class="val">21.5 Mt</span></div>
+
+      <p>The 1989 figure sits 21.9 times above the complete conversion of the fuel. Credit the reactor with annihilating a matching kilogram of ordinary matter as well, which is the most generous reading available, and it still sits 10.9 times above. For scale, the largest device ever detonated, Tsar Bomba on 30 October 1961, released about 50 megatonnes: that is the full mass-energy of about 2.3 kilograms, and it took a device the size of a bus to release it.</p>
+      <p>Run the account's own charge through the same books. 223 grams of fuel annihilating with 223 grams of ordinary matter gives 4.0 × 10<sup>16</sup> joules, which is 9.6 megatonnes, not 470.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The antimatter <span class="hue">question</span></h2>
+      <p>The reactor in the account runs on antimatter, and antimatter is real. It is made every day. The interesting part is how much, and what it costs.</p>
+      <p>CERN's Antimatter Factory delivers about 400 million antiprotons an hour. That sounds enormous until you convert it. CERN's own figure is that every antiproton the factory makes in a full year of non-stop running would amount to about 500 joules, which would light a 100 watt bulb for five seconds, or lift a ten kilogram bag of spuds onto a five metre shelf. Whole antihydrogen atoms are rarer still: the ALPHA collaboration builds up to about 3,000 an hour, and CERN puts the maximum imaginable in a year, trapped and annihilated in one go, at a few thousandths of a joule, which they compare to the energy of tapping a phone screen.</p>
+      <p>Across CERN's whole history the total made is under 10 nanograms. That is less than a hundredth of a speck of dust you could see, and annihilating all of it would run a 60 watt bulb for about four hours.</p>
+
+      <div class="stat-row">
+        <div class="stat"><span class="num">400 million</span><span class="lbl">antiprotons an hour, delivered to experiments at CERN</span></div>
+        <div class="stat"><span class="num">16 minutes</span><span class="lbl">antihydrogen held in a magnetic bottle by ALPHA, announced June 2011</span></div>
+        <div class="stat"><span class="num">&lt; 10 ng</span><span class="lbl">total antimatter made at CERN across roughly 45 years</span></div>
+        <div class="stat"><span class="num">4.5 billion yr</span><span class="lbl">time to reach one gram at that rate, about as long as the Earth has existed</span></div>
+      </div>
+
+      <p>At that rate, the account's single 223 gram charge would take on the order of a trillion years to produce, which is about seventy times as long as the universe has been going. Price is the same story from another angle. NASA put antihydrogen at USD 62.5 trillion a gram in 1999. Gerald Smith at Penn State estimated in 2006 that USD 250 million could produce 10 milligrams of positrons, which works out around USD 25 billion a gram, or about A$38 billion at 0.65 US cents to the dollar in August 2026.</p>
+
+      <div class="note"><strong>The loop that will not close.</strong> Antimatter is not a fuel you dig up. Every route anyone has found makes it in pairs: to get one antiproton you must pay at least the rest energy of an antiproton and a proton together. Annihilating that antiproton later returns exactly that much and no more, and the accelerator that made it wastes many orders of magnitude on top. So an antimatter reactor is a battery, not a well. It gives back a fraction of what was put in. This is the objection the physicist David L. Morgan raised against the S4 reactor in a critique first published on 26 August 1996 and revised in April 2001.</div>
+
+      <p>Antimatter still buys something real. It is the densest energy store known, roughly a billion times a chemical fuel by mass, and that is why it keeps coming up in propulsion sketches. The step that has not been found is a way of making it that does not cost more than it returns.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What gravity <span class="hue">actually is</span></h2>
+      <p>In the account, gravity is a wave that the reactor emits and three amplifiers point. In general relativity, which has passed every test put to it for a century, there is nothing to emit. Gravity is not a substance travelling through space. It is the shape of space itself, bent by everything with energy in it, and things moving through the bend look to us like things being pulled.</p>
+      <p>That changes the question completely. You cannot amplify a field that is not there. What you can do is put energy somewhere and bend the space around it, and Einstein's equations name the exchange rate exactly. To bend spacetime to a radius of one metre, meaning a curve that tight, takes an energy density of about 4.8 × 10<sup>42</sup> joules in every cubic metre.</p>
+      <p>That number needs a picture, so here is one. The Sun radiates about 3.8 × 10<sup>26</sup> watts. To fill a single cubic metre with 4.8 × 10<sup>42</sup> joules you would need everything the Sun puts out for around four hundred million years, held in a box a metre on a side.</p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>The densest ordinary matter there is</h3>
+          <p style="color:var(--muted);font-size:15px">Nuclear matter, the stuff a nucleus is made of and the stuff a neutron star is packed with, runs about 2.3 × 10<sup>17</sup> kilograms per cubic metre. Converted, that is 2.1 × 10<sup>34</sup> joules per cubic metre.</p>
+          <p style="color:var(--muted);font-size:15px">Against the 4.8 × 10<sup>42</sup> needed for a one metre bend, it falls short by a factor of about 230 million. There is no denser material on any shelf, predicted or real.</p>
+        </div>
+        <div class="panel">
+          <h3>The other way to ask it</h3>
+          <p style="color:var(--muted);font-size:15px">Suppose the craft is to pull at one gravity, five metres below it. Newton's law gives the mass required directly: about 3.7 × 10<sup>12</sup> kilograms, or 3.7 billion tonnes.</p>
+          <p style="color:var(--muted);font-size:15px">That is roughly seven Sydney Harbours of water, inside a hull 16 metres across. Packed into the thousand or so cubic metres such a hull would hold, it works out about 165,000 times denser than osmium, the densest metal on the table.</p>
+        </div>
+      </div>
+
+      <p>And here is the scale that makes it land. The Earth, all 6 × 10<sup>24</sup> kilograms of it, bends spacetime at its own surface to a curvature radius of about 2.4 × 10<sup>11</sup> metres. That is around 1.6 times the distance from here to the Sun. The whole planet, the thing that holds your feet down all day, is barely bending anything at all.</p>
+      <p>None of this reads the proton number. The source term in Einstein's equations is energy and momentum. Iron, hydrogen and element 115 with the same energy in the same volume bend space identically, because the equations have no place to put the element's name.</p>
+
+      <h3>Where the account puts gravity, and where the objection lands</h3>
+      <p>In The Lazar Tape the account splits gravity in two: Gravity A working at nuclear scale, Gravity B at the everyday scale, with Gravity A identified as what physics calls the strong nuclear force. Morgan's critique goes straight at that. The strong force reaches about a millionth of a billionth of a metre and stops; gravity has no such limit, and the two differ by roughly 20 orders of magnitude in range and 38 in strength. Calling one the other is renaming, not joining. He adds a second objection with a picture in it: a bend in spacetime strong enough to move a craft would not be able to choose what it moved, so everything nearby would go with it.</p>
+      <p>Morgan grants something too, and it is worth carrying forward. Bending spacetime deliberately is studied seriously. Miguel Alcubierre published a genuine warp-drive solution in Classical and Quantum Gravity in 1994: a metric that moves a bubble of flat space through curved space, with the passengers never locally exceeding light speed. It requires negative energy density, which has no known bulk source, and even the least demanding modern reworkings call for masses on the order of a planet converted entirely into exotic energy. That is an open research line with a very large number attached, which is a different situation from a claim with no number at all.</p>
+      <p>The vacuum has its own energy budget, and the <a href="zero-point.html">Casimir force is measured</a> in laboratories. That is the nearest thing anyone has to a handle on it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The instrument that reads a <span class="hue">bend in space</span></h2>
+      <p>This is the calibration that makes every gravity claim measurable, and it is the payload of the whole page.</p>
+      <p>On 14 September 2015, two detectors 3,000 kilometres apart in the United States recorded the same short chirp, rising from 35 to about 150 cycles a second in a fifth of a second. It was two black holes, about 36 and 29 times the mass of the Sun, falling together into one of about 62. The missing three solar masses, 5.4 × 10<sup>47</sup> joules, left as ripples in the shape of space. The LIGO teams put the peak power of that radiation above the light of every star in the observable universe combined, briefly.</p>
+      <p>By the time it reached Earth, 1.3 billion light years later, it stretched things by one part in 10<sup>21</sup>. Across LIGO's 4 kilometre arms that is a length change of 4 × 10<sup>-18</sup> metres: about one four-hundredth of the width of a proton. Stretch the same ruler from here to the Sun and the same wobble would be roughly the width of a single atom.</p>
+
+      <div class="stat-row">
+        <div class="stat"><span class="num">4 × 10<sup>-18</sup> m</span><span class="lbl">how far the 4 km arms moved, one four-hundredth of a proton's width</span></div>
+        <div class="stat"><span class="num">10<sup>-23</sup></span><span class="lbl">Advanced LIGO's best strain sensitivity, per root hertz, from about 50 to 300 Hz</span></div>
+        <div class="stat"><span class="num">A$1.7 bn</span><span class="lbl">rough build cost of Advanced LIGO, from USD 1.1 billion at 0.65 in August 2026</span></div>
+        <div class="stat"><span class="num">0.2 s</span><span class="lbl">how long the whole signal lasted, from first detection to silence</span></div>
+      </div>
+
+      <p>Two things follow, and they pull in opposite directions, which is why the instrument matters so much.</p>
+      <p>The first: making gravitational waves is brutally expensive. The most violent event in the observable universe, three suns' worth of mass turned entirely into ripples, moved a four kilometre ruler by a fraction of a proton at astronomical distance. A craft claiming to bend space around a 16 metre disc is claiming an effect vastly larger than that, generated in a hangar, with no energy budget stated.</p>
+      <p>The second, and the better one: <strong>we now have the meter.</strong> Advanced LIGO holds about one part in 10<sup>23</sup> per root hertz across a wide band. Any device on Earth radiating gravitationally above that floor would leave a trace in the data, and the data is public. This is a claim that no longer has to be argued about. It can be looked up.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The 1989 timing, at <span class="hue">full strength</span></h2>
+      <p>Take the strongest version of the account's case, because it deserves to be stated properly.</p>
+      <p>In 1989 the periodic table stopped, experimentally, at element 109. Meitnerium had been made at Darmstadt in 1982 and nothing heavier had been confirmed. Elements 110 and 111 arrived in 1994, 112 in 1996, 114 in 1998 and 1999, and 115 not until 2003. The account named element 115 specifically, fourteen years and five elements before anyone made it. It put the return of stability at "113 to 116, somewhere in there", which does bracket where the island is now thought to sit, with element 114 the leading candidate for the proton shell closure and confirmed at Berkeley in September 2009. And it tied the element's interest to the strong nuclear force, which is in fact the physical reason nuclei near closed shells hold on longer.</p>
+      <p>As a 1989 statement about which numbered box on the table would matter, it landed in the right neighbourhood.</p>
+      <p>Here is what sits alongside it. Element 115 had been public physics for twenty years by then.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>When</th><th>What was in print</th></tr></thead>
+          <tbody>
+            <tr><td class="num">April 1969</td><td>Glenn Seaborg and Justin Bloom, "The Synthetic Elements: IV", Scientific American, with charts of expected half-lives across the superheavy region.</td></tr>
+            <tr><td class="num">1970</td><td>A chemistry textbook already carrying the island-of-stability prediction for element 114, and discussing element 115 next to it.</td></tr>
+            <tr><td class="num">1 Sept 1974</td><td>O. L. Keller, C. W. Nestor and Burkhard Fricke, "Predicted properties of the superheavy elements. III. Element 115, eka-bismuth", The Journal of Physical Chemistry. A whole paper, on element 115, by number.</td></tr>
+            <tr><td class="num">1978 to 1979</td><td>IUPAC decided undiscovered elements above 100 needed placeholder names, and the rules were published in 1979. From then on, element 115 was printed on periodic tables as ununpentium, symbol Uup.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>So in 1989, anyone with a university library card, a chemistry textbook or a wall chart could name element 115 and say that stability was expected to return around 114. The account's claimed workplace, the Los Alamos Meson Physics Facility, is a nuclear physics site where that literature circulates as a matter of course.</p>
+      <p>This is the part that cannot be resolved by finding element 115, and it is worth being clear about why. Because the number was in print from 1969 and on periodic tables from 1979, the existence of element 115 cannot separate inside knowledge from library knowledge. Only a claim that was <em>not</em> in the pre-1989 literature, and later turned out to be right, could do that work. The claims the account added beyond the literature are exactly the checkable ones: stable, unsynthesisable, melting at 1740 degrees, emitting a field.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Said in 1989, and <span class="hue">measured since</span></h2>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th style="width:44%">The account</th><th>The record</th></tr></thead>
+          <tbody>
+            <tr><td>Element 115 is the thing that matters</td><td>Element 115 was made at Dubna in 2003 and named moscovium in November 2016.</td></tr>
+            <tr><td>It is a stable element</td><td>Five isotopes are known. The longest-lived, moscovium-290, has a half-life of about 0.65 seconds.</td></tr>
+            <tr><td>Synthesising it would be impossible</td><td>It was synthesised deliberately, by firing calcium-48 into americium-243 at 248 MeV.</td></tr>
+            <tr><td>Stability returns somewhere in 113 to 116</td><td>Shell models point at a long-lived region near 114 to 126 protons with 184 neutrons. That expectation was published from 1969, and ununpentium was on periodic tables from 1979.</td></tr>
+            <tr><td>2.2 pounds equals 47 ten-megatonne bombs</td><td>One kilogram of anything, converted completely, is 21.5 megatonnes.</td></tr>
+            <tr><td>223 grams runs a craft for 20 to 30 years</td><td>223 grams of moscovium-290 would be down to a millionth of itself in about 13 seconds.</td></tr>
+            <tr><td>Melting point 1740 degrees C</td><td>No melting point has been measured. The prediction on the databases is about 400 degrees C.</td></tr>
+            <tr><td>A stockpile of 500 pounds is held</td><td>Around a hundred atoms of moscovium have been made anywhere, since 2003.</td></tr>
+            <tr><td>Gravity A is what physics calls the strong nuclear force</td><td>Morgan's critique puts the two about 20 orders of magnitude apart in range and 38 in strength, acting on different particles.</td></tr>
+            <tr><td>The reactor converts at 100 per cent</td><td>Making an antiproton costs at least the energy its annihilation later returns.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>One more line belongs here, about where the element would come from. The account says a supernova. Supernovae and neutron-star mergers do build heavy nuclei fast, and the neutron-star merger seen in 2017 gave the first direct look at it happening. The catch is distribution: anything a supernova makes and that survives gets spread through the interstellar dust the same way everything else does, and turns up in meteorites, in ores and in starlight. Searches for natural superheavy elements in monazite sand, in cosmic rays and in meteoritic material have run since the 1970s. No confirmed find at element 115 has been reported. Uranium-238 survived from the pre-solar era because its half-life is 4.47 billion years; below about 80 million years, nothing from that era is left in the crust at all.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would have to be <span class="hue">true</span></h2>
+      <div class="panel">
+        <ol class="ask">
+          <li><b>A proton shell would have to close at 115.</b> Every published calculation puts the candidates at 114, 120 or 126, and none at 115. A shell there would have to be a real feature the models are missing, not a rounding.</li>
+          <li><b>Alpha decay and fission would both have to shut at the same isotope</b>, and the neutron-to-proton mix would have to already be the cheapest available. Three separate escape routes, closed together, at Z equals 115.</li>
+          <li><b>A road to 184 neutrons would have to exist.</b> The best pairing of ingredients available today lands eleven to fifteen neutrons short, and the shortfall is set by what the target and the beam bring with them.</li>
+          <li><b>Something would have to source curvature besides energy and momentum.</b> Einstein's equations take a stress-energy tensor as their input, and there is no slot in it for an element number. A new coupling would have to exist, and be invisible to a century of tests.</li>
+          <li><b>An energy density about 230 million times that of nuclear matter</b> would have to sit inside the hull, to bend space by a metre. Nothing predicted, let alone made, gets within a factor of a million of that.</li>
+          <li><b>Antimatter production would have to stop costing what it returns.</b> Every known route makes it in pairs, and the accelerator overhead is many orders of magnitude on top of that.</li>
+          <li><b>A weighable sample would have to exist.</b> 223 grams is about 4.6 × 10<sup>23</sup> atoms of an element that has been counted, worldwide, in the low hundreds.</li>
+        </ol>
+      </div>
+      <p>None of those is a shrug. Each one is a specific quantity, and each one names an instrument that would return it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What you would <span class="hue">measure</span></h2>
+      <p>Every one of these uses equipment that exists now, and returns a number rather than an opinion.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">🔥</span>
+          <h3>A melting point</h3>
+          <p>Give a laboratory a weighable sample and a differential scanning calorimeter returns a melting point in an afternoon. 1740 degrees C and about 400 degrees C are far enough apart that one run separates them. This is the single cheapest test in the whole brief, and it needs only the sample.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">☄️</span>
+          <h3>A trace in a meteorite</h3>
+          <p>Mass spectrometers and etched track detectors already hunt natural superheavy elements in monazite sand, in meteoritic grains and in cosmic-ray tracks. A confirmed signature at 115 protons would reopen the supernova route immediately. Fifty years of looking has returned none so far.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🪶</span>
+          <h3>A benchtop gravity anomaly</h3>
+          <p>Torsion balances and atom interferometers measure accelerations to parts in a billion on an ordinary optical table. Any apparatus sourcing curvature beyond the energy it visibly holds would show up there first, long before it lifted anything. No such reading has been reported.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">📡</span>
+          <h3>A strain above the noise floor</h3>
+          <p>Advanced LIGO holds about one part in 10<sup>23</sup> per root hertz between roughly 50 and 300 cycles a second, and its data is public. A local source of gravitational radiation above that would be recorded whether or not anyone was looking for it.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🎯</span>
+          <h3>A nucleus at 184 neutrons</h3>
+          <p>This is the one worth building. A radioactive-beam facility delivering neutron-rich beams at particle-microamp intensities, or a multinucleon-transfer route with a workable cross-section, would put a nucleus on the island and let someone start a stopwatch. The island's height above the water has never been measured, only calculated.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">📼</span>
+          <h3>The tapes themselves</h3>
+          <p>KLAS-TV is a working Las Vegas station and George Knapp is a working reporter. Master tapes with time-coded air dates for the May and November 1989 segments are ordinary station records, and a badge number, a clearance docket or a pre-1989 payslip would place a person at a facility. These are archive requests, not expeditions.</p>
+        </div>
+      </div>
+
+      <p>The one on that list that would change the most is the last of the physics ones. Fifty years of dedicated work has not put a single nucleus on the island of stability, and until someone does, every half-life quoted for it is a calculation waiting on a measurement. That is a genuinely open question with a machine-shaped answer, and it is being worked on right now at Dubna, at Darmstadt, at RIKEN and at Berkeley.</p>
+      <p>Element 115 turned out to be real, and to last two thirds of a second. Nine neutrons offshore, the models say, is somewhere nobody has stood yet.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="claimed-elements.html"><div class="card"><span class="card-glyph">🏷️</span><h3>Claimed Elements</h3><p>Every element named in an anomalous claim, and what the measured record has to say about each one.</p></div></a>
+        <a class="card-link" href="zero-point.html"><div class="card"><span class="card-glyph">🌀</span><h3>Zero Point</h3><p>Vacuum energy, the Casimir force between two plates, and what a machine drawing on it would need.</p></div></a>
+        <a class="card-link" href="periodic-table.html#el-Mc"><div class="card"><span class="card-glyph">🧪</span><h3>The Table</h3><p>All 118 boxes, moscovium among them, with what has been measured and what is still a calculation.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>Yu. Ts. Oganessian et al., "Experiments on the synthesis of element 115 in the reaction <sup>243</sup>Am(<sup>48</sup>Ca,xn)<sup>291-x</sup>115", Physical Review C 69, 021601(R), 2 February 2004.</li>
+        <li>D. Rudolph et al., "Spectroscopy of element 115 decay chains", Physical Review Letters 111, 112502, 27 August 2013 · <a href="https://physics.aps.org/articles/v6/s118" rel="noopener">physics.aps.org/articles/v6/s118</a></li>
+        <li>"Discovery and Assignment of Elements with Atomic Numbers 113, 115, 117 and 118", IUPAC and IUPAP joint working party, 30 December 2015 · <a href="https://iupac.org/wp-content/uploads/2016/01/IUPAC-Press-Release_30Dec2015.pdf" rel="noopener">iupac.org</a></li>
+        <li>"IUPAC is naming the four new elements nihonium, moscovium, tennessine, and oganesson", IUPAC, 28 November 2016 · <a href="https://iupac.org/iupac-is-naming-the-four-new-elements-nihonium-moscovium-tennessine-and-oganesson/" rel="noopener">iupac.org</a></li>
+        <li>Isotopes of moscovium, half-lives and decay modes · <a href="https://en.wikipedia.org/wiki/Isotopes_of_moscovium" rel="noopener">en.wikipedia.org/wiki/Isotopes_of_moscovium</a></li>
+        <li>Island of stability: magic numbers, candidate shell closures and the neutron gap · <a href="https://en.wikipedia.org/wiki/Island_of_stability" rel="noopener">en.wikipedia.org/wiki/Island_of_stability</a></li>
+        <li>"A new way to make element 116 opens the door to heavier atoms", Lawrence Berkeley National Laboratory, 23 July 2024 · <a href="https://newscenter.lbl.gov/2024/07/23/a-new-way-to-make-element-116-opens-the-door-to-heavier-atoms/" rel="noopener">newscenter.lbl.gov</a></li>
+        <li>"Element 114 confirmed", Lawrence Berkeley National Laboratory, 24 September 2009 · <a href="https://newscenter.lbl.gov/2009/09/24/114-confirmed/" rel="noopener">newscenter.lbl.gov/2009/09/24/114-confirmed</a></li>
+        <li>O. L. Keller, C. W. Nestor and B. Fricke, "Predicted properties of the superheavy elements. III. Element 115, eka-bismuth", The Journal of Physical Chemistry 78(19), 1945-1949, 1 September 1974 · <a href="https://pubs.acs.org/doi/abs/10.1021/j100612a015" rel="noopener">pubs.acs.org</a></li>
+        <li>"On the Record with George Knapp", KLAS-TV interview transcript dated 9 December 1989, and the KVEG radio interview of 28 December 1989 · <a href="https://www.papooselake.org/interview-transcripts/1989-on-the-record-with-george-knapp" rel="noopener">papooselake.org</a></li>
+        <li>"The word of Bob" and "Element 115 tidbits", collected primary quotations and the pre-1989 print record, otherhand.org · <a href="https://otherhand.org/home-page/area-51-and-other-strange-places/bluefire-main/bluefire/the-bob-lazar-corner/the-word-of-bob/" rel="noopener">otherhand.org</a></li>
+        <li>David L. Morgan, "A physicist's critique", first published 26 August 1996, revised April 2001 · <a href="https://otherhand.org/home-page/area-51-and-other-strange-places/bluefire-main/bluefire/the-bob-lazar-corner/a-physicists-critique/" rel="noopener">otherhand.org</a></li>
+        <li>B. P. Abbott et al., "Observation of Gravitational Waves from a Binary Black Hole Merger", Physical Review Letters 116, 061102, 11 February 2016 · <a href="https://gwosc.org/events/GW150914/" rel="noopener">gwosc.org/events/GW150914</a></li>
+        <li>"Properties of the binary black hole merger GW150914" and the Advanced LIGO sensitivity curves · <a href="https://arxiv.org/pdf/1608.01940" rel="noopener">arxiv.org/pdf/1608.01940</a></li>
+        <li>Antimatter production, trapping and quantities, CERN · <a href="https://home.cern/science/physics/antimatter/" rel="noopener">home.cern/science/physics/antimatter</a></li>
+        <li>The ALPHA collaboration, antihydrogen production and trapping records · <a href="https://alpha.web.cern.ch/" rel="noopener">alpha.web.cern.ch</a></li>
+        <li>M. Alcubierre, "The warp drive: hyper-fast travel within general relativity", Classical and Quantum Gravity 11, L73, 1994.</li>
+        <li>P. de Marcillac et al., "Experimental detection of alpha-particles from the radioactive decay of natural bismuth", Nature 422, 876-878, 2003.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  "use strict";
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ==========================================================
+     Element names for the heavy end of the table.
+     Numbers above 118 wear their systematic placeholder names,
+     the same ones element 115 wore between 1979 and 2016.
+     ========================================================== */
+  var ELEM = {
+    89: ["Ac", "Actinium"], 90: ["Th", "Thorium"], 91: ["Pa", "Protactinium"],
+    92: ["U", "Uranium"], 93: ["Np", "Neptunium"], 94: ["Pu", "Plutonium"],
+    95: ["Am", "Americium"], 96: ["Cm", "Curium"], 97: ["Bk", "Berkelium"],
+    98: ["Cf", "Californium"], 99: ["Es", "Einsteinium"], 100: ["Fm", "Fermium"],
+    101: ["Md", "Mendelevium"], 102: ["No", "Nobelium"], 103: ["Lr", "Lawrencium"],
+    104: ["Rf", "Rutherfordium"], 105: ["Db", "Dubnium"], 106: ["Sg", "Seaborgium"],
+    107: ["Bh", "Bohrium"], 108: ["Hs", "Hassium"], 109: ["Mt", "Meitnerium"],
+    110: ["Ds", "Darmstadtium"], 111: ["Rg", "Roentgenium"], 112: ["Cn", "Copernicium"],
+    113: ["Nh", "Nihonium"], 114: ["Fl", "Flerovium"], 115: ["Mc", "Moscovium"],
+    116: ["Lv", "Livermorium"], 117: ["Ts", "Tennessine"], 118: ["Og", "Oganesson"],
+    119: ["Uue", "Ununennium"], 120: ["Ubn", "Unbinilium"], 121: ["Ubu", "Unbiunium"],
+    122: ["Ubb", "Unbibium"], 123: ["Ubt", "Unbitrium"], 124: ["Ubq", "Unbiquadium"],
+    125: ["Ubp", "Unbipentium"], 126: ["Ubh", "Unbihexium"]
+  };
+
+  var YR = 31557600; /* seconds in a Julian year */
+  var D = 86400, H = 3600, MIN = 60;
+
+  /* Z, A, half-life in seconds, decay mode, year first made or observed.
+     Decay modes: a alpha, b beta minus, ec electron capture, sf spontaneous fission. */
+  var ISO = [
+    [90, 228, 1.9116 * YR, "a", null], [90, 229, 7917 * YR, "a", null],
+    [90, 230, 75400 * YR, "a", null], [90, 232, 1.405e10 * YR, "a", null],
+    [90, 234, 24.1 * D, "b", null],
+    [91, 231, 32760 * YR, "a", null], [91, 233, 26.98 * D, "b", null],
+    [92, 232, 68.9 * YR, "a", 1950], [92, 233, 1.592e5 * YR, "a", 1943],
+    [92, 234, 2.455e5 * YR, "a", null], [92, 235, 7.04e8 * YR, "a", null],
+    [92, 236, 2.342e7 * YR, "a", null], [92, 238, 4.468e9 * YR, "a", null],
+    [93, 236, 1.54e5 * YR, "ec", 1952], [93, 237, 2.144e6 * YR, "a", 1940],
+    [93, 239, 2.356 * D, "b", 1940],
+    [94, 238, 87.7 * YR, "a", 1941], [94, 239, 24110 * YR, "a", 1940],
+    [94, 240, 6561 * YR, "a", 1944], [94, 241, 14.33 * YR, "b", 1944],
+    [94, 242, 3.75e5 * YR, "a", 1949], [94, 244, 8.13e7 * YR, "a", 1954],
+    [95, 241, 432.6 * YR, "a", 1944], [95, 243, 7364 * YR, "a", 1945],
+    [96, 242, 162.8 * D, "a", 1944], [96, 243, 29.1 * YR, "a", 1947],
+    [96, 244, 18.1 * YR, "a", 1947], [96, 245, 8423 * YR, "a", 1949],
+    [96, 246, 4760 * YR, "a", 1949], [96, 247, 1.56e7 * YR, "a", 1950],
+    [96, 248, 3.48e5 * YR, "a", 1951], [96, 250, 8300 * YR, "sf", 1954],
+    [97, 247, 1380 * YR, "a", 1956], [97, 249, 330 * D, "b", 1949],
+    [98, 249, 351 * YR, "a", 1950], [98, 250, 13.08 * YR, "a", 1951],
+    [98, 251, 898 * YR, "a", 1954], [98, 252, 2.645 * YR, "a", 1954],
+    [99, 252, 471.7 * D, "a", 1965], [99, 253, 20.47 * D, "a", 1952],
+    [99, 254, 275.7 * D, "a", 1954],
+    [100, 253, 3.0 * D, "ec", 1954], [100, 255, 20.07 * H, "a", 1953],
+    [100, 257, 100.5 * D, "a", 1964],
+    [101, 258, 51.5 * D, "a", 1967], [101, 260, 31.8 * D, "sf", 1985],
+    [102, 255, 3.52 * MIN, "a", 1967], [102, 259, 58 * MIN, "a", 1973],
+    [103, 262, 3.6 * H, "ec", 1971], [103, 266, 11 * H, "sf", 2014],
+    [104, 261, 68, "a", 1970], [104, 263, 11 * MIN, "sf", 1999],
+    [104, 267, 48 * MIN, "sf", 2004],
+    [105, 262, 34, "a", 1971], [105, 268, 16 * H, "sf", 2004],
+    [105, 270, 1 * H, "sf", 2010],
+    [106, 265, 9, "a", 1994], [106, 269, 3 * MIN, "a", 2010],
+    [106, 271, 2 * MIN, "a", 2004],
+    [107, 270, 60, "a", 2010], [107, 274, 40, "a", 2010],
+    [108, 269, 16, "a", 1996], [108, 270, 8, "a", 2004], [108, 271, 4, "a", 2004],
+    [109, 276, 0.6, "a", 2003], [109, 278, 4, "a", 2004],
+    [110, 279, 0.2, "sf", 1999], [110, 281, 14, "sf", 1999],
+    [111, 280, 4, "a", 2003], [111, 282, 100, "a", 2010],
+    [112, 283, 4, "a", 2000], [112, 285, 28, "a", 1999],
+    [113, 278, 0.002, "a", 2004], [113, 284, 1, "a", 2003],
+    [113, 285, 4, "a", 2010], [113, 286, 10, "a", 2010],
+    [114, 286, 0.13, "a", 2003], [114, 287, 0.5, "a", 2003],
+    [114, 288, 0.7, "a", 1999], [114, 289, 1.9, "a", 1999],
+    [115, 286, 0.020, "a", 2022], [115, 287, 0.038, "a", 2004],
+    [115, 288, 0.193, "a", 2004], [115, 289, 0.250, "a", 2010],
+    [115, 290, 0.650, "a", 2010],
+    [116, 290, 0.008, "a", 2002], [116, 291, 0.019, "a", 2004],
+    [116, 292, 0.013, "a", 2004], [116, 293, 0.057, "a", 2000],
+    [117, 293, 0.022, "a", 2010], [117, 294, 0.051, "a", 2010],
+    [118, 294, 0.0007, "a", 2002]
+  ];
+
+  /* measured spreads worth showing, keyed "Z-A" */
+  var SPREAD = {
+    "115-286": "11 to 118 ms", "115-287": "28 to 60 ms", "115-288": "180 to 208 ms",
+    "115-289": "215 to 301 ms", "115-290": "450 to 1140 ms"
+  };
+
+  /* the offshore markers: shell closures the calculations point at */
+  var PREDICTED = [
+    { z: 114, n: 184, note: "The classic doubly closed candidate. Estimates for its half-life have ranged from over a hundred million years in 1966, to about a year in 1972, to something over ten days today." },
+    { z: 115, n: 184, note: "Where a moscovium isotope would sit if it reached the neutron shell. Nine neutrons past the heaviest moscovium made, and no route reaches it." },
+    { z: 120, n: 172, note: "A second candidate pairing from modern shell calculations. Element 120 has not been made." },
+    { z: 126, n: 184, note: "The third candidate pairing. The proton count of 126 has never been settled on: 114, 120 and 126 all still have calculations behind them." }
+  ];
+
+  var byKey = {};
+  ISO.forEach(function (r) { byKey[r[0] + "-" + r[1]] = r; });
+  var predByKey = {};
+  PREDICTED.forEach(function (p) { predByKey[p.z + "-" + p.n] = p; });
+
+  var MODE_NAME = {
+    a: "alpha decay, spitting out a helium core",
+    b: "beta decay, a neutron flipping to a proton",
+    ec: "electron capture, a proton pulling in an electron",
+    sf: "spontaneous fission, splitting in two"
+  };
+  var MODE_COLOUR = { a: "#c084fc", b: "#38bdf8", ec: "#fbbf24", sf: "#fb7185" };
+
+  function fmtHalf(t) {
+    if (t < 1e-3) return Math.round(t * 1e6) + " µs";
+    if (t < 1) return Math.round(t * 1000) + " ms";
+    if (t < 90) return (t < 10 ? t.toFixed(t < 1.5 ? 1 : 0) : Math.round(t)) + " s";
+    if (t < 90 * MIN) return Math.round(t / MIN) + " min";
+    if (t < 48 * H) return Math.round(t / H) + " h";
+    if (t < 400 * D) return Math.round(t / D) + " days";
+    var y = t / YR;
+    if (y < 1000) return (y < 20 ? y.toFixed(1) : Math.round(y)) + " years";
+    if (y < 1e6) return Math.round(y / 1000) + " thousand years";
+    if (y < 1e9) return (y / 1e6 < 10 ? (y / 1e6).toFixed(1) : Math.round(y / 1e6)) + " million years";
+    return (y / 1e9 < 10 ? (y / 1e9).toFixed(2) : Math.round(y / 1e9)) + " billion years";
+  }
+
+  /* ---------- colour ramps ---------- */
+  function hex2rgb(h) {
+    return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  }
+  var RAMP = [
+    [-4, "#7f1d1d"], [-2, "#dc2626"], [0, "#fb923c"], [2, "#fbbf24"],
+    [5, "#fde047"], [9, "#a3e635"], [13, "#34d399"], [18, "#22d3ee"]
+  ].map(function (s) { return [s[0], hex2rgb(s[1])]; });
+
+  function rampColour(t) {
+    var L = Math.log(t) / Math.LN10;
+    if (L <= RAMP[0][0]) L = RAMP[0][0];
+    if (L >= RAMP[RAMP.length - 1][0]) L = RAMP[RAMP.length - 1][0];
+    for (var i = 0; i < RAMP.length - 1; i++) {
+      if (L >= RAMP[i][0] && L <= RAMP[i + 1][0]) {
+        var f = (L - RAMP[i][0]) / (RAMP[i + 1][0] - RAMP[i][0]);
+        var a = RAMP[i][1], b = RAMP[i + 1][1];
+        return "rgb(" + Math.round(a[0] + (b[0] - a[0]) * f) + "," +
+          Math.round(a[1] + (b[1] - a[1]) * f) + "," +
+          Math.round(a[2] + (b[2] - a[2]) * f) + ")";
+      }
+    }
+    return "#fb923c";
+  }
+
+  /* ==========================================================
+     The chart
+     ========================================================== */
+  var cv = document.getElementById("nuclideChart");
+  if (cv && cv.getContext) {
+    var ctx = cv.getContext("2d");
+    var scroller = document.getElementById("chartScroll");
+    var zR = document.getElementById("zRange");
+    var nR = document.getElementById("nRange");
+    var modeSel = document.getElementById("colourMode");
+    var islandChk = document.getElementById("showIsland");
+    var isoName = document.getElementById("isoName");
+    var isoSub = document.getElementById("isoSub");
+    var isoFacts = document.getElementById("isoFacts");
+    var gapLine = document.getElementById("gapLine");
+    var legend = document.getElementById("chartLegend");
+
+    var NMIN = 136, NMAX = 196, ZMIN = 89, ZMAX = 127;
+    var COLS = NMAX - NMIN + 1, ROWS = ZMAX - ZMIN + 1;
+    var padL = 44, padR = 14, padT = 20, padB = 30;
+    var W = 0, Hh = 0, cell = 12, DPR = 1;
+    var curZ = 115, curN = 175;
+    var visible = true, rafId = 0, t0 = 0;
+
+    function sizeChart() {
+      var avail = scroller.clientWidth || 660;
+      W = Math.max(avail, 660);
+      cell = Math.max(7, Math.floor((W - padL - padR) / COLS));
+      W = padL + padR + cell * COLS;
+      Hh = padT + padB + cell * ROWS;
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      cv.width = Math.round(W * DPR);
+      cv.height = Math.round(Hh * DPR);
+      cv.style.width = W + "px";
+      cv.style.height = Hh + "px";
+    }
+
+    function px(n) { return padL + (n - NMIN) * cell; }
+    function py(z) { return padT + (ZMAX - z) * cell; }
+
+    function draw(ts) {
+      var t = ts || 0;
+      var pulse = REDUCED ? 0.5 : 0.5 + 0.28 * Math.sin(t / 1100);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.clearRect(0, 0, W, Hh);
+
+      /* faint plotting field */
+      ctx.fillStyle = "rgba(10, 15, 30, 0.75)";
+      ctx.fillRect(padL, padT, cell * COLS, cell * ROWS);
+
+      /* every fifth gridline */
+      ctx.strokeStyle = "rgba(30, 42, 74, 0.9)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (var n = NMIN; n <= NMAX; n += 5) {
+        ctx.moveTo(Math.round(px(n)) + 0.5, padT);
+        ctx.lineTo(Math.round(px(n)) + 0.5, padT + cell * ROWS);
+      }
+      for (var z = ZMIN + 1; z <= ZMAX; z += 5) {
+        ctx.moveTo(padL, Math.round(py(z)) + 0.5);
+        ctx.lineTo(padL + cell * COLS, Math.round(py(z)) + 0.5);
+      }
+      ctx.stroke();
+
+      /* the island glow */
+      if (islandChk.checked) {
+        var gx = px(184) + cell / 2, gy = py(119) + cell / 2;
+        var rad = cell * 9.5;
+        var g = ctx.createRadialGradient(gx, gy, cell * 0.5, gx, gy, rad);
+        g.addColorStop(0, "rgba(192, 132, 252, " + (0.34 * pulse + 0.16).toFixed(3) + ")");
+        g.addColorStop(0.55, "rgba(192, 132, 252, " + (0.13 * pulse + 0.05).toFixed(3) + ")");
+        g.addColorStop(1, "rgba(192, 132, 252, 0)");
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(padL, padT, cell * COLS, cell * ROWS);
+        ctx.clip();
+        ctx.fillStyle = g;
+        ctx.fillRect(gx - rad, gy - rad, rad * 2, rad * 2);
+        ctx.restore();
+      }
+
+      /* shell-count guides */
+      ctx.save();
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = "rgba(192, 132, 252, 0.85)";
+      ctx.beginPath();
+      ctx.moveTo(Math.round(px(184)) + 0.5, padT);
+      ctx.lineTo(Math.round(px(184)) + 0.5, padT + cell * ROWS);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(251, 146, 60, 0.55)";
+      ctx.beginPath();
+      [114, 120, 126].forEach(function (zz) {
+        ctx.moveTo(padL, Math.round(py(zz)) + 0.5);
+        ctx.lineTo(padL + cell * COLS, Math.round(py(zz)) + 0.5);
+      });
+      ctx.stroke();
+      ctx.restore();
+
+      /* isotopes */
+      var byMode = modeSel.value === "mode";
+      for (var i = 0; i < ISO.length; i++) {
+        var r = ISO[i];
+        if (r[0] < ZMIN || r[0] > ZMAX) continue;
+        var nn = r[1] - r[0];
+        if (nn < NMIN || nn > NMAX) continue;
+        ctx.fillStyle = byMode ? (MODE_COLOUR[r[3]] || "#94a3b8") : rampColour(r[2]);
+        ctx.fillRect(px(nn) + 0.6, py(r[0]) + 0.6, cell - 1.2, cell - 1.2);
+      }
+
+      /* predicted markers */
+      if (islandChk.checked) {
+        ctx.save();
+        ctx.setLineDash([3, 3]);
+        ctx.lineDashOffset = REDUCED ? 0 : -(t / 90) % 6;
+        ctx.strokeStyle = "rgba(232, 121, 249, " + (0.6 + 0.4 * pulse).toFixed(3) + ")";
+        ctx.lineWidth = 1.6;
+        PREDICTED.forEach(function (p) {
+          ctx.strokeRect(px(p.n) + 1, py(p.z) + 1, cell - 2, cell - 2);
+        });
+        ctx.restore();
+      }
+
+      /* the gap from moscovium-290 to 184 neutrons */
+      var y115 = py(115) + cell / 2;
+      ctx.save();
+      ctx.setLineDash([2, 3]);
+      ctx.strokeStyle = "rgba(251, 146, 60, 0.9)";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(px(175) + cell, y115);
+      ctx.lineTo(px(184), y115);
+      ctx.stroke();
+      ctx.restore();
+      if (cell >= 10) {
+        ctx.fillStyle = "rgba(251, 146, 60, 0.95)";
+        ctx.font = "600 10px 'JetBrains Mono', monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("9 neutrons", (px(175) + cell + px(184)) / 2, y115 - cell * 0.72);
+      }
+
+      /* crosshair */
+      var cxp = px(curN), cyp = py(curZ);
+      ctx.strokeStyle = "rgba(242, 245, 255, 0.20)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL, Math.round(cyp + cell / 2) + 0.5);
+      ctx.lineTo(padL + cell * COLS, Math.round(cyp + cell / 2) + 0.5);
+      ctx.moveTo(Math.round(cxp + cell / 2) + 0.5, padT);
+      ctx.lineTo(Math.round(cxp + cell / 2) + 0.5, padT + cell * ROWS);
+      ctx.stroke();
+      ctx.strokeStyle = "#f2f5ff";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(cxp - 1.5, cyp - 1.5, cell + 3, cell + 3);
+
+      /* axes */
+      ctx.fillStyle = "#93a3c4";
+      ctx.font = "600 10px 'JetBrains Mono', monospace";
+      ctx.textAlign = "center";
+      for (var na = NMIN + 4; na <= NMAX; na += 5) {
+        ctx.fillText(String(na), px(na) + cell / 2, Hh - 16);
+      }
+      ctx.fillText("neutrons", padL + cell * COLS / 2, Hh - 4);
+      ctx.textAlign = "right";
+      for (var za = ZMIN + 1; za <= ZMAX; za += 5) {
+        ctx.fillText(String(za), padL - 6, py(za) + cell * 0.78);
+      }
+      ctx.save();
+      ctx.translate(11, padT + cell * ROWS / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = "center";
+      ctx.fillText("protons", 0, 0);
+      ctx.restore();
+
+      /* row flag for element 115 */
+      ctx.fillStyle = "#fb923c";
+      ctx.textAlign = "right";
+      ctx.fillText("Mc", padL - 6, py(115) + cell * 0.78);
+    }
+
+    function loop(ts) {
+      if (!t0) t0 = ts || 0;
+      draw(ts || 0);
+      rafId = requestAnimationFrame(loop);
+    }
+    function startLoop() {
+      if (REDUCED || rafId) return;
+      rafId = requestAnimationFrame(loop);
+    }
+    function stopLoop() {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    }
+
+    /* ---------- readout ---------- */
+    function nearestOfElement(z, n) {
+      var best = null, bd = 1e9;
+      for (var i = 0; i < ISO.length; i++) {
+        if (ISO[i][0] !== z) continue;
+        var d = Math.abs((ISO[i][1] - z) - n);
+        if (d < bd) { bd = d; best = ISO[i]; }
+      }
+      return best;
+    }
+
+    function rowsHtml(pairs) {
+      return pairs.map(function (p) {
+        return "<dt>" + p[0] + "</dt><dd>" + p[1] + "</dd>";
+      }).join("");
+    }
+
+    function updateReadout() {
+      var el = ELEM[curZ] || ["?", "Element " + curZ];
+      var key = curZ + "-" + (curZ + curN);
+      var iso = byKey[key];
+      var pred = predByKey[curZ + "-" + curN];
+      var A = curZ + curN;
+
+      isoSub.textContent = "Z = " + curZ + " protons · N = " + curN + " neutrons · " + el[0] + "-" + A;
+
+      if (iso) {
+        isoName.textContent = el[1] + "-" + A;
+        var pairs = [
+          ["Half-life", fmtHalf(iso[2])],
+          ["Comes apart by", MODE_NAME[iso[3]] || "measured decay"]
+        ];
+        if (SPREAD[key]) pairs.push(["Measured spread", SPREAD[key]]);
+        if (iso[4]) pairs.push(["First made", String(iso[4])]);
+        pairs.push(["Status", "made and timed in a laboratory"]);
+        isoFacts.innerHTML = rowsHtml(pairs);
+      } else if (pred) {
+        isoName.textContent = el[1] + "-" + A;
+        isoFacts.innerHTML = rowsHtml([
+          ["Half-life", "not measured, because it has not been made"],
+          ["Why it is marked", pred.note],
+          ["Status", "a shell closure the calculations point at"]
+        ]);
+      } else {
+        var near = nearestOfElement(curZ, curN);
+        isoName.textContent = el[1] + "-" + A;
+        if (near) {
+          var nearN = near[1] - curZ;
+          isoFacts.innerHTML = rowsHtml([
+            ["Half-life", "no nucleus with this many neutrons has been made"],
+            ["Nearest made", el[1] + "-" + near[1] + ", " + Math.abs(nearN - curN) + " neutron" +
+              (Math.abs(nearN - curN) === 1 ? "" : "s") + " " + (nearN < curN ? "lighter" : "heavier") +
+              ", lasting " + fmtHalf(near[2])],
+            ["Status", "empty ground on the chart"]
+          ]);
+        } else {
+          isoFacts.innerHTML = rowsHtml([
+            ["Half-life", "element " + curZ + " has not been made by anyone"],
+            ["Name", el[1] + " is the placeholder name, the kind element 115 wore until 2016"],
+            ["Status", "empty ground on the chart"]
+          ]);
+        }
+      }
+
+      var d184 = 184 - curN;
+      if (d184 === 0) {
+        gapLine.innerHTML = "You are standing on <b>184 neutrons</b>, the shell count the models point at. Nothing has been made here.";
+      } else if (d184 > 0) {
+        gapLine.innerHTML = "<b>" + d184 + "</b> neutron" + (d184 === 1 ? "" : "s") + " short of 184. The heaviest moscovium made, moscovium-290, sits 9 short.";
+      } else {
+        gapLine.innerHTML = "<b>" + (-d184) + "</b> neutron" + (d184 === -1 ? "" : "s") + " past 184.";
+      }
+    }
+
+    function setCell(z, n, syncSliders) {
+      curZ = Math.max(ZMIN, Math.min(ZMAX, z));
+      curN = Math.max(NMIN, Math.min(NMAX, n));
+      if (syncSliders !== false) { zR.value = curZ; nR.value = curN; }
+      updateReadout();
+      if (REDUCED) draw(0);
+    }
+
+    function fromEvent(e) {
+      var rect = cv.getBoundingClientRect();
+      var x = e.clientX - rect.left, y = e.clientY - rect.top;
+      var n = NMIN + Math.floor((x - padL) / cell);
+      var z = ZMAX - Math.floor((y - padT) / cell);
+      setCell(z, n);
+    }
+
+    var dragging = false;
+    cv.addEventListener("pointerdown", function (e) {
+      dragging = true;
+      cv.setPointerCapture && cv.setPointerCapture(e.pointerId);
+      fromEvent(e);
+      cv.focus();
+      e.preventDefault();
+    });
+    cv.addEventListener("pointermove", function (e) { if (dragging) fromEvent(e); });
+    cv.addEventListener("pointerup", function () { dragging = false; });
+    cv.addEventListener("pointercancel", function () { dragging = false; });
+
+    cv.addEventListener("keydown", function (e) {
+      var step = e.shiftKey ? 5 : 1, done = true;
+      if (e.key === "ArrowLeft") setCell(curZ, curN - step);
+      else if (e.key === "ArrowRight") setCell(curZ, curN + step);
+      else if (e.key === "ArrowUp") setCell(curZ + step, curN);
+      else if (e.key === "ArrowDown") setCell(curZ - step, curN);
+      else if (e.key === "Home") setCell(115, 175);
+      else done = false;
+      if (done) e.preventDefault();
+    });
+
+    zR.addEventListener("input", function () { setCell(parseInt(zR.value, 10), curN, false); });
+    nR.addEventListener("input", function () { setCell(curZ, parseInt(nR.value, 10), false); });
+    modeSel.addEventListener("change", function () { buildLegend(); if (REDUCED) draw(0); });
+    islandChk.addEventListener("change", function () { if (REDUCED) draw(0); });
+
+    [].slice.call(document.querySelectorAll("[data-jump]")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var parts = b.getAttribute("data-jump").split(",");
+        setCell(parseInt(parts[0], 10), parseInt(parts[1], 10));
+        cv.focus();
+      });
+    });
+
+    function buildLegend() {
+      if (modeSel.value === "mode") {
+        legend.innerHTML =
+          '<span><i class="swatch" style="background:#c084fc"></i>alpha</span>' +
+          '<span><i class="swatch" style="background:#38bdf8"></i>beta</span>' +
+          '<span><i class="swatch" style="background:#fbbf24"></i>electron capture</span>' +
+          '<span><i class="swatch" style="background:#fb7185"></i>spontaneous fission</span>' +
+          '<span><i class="swatch" style="border:1.5px dashed #e879f9;background:transparent"></i>predicted, not made</span>';
+      } else {
+        legend.innerHTML =
+          '<span>under a millisecond<i class="ramp" style="background:linear-gradient(90deg,#7f1d1d,#dc2626,#fb923c,#fbbf24,#fde047,#a3e635,#34d399,#22d3ee)"></i>billions of years</span>' +
+          '<span><i class="swatch" style="border:1.5px dashed #e879f9;background:transparent"></i>predicted, not made</span>' +
+          '<span><i class="swatch" style="background:transparent;border-left:2px dashed #c084fc;border-radius:0;width:2px"></i>184 neutrons</span>';
+      }
+    }
+
+    sizeChart();
+    buildLegend();
+    updateReadout();
+    draw(0);
+    if (!REDUCED) startLoop();
+
+    if ("IntersectionObserver" in window && !REDUCED) {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          visible = en.isIntersecting;
+          if (visible) startLoop(); else stopLoop();
+        });
+      }, { threshold: 0.02 });
+      cio.observe(cv);
+    }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stopLoop(); else if (visible) startLoop();
+    });
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeChart(); draw(0); }, 150);
+    });
+  }
+
+  /* ==========================================================
+     The fuel clock
+     ========================================================== */
+  var clock = document.getElementById("clockRange");
+  if (clock) {
+    var HALF = 0.65;                    /* seconds, moscovium-290 */
+    var GRAMS = 223, MOLAR = 290;
+    var AVO = 6.02214076e23;
+    var N0 = GRAMS / MOLAR * AVO;       /* 4.63e23 atoms */
+    var LAM = Math.LN2 / HALF;
+    var EA = 10e6 * 1.602176634e-19;    /* 10 MeV per alpha, in joules */
+    var PU_W = GRAMS * 0.54;            /* plutonium-238, same mass */
+
+    var cOut = document.getElementById("clockOut");
+    var cPower = document.getElementById("cPower");
+    var cMass = document.getElementById("cMass");
+    var cKettle = document.getElementById("cKettle");
+    var cLife = document.getElementById("cLife");
+    var mcBar = document.getElementById("mcBar");
+    var cap = document.getElementById("clockCaption");
+
+    function fmtPower(p) {
+      if (p >= 1e9) return (p / 1e9).toFixed(p / 1e9 >= 100 ? 0 : 1) + " GW";
+      if (p >= 1e6) return (p / 1e6).toFixed(1) + " MW";
+      if (p >= 1e3) return (p / 1e3).toFixed(1) + " kW";
+      if (p >= 1) return p.toFixed(1) + " W";
+      if (p >= 1e-3) return (p * 1e3).toFixed(1) + " mW";
+      return p.toExponential(1) + " W";
+    }
+    function fmtMass(g) {
+      if (g >= 1) return g.toFixed(2) + " g";
+      if (g >= 1e-3) return (g * 1e3).toFixed(2) + " mg";
+      if (g >= 1e-6) return (g * 1e6).toFixed(2) + " µg";
+      if (g >= 1e-9) return (g * 1e9).toFixed(2) + " ng";
+      if (g >= 1e-12) return (g * 1e12).toFixed(2) + " pg";
+      return "under a picogram";
+    }
+    function fmtBig(x) {
+      if (x >= 1e12) return (x / 1e12).toFixed(1) + " trillion";
+      if (x >= 1e9) return (x / 1e9).toFixed(1) + " billion";
+      if (x >= 1e6) return (x / 1e6).toFixed(0) + " million";
+      if (x >= 1e3) return (x / 1e3).toFixed(0) + " thousand";
+      if (x >= 1) return String(Math.round(x));
+      return x.toFixed(2);
+    }
+    function fmtOne(inv) {
+      if (inv < 1.5) return "all of it";
+      if (inv >= 1e12) return "1 in " + (inv / 1e12).toFixed(0) + " trillion";
+      if (inv >= 1e9) return "1 in " + (inv / 1e9).toFixed(0) + " billion";
+      if (inv >= 1e6) return "1 in " + (inv / 1e6).toFixed(0) + " million";
+      if (inv >= 1e3) return "1 in " + (inv / 1e3).toFixed(0) + " thousand";
+      return "1 in " + Math.round(inv);
+    }
+    function logWidth(p) {
+      var L = Math.log(Math.max(p, 1e-4)) / Math.LN10;
+      return Math.max(1.5, Math.min(100, ((L + 4) / 16) * 100));
+    }
+
+    function updateClock() {
+      var t = parseFloat(clock.value);
+      var frac = Math.pow(2, -t / HALF);
+      var power = LAM * N0 * frac * EA;
+      cOut.textContent = t.toFixed(2) + " s";
+      cPower.textContent = fmtPower(power);
+      cMass.textContent = fmtMass(GRAMS * frac);
+      cKettle.textContent = power / 2400 >= 1 ? fmtBig(power / 2400) : "under one";
+      cLife.textContent = fmtOne(1 / frac);
+      mcBar.style.width = logWidth(power) + "%";
+
+      if (t === 0) {
+        cap.innerHTML = "At the moment it is lit, a 223 gram charge of moscovium-290 would put out about <b>790 gigawatts</b>: roughly twenty-five times what Australia's power stations deliver on average. The same mass of plutonium-238 gives about <b>120 watts</b>, and keeps giving it for decades.";
+      } else if (power > PU_W) {
+        cap.innerHTML = "After <b>" + t.toFixed(2) + " seconds</b> the moscovium charge is down to " + fmtPower(power) +
+          ". It is still ahead of the plutonium, which sits steady at about 120 watts, but the gap is closing fast: each 0.65 seconds halves it again.";
+      } else {
+        cap.innerHTML = "By <b>" + t.toFixed(2) + " seconds</b> the moscovium charge has fallen below the plutonium, at " + fmtPower(power) +
+          " against a steady 120 watts. The plutonium will still be at half strength in 87.7 years. The account asked for twenty to thirty years of service from this charge.";
+      }
+    }
+    clock.addEventListener("input", updateClock);
+    updateClock();
+  }
+})();
+</script>
+</body>
+</html>
