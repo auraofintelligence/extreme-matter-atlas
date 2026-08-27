@@ -1512,14 +1512,26 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
           }
         }
       }
-      /* keep the strongest of any cluster */
+      /* two centres a whole repeat apart are the same centre, so fold before culling */
+      var fold = null;
+      if (v1 && v2) {
+        var det2 = v1.x * v2.y - v1.y * v2.x;
+        fold = function (dx, dy) {
+          var fs = (dx * v2.y - dy * v2.x) / det2;
+          var ft = (v1.x * dy - v1.y * dx) / det2;
+          fs -= Math.round(fs); ft -= Math.round(ft);
+          var ox = fs * v1.x + ft * v2.x, oy = fs * v1.y + ft * v2.y;
+          return ox * ox + oy * oy;
+        };
+      }
       centres.sort(function (p, q) { return q.order - p.order; });
-      var keep = [];
+      var keep = [], lim2 = (blen * 0.3) * (blen * 0.3);
       for (i = 0; i < centres.length; i++) {
         var dup = false;
         for (var j = 0; j < keep.length; j++) {
           var ddx = keep[j].x - centres[i].x, ddy = keep[j].y - centres[i].y;
-          if (ddx * ddx + ddy * ddy < (blen * 0.28) * (blen * 0.28)) { dup = true; break; }
+          var gap2 = fold ? fold(ddx, ddy) : ddx * ddx + ddy * ddy;
+          if (gap2 < lim2) { dup = true; break; }
         }
         if (!dup) keep.push(centres[i]);
       }
@@ -1752,7 +1764,8 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
 
     var pending = false;
     function rebuild() {
-      set = genPoints(lat, SP, R);
+      /* the five-fold pattern needs finer tiles to read as a tiling */
+      set = genPoints(lat, lat === "penrose" ? SP * 0.62 : SP, R);
       links = buildBonds(set.xy, set.blen * 1.2, set.bmin);
       found = { centres: [], mirrors: [], v1: null, v2: null, anchor: [0, 0] };
       capEl.textContent = "Trying every move on " + fmtNum(set.xy.length / 2) + " points.";
