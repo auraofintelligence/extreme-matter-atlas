@@ -128,8 +128,8 @@ Wide content (tables, canvases, the periodic table grid) scrolls inside its own
 
 `cat` is one of: alkali, alkaline, transition, post-transition, metalloid, nonmetal,
 halogen, noble, lanthanide, actinide, unknown. Lanthanides sit at ypos 9, actinides at
-ypos 10, both spanning xpos 4 to 17 with La and Ac at xpos 4 (grid rows 6 and 7 keep a
-placeholder at xpos 3). Pages read the data live so corrections propagate; estimated
+ypos 10, fifteen elements each spanning xpos 4 to 18, with La and Ac at xpos 4 and Lu and
+Lr at xpos 18 (grid rows 6 and 7 keep a placeholder at xpos 3). Pages read the data live so corrections propagate; estimated
 values wear a small "est." tag in any UI that shows them.
 
 ## 6. Build log
