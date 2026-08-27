@@ -110,6 +110,44 @@ For any story, claim or piece of fiction, work it as an engineering brief in thi
 Never end a speculative page on a dismissal or a verdict. End on the measurement, the
 open question, or the thing worth building.
 
+### 3d. Whose call it is: not ours
+
+**The site has no standing to rule on what is real, what happened, or what is possible.**
+Luke is the site authority; the reader is the explorer. Our job is to lay out the
+engineering and the measurements and let people work it out first hand. Flagged 2026-08-28
+after the vimana page was written with lines like "the craft stays a wish" and "the craft
+itself has no measurement behind it, only a wish", which he called out directly: "are you
+over 10 thousand years old? were you there when the mahabarata happened? don't go stating
+with authority you don't have."
+
+BANNED as verdicts on a subject: a wish, only a wish, just a story, a myth (used to mean
+untrue), fanciful, fantasy, make-believe, unproven, no evidence, never existed, could not
+have, impossible (except as a stated mathematical result, such as five-fold symmetry not
+tiling the plane), fringe, pseudo-anything, so-called, supposed, debunked, and any sentence
+of the form "there is no reason to think X".
+
+The trap to avoid is swapping one verdict for another. "The craft stays a wish" was written
+to replace a banned accuracy-announcement, and it is worse: it is the site telling the
+reader what to conclude about someone else's account.
+
+WHAT TO WRITE INSTEAD. Describe the work, never the verdict:
+
+- Not: "The craft stays a wish; the records it would have to beat are on the shelf."
+- Yes: "Here is the brief the stories describe, priced against what the table can supply."
+- Not: "The craft itself has no measurement behind it, only a wish."
+- Yes: "Every figure on the bench is a measured one. What the bench cannot supply is the
+  craft: that part is yours to work out."
+
+Conditional voice still applies to **what a builder today would have to do** ("a hull like
+that would need to hold at 900 degrees"), because that is the engineering exercise. It does
+NOT apply to whether something existed or was built, because that is not ours to say.
+Reporting who said what, where and when stays exactly as it is: that is information, not a
+verdict.
+
+The register is first principles and open exploration: a choose-your-own science adventure
+where the reader can find out for themselves. Give them the numbers, the method and the
+instruments. Never the conclusion.
+
 ### 3c. The workhorse sentence: "X, not Y"
 
 This is the house construction across Luke's other sites, and it is how a claim gets held
