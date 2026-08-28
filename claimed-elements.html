@@ -669,10 +669,24 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
     return s;
   }
 
+  /* Temperatures are held in kelvin and read out in degrees Celsius, the scale on the
+     thermometers here. Below COLD_K a Celsius reading is minus 273 point something
+     whatever the element, so kelvin leads there and Celsius follows in brackets. The
+     same threshold is used on the table and records pages. */
+  var COLD_K = 30;
   function degWords(k) {
     var c = k - 273.15;
+    if (k < COLD_K) return sig(k, 3) + " K (" + EMA.fmt(Math.round(c)) + " °C)";
     if (Math.abs(c) < 100) return (Math.round(c * 10) / 10) + " °C";
     return EMA.fmt(Math.round(c)) + " °C";
+  }
+
+  /* the two ends of the strip carry kelvin alongside, because the spacing explained
+     underneath them is spacing measured from absolute zero */
+  function axWords(prop, v) {
+    if (prop.field !== "melt" && prop.field !== "boil") return prop.words(v);
+    if (v < COLD_K) return prop.words(v);
+    return prop.words(v) + " (" + EMA.fmt(Math.round(v)) + " K)";
   }
 
   /* parts per million by mass, said in whichever unit keeps it readable */
@@ -873,8 +887,8 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
     }).join("");
     if (strip) strip.innerHTML = marks;
 
-    if (axMin) axMin.textContent = "lowest · " + list[n - 1].sym + " " + prop.words(lo);
-    if (axMax) axMax.textContent = "highest · " + list[0].sym + " " + prop.words(hi);
+    if (axMin) axMin.textContent = "lowest · " + list[n - 1].sym + " " + axWords(prop, lo);
+    if (axMax) axMax.textContent = "highest · " + list[0].sym + " " + axWords(prop, hi);
 
     var missing = NAMED.filter(function (s) { return !rankOf[s]; });
     if (popNote) {
@@ -882,7 +896,7 @@ body[data-page="claimed"] .data-table td.figure { font-family: var(--font-mono);
         ? "Spacing runs in steps of ten, so each equal stretch of strip is a tenfold change."
         : "Spacing runs in even steps, so equal stretches of strip are equal amounts.";
       if (!prop.logOK) {
-        spacing += " Steps of ten need a scale that stays above zero to step through, and these values run below it, so a temperature in degrees Celsius stays on even steps here. Measured from absolute zero instead, where nothing sits below the bottom of the scale, the tenfold steps come back.";
+        spacing += " Steps of ten need a scale that stays above zero to step through, and these values run below it, so a temperature in degrees Celsius stays on even steps here. Measured from absolute zero instead, where nothing sits below the bottom of the scale, the tenfold steps come back. Counting from absolute zero is what kelvin does, written K: the same size step as a degree Celsius, started 273.15 degrees further down. Both ends of the strip carry the kelvin figure in brackets, and the cold end leads with it, because within thirty degrees of the bottom every Celsius reading is minus 273 point something and the number worth having is the distance from the floor.";
       }
       popNote.innerHTML = "Each mark is one of the <strong>" + n + "</strong> elements that carries a figure for " +
         prop.phrase + ", which is " + prop.note + ". The bright marks are the thirteen. " + spacing;
