@@ -648,7 +648,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     lbSub.textContent = p.sub + " · top eight of " + all.length + " with a value";
 
     if (!rows.length) {
-      board.innerHTML = '<p class="lb-caption">No settled measurements are listed for this one.</p>';
+      board.innerHTML = '<p class="lb-caption">Nothing on this board was weighed at a bench.</p>';
       lbCaption.textContent = "";
       lbScale.textContent = "";
       return;
@@ -704,7 +704,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     } else if (estCount) {
       scale += " " + estCount + " of the values shown are calculated rather than measured.";
     }
-    if (settledOnly) scale += " Estimated values are set aside.";
+    if (measuredOnly) scale += " Figures worked out from theory are set aside.";
     lbScale.textContent = scale;
   }
 
@@ -714,10 +714,10 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
   var tbody = document.querySelector("#unitTable tbody");
   if (tbody) {
     tbody.innerHTML = PROPS.map(function (p) {
-      var saveDir = dir, saveSettled = settledOnly;
-      dir = "hi"; settledOnly = false;
+      var saveDir = dir, saveMeasured = measuredOnly;
+      dir = "hi"; measuredOnly = false;
       var top1 = ranked(p)[0];
-      dir = saveDir; settledOnly = saveSettled;
+      dir = saveDir; measuredOnly = saveMeasured;
       return "<tr>" +
         '<td class="lead">' + p.chip + "</td>" +
         "<td>" + p.plain + "</td>" +
