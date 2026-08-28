@@ -57,7 +57,7 @@ body[data-page="scifi"] .rig-head h2 .hue {
 }
 body[data-page="scifi"] .rig-story { font-size: 17px; }
 
-/* the payload block: what already exists */
+/* the built block: what already exists */
 body[data-page="scifi"] .built {
   margin: 26px 0 22px; padding: 26px 24px; border-radius: 20px;
   background:
@@ -173,7 +173,7 @@ body[data-page="scifi"] .sheet-row .k {
 }
 body[data-page="scifi"] .sheet-row .v { font-size: 15.5px; color: var(--muted); }
 body[data-page="scifi"] .sheet-row .v strong { color: var(--ink); font-weight: 600; }
-body[data-page="scifi"] .sheet-row.payload .v { color: var(--ink); }
+body[data-page="scifi"] .sheet-row.built-row .v { color: var(--ink); }
 
 body[data-page="scifi"] .logtrack {
   position: relative; height: 20px; border-radius: 999px; overflow: hidden;
@@ -307,7 +307,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
           <div class="sheet-head"><span class="sg" id="shGlyph" aria-hidden="true">🌌</span><h3 id="shName">The warp drive</h3></div>
           <div class="sheet-row"><span class="k">The story says</span><span class="v" id="shStory"></span></div>
           <div class="sheet-row"><span class="k">As a spec</span><span class="v" id="shSpec"></span></div>
-          <div class="sheet-row payload"><span class="k">Nearest built thing</span><span class="v" id="shBuilt"></span></div>
+          <div class="sheet-row built-row"><span class="k">Nearest built thing</span><span class="v" id="shBuilt"></span></div>
           <div class="sheet-row"><span class="k">Physics needed</span><span class="v" id="shPhys"></span></div>
           <div class="sheet-row">
             <span class="k">Size of the gap</span>
@@ -391,7 +391,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
         <span class="built-kick">On the bench right now</span>
         <h3>Two working tractor beams, one made of light and one made of sound</h3>
         <p>Arthur Ashkin at Bell Laboratories pushed tiny clear glass beads about with laser light in 1970, and in 1986 built the single-beam gradient trap that holds a particle in three dimensions at the focus of one beam. In 1987 he found live bacteria caught in the trap, unharmed, still dividing. Optical tweezers now hold single cells, stretch single strands of DNA and measure the step of a motor protein. The forces are one to a hundred piconewtons, which is the weight of about ten nanograms, a thousandth of a grain of table salt. Ashkin received half the 2018 Nobel Prize in Physics for it, at ninety-six.</p>
-        <p>Sound does the heavy lifting. Asier Marzo, Mihai Caleap and Bruce Drinkwater reported in <em>Physical Review Letters</em> in January 2018 that an array of 192 small ultrasound loudspeakers running at 40 kilohertz, in ordinary air, trapped and held a polystyrene sphere <b>16 millimetres across</b>: nearly twice the sound's own wavelength of 8.6 millimetres, which had been the practical ceiling. The trick was to alternate two oppositely winding acoustic vortices about a thousand times a second, so the bead feels only the average and stops spinning itself out of the trap. It can be held, moved and rotated on command, from one side, with nothing touching it.</p>
+        <p>Sound does the heavy lifting. Asier Marzo, Mihai Caleap and Bruce Drinkwater reported in <em>Physical Review Letters</em> in January 2018 that an array of 192 small ultrasound loudspeakers running at 40 kilohertz, in ordinary air, trapped and held a polystyrene sphere <b>16 millimetres across</b>, nearly twice the sound's own wavelength of 8.6 millimetres. Two sound beams meeting head on cancel at still points spaced half a wavelength apart, about four millimetres here, and that gap had been the ordinary ceiling on what would fit between them; the bead is close to four times it. The trick was to alternate two oppositely winding acoustic vortices about a thousand times a second, so the bead feels only the average and stops spinning itself out of the trap. It can be held, moved and rotated on command, from one side, with nothing touching it.</p>
         <dl class="figs">
           <div><dt>Sound array</dt><dd>192 transducers, 40 kHz, air</dd></div>
           <div><dt>Largest held</dt><dd><b>16 mm</b> polystyrene sphere, about 54 milligrams</dd></div>
@@ -593,7 +593,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
         <h3>A quantum state has been moved from a Tibetan mountain to a satellite fourteen hundred kilometres up</h3>
         <p>Charles Bennett and five colleagues wrote the protocol down in <em>Physical Review Letters</em> in 1993. Anton Zeilinger's group in Innsbruck and Francesco De Martini's in Rome ran it on single photons in 1997. Then it went outdoors, and then it went up.</p>
         <p>Ji-Gang Ren, Jian-Wei Pan and colleagues teleported single-photon states from a ground observatory at Ngari in Tibet, 5,100 metres up, to the Micius satellite passing overhead, across distances from 500 to <b>1,400 kilometres</b>. The ground source produced about 8,000 attempts each second; enough survived the climb through the atmosphere to give an average fidelity of <b>0.80 plus or minus 0.01</b> across six input states, well above what any classical copying could reach. Published in <em>Nature</em>, August 2017. In December 2024 a group at Northwestern reported teleportation through a fibre that was carrying ordinary internet traffic at the same time.</p>
-        <p>Here is what actually moves, said plainly, because the name misleads. The state travels; the particle does not. The original state is destroyed in the act of sending, so nothing is copied. An ordinary classical message has to travel alongside it at light speed for the receiver to finish the job, so nothing outruns light. And the receiving end must already hold a particle of the right kind, waiting. Quantum teleportation moves <strong>what a thing is doing</strong> onto a thing that is already there. That is a real and useful trick, and it is not the same trick as moving the thing.</p>
+        <p>The name misleads, so here is what actually moves. The state travels; the particle does not. The original state is destroyed in the act of sending, so nothing is copied. An ordinary classical message has to travel alongside it at light speed for the receiver to finish the job, so nothing outruns light. And the receiving end must already hold a particle of the right kind, waiting. Quantum teleportation moves <strong>what a thing is doing</strong> onto a thing that is already there. That is a real and useful trick, and it is not the same trick as moving the thing.</p>
         <dl class="figs">
           <div><dt>Greatest distance</dt><dd><b>1,400 km</b>, ground to satellite, August 2017</dd></div>
           <div><dt>Fidelity</dt><dd>0.80 &plusmn; 0.01, averaged over six input states</dd></div>
@@ -659,7 +659,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
         </div>
         <div class="step">
           <span class="slab">The physics it would need</span>
-          <p>That blade has about 0.096 square metres of surface. If it shed heat like a hot solid at 20,000 degrees it would need about <strong>870 megawatts</strong>, roughly one large power station unit's whole output. Real arc plasma is partly see-through to its own light, so it sheds less; scaling a six kilowatt cutter arc up by volume to blade size gives about <strong>60 megawatts</strong>, some 25,000 kettles. Somewhere between those two, then: engineering estimates for comparison, not a design anyone has drawn.</p>
+          <p>That blade has about 0.096 square metres of surface. If it shed heat like a hot solid at 20,000 degrees it would need about <strong>870 megawatts</strong>, roughly two large power station units' whole output. Real arc plasma is partly see-through to its own light, so it sheds less; scaling a six kilowatt cutter arc up by volume to blade size gives about <strong>60 megawatts</strong>, some 25,000 kettles. Somewhere between those two, then: engineering estimates for comparison, not a design anyone has drawn.</p>
         </div>
         <div class="step">
           <span class="slab">What would have to be true</span>
@@ -698,7 +698,7 @@ body[data-page="scifi"] .lineage .item p { font-size: 14.5px; color: var(--muted
           <div><dt>First built cloak</dt><dd>copper split rings, 8.5 GHz, November 2006</dd></div>
           <div><dt>Optical carpet cloak</dt><dd>hid a 3.8 &micro;m bump across <b>1,400 to 1,800 nm</b></dd></div>
           <div><dt>Ground version</dt><dd>boreholes near Grenoble, 50 Hz surface waves, 2012</dd></div>
-          <div><dt>Proven limit</dt><dd>passive cloaks trade bandwidth for depth, Optica, 2016</dd></div>
+          <div><dt>Bandwidth bound</dt><dd>passive cloaks trade bandwidth for depth, Optica, 2016</dd></div>
         </dl>
         <p style="margin-top:16px"><a href="metamaterials.html">Geometry doing the work of chemistry has its own page: Metamaterials &rarr;</a></p>
       </div>
