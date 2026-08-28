@@ -483,7 +483,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
               <button type="button" data-p="0.000101325" data-t="77">Liquid nitrogen</button>
               <button type="button" data-p="0.000101325" data-t="5772">The Sun's surface</button>
               <button type="button" data-p="135.8" data-t="3800">Earth's core boundary</button>
-              <button type="button" data-p="364" data-t="5400">Earth's centre</button>
+              <button type="button" data-p="363" data-t="5400">Near Earth's centre</button>
               <button type="button" data-p="495" data-t="5.5">The 2017 diamond cell</button>
             </div>
 
@@ -910,10 +910,15 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         if (T > 700) return { head: "A dense fluid", body: "Molten. <strong>The measured melting line stops at 130 gigapascals</strong>, so where it runs above this pressure is an open question with a straightforward experiment attached: laser heating inside a diamond anvil cell, watching the diffraction pattern for the moment the crystal peaks vanish.", prov: "Stated as a gap: Gregoryanz and colleagues followed the line to 130 gigapascals in 2005 and no one has taken it further." };
         return { head: "A dark, dense metal", body: "Solid again, and darkening. Between here and 200 gigapascals sodium loses its metallic sheen entirely.", prov: "Structures from Gregoryanz and colleagues, 2005; the optical change from Ma and colleagues, Nature, 2009. The melting line above this pressure has not been measured." };
       }
-      return {
+      if (P < 320) return {
         head: "A transparent insulator",
-        body: "At 200 gigapascals sodium is compressed fivefold, to about 4.9 grams per cubic centimetre, and it is <strong>see-through, with a wide band gap and no metallic sheen at all</strong>. The cause is not atoms pairing off: it is the valence electrons being pushed by the swollen atomic cores into the empty spaces in the lattice, where they stop conducting. A metal has become glass by squeezing alone.",
-        prov: "Yanming Ma, Mikhail Eremets, Artem Oganov and colleagues photographed it in a diamond anvil cell and reported it in Nature in 2009."
+        body: "At 200 gigapascals sodium is compressed fivefold, to about 4.9 grams per cubic centimetre, and it is <strong>see-through, with no metallic sheen at all</strong>. The absorption edge gives a band gap of at least 1.3 electronvolts. The cause is not atoms pairing off: it is the valence electrons being pushed by the swollen atomic cores into the empty spaces in the lattice, where they stop conducting. A metal has become glass by squeezing alone.",
+        prov: "Yanming Ma, Mikhail Eremets, Artem Oganov and colleagues photographed it in a diamond anvil cell and reported it in Nature in 2009. Let the pressure back off and it stays transparent down to 182 gigapascals, turns opaque, and at 120 gigapascals is a bright reflective metal again."
+      };
+      return {
+        head: "Transparent, and widening",
+        body: "Past 320 gigapascals the calculation has the band gap <strong>widening rapidly, reaching 6.5 electronvolts by 600 gigapascals</strong>, which is a better insulator than window glass. The structure is a double hexagonal packing squeezed flat along one axis: at 320 gigapascals its height-to-width ratio is 1.391, less than half the value that ordinary close packing gives.",
+        prov: "Measured transparency runs from about 200 gigapascals; the widening gap above that is a GW calculation, in the same 2009 Nature paper by Ma, Eremets, Oganov and colleagues. Taking the measurement up to meet the calculation is an experiment nobody has run yet."
       };
     },
 
