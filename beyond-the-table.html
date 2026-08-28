@@ -111,6 +111,9 @@ body[data-page="beyondtable"] .slab .ends {
   display: flex; justify-content: space-between; gap: 10px; margin-top: 6px;
   font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
 }
+@media (max-width: 560px) {
+  body[data-page="beyondtable"] .slab .ends span:nth-child(2) { display: none; }
+}
 body[data-page="beyondtable"] .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 body[data-page="beyondtable"] .presets button {
   min-height: 44px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
@@ -906,13 +909,13 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         if (T > Tm) return { head: "Liquid sodium at room temperature", body: "<strong>The melting line bottoms out at 300 kelvin at 118 gigapascals.</strong> Squeeze sodium this hard and it pours in a warm room. A metal you could cut with a kitchen knife at one atmosphere is a liquid at 20 degrees Celsius at a million.", prov: "Eugene Gregoryanz and colleagues measured the minimum with synchrotron diffraction and reported it in Physical Review Letters in 2005." };
         return { head: "A dark, dense metal", body: "Solid, in a low-symmetry structure, and darkening. The melting line just above sits near " + Math.round(Tm) + " kelvin.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
       }
-      if (P < 200) {
+      if (P < 195) {
         if (T > 700) return { head: "A dense fluid", body: "Molten. <strong>The measured melting line stops at 130 gigapascals</strong>, so where it runs above this pressure is an open question with a straightforward experiment attached: laser heating inside a diamond anvil cell, watching the diffraction pattern for the moment the crystal peaks vanish.", prov: "Stated as a gap: Gregoryanz and colleagues followed the line to 130 gigapascals in 2005 and no one has taken it further." };
-        return { head: "A dark, dense metal", body: "Solid again, and darkening. Between here and 200 gigapascals sodium loses its metallic sheen entirely.", prov: "Structures from Gregoryanz and colleagues, 2005; the optical change from Ma and colleagues, Nature, 2009. The melting line above this pressure has not been measured." };
+        return { head: "A dark, dense metal", body: "Solid again, and darkening. Between here and about 195 gigapascals sodium loses its metallic sheen entirely.", prov: "Structures from Gregoryanz and colleagues, 2005; the optical change from Ma and colleagues, Nature, 2009. The melting line above this pressure has not been measured." };
       }
       if (P < 320) return {
         head: "A transparent insulator",
-        body: "At 200 gigapascals sodium is compressed fivefold, to about 4.9 grams per cubic centimetre, and it is <strong>see-through, with no metallic sheen at all</strong>. The absorption edge gives a band gap of at least 1.3 electronvolts. The cause is not atoms pairing off: it is the valence electrons being pushed by the swollen atomic cores into the empty spaces in the lattice, where they stop conducting. A metal has become glass by squeezing alone.",
+        body: "At about 200 gigapascals, 208 in one run and 194 in another, sodium is compressed fivefold, to roughly 4.9 grams per cubic centimetre, and it is <strong>see-through, with no metallic sheen at all</strong>. The absorption edge gives a band gap of at least 1.3 electronvolts. The cause is not atoms pairing off: it is the valence electrons being pushed by the swollen atomic cores into the empty spaces in the lattice, where they stop conducting. A metal has become glass by squeezing alone.",
         prov: "Yanming Ma, Mikhail Eremets, Artem Oganov and colleagues photographed it in a diamond anvil cell and reported it in Nature in 2009. Let the pressure back off and it stays transparent down to 182 gigapascals, turns opaque, and at 120 gigapascals is a bright reflective metal again."
       };
       return {
