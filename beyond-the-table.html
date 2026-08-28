@@ -383,14 +383,14 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
       <div class="sqz">
         <div class="step">
-          <div class="p">21 GPa<small>about 610 km down</small></div>
+          <div class="p">21 GPa<small>about 600 km down</small></div>
           <div>
             <h3>Xenon starts restacking</h3>
             <p>Solid xenon changes its packing from cubic to hexagonal. John Caldwell and Jeffrey Nguyen put the equilibrium boundary at <strong>21 plus or minus 3 gigapascals</strong> in <em>Science</em> in 1997, and noted the change is sluggish enough to be caught anywhere between 3 and 70 gigapascals depending on how you get there.</p>
           </div>
         </div>
         <div class="step">
-          <div class="p">78 GPa<small>about 1,930 km down</small></div>
+          <div class="p">78 GPa<small>about 1,820 km down</small></div>
           <div>
             <h3>Xenon takes on oxygen</h3>
             <p>Agn&egrave;s Dewaele, Nicholas Worth, Chris Pickard and colleagues made two xenon oxides above 78 gigapascals and reported them in <em>Nature Chemistry</em> in 2016, with the xenon carrying mixed charges and sitting in extended networks of shared oxygen. A noble gas building a framework solid.</p>
@@ -404,14 +404,14 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
           </div>
         </div>
         <div class="step">
-          <div class="p">118 GPa<small>about 2,570 km down</small></div>
+          <div class="p">118 GPa<small>about 2,580 km down</small></div>
           <div>
             <h3>Sodium melts at room temperature</h3>
             <p>Sodium's melting point climbs with pressure to a peak near 1,000 kelvin at 31 gigapascals, then falls off a cliff. Eugene Gregoryanz and colleagues followed it with synchrotron diffraction and reported in <em>Physical Review Letters</em> in 2005 that it bottoms out at <strong>300 kelvin at 118 gigapascals</strong>. Squeeze sodium hard enough and it turns into a liquid at room temperature. The measured line stops at 130 gigapascals.</p>
           </div>
         </div>
         <div class="step">
-          <div class="p">132 GPa<small>about 2,850 km down</small></div>
+          <div class="p">132 GPa<small>about 2,820 km down</small></div>
           <div>
             <h3>Xenon becomes a metal</h3>
             <p>Kathleen Goettel and colleagues reported optical evidence for the metallisation of xenon at <strong>132 plus or minus 5 gigapascals</strong> in <em>Physical Review Letters</em> in 1989; Rachel Reichlin and colleagues put the onset nearer 150 in the same issue. The element with a famously full outer shell conducts electricity.</p>
@@ -425,7 +425,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
           </div>
         </div>
         <div class="step">
-          <div class="p">216 GPa<small>about 3,690 km down</small></div>
+          <div class="p">216 GPa<small>about 3,680 km down</small></div>
           <div>
             <h3>Aluminium restacks, then restacks again</h3>
             <p>The metal in your window frames changes packing from cubic to hexagonal, then to body-centred cubic at 321 plus or minus 12 gigapascals. Danae Polsin and colleagues watched both changes happen in nanoseconds under laser-driven ramp compression with x-ray diffraction, and followed the last phase out to <strong>475 gigapascals</strong>. <em>Physical Review Letters</em>, 2017.</p>
@@ -771,9 +771,10 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   /* depth at which the Earth reaches a given pressure, from integrating
      the Preliminary Reference Earth Model density profile */
   var PREM = [
-    [0, 0], [0.605, 24.4], [13.36, 400], [23.85, 670], [50, 1246], [100, 2250],
-    [135.83, 2891], [150, 3025], [200, 3513], [250, 4045], [300, 4678],
-    [329.08, 5150], [350, 5601], [364.08, 6371]
+    [0, 0], [0.605, 24], [13.36, 400], [23.85, 670], [50, 1246], [78, 1823],
+    [100, 2250], [113, 2491], [135.83, 2891], [150, 3025], [175, 3266], [200, 3513],
+    [225, 3771], [250, 4045], [275, 4343], [300, 4678], [329.08, 5150], [350, 5601],
+    [364.08, 6371]
   ];
   function depthWords(p) {
     if (p < 0.02) return "the surface";
