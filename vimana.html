@@ -655,6 +655,1035 @@ body[data-page="vimana"] .idle { color: var(--muted); }
 </main>
 <div id="site-footer"></div>
 <script src="assets/nav.js"></script>
-<script src="assets/vimana-bench.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var G = 9.81;          // metres per second squared
+  var RHO = 1.225;       // air density at sea level, kg per cubic metre
+  var CLIGHT = 299792458;
+  var CP2 = 2010;        // twice the heat capacity of air, J per kg per K
+  var TAMB = -55;        // stratospheric air, degrees C
+  var ASOUND = 296;      // speed of sound at that temperature, m/s
+
+  /* ---------------- the parts catalogue ---------------- */
+
+  var HULL = [
+    { id: "sx", name: "Single-crystal superalloy", areal: 26.1, arealNote: "worked from 8.7 g/cm3 at 3 mm", tmax: 1100,
+      figs: [["Skin mass", "26.1 kg/m2"], ["Holds shape to", "about 1,100 °C"]],
+      leans: "Grown as one piece with no grain boundaries, which are the seams between crystal grains where hot metal creeps and cracks. Turbine blades in jet engines are made this way, each blade pulled slowly from the melt so the whole thing is a single crystal, and they run red hot for thousands of hours.",
+      buys: "It would hold its shape at heat that would slump ordinary alloy, and it is the one hull here you could order today. It is also the heaviest metal skin on the list." },
+
+    { id: "bmg", name: "Bulk metallic glass", areal: 18.3, arealNote: "worked from 6.1 g/cm3 at 3 mm", tmax: 350,
+      figs: [["Skin mass", "18.3 kg/m2"], ["Softens near", "about 350 °C"]],
+      leans: "An alloy cooled so fast the atoms never get time to line up into grains, so it sets as a glass that happens to be metal. Zirconium-titanium-copper-nickel-beryllium glass springs back from about ten times the bend an ordinary metal takes before it stays bent. It has been sold as golf club heads and watch cases, and NASA has run gearboxes cut from it.",
+      buys: "A skin that dents less and rings back into shape, at two thirds the weight of the superalloy. It gives up at a temperature an oven can reach." },
+
+    { id: "quasi", name: "Quasicrystal-coated skin", areal: 13.8, arealNote: "titanium at 3 mm plus a 0.1 mm coating", tmax: 500,
+      figs: [["Skin mass", "13.8 kg/m2"], ["Holds shape to", "about 500 °C"]],
+      leans: "In 1982 Dan Shechtman photographed a diffraction pattern with five-fold symmetry, an arrangement of atoms that repeats without ever quite repeating. It was thought impossible, and he was told to leave his research group over it. He won the 2011 Nobel Prize in Chemistry for it. Sprayed on as a coating, aluminium-copper-iron quasicrystals are slippery, hard and slow to pass heat; they have been sold on frying pans.",
+      buys: "A slippery, heat-shy outer face on a titanium shell. The coating is a fraction of a millimetre, so the metal underneath sets the temperature limit." },
+
+    { id: "bnnt", name: "Boron nitride nanotube weave", areal: 3.0, arealNote: "worked from 1.5 g/cm3 at 2 mm", tmax: 900,
+      figs: [["Skin mass", "3.0 kg/m2"], ["Holds up in air to", "about 900 °C"]],
+      leans: "Carbon nanotubes are famously strong and famously flammable: in open air they start burning off a few hundred degrees in. Swap the carbon for alternating boron and nitrogen atoms and the tube keeps its strength while staying put in air to around 900 degrees. NASA Langley has been making them by the gram for years.",
+      buys: "The lightest skin here that also takes real heat. The tubes hold; whatever glues them into a sheet would have to hold with them, and that is the part still being worked out." },
+
+    { id: "grin", name: "Gradient-index metamaterial shell", areal: 4.0, arealNote: "estimated for a 20 mm lattice at 0.2 g/cm3", tmax: 300,
+      figs: [["Skin mass", "about 4 kg/m2"], ["Holds shape to", "about 300 °C"]],
+      leans: "A lattice whose spacing changes across the shell, so a wave passing through is bent gradually and flows around what is inside instead of bouncing off it. Duke University steered microwaves around a copper cylinder this way in 2006. It works at the band of wavelengths the lattice was cut for, and only there.",
+      buys: "A shell that could be quiet on radar or sonar in a chosen band. A cloak for one band, not a cloak. The skin mass is an estimate from the lattice's density, not a measured panel." },
+
+    { id: "transp", name: "Transpiration-cooled skin", areal: 15.0, arealNote: "porous nickel alloy at 3 mm plus plumbing", tmax: 2000,
+      figs: [["Skin mass", "15.0 kg/m2"], ["Gas side takes", "about 2,000 °C"]],
+      leans: "A wall full of fine pores that sweats coolant out through itself, so the hot gas never touches bare metal. Rocket engines have used the trick since the 1960s: the Saturn V's F-1 engine bled fuel-rich gas along its nozzle wall, and porous-wall chambers have run in test stands for decades. Oxford's Mach 7 flat-plate runs got a continuous film 5 to 20 mm downstream of the injector at blowing ratios well under one per cent.",
+      buys: "The gas outside can run far hotter than the metal ever does, because the coolant carries the heat away before it arrives, and the flow can be turned up and down with the heating instead of sized for the worst instant. The catch is that the coolant is spent: the craft carries a tank and the tank empties." },
+
+    { id: "healing", name: "Self-healing metal", areal: 64.4, arealNote: "worked from platinum at 21.45 g/cm3, 3 mm", tmax: 1000,
+      figs: [["Skin mass", "64.4 kg/m2"], ["Holds shape to", "about 1,000 °C"]],
+      leans: "In 2023 a team at Sandia National Laboratories and Texas A&M was cycling a thin piece of platinum to failure under an electron microscope and watched a fatigue crack close up and weld itself shut. Nobody had asked it to. The metal was fine-grained enough that the two faces of the crack cold-welded where they touched.",
+      buys: "A skin that mends its own cracks would change how often anything gets inspected. It was seen in platinum, which is one of the heaviest metals there is, so the skin mass here is the price of the demonstration rather than the price of the idea." },
+
+    { id: "aerogel", name: "Aerogel-cored sandwich", areal: 3.0, arealNote: "20 mm aerogel core plus two 0.3 mm carbon faces", tmax: 650,
+      figs: [["Skin mass", "3.0 kg/m2"], ["Holds shape to", "about 650 °C"]],
+      leans: "Aerogel is a gel with the liquid taken out and the structure left standing, so it is mostly air held in a scaffold of silica. Commercial blanket runs near a tenth the density of water; the lightest ever made, a graphene aerogel from Zhejiang University in 2013, came in lighter than dry air. NASA has flown silica aerogel to catch comet dust.",
+      buys: "The lightest skin on the bench that also insulates, sandwiched between two thin carbon faces to give it something to push against. It is a poor choice for anything that gets hit." }
+  ];
+
+  var POWER = [
+    { id: "liion", name: "Lithium-ion pack", wkg: 1000, whkg: 235,
+      figs: [["Specific power", "1,000 W/kg"], ["Specific energy", "235 Wh/kg"]],
+      leans: "The baseline everything else has to beat. Joby Aviation's air-taxi pack turns 288 watt-hours per kilogram of cell into 235 at pack level; a high-power A123 cell can dump over 2,600 watts per kilogram in a ten-second burst. An electric aircraft pumping hard enough to hover draws about a kilowatt per kilogram.",
+      buys: "It works today, on shelves, at that price. Drawing a kilowatt from every kilogram empties a 235 watt-hour kilogram in about fourteen minutes, which is roughly how long a heavy drone actually hovers." },
+
+    { id: "rtg", name: "Radioisotope units", wkg: 5.2, whkg: 790000,
+      figs: [["Specific power", "5.2 W/kg"], ["Specific energy", "about 790,000 Wh/kg"]],
+      leans: "A brick of plutonium-238 warm from its own decay, wrapped in thermocouples that turn the temperature difference straight into current. The general-purpose units on Cassini and New Horizons each gave about 300 watts from 57 kilograms. Voyager's have been running since 1977 and are still talking.",
+      buys: "Feeble power, endless patience. Per kilogram it makes about a two-hundredth of what a lithium pack makes, and it keeps making it for decades, so over a twenty-year run it delivers thousands of times more energy per kilogram than any battery." },
+
+    { id: "laser", name: "Beamed by laser", wkg: 218, whkg: null,
+      figs: [["Receiver specific power", "218 W/kg"], ["Carried fuel", "none"]],
+      leans: "Leave the power plant on the ground and send the energy up as light. In May 2025 a DARPA test at White Sands delivered more than 800 watts over 8.6 kilometres and moved more than a megajoule across the campaign, with a receiver over 20 per cent efficient. NASA flew a small aeroplane on nothing but a beam back in 2003.",
+      buys: "Nothing to carry but the receiver, so the fuel weight goes to zero and the craft flies as long as the beam holds. The figure used here is the measured one for a roll-out space solar array under one sun; a laser receiver sees far more light per square metre than that, so treat 218 as a floor and not a ceiling. A published mass for a laser receiver is the number nobody has printed yet. It also ties the craft to whoever is holding the beam." },
+
+    { id: "nthermal", name: "Nuclear thermal", wkg: 3000, whkg: null,
+      figs: [["Specific power", "about 3,000 W/kg"], ["Reactor heat", "62.8 kW per kg"]],
+      leans: "This one was really built and really lit. Through the 1960s the NERVA programme fired nuclear rocket engines at Jackass Flats in Nevada. NRX-A6 ran for 3,623 seconds straight in 1967. XE-Prime, the flight-shaped one, made 1,140 megawatts of heat from 18 tonnes of engine and was started 24 times.",
+      buys: "Heat by the megawatt from a machine that has actually run. The figure here is worked, not measured: NERVA made 63 kilowatts of heat per kilogram, and turning heat into shaft power at about a quarter, with machinery several times the reactor's own mass, lands near 3,000 watts per kilogram." },
+
+    { id: "methyd", name: "Metallic hydrogen", wkg: 7000, whkg: 60000,
+      figs: [["Specific power", "about 7,000 W/kg"], ["Specific energy", "60,000 Wh/kg"]],
+      leans: "Squeezed between diamond points, hydrogen is predicted to turn metal, and predicted to stay metal if you let the pressure off gently. Isaac Silvera and John Cole worked out in 2010 what that would be worth as a fuel: 216 megajoules per kilogram, more than twenty times what a Space Shuttle main engine burned. The same stuff is predicted to carry current without loss, so it could be tank, wiring and fuel at once.",
+      buys: "Fuel and structure in one, at about five times the energy per kilogram of petrol. The specific power here is a real turboshaft's, around 7,000 watts per kilogram, standing in for an engine nobody has built. A prediction with arithmetic behind it, not a fuel anyone has poured." },
+
+    { id: "fusion", name: "Proton-boron fusion", wkg: 1000, whkg: null,
+      figs: [["Specific power", "about 1,000 W/kg"], ["Needs", "about a billion degrees"]],
+      leans: "Fuse a proton into boron-11 and it splits into three helium nuclei and 8.7 million electronvolts of motion, with no neutrons in the main channel, which means no wall of shielding. In 2023 a team at Japan's Large Helical Device, working with TAE Technologies, detected proton-boron fusion inside a magnetically held plasma for the first time. Australia's HB11 Energy is chasing it with lasers.",
+      buys: "Clean, dense power with no neutron bath around the crew. Nothing anywhere has yet got more energy out than in, and it wants about ten times the temperature deuterium fusion does. The 1,000 watts per kilogram used here is borrowed from published fusion propulsion concepts, so it is a projection, not a reading off a machine." },
+
+    { id: "anti", name: "Antimatter", wkg: 1000, whkg: null,
+      figs: [["Specific power", "about 1,000 W/kg"], ["Fuel energy", "50 billion kWh/kg"]],
+      leans: "Real, made and held. CERN's ALPHA experiment first trapped antihydrogen in 2010 and held 309 atoms for over sixteen minutes in 2011; recent runs have made over two million atoms. Annihilation turns every gram fully into energy, which is as dense as energy gets.",
+      buys: "The densest fuel physics allows. Everything ever made adds up to under 10 nanograms, less than a speck of dust, and a 1999 NASA Marshall study put the cost at US$62.5 trillion a gram in 1999 dollars: about A$87 trillion at A$1 to US$0.7172 on 28 August 2026, or roughly seven months of everything everyone on Earth earns. The specific power is a projection; no antimatter engine exists to measure." },
+
+    { id: "zpe", name: "Vacuum and Casimir extraction", wkg: null, whkg: null,
+      figs: [["Specific power", "no measured figure"], ["Casimir force", "measured to 5 per cent"]],
+      leans: "Empty space is not still. Put two mirrors a fraction of a hair apart and fewer wave patterns fit between them than outside, so the outside pushes them together. Steve Lamoreaux measured that push at the University of Washington in 1997, at separations from 0.6 to 6 micrometres, and it matched theory to about five per cent with nothing fitted.",
+      buys: "The force is real and repeatable. The engineering obstacle is the cycle: the plates give up energy coming together and take the same energy back to prise apart, plus every loss on the way, and at those gaps they stick and cold-weld. Nobody has run a loop that comes out ahead. <a href=\"zero-point.html\">The measurements, and what a machine would need</a>." }
+  ];
+
+
+  /* Ways of pushing. "kind" says how the force reaches the payload:
+     surface, a push through a contact face that the body then transmits;
+     body, a force applied to every particle at once; metric, geometry carrying
+     the craft. "regime" says what each mode gets from it. */
+
+  var PUSH = [
+    { id: "diamag", name: "Diamagnetic levitation", kind: "body", npkw: 0.000059,
+      ceil: { kind: "mass", v: 0.030, what: "about 30 grams, the frog" },
+      needs: "a magnet big enough to hold the craft inside it, made off board",
+      figs: [["Thrust to power", "0.000059 N/kW"], ["Lifts today", "a frog"], ["Reaches the payload", "as a body force"]],
+      regime: {
+        air:   { works: true,  note: "The field reaches through air without caring about it." },
+        vac:   { works: true,  note: "A magnetic field crosses vacuum unchanged, so this one loses nothing off the air." },
+        carry: { works: true,  note: "The field acts on every water molecule at once, which is why the frog floated rather than being crushed. That is a body force, the same category as gravity." }
+      },
+      leans: "In 1997 at the High Field Magnet Laboratory in Nijmegen, a live frog floated in mid-air inside the 32 millimetre bore of a 16 tesla magnet, and hopped away afterwards none the worse. Water is faintly diamagnetic, meaning a magnetic field pushes it away rather than pulling it in, and a living thing is mostly water. NASA's Jet Propulsion Laboratory floated a mouse the same way in a 17 tesla magnet in 2009. Bismuth, the most diamagnetic metal on the shelf, floats over a strong enough magnet with no trickery at all.",
+      buys: "It looks exactly like the thing the stories describe, and it is completely real. It is also the built demonstration that a force spread through a whole body feels like nothing: the frog was held up by its own molecules, not by a surface. Two problems: the field has to be made off board, because a magnet and the thing it repels sitting in the same craft just push on each other and cancel; and the frog floated inside the magnet, so the craft would have to fit in its own bore. <a href=\"claimed-elements.html\">Bismuth and the rest of the named metals</a>." },
+
+    { id: "ionwind", name: "Ionic wind", kind: "surface", npkw: 110,
+      ceil: { kind: "area", v: 3.3, what: "3.3 newtons per square metre of craft" },
+      needs: null,
+      figs: [["Thrust to power", "110 N/kW"], ["Push per square metre", "3.3 N"], ["Reaches the payload", "through the airframe"]],
+      regime: {
+        air:   { works: true,  note: "Air is the working fluid and the reaction mass, both free." },
+        vac:   { works: false, note: "The push comes from dragging surrounding air along, so off the air there is none to drag." },
+        carry: { works: false, note: "This throws matter to move, which is the other family." }
+      },
+      leans: "Charge a thin wire hard enough and it strips electrons off the air around it; the charged air drifts to a second electrode, dragging ordinary air with it, and out the back comes a breeze with nothing moving but the air itself. In 2018 a team at MIT led by Steven Barrett flew an aeroplane on it, five metres of wingspan and two and a half kilograms, sixty metres down a gymnasium, with no propeller, no turbine and no moving part in the drive. It was close to silent. Measured at MIT in 2013, ionic wind returns about 110 newtons of push per kilowatt, against a jet engine's two.",
+      buys: "This is the strongest case on the bench for silent lift in air, and it returns more push per kilowatt than anything else here that works in the open. The catch is not the power bill, it is how thinly the push spreads: about 3.3 newtons on every square metre, a bit less than a full can of soft drink pressing down. Cover a whole saucer in it and the total is still small." },
+
+    { id: "fluxpin", name: "Superconducting flux pinning", kind: "body", npkw: 2450,
+      ceil: { kind: "area", v: 100000, what: "10 newtons per square centimetre over the track" },
+      needs: "a magnet track underneath the whole flight path",
+      figs: [["Thrust to power", "about 2,450 N/kW"], ["Holds", "10 N per cm2"], ["Reaches the payload", "as a body force"]],
+      regime: {
+        air:   { works: true,  note: "Over its track, in air, on one fill of liquid nitrogen a day." },
+        vac:   { works: true,  note: "The pinning does not need a medium, so it works off the air. It still needs the track." },
+        carry: { works: true,  note: "Field lines threaded through the superconductor hold the craft without anything being thrown, and the load spreads through the material rather than landing on a seat." }
+      },
+      leans: "Chill a disc of yttrium-barium-copper oxide below about minus 196 degrees over a magnet and the field threads through it in fixed lines and stays put. The disc then hangs at the height it was cooled at, sideways as easily as upright, and shoves back if you push it. Melt-grown discs 30 millimetres across hold about 10 to 16 newtons per square centimetre. The German SupraTrans test vehicle rides on modules like these, a quarter of a tonne each, on one fill of liquid nitrogen a day.",
+      buys: "It is the easiest thing on the list to watch happen and it costs almost nothing to hold station, because the pinning itself draws no power and only the cooling does. It also has to be over a magnet track, so it is a railway rather than a sky. The power figure is an estimate: a kilowatt of cryocooler holding a module of that size." },
+
+    { id: "mhd", name: "Magnetohydrodynamic thrust", kind: "surface", npkw: 4,
+      ceil: null,
+      needs: "a fluid that conducts electricity; ordinary air does not",
+      figs: [["Thrust to power", "about 4 N/kW"], ["Built", "Yamato-1, 1992"], ["Reaches the payload", "through the ducts"]],
+      regime: {
+        air:   { works: true,  note: "It works in a fluid that carries current. Ordinary air does not, so the air has to be heated or charged first, and so far that has cost more energy than the push has returned." },
+        vac:   { works: false, note: "There is no fluid to push off." },
+        carry: { works: false, note: "This throws matter to move, which is the other family." }
+      },
+      leans: "Run a current through a fluid that conducts, cross it with a magnetic field, and the fluid gets pushed. Nothing turns. In June 1992 the Yamato-1 carried ten people around Kobe harbour at eight knots on exactly this: two ducts with 4 tesla superconducting magnets, seawater in the front and out the back, fed by two 2,000 kilowatt generators, no propeller anywhere on the ship.",
+      buys: "A real ship really moved this way, silently, with no moving part in the drive. Its whole trick depends on seawater carrying current. The same physics is why a barrier ahead of a hull gets interesting at entry speeds: the flow up there is partly charged, and a magnetic field has something to grip." },
+
+    { id: "rotors", name: "Ducted rotors", kind: "surface", npkw: null,
+      ceil: null,
+      needs: null,
+      figs: [["Thrust to power", "set by the disc"], ["Reference", "75 N/kW on an R22"], ["Reaches the payload", "through the airframe"]],
+      regime: {
+        air:   { works: true,  note: "Air is the reaction mass and it is free, which is the whole reason this is the one that flies for money." },
+        vac:   { works: false, note: "A rotor works by throwing a column of air downwards, and off the air there is no column to throw." },
+        carry: { works: false, note: "This throws matter to move, which is the other family." }
+      },
+      leans: "The baseline that already flies. A Robinson R22 at its 621 kilogram limit hangs off a rotor disc of 46 square metres and hovers on roughly 81 kilowatts, which is about 75 newtons of lift for every kilowatt. Every delivery drone and rescue helicopter in the country works this way.",
+      buys: "It flies, today, for money. This is also the only pick whose figure moves with the design: a wider disc pushes a bigger, slower column of air and hovers for less, so the bench reworks the number from the saucer's own diameter each time. What it will not do is be quiet." },
+
+    { id: "acoustic", name: "Acoustic levitation", kind: "surface", npkw: 1.39,
+      ceil: { kind: "mass", v: 0.00284, what: "2.84 grams, the record" },
+      needs: "a standing wave, so the craft has to sit inside the sound",
+      figs: [["Thrust to power", "about 1.4 N/kW"], ["Record lift", "2.84 g"], ["Reaches the payload", "across the whole outer face"]],
+      regime: {
+        air:   { works: true,  note: "Air carries the standing wave. The craft has to sit inside the sound field." },
+        vac:   { works: false, note: "Sound needs a medium and there is none." },
+        carry: { works: false, note: "The load arrives on the outer face rather than through the volume, so it is spread but it is not a body force." }
+      },
+      leans: "Aim two ultrasonic emitters at each other and the sound waves stack into a standing pattern with still points every half wavelength. Small things sit in the still points and hang there. In 2002 Wenjun Xie, Chuanjun Cao, Yajun Lü and Bingbo Wei levitated an iridium sphere weighing 2.84 grams, a little over six millimetres across and second only to osmium as the densest solid there is, and reported it in Physical Review Letters.",
+      buys: "Contactless handling that laboratories use every week for droplets and protein crystals. Scaling it up is the hard part. In a plain standing wave the still points sit half a wavelength apart, about four millimetres at 40 kilohertz, which sets the ordinary ceiling on what will fit between them. A driven array of 192 small speakers at that same frequency has held a 16 millimetre bead by alternating two counter-twisting sound fields, so the half wavelength is a working rule, not a wall. The record load is still under three grams." },
+
+    { id: "photon", name: "Photon drive", kind: "surface", npkw: 1000 / 299792458,
+      ceil: null,
+      needs: null,
+      figs: [["Thrust to power", "0.0000033 N/kW"], ["Per gigawatt", "3.34 N"], ["Reaches the payload", "through the emitter mount"]],
+      regime: {
+        air:   { works: true,  note: "It works anywhere, and in air it is spending a power station on a push the weight of a soft drink can while a hull's worth of drag pulls the other way." },
+        vac:   { works: true,  note: "Nothing carried and nothing thrown but light, which is the regime it suits. Solar sails have lived on it for months at a time." },
+        carry: { works: false, note: "Light carries momentum away, so this is still a push against something thrown." }
+      },
+      leans: "Light carries momentum, so a torch pushes back. The arithmetic is not in dispute and it is not kind: divide the power by the speed of light and you have the thrust. A gigawatt of light, about twice a large power station unit, returns 3.34 newtons, which is roughly the weight of a full can of soft drink. Solar sails run on this and really do work, over months, in space, where there is nothing else pulling.",
+      buys: "It needs no propellant at all and it works in vacuum. It is the least forgiving line on the bench: holding up one adult would take about two hundred gigawatts of light, several times everything Australia generates. Off the air, with months to spend and nothing pulling back, that same feeble push is what a sail has been living on." },
+
+    { id: "warp", name: "A warp metric", kind: "metric", npkw: null,
+      ceil: null,
+      needs: "a solution to general relativity that nobody has built hardware for",
+      figs: [["Thrust to power", "not that kind of push"], ["Felt acceleration", "zero, by construction"], ["Reaches the payload", "as geometry"]],
+      regime: {
+        air:   { works: true,  note: "Carried by the metric, the surrounding air is not being shoved by the hull, so the heat bill does not arise in the usual way." },
+        vac:   { works: true,  note: "Nothing thrown, so nothing carried to throw." },
+        carry: { works: true,  note: "This is the mode it describes. The craft rides a geodesic and the geodesic moves." }
+      },
+      leans: "In 1994 Miguel Alcubierre published a real solution to Einstein's equations, a metric: a description of the shape of space itself, in which space contracts ahead of a craft and stretches behind it. Nothing moves through space faster than light; the patch of space carries the craft, and the craft rides a geodesic, so the acceleration felt on board stays zero however the coordinates run. Michael Pfenning and Larry Ford worked out in 1997 what it would cost and got a negative energy about ten billion times the mass of everything visible in the universe. Harold White cut that to around 700 kilograms of mass-energy in 2011 by reshaping the bubble, and in 2024 Jared Fuchs and colleagues published a slower-than-light, constant-speed version that satisfies all the energy conditions with a shell of ordinary matter and a positive mass.",
+      buys: "A published piece of general relativity with thirty years of working on it, not a device. It does not push, so newtons per kilowatt is the wrong question to ask it, and the bench says so rather than inventing an answer. Two things it does hand a designer: the zero felt load comes free with being carried, and Alcubierre puts the harsh tidal region at the bubble wall rather than in the cabin. Krasnikov, then Everett and Roman in 1997, added the control question: at superluminal speeds the middle of the bubble is cut off from its own leading wall, so steering from inside is its own problem. <a href=\"sci-fi-lab.html\">Named fictional drives, given spec sheets</a>." }
+  ];
+
+  var SHIELD = [
+    { id: "bare", name: "Bare hull", areal: 0, fixed: 0, draw: 0, tmax: null, entryV: null,
+      figs: [["Added mass", "none"], ["Handles", "what the hull handles"]],
+      leans: "Nothing added. The skin's own temperature limit and its own thickness are the whole answer, which is how most aircraft are built and how nothing that comes back from orbit is built.",
+      buys: "No mass, no power, nothing extra to inspect. Everything then rests on the hull pick." },
+
+    { id: "whipple", name: "Whipple bumper", areal: 4.1, fixed: 0, draw: 0, tmax: null, entryV: null,
+      figs: [["Added mass", "4.1 kg/m2"], ["Worked from", "1.5 mm aluminium"], ["Handles", "debris to about 1 cm"]],
+      leans: "Fred Whipple's 1947 idea, flying since Apollo: a thin outer sheet, a gap, then the real wall. The sheet does not stop the projectile, it shocks it into fragments and vapour that spread across the gap and arrive at the wall over an area instead of at a point. The energy is not reduced, it is shared out. A 1 cm aluminium sphere weighs about 1.4 grams and carries about 71 kilojoules at 10 km/s, which is a family car at 36 km/h landing on a spot a centimetre across.",
+      buys: "A thin sheet in front outperforms the same mass welded onto the wall, which is the whole reason for the gap. The added mass here is worked from a 1.5 mm aluminium bumper, with the standoff frame on top of that. It does nothing for heat." },
+
+    { id: "stuffed", name: "Stuffed Whipple, Nextel and Kevlar", areal: 7.1, fixed: 0, draw: 0, tmax: null, entryV: null,
+      figs: [["Added mass", "7.1 kg/m2"], ["Stops", "13 mm aluminium at 7 km/s"], ["On the station", "over 100 shield fits"]],
+      leans: "A ceramic and aramid blanket sits in the gap and pulverises the debris cloud further before it reaches the wall. The station's version stops a 13 mm aluminium sphere at 7 km/s: about 3.1 grams carrying 76 kilojoules. Shielding up there is allocated by which way a face points and what sits behind it, so leading faces carry more, and there are over 100 different configurations on the one station.",
+      buys: "Roughly a fifth to a quarter less ballistic weight than a plain Whipple for the same projectile, though the standoff structure claws some of that back. Ground testing runs out before the real closing speeds do: light-gas guns cover 3 to 7 km/s comfortably, a three-stage gun at Dayton reached about 9.3, and encounters reach about 18, so above the test range the ballistic limit equations are doing the work." },
+
+    { id: "pica", name: "Ablative shield, PICA", areal: 13.5, fixed: 0, draw: 0, tmax: null, entryV: 12800,
+      figs: [["Added mass", "13.5 kg/m2"], ["Worked from", "0.27 g/cm3 at 50 mm"], ["Flown at", "12.8 km/s"]],
+      leans: "Carbon felt filled with phenolic resin, developed at NASA Ames in the 1990s and very light for what it does. It is consumed on purpose: the resin pyrolyses, the surface chars and sheds, and the heat leaves with the material. Stardust came home on 15 January 2006 at about 12.8 kilometres a second, the fastest return any built vehicle has flown, with peak stagnation heating near 1,100 watts per square centimetre.",
+      buys: "The highest heat flux capability on the list, and it has flown at the top of its range. It is spent when it lands, so a craft that flies the same profile twice carries a second one." },
+
+    { id: "tiles", name: "Reusable ceramic tiles", areal: 7.2, fixed: 0, draw: 0, tmax: 1260, entryV: 7800,
+      figs: [["Added mass", "7.2 kg/m2"], ["Worked from", "LI-900 at 50 mm"], ["Good to", "about 1,260 °C"]],
+      leans: "LI-900 silica, about 94 per cent air by volume, so heat has almost nothing to conduct through. The Shuttle flew roughly 24,300 of them with reinforced carbon-carbon to about 1,510 degrees at the nose and wing edges, and inspected the lot between flights; the 2003 loss came from foam striking a carbon-carbon panel rather than from a tile. Starship carries about 18,000 hexagonal tiles rated to about 1,400 degrees, 10.5 tonnes of them on the first block.",
+      buys: "It comes back and goes again, which an ablator does not, and it is lighter per square metre than PICA. The bill is inspection: thousands of separate pieces, each of which matters." },
+
+    { id: "window", name: "Plasma window across the opening", areal: 0, fixed: 0, draw: 0, tmax: null, entryV: null,
+      figs: [["Added mass", "no published figure"], ["Holds", "2.5 atm across 3 mm"], ["Ran", "2,000 hours steady"]],
+      leans: "Ady Hershcovitch's arc at Brookhaven, with Lanza at MIT, separates vacuum from a room with no solid in the way. Three things combine: the plasma is hot so it is far thinner at a given pressure, hot gas is much more viscous so it flows through a narrow tube badly, and stray neutral atoms get ionised and caught by the fields holding the arc. A prototype held more than 2.5 atmospheres across a 3 mm opening; a 2.36 mm arc four centimetres long kept a four-inch pipe at 0.032 Torr against open air, about 24,000 to 1. A 175 keV electron beam passed straight through into atmosphere. It ran 2,000 hours without maintenance, in argon and in helium.",
+      buys: "The closest built thing to a doorway you can send a beam through while still holding vacuum behind it. The aperture is millimetres rather than doorways, and no craft-scale mass has been published, so the bench carries it at zero and says so rather than inventing a figure." },
+
+    { id: "magsh", name: "Plasma barrier ahead of the hull", areal: 0, fixed: 1500, draw: 16000, tmax: null, entryV: null,
+      figs: [["Added mass", "1,500 kg"], ["Draw", "16 kW"], ["Coil", "3 m, 5.6 MA-turns, about 6.4 T"]],
+      leans: "Ruth Bamford's group at Rutherford Appleton, with Culham, Lisbon, Birkbeck, Strathclyde and Boeing, argue that the working part is not brute magnetic bending. A magnet in a flowing plasma carves a diamagnetic cavity; electrons and ions separate at its edge, and the electric sheath that sets up is what turns the fast particles. They photographed that cavity in a plasma tunnel and matched its layer width and standoff distance to the theory. Nature runs the same trick: the lunar swirls are patches where crustal fields of a few hundred nanotesla have kept the solar wind off the soil. Their worked craft carries a 3 metre superconducting coil, 8,000 turns at 700 amps, peak field about 6.4 tesla, 16 kilowatts all up including the cryoplant, 1.5 tonnes.",
+      buys: "The one option here that acts on the flow before it reaches the skin, and the only line anyone has drawn against GeV particles. Their own paper says plainly that no such system has flown, and that it would sit alongside passive shielding rather than replace it. Releasing about 131 grams of xenon during a storm thickens the cavity and cuts the power needed, which is close to making a small comet halo on purpose." },
+
+    { id: "estat", name: "Electrostatic gossamer nodes", areal: 0, fixed: 0, draw: 0, tmax: null, entryV: null,
+      figs: [["Added mass", "no published figure"], ["Design point", "20 m at -17 kV, 10 m at +35 kV"], ["Hold power", "under a milliwatt against the fast stuff"]],
+      leans: "Ram Tripathi led a 2011 NASA study on charged aluminium-coated membranes, and the design move that makes it tractable is deliberate: deflect the ions so they miss, rather than stopping them, because stopping is what drives the voltage into the hundreds of megavolts. Positive and negative nodes are mixed so that repelling ions does not simultaneously pull in solar-wind electrons. The charge also inflates the membranes, so it is structure as well as shield. In the laboratory: membranes to 10 kV, an electron source to 5 keV and 5 mA, in a chamber at ten to the minus seven Torr.",
+      buys: "Holding potential against a big solar particle event, or against galactic cosmic rays, costs under a milliwatt in their sums; it is the ordinary low-energy solar wind that runs the power bill up. Nothing of the kind has flown and no flight mass has been published, so the bench carries it at zero and says so." }
+  ];
+
+  var MODES = [
+    { id: "air", name: "In air", short: "in air",
+      intro: "The craft holds itself up against gravity at 9.81 metres per second squared and shoves atmosphere out of the way. Reaction mass is free because it is all around. Heat is real, and how real depends on the cruise speed and on whether anything turns the flow ahead of the hull." },
+    { id: "vac", name: "Off the air", short: "off the air",
+      intro: "Nothing to push against, nothing to heat the skin, and anything thrown had to be carried up first. The plant here is sized to the course-change slider rather than to holding station, because there is nothing to hold station against. Debris arrives at ten to twenty kilometres a second." },
+    { id: "carry", name: "Carried", short: "carried",
+      intro: "The craft is moved by the geometry around it rather than by throwing anything. Nothing is expelled, the flow is not arriving at the hull, and what the crew feel is the variation of the field across the cabin rather than the acceleration itself." }
+  ];
+
+  var PRESETS = {
+    three: { hull: "bnnt", dia: 12, pay: 400, acc: 20, even: 20, speed: 1.2,
+      air:   { power: "nthermal", push: "ionwind", shield: "tiles" },
+      vac:   { power: "laser",    push: "photon",  shield: "stuffed" },
+      carry: { power: "fusion",   push: "warp",    shield: "magsh" } },
+    single: { hull: "sx", dia: 12, pay: 400, acc: 20, even: 20, speed: 1.2,
+      air:   { power: "liion", push: "rotors", shield: "tiles" },
+      vac:   { power: "liion", push: "rotors", shield: "tiles" },
+      carry: { power: "liion", push: "rotors", shield: "tiles" } },
+    today: { hull: "bmg", dia: 6, pay: 200, acc: 3, even: 20, speed: 0.1,
+      air:   { power: "liion", push: "rotors",  shield: "bare" },
+      vac:   { power: "rtg",   push: "photon",  shield: "whipple" },
+      carry: { power: "liion", push: "fluxpin", shield: "bare" } },
+    poem: { hull: "grin", dia: 16, pay: 600, acc: 100, even: 20, speed: 0.3,
+      air:   { power: "laser",  push: "ionwind", shield: "bare" },
+      vac:   { power: "laser",  push: "diamag",  shield: "stuffed" },
+      carry: { power: "methyd", push: "warp",    shield: "magsh" } }
+  };
+
+
+  /* ---------------- geometry and sums ---------------- */
+
+  function skinArea(d) { var r = d / 2; return 2.5 * Math.PI * r * r; }
+  function planArea(d) { var r = d / 2; return Math.PI * r * r; }
+
+  // ducted rotors: momentum theory, with an overall efficiency of 0.55.
+  // That reproduces the R22's real hover power to within a couple of per cent.
+  function rotorNpkW(d, thrustN) {
+    return 0.55 * Math.sqrt(2 * RHO * planArea(d) / thrustN) * 1000;
+  }
+
+  function byId(list, id) {
+    for (var i = 0; i < list.length; i++) { if (list[i].id === id) return list[i]; }
+    return list[0];
+  }
+
+  var state = {
+    hull: "bnnt", dia: 12, pay: 400, acc: 20, even: 20, speed: 1.2, active: "air",
+    air: { power: "nthermal", push: "ionwind", shield: "tiles" },
+    vac: { power: "laser", push: "photon", shield: "stuffed" },
+    carry: { power: "fusion", push: "warp", shield: "magsh" }
+  };
+
+  function evenPct() { return Math.pow(10, state.even / 10 - 3); }
+
+  function shieldPlan(d) {
+    var skin = skinArea(d), order = [], map = {}, i, m, sid;
+    for (i = 0; i < MODES.length; i++) {
+      m = MODES[i].id; sid = state[m].shield;
+      if (!map[sid]) {
+        map[sid] = { id: sid, obj: byId(SHIELD, sid), modes: [], mass: 0 };
+        order.push(sid);
+      }
+      map[sid].modes.push(m);
+    }
+    var list = [], total = 0;
+    for (i = 0; i < order.length; i++) {
+      var u = map[order[i]];
+      u.mass = u.obj.areal * skin + u.obj.fixed;
+      total += u.mass;
+      list.push(u);
+    }
+    return { list: list, total: total };
+  }
+
+  function modeDemand(modeId, total, d) {
+    var push = byId(PUSH, state[modeId].push);
+    var pwr = byId(POWER, state[modeId].power);
+    var sh = byId(SHIELD, state[modeId].shield);
+    var reg = push.regime[modeId];
+    var o = { mode: modeId, push: push, power: pwr, shield: sh, reg: reg, plant: 0 };
+    if (!reg.works) { o.state = "off"; return o; }
+    if (push.kind === "metric") { o.state = "metric"; return o; }
+    var a = (modeId === "air") ? G : state.acc * G;
+    o.a = a;
+    o.thrust = total * a;
+    o.npkw = (push.id === "rotors") ? rotorNpkW(d, o.thrust) : push.npkw;
+    o.powerW = 1000 * o.thrust / o.npkw + sh.draw;
+    o.needWkg = 1000 * a / o.npkw;
+    if (pwr.wkg === null) { o.state = "nosource"; return o; }
+    o.plant = o.powerW / pwr.wkg;
+    o.state = "sized";
+    return o;
+  }
+
+  function groupPlants(ds) {
+    var order = [], map = {}, i, o, k;
+    for (i = 0; i < ds.length; i++) {
+      o = ds[i];
+      if (!(o.plant > 0 && isFinite(o.plant))) continue;
+      k = o.power.id;
+      if (!map[k]) { map[k] = { id: k, name: o.power.name, plant: 0, modes: [] }; order.push(k); }
+      if (o.plant > map[k].plant) map[k].plant = o.plant;
+      map[k].modes.push(o.mode);
+    }
+    var list = [], sum = 0;
+    for (i = 0; i < order.length; i++) { list.push(map[order[i]]); sum += map[order[i]].plant; }
+    return { plants: list, sum: sum };
+  }
+
+  function demandsAt(total, d, only) {
+    var ds = [], i, o;
+    for (i = 0; i < MODES.length; i++) {
+      o = modeDemand(MODES[i].id, total, d);
+      if (only && o.mode !== only) o.plant = 0;
+      ds.push(o);
+    }
+    return ds;
+  }
+
+  function F(T, base, d, only) { return base + groupPlants(demandsAt(T, d, only)).sum; }
+
+  function solveTotal(base, d, only) {
+    if (!isFinite(F(base, base, d, only))) return null;
+    var lo = base, hi = base * 2, k, j, mid;
+    for (k = 0; k < 90; k++) {
+      if (hi > 1e14) return null;
+      if (F(hi, base, d, only) - hi < 0) break;
+      hi *= 2;
+    }
+    if (hi > 1e14 || !isFinite(F(hi, base, d, only)) || F(hi, base, d, only) - hi >= 0) return null;
+    for (j = 0; j < 160; j++) {
+      mid = (lo + hi) / 2;
+      if (F(mid, base, d, only) - mid > 0) lo = mid; else hi = mid;
+    }
+    return hi;
+  }
+
+  function solveCraft() {
+    var d = state.dia, pay = state.pay;
+    var hull = byId(HULL, state.hull);
+    var skin = skinArea(d), plan = planArea(d);
+    var hullMass = hull.areal * skin;
+    var sp = shieldPlan(d);
+    var base = hullMass + pay + sp.total;
+
+    var total = solveTotal(base, d);
+    var settles = total !== null;
+    if (!settles) total = base;
+
+    var ds = demandsAt(total, d);
+    var gp = groupPlants(ds);
+    var i, o, worst = null;
+    for (i = 0; i < ds.length; i++) {
+      o = ds[i];
+      o.share = (o.plant > 0 && total > 0) ? o.plant / total : 0;
+      o.firstFactor = (o.plant > 0 && base > 0) ? o.plant / base : 0;
+      // would this mode settle on its own, with no other mode's plant to lift?
+      o.runaway = !settles && (o.plant > 0) && (solveTotal(base, d, o.mode) === null);
+      if (o.runaway && (worst === null || o.firstFactor > worst.firstFactor)) worst = o;
+      o.settles = settles;
+      if (o.state === "sized") {
+        o.perKg = o.plant > 0 ? total / o.plant : Infinity;
+        if (o.push.ceil === null) {
+          o.ceiling = null;
+        } else if (o.push.ceil.kind === "area") {
+          o.ceiling = o.push.ceil.v * plan;
+        } else {
+          o.ceiling = o.push.ceil.v * G;
+        }
+        o.ceilFactor = (o.ceiling === null) ? null : o.ceiling / o.thrust;
+      }
+    }
+    if (!settles && worst === null) {
+      // no single mode overruns on its own; the modes together do
+      for (i = 0; i < ds.length; i++) {
+        if (ds[i].plant > 0 && (worst === null || ds[i].firstFactor > worst.firstFactor)) worst = ds[i];
+      }
+    }
+    return {
+      hull: hull, skin: skin, plan: plan, hullMass: hullMass, pay: pay,
+      shields: sp.list, shieldMass: sp.total, base: base,
+      total: total, settles: settles, worst: worst,
+      demands: ds, plants: gp.plants, plantMass: gp.sum
+    };
+  }
+
+  /* ---------------- number wording ---------------- */
+
+  function commas(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+  function sig(n, places) {
+    if (!isFinite(n)) return "beyond counting";
+    var p = places === undefined ? 3 : places;
+    if (n === 0) return "0";
+    var mag = Math.floor(Math.log10(Math.abs(n)));
+    if (mag >= 15 || mag <= -5) {
+      return n.toExponential(1).replace("e+", " times ten to the ").replace("e-", " times ten to the minus ");
+    }
+    var r = Number(n.toPrecision(p));
+    if (Math.abs(r) >= 1000) return commas(Math.round(r));
+    if (Math.abs(r) >= 10) return String(Math.round(r * 10) / 10);
+    return String(Math.round(r * 100) / 100);
+  }
+
+  function bigTimes(n) {
+    if (!isFinite(n)) return "beyond counting";
+    if (n < 1000) return sig(n) + " times";
+    if (n < 1e6) return commas(Math.round(n)) + " times";
+    if (n < 1e9) return sig(n / 1e6) + " million times";
+    if (n < 1e12) return sig(n / 1e9) + " billion times";
+    if (n < 1e15) return sig(n / 1e12) + " trillion times";
+    return "more than a thousand trillion times";
+  }
+
+  function mass(kg) {
+    if (!isFinite(kg)) return "no settled figure";
+    if (kg < 1) return sig(kg * 1000) + " g";
+    if (kg < 1000) return sig(kg) + " kg";
+    if (kg < 1e6) return sig(kg / 1000) + " t";
+    if (kg < 1e9) return sig(kg / 1e6) + " thousand t";
+    return sig(kg / 1e9) + " million t";
+  }
+
+  function massLike(kg) {
+    if (!isFinite(kg)) return "";
+    if (kg < 0.02) return "lighter than a teaspoon of water";
+    if (kg < 1) return "about a mug of tea";
+    if (kg < 90) return "about a large dog";
+    if (kg < 400) return "about a heavy motorbike";
+    if (kg < 2600) return "about " + sig(kg / 1300) + " small cars";
+    if (kg < 60000) return "about " + sig(kg / 2100) + " utes";
+    if (kg < 2e6) return "about " + sig(kg / 40000) + " loaded semi-trailers";
+    return "about " + sig(kg / 4e5) + " fully loaded jumbo jets";
+  }
+
+  function force(n) {
+    if (!isFinite(n)) return "no settled figure";
+    if (n < 1000) return sig(n) + " N";
+    if (n < 1e6) return sig(n / 1000) + " kN";
+    if (n < 1e9) return sig(n / 1e6) + " MN";
+    return sig(n / 1e9) + " GN";
+  }
+
+  function power(w) {
+    if (!isFinite(w)) return "no settled figure";
+    if (w < 1000) return sig(w) + " W";
+    if (w < 1e6) return sig(w / 1000) + " kW";
+    if (w < 1e9) return sig(w / 1e6) + " MW";
+    if (w < 1e12) return sig(w / 1e9) + " GW";
+    return sig(w / 1e12) + " TW";
+  }
+
+  function powerLike(w) {
+    if (!isFinite(w)) return "";
+    var kettles = w / 2400;
+    var homes = w / 700;
+    var units = w / 5e8;
+    var worldElec = w / 3.4e12;
+    if (kettles < 4000) return "about " + sig(kettles) + " kettles boiling at once";
+    if (homes < 5e5) return "about " + commas(Math.round(homes)) + " homes' average draw";
+    if (units < 400) return "about " + sig(units) + " large power station units";
+    if (worldElec < 1) return "about " + sig(worldElec * 100) + " per cent of all the electricity on Earth";
+    return bigTimes(worldElec) + " all the electricity on Earth";
+  }
+
+  function temp(c) {
+    var s = (c < 0) ? "minus " : "";
+    var v = Math.abs(c);
+    if (v < 1000) return s + sig(v) + " °C";
+    return s + commas(Math.round(v / 10) * 10) + " °C";
+  }
+
+  function massOrNone(kg) { return kg > 0 ? mass(kg) : "none added"; }
+
+  function gWord(v) {
+    if (v >= 100) return commas(Math.round(v)) + " g";
+    if (v >= 1) return sig(v) + " g";
+    if (v >= 0.001) return sig(v) + " g";
+    return sig(v, 2) + " g";
+  }
+
+  function endurance(pwr) {
+    var hours = pwr.whkg / pwr.wkg;
+    if (hours < 1) return Math.round(hours * 60) + " minutes";
+    if (hours < 48) return sig(hours) + " hours";
+    if (hours < 8760) return sig(hours / 24) + " days";
+    return sig(hours / 8760) + " years";
+  }
+
+  function ladder(v) {
+    if (v < 0.001) return "less than the tug of a lift starting";
+    if (v < 1) return "under a g, lighter than standing up";
+    if (v <= 4.7) return "inside what a person holds with no equipment, where the measured mean sits at about 4.7 g";
+    if (v <= 9) return "past the unaided range and inside what a suit and hard straining reach, which is about 9 g and is active work";
+    if (v <= 46.2) return "past the suited ceiling and under Stapp's 46.2 g of 1954, and his was chest to back for 1.4 seconds, not head to foot";
+    if (v <= 214) return "past Stapp's spike and under Kenny Bräck's 214 g of 2003, which lasted milliseconds inside a carbon survival cell";
+    return "past 214 g, the highest load anyone has taken and come back from";
+  }
+
+
+  /* ---------------- rendering ---------------- */
+
+  var els = {
+    hull: document.getElementById("sel-hull"),
+    dia: document.getElementById("rng-dia"),
+    pay: document.getElementById("rng-pay"),
+    acc: document.getElementById("rng-acc"),
+    even: document.getElementById("rng-even"),
+    speed: document.getElementById("rng-speed"),
+    diaVal: document.getElementById("val-dia"),
+    payVal: document.getElementById("val-pay"),
+    accVal: document.getElementById("val-acc"),
+    evenVal: document.getElementById("val-even"),
+    speedVal: document.getElementById("val-speed"),
+    modeOut: document.getElementById("mode-out"),
+    craftOut: document.getElementById("craft-out")
+  };
+
+  function fillSelect(sel, list) {
+    var html = "", i;
+    for (i = 0; i < list.length; i++) {
+      html += '<option value="' + list[i].id + '">' + list[i].name + "</option>";
+    }
+    sel.innerHTML = html;
+  }
+  fillSelect(els.hull, HULL);
+
+  var modeEls = {};
+  for (var mi = 0; mi < MODES.length; mi++) {
+    var mid = MODES[mi].id;
+    modeEls[mid] = {
+      power: document.getElementById("sel-" + mid + "-power"),
+      push: document.getElementById("sel-" + mid + "-push"),
+      shield: document.getElementById("sel-" + mid + "-shield"),
+      tab: document.getElementById("tab-" + mid),
+      panel: document.getElementById("panel-" + mid),
+      intro: document.getElementById("intro-" + mid)
+    };
+    fillSelect(modeEls[mid].power, POWER);
+    fillSelect(modeEls[mid].push, PUSH);
+    fillSelect(modeEls[mid].shield, SHIELD);
+    modeEls[mid].intro.textContent = MODES[mi].intro;
+  }
+
+  function figRows(pairs) {
+    var h = "", i;
+    for (i = 0; i < pairs.length; i++) {
+      h += '<div class="fig"><span>' + pairs[i][0] + "</span><b>" + pairs[i][1] + "</b></div>";
+    }
+    return h;
+  }
+
+  function card(label, o, extraFigs) {
+    var figs = (extraFigs || []).concat(o.figs);
+    return '<div class="spec-block">' +
+      "<h4>" + label + "</h4>" +
+      '<span class="pick">' + o.name + "</span>" +
+      figRows(figs) +
+      "<p><strong>Leans on:</strong> " + o.leans + "</p>" +
+      "<p><strong>What it would buy:</strong> " + o.buys + "</p>" +
+      "</div>";
+  }
+
+  function readout(cap, big, sub) {
+    return '<div class="readout"><span class="cap">' + cap + "</span>" +
+      '<span class="big">' + big + "</span>" +
+      '<span class="sub">' + sub + "</span></div>";
+  }
+
+  function barRow(who, val, pct, warm) {
+    return '<div class="bar-row"><span class="who">' + who + "</span>" +
+      '<div class="bar' + (warm ? " warm" : "") + '" style="width:' + Math.max(1, Math.min(100, pct)) + '%"></div>' +
+      '<span class="val">' + val + "</span></div>";
+  }
+
+  function modeName(id) { return byId(MODES, id).name; }
+
+  function worksHere(modeId) {
+    var out = [], i;
+    for (i = 0; i < PUSH.length; i++) {
+      if (PUSH[i].regime[modeId].works) out.push(PUSH[i].name.toLowerCase());
+    }
+    return out;
+  }
+
+  function listWords(a) {
+    if (a.length === 0) return "nothing on the catalogue";
+    if (a.length === 1) return a[0];
+    return a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+  }
+
+  function feltG(dm) {
+    if (dm.push.kind === "surface") return state.acc;
+    return state.acc * evenPct() / 100;
+  }
+
+  function evenWord() {
+    var p = evenPct();
+    if (p >= 1) return sig(p) + " per cent";
+    if (p >= 0.01) return sig(p, 2) + " per cent";
+    return sig(p, 2) + " per cent";
+  }
+
+  function crewLine(dm) {
+    var felt = feltG(dm), a = state.acc;
+    var head = '<p class="closing cool">';
+    if (dm.push.kind === "surface") {
+      return head + "<strong>What the crew feel: " + gWord(felt) + ".</strong> " +
+        "With " + dm.push.name.toLowerCase() + ", the force arrives through a mounting face, so the load travels seat to back to ribs to organs and a " + gWord(a) +
+        " course change arrives in full. That is " + ladder(felt) + ". Stretching the stop out over a longer distance is what a crash structure does and it is the best anyone has built; it changes how long the load lasts, not whether it arrives.</p>";
+    }
+    if (dm.push.kind === "body") {
+      return head + "<strong>What the crew feel: " + gWord(felt) + ".</strong> " +
+        "With " + dm.push.name.toLowerCase() + ", the force is applied to every particle at once, the way gravity does and the way the magnet held the frog in Nijmegen, so no squeeze builds between one part of a body and the next. What is left to feel is the variation of the field across the cabin, set here at " + evenWord() +
+        ", which turns a " + gWord(a) + " change into " + gWord(felt) + ": " + ladder(felt) +
+        ". That is the whole specification for an inertial dampener written as a number: flatten the gradient across the occupied volume.</p>";
+    }
+    return head + "<strong>What the crew feel: " + gWord(felt) + ".</strong> " +
+      "Riding a geodesic, the proper acceleration is zero however hard the coordinates say the craft is turning, which is the same physics that has astronauts floating while 0.88 g of coordinate acceleration curves them round the planet. What is left is the gradient: at " + evenWord() +
+      " variation across the cabin a " + gWord(a) + " change lands as " + gWord(felt) + ", " + ladder(felt) +
+      ". Alcubierre puts the harsh tidal region at the bubble wall rather than in the cabin, so the wall thickness is the figure this line hangs on.</p>";
+  }
+
+  function heatLine(dm, hull) {
+    var v = state.speed * 1000;
+    var T = TAMB + v * v / CP2;
+    var m = v / ASOUND;
+    var head = '<p class="closing cool">';
+    var lead = "At " + sig(state.speed) + " kilometres a second, about Mach " + sig(m) + " up there, ";
+    if (dm.push.kind === "metric") {
+      return head + "<strong>The heat bill does not arrive at the skin in this mode.</strong> " + lead +
+        "the arithmetic puts about " + temp(T) + " into the flow, and carried by the metric the hull is not the thing shoving that air aside. Alcubierre puts the harsh conditions at the bubble wall instead, where the radial coordinate approaches the bubble radius, and describes the region around the craft as quiet when the wall is thick and the bubble is larger than the ship. The number to chase moves from a tile rating to a wall thickness.</p>";
+    }
+    if (dm.shield.id === "magsh") {
+      return head + "<strong>A field ahead of the hull, so the requirement changes shape.</strong> " + lead +
+        "the arithmetic puts about " + temp(T) + " into the flow. Above roughly two kilometres a second a good share of that flow is charged, and charge is what a magnetic barrier grips. The neutral remainder still arrives at a skin that holds shape to about " + commas(hull.tmax) +
+        " degrees. Nothing of this kind has flown, so how much of the flow it turns at a given speed and density is the measurement that would settle it, in watts per square centimetre at the wall.</p>";
+    }
+    if (dm.shield.entryV) {
+      var ev = dm.shield.entryV / 1000;
+      var extra = (dm.shield.id === "pica")
+        ? " It is spent on arrival, so a craft that flies the same profile twice carries a second one."
+        : " It comes back and goes again, at the price of inspecting thousands of separate pieces between runs.";
+      if (v <= dm.shield.entryV) {
+        return head + "<strong>Inside what this shielding has flown.</strong> " + lead +
+          "the arithmetic puts about " + temp(T) + " into the flow. That shielding has been flown at " + sig(ev) + " kilometres a second, so the hardware has already been where this mode is asking it to go." + extra +
+          " The summary below counts that same shield against the modes that do not call on it.</p>";
+      }
+      return head + "<strong>Past what this shielding has flown, by " + sig(v / dm.shield.entryV) + " times.</strong> " + lead +
+        "the arithmetic puts about " + temp(T) + " into the flow, against shielding flown at " + sig(ev) +
+        " kilometres a second. Above about two kilometres a second the air comes apart rather than simply compressing, so much of that energy goes into breaking molecules and into light radiated away rather than into the wall: the figure is the heat carried in the flow, and the wall sees a fraction of it. What fraction depends on the nose shape and the density, and the way to settle it is a run at that speed, which is where the ground facilities run out before the flight does.</p>";
+    }
+    var limit = hull.tmax;
+    if (T <= limit) {
+      return head + "<strong>The hull carries the heat here on its own.</strong> " + lead +
+        "the arithmetic puts the flow at about " + temp(T) + ", and the " + hull.name.toLowerCase() + " holds shape to about " + commas(limit) +
+        " degrees: " + temp(limit - T) + " in hand. The same line of arithmetic returns about 120 degrees at Mach 2, against Concorde's nose running to 127 at Mach 2.02 cruise, and about 1,050 degrees at Mach 5, against the SABRE precooler built for around 1,000 at that speed. The shielding picked for this mode is doing other work.</p>";
+    }
+    return head + "<strong>The flow is hotter than this hull holds, so the shielding line is the one to move.</strong> " + lead +
+      "the arithmetic puts about " + temp(T) + " into the flow against a hull that holds shape to about " + commas(limit) +
+      " degrees. Above roughly two kilometres a second much of that energy goes into pulling molecules apart and radiating away rather than into the wall, so the wall sees a fraction, and how big a fraction is a wind tunnel question rather than an arithmetic one. The shelf answers are on the shielding list: a silica tile good to about 1,260 degrees and flown at orbital entry, or an ablator flown at 12.8 kilometres a second and spent on arrival.</p>";
+  }
+
+  function powerLine(dm, r) {
+    var head = '<p class="closing">';
+    if (dm.state === "off") {
+      return head + "<strong>That pick is built for another regime, and the bench says so rather than sizing a plant for it.</strong> " +
+        dm.reg.note + " What does work " + byId(MODES, dm.mode).short + ": " + listWords(worksHere(dm.mode)) + ". " +
+        "Leaving it as it stands means the craft crosses this regime with nothing running, which is what a coasting spacecraft does, and it is why no plant mass for this mode appears in the summary below.</p>";
+    }
+    if (dm.state === "metric") {
+      return head + "<strong>The bench stops at the thrust rating and keeps going on everything else.</strong> " +
+        "A metric does not push, so newtons per kilowatt is the wrong question to put to it and no power plant is sized here. " +
+        "What it does hand a designer is already priced: the craft rides a geodesic, so the acceleration felt on board is zero by construction, and the felt load reduces to the gradient across the cabin. " +
+        "The open figure is the energy the shell asks for, and it has been falling: about ten billion times the mass of everything visible in the universe in Pfenning and Ford's 1997 sum, around 700 kilograms of mass-energy in Harold White's 2011 reshaping, and in 2024 a slower-than-light constant-speed version from Jared Fuchs and colleagues that satisfies all the energy conditions with a shell of ordinary matter and a positive mass. The mass of that shell is the number to watch. " +
+        "Everett and Roman added a second one in 1997: at superluminal speeds the middle of the bubble is cut off from its own leading wall, so control from inside is its own piece of work.</p>";
+    }
+    if (dm.state === "nosource") {
+      return head + "<strong>No measured watts per kilogram exists for " + dm.power.name.toLowerCase() + ", so the bench turns the question around.</strong> " +
+        "With " + dm.push.name.toLowerCase() + " under it " + byId(MODES, dm.mode).short + ", a plant would have to deliver more than <strong>" + sig(dm.needWkg) +
+        " watts for every kilogram of machine</strong> before the craft settles at any size. " +
+        (dm.needWkg < 1000
+          ? "A lithium pack already gives about a thousand, so the bar itself is not the hard part; the cycle is. "
+          : "A lithium pack, the one source here you can buy today, gives about a thousand, so this asks for " + bigTimes(dm.needWkg / 1000) + " that before the cycle question is reached at all. ") +
+        "The Casimir force is measured to about five per cent and nobody disputes it. What nobody has is a loop that comes back around with more than it started with. " +
+        '<a href="zero-point.html">What such a machine would have to do</a>.</p>';
+    }
+    if (!r.settles && !dm.runaway) {
+      var wf = r.worst;
+      return head + "<strong>This mode's own line is not the one doing it.</strong> " +
+        "Sized against the craft as it stands, the plant here comes to " + mass(dm.plant) + ", " + sig(dm.firstFactor * 100) +
+        " per cent of the load it was asked to move, which is a working figure. " +
+        (wf && wf !== dm
+          ? "The craft still does not settle, and the line doing it is " + modeName(wf.mode).toLowerCase() + ": " + wf.push.name.toLowerCase() + ", drawing on " + wf.power.name.toLowerCase() + ", asks for a plant <strong>" + bigTimes(wf.firstFactor) + "</strong> the load it was meant to move. Every plant has to be lifted in every mode, including the ones that never switch it on. "
+          : "The craft still does not settle once every plant has to be lifted in every mode, including the ones that never switch it on. ") +
+        "Move that line and this one closes without being touched. That coupling is the whole cost of carrying more than one mode.</p>";
+    }
+    if (!r.settles) {
+      var factor = dm.firstFactor;
+      if (dm.push.id === "rotors") {
+        return head + "<strong>This one does not settle, and the disc is the line doing it.</strong> " +
+          "Sized for the craft without any plant aboard, a " + state.dia + " metre disc returns " + sig(dm.npkw) + " newtons per kilowatt, so the plant to move " + mass(r.base) +
+          " comes to " + mass(dm.plant) + ", " + (factor < 1 ? sig(factor * 100) + " per cent of" : "<strong>" + bigTimes(factor) + "</strong>") + " the load it was asked to move. " +
+          "Put that plant on board and the disc has to push harder, which drops the newtons per kilowatt again, so each round asks for more than the one before. " +
+          "The way out is more disc or less mass: a wider disc moves a bigger, slower column of air and hovers for less, a lighter hull or a smaller crew asks for less to begin with, and a source with more watts per kilogram works the same seam from the other end.</p>";
+      }
+      return head + "<strong>This one does not settle on its own.</strong> " +
+        "At " + sig(dm.npkw) + " newtons per kilowatt from " + dm.push.name.toLowerCase() + " and " + commas(dm.power.wkg) + " watts per kilogram from the source, " +
+        "the plant needed to move the craft without any plant aboard already weighs <strong>" + bigTimes(factor) + "</strong> what it was meant to move. " +
+        "Add plant to carry the plant and the sum climbs instead of settling, so there is no size at which this build works. " +
+        "The way out is not a bigger saucer: it is a way of pushing that returns more per kilowatt, or a source that gives more watts per kilogram.</p>";
+    }
+    var body = "";
+    if (dm.ceiling !== null && dm.ceilFactor < 1) {
+      body = "<strong>This one runs out of push before it runs out of power.</strong> " +
+        "The sum settles: this mode's plant comes to " + sig(dm.share * 100) + " per cent of everything that leaves the ground, which is fine. " +
+        "But " + dm.push.name.toLowerCase() + " offers " + dm.push.ceil.what + ", which at this size is <strong>" + force(dm.ceiling) +
+        "</strong> against the " + force(dm.thrust) + " this mode asks for. It falls short by <strong>" + bigTimes(1 / dm.ceilFactor) + "</strong>. " +
+        (dm.push.needs ? "It would also want " + dm.push.needs + ". " : "") +
+        "Growing the saucer does not fix it, because the weight grows with the area just as the push does.";
+    } else {
+      body = "<strong>This one settles.</strong> " +
+        "Each kilogram of " + dm.power.name.toLowerCase() + " moves about " + sig(dm.perKg) + " kilograms of craft here, so this mode's plant comes to " +
+        mass(dm.plant) + ", " + sig(dm.share * 100) + " per cent of lift-off mass, and the sum stops climbing. " +
+        (dm.ceiling === null
+          ? "Nothing in the way of pushing caps the force at this size, so the binding line is the power bill: " + power(dm.powerW) + ", " + powerLike(dm.powerW) + ". "
+          : "The push on offer is " + force(dm.ceiling) + " against the " + force(dm.thrust) + " asked for, " + sig(dm.ceilFactor) + " times over. ") +
+        (dm.power.whkg !== null ? "On one load it would run for about " + endurance(dm.power) + ". " : "") +
+        (dm.push.needs ? "It would still want " + dm.push.needs + ". " : "") +
+        "A sum that balances, not a craft anyone has flown.";
+    }
+    if (dm.shield.draw > 0) {
+      body += " The shielding here draws " + power(dm.shield.draw) + " of its own, which is in the figure above.";
+    }
+    return head + body + "</p>";
+  }
+
+  function renderMode(r) {
+    var id = state.active, i, dm = null;
+    for (i = 0; i < r.demands.length; i++) { if (r.demands[i].mode === id) dm = r.demands[i]; }
+    var hull = r.hull;
+
+    var pushFigs = [];
+    if (dm.push.id === "rotors" && dm.npkw) pushFigs.push(["At this diameter", sig(dm.npkw) + " N/kW"]);
+    pushFigs.push([modeName(id), dm.reg.works ? "works here" : "for another regime"]);
+
+    var shieldFigs = [["Carried mass at " + state.dia + " m", massOrNone(dm.shield.areal * r.skin + dm.shield.fixed)]];
+
+    var cards = '<div class="spec-grid">' +
+      card("Power, " + modeName(id).toLowerCase(), dm.power, []) +
+      card("Pushing, " + modeName(id).toLowerCase(), dm.push, pushFigs) +
+      card("Shielding, " + modeName(id).toLowerCase(), dm.shield, shieldFigs) +
+      "</div>";
+
+    var reads = '<div class="readout-row">' +
+      readout("What this mode has to move", mass(r.total),
+        (r.settles ? "Hull, crew, all the shielding and every plant aboard. " : "Hull, crew and shielding, before any plant is added. ") + massLike(r.total) + ".");
+
+    if (dm.state === "sized") {
+      reads += readout("Push needed", force(dm.thrust),
+        (id === "air" ? "Holding itself up at 9.81 metres per second squared." : "Moving that mass at " + gWord(state.acc) + ".")) +
+        readout("Power to do it", power(dm.powerW), powerLike(dm.powerW) + ".") +
+        readout("Power plant", mass(dm.plant),
+          r.settles ? sig(dm.share * 100) + " per cent of everything that leaves the ground." : "First pass, sized against the craft as it stands.");
+    } else if (dm.state === "nosource") {
+      reads += readout("Push needed", force(dm.thrust), "Worked from the mass above.") +
+        readout("Power to do it", power(dm.powerW), powerLike(dm.powerW) + ".") +
+        readout("What a plant would need", sig(dm.needWkg) + " W/kg", "Below that figure a plant does not hold up its own weight, so the craft grows without end.");
+    } else if (dm.state === "metric") {
+      reads += readout("Push needed", "not that kind", "A metric carries the craft, so newtons per kilowatt is the wrong question.") +
+        readout("Power to do it", "no figure", "There is no thrust rating to divide.") +
+        readout("Power plant", "none sized", "Nothing to size it against yet. The open figure is the shell's mass-energy.");
+    } else {
+      reads += readout("Push in this mode", "none from this pick", dm.reg.note) +
+        readout("Power to do it", "none drawn", "No plant is sized, so this mode adds no plant mass.") +
+        readout("Power plant", "none sized", "The craft crosses this regime with nothing running.");
+    }
+
+    reads += readout("What the crew feel", gWord(feltG(dm)),
+      dm.push.kind === "surface" ? "A push through a face, carried by the body." : "A force through the whole volume; only the gradient is felt.");
+
+    if (id === "air") {
+      var T = TAMB + (state.speed * 1000) * (state.speed * 1000) / CP2;
+      reads += readout("Flow at cruise", temp(T),
+        "Stratospheric air at minus 55, plus the rise from bringing the flow to rest at " + sig(state.speed) + " km/s, about Mach " + sig(state.speed * 1000 / ASOUND) + ". Heat carried in the flow, not the wall temperature.");
+    }
+    reads += "</div>";
+
+    var bars = "";
+    if (dm.state === "sized" && dm.ceiling !== null) {
+      var top = Math.max(dm.ceiling, dm.thrust);
+      bars = '<p class="gap-caption">What this mode asks for against what the push offers</p>' +
+        barRow("What it asks", force(dm.thrust), 100 * dm.thrust / top, true) +
+        barRow("What it offers", force(dm.ceiling), 100 * dm.ceiling / top, false);
+    }
+
+    var lines = powerLine(dm, r) + crewLine(dm) + (id === "air" ? heatLine(dm, hull) : "");
+    els.modeOut.innerHTML = cards + reads + bars + lines;
+  }
+
+  function usedIn(modes, id) {
+    for (var i = 0; i < modes.length; i++) { if (modes[i] === id) return true; }
+    return false;
+  }
+
+  function rowCells(modes) {
+    var h = "", i;
+    for (i = 0; i < MODES.length; i++) {
+      h += usedIn(modes, MODES[i].id)
+        ? '<td class="yes">earning its keep</td>'
+        : '<td class="idle">along for the ride</td>';
+    }
+    return h;
+  }
+
+  function renderCraft(r) {
+    var i, rows = "", all = ["air", "vac", "carry"];
+    rows += "<tr><td>" + r.hull.name + " skin, " + sig(r.skin) + " m2</td><td>" + mass(r.hullMass) + "</td>" + rowCells(all) + "</tr>";
+    rows += "<tr><td>Crew and cargo</td><td>" + mass(r.pay) + "</td>" + rowCells(all) + "</tr>";
+    for (i = 0; i < r.shields.length; i++) {
+      rows += "<tr><td>" + r.shields[i].obj.name + "</td><td>" + massOrNone(r.shields[i].mass) + "</td>" + rowCells(r.shields[i].modes) + "</tr>";
+    }
+    for (i = 0; i < r.plants.length; i++) {
+      rows += "<tr><td>" + r.plants[i].name + ", power plant</td><td>" +
+        (r.settles ? mass(r.plants[i].plant) : "first pass, " + mass(r.plants[i].plant)) +
+        "</td>" + rowCells(r.plants[i].modes) + "</tr>";
+    }
+
+    var table = '<div class="table-scroll"><table class="data-table"><thead><tr>' +
+      "<th>What is carried</th><th>Mass</th><th>In air</th><th>Off the air</th><th>Carried</th>" +
+      "</tr></thead><tbody>" + rows + "</tbody></table></div>";
+
+    // what each mode carries but does not switch on. When the sum does not
+    // settle the plant figures are a first pass, so only the shielding is
+    // counted here and the plant line is reported separately.
+    var worst = { id: null, kg: -1 };
+    for (var k = 0; k < MODES.length; k++) {
+      var mid2 = MODES[k].id, sum = 0;
+      for (i = 0; i < r.shields.length; i++) if (!usedIn(r.shields[i].modes, mid2)) sum += r.shields[i].mass;
+      if (r.settles) {
+        for (i = 0; i < r.plants.length; i++) if (!usedIn(r.plants[i].modes, mid2)) sum += r.plants[i].plant;
+      }
+      if (sum > worst.kg) worst = { id: mid2, kg: sum };
+    }
+
+    var reads = '<div class="readout-row">' +
+      readout("Lift-off mass", mass(r.total),
+        (r.settles ? "Everything aboard, with the plants sized to carry themselves. " : "Hull, crew and shielding, before any plant is added, because the sum does not settle. ") + massLike(r.total) + ".") +
+      readout("Hull and crew", mass(r.hullMass + r.pay), sig(100 * (r.hullMass + r.pay) / r.total) + " per cent of the total.") +
+      readout("Shielding, all modes", massOrNone(r.shieldMass),
+        r.shields.length + (r.shields.length === 1 ? " choice, shared across the three modes." : " different choices, each built once.")) +
+      readout("Power plants, all modes", r.settles ? mass(r.plantMass) : "does not settle",
+        r.plants.length === 0
+          ? "No mode sized a plant."
+          : (r.settles
+            ? r.plants.length + (r.plants.length === 1 ? " plant, shared." : " separate plants, one per source picked.")
+            : r.plants.length + (r.plants.length === 1 ? " plant" : " plants") + ", each of which has to be lifted by all three modes.")) +
+      "</div>";
+
+    var top = r.settles ? Math.max(r.total, 1) : Math.max(r.base, 1);
+    var bars = '<p class="gap-caption">' + (r.settles ? "Where the lift-off mass sits" : "The craft before any plant is added") + "</p>" +
+      barRow("Hull skin", mass(r.hullMass), 100 * r.hullMass / top, false) +
+      barRow("Crew and cargo", mass(r.pay), 100 * r.pay / top, false) +
+      barRow("Shielding", massOrNone(r.shieldMass), 100 * r.shieldMass / top, true);
+    if (r.settles) bars += barRow("Power plants", mass(r.plantMass), 100 * r.plantMass / top, true);
+
+    var pct = 100 * worst.kg / r.total;
+    var closing = '<p class="closing">';
+    if (worst.kg <= 0) {
+      closing += "<strong>Nothing aboard sits out a regime.</strong> Every shield" + (r.settles ? " and every plant" : "") +
+        " on the craft is picked by more than one mode, or by all three, so no hardware is carried for a regime it is not in. That is the cheapest end of multi-mode design, and it is bought by making the modes agree, which usually means one of them is working outside its best range. Change a pick in one mode and watch this line move.</p>";
+    } else {
+      closing += "<strong>" + mass(worst.kg) + " of the " + mass(r.total) + " on the craft is hardware for a regime it is not in.</strong> " +
+        "The heaviest case is " + modeName(worst.id).toLowerCase() + ", where " + sig(pct) + " per cent of the mass is " +
+        (r.settles ? "shielding or plant" : "shielding") + " that earns nothing until the mode changes. " +
+        "That is not waste in itself: the same figure is why SABRE carries a precooler it shuts down at Mach 5, why a submarine carries diesels it has no oxygen to run submerged, and why Dawn carried hydrazine thrusters it barely used alongside the ion set that did the eleven kilometres a second. " +
+        "The design question is whether the mass buys more than a mode that does without it, and that comparison is a slider away.</p>";
+    }
+    if (!r.settles) {
+      var w = r.worst;
+      closing += '<p class="closing">' +
+        "<strong>The power line does not settle as it stands, so the plant masses above are a first pass.</strong> " +
+        "Every plant has to be lifted in every mode, including the modes that never switch it on, so the sum runs round again each time one is added. " +
+        (w ? "The line doing it is " + modeName(w.mode).toLowerCase() + ": " + w.push.name.toLowerCase() + ", drawing on " + w.power.name.toLowerCase() + ", asks for a plant <strong>" + bigTimes(w.firstFactor) + "</strong> the load it was meant to move. " : "") +
+        "The three seams are the same three every time: more push per kilowatt, more watts per kilogram, or less mass to move.</p>";
+    }
+    els.craftOut.innerHTML = reads + table + bars + closing;
+  }
+
+  function render() {
+    els.diaVal.textContent = state.dia + " m";
+    els.payVal.textContent = commas(state.pay) + " kg";
+    els.accVal.textContent = gWord(state.acc);
+    els.evenVal.textContent = evenWord();
+    els.speedVal.textContent = sig(state.speed) + " km/s";
+    var r = solveCraft();
+    renderMode(r);
+    renderCraft(r);
+  }
+
+  /* ---------------- controls ---------------- */
+
+  function syncFromState() {
+    els.hull.value = state.hull;
+    els.dia.value = state.dia;
+    els.pay.value = state.pay;
+    els.acc.value = state.acc;
+    els.even.value = state.even;
+    els.speed.value = state.speed;
+    for (var i = 0; i < MODES.length; i++) {
+      var id = MODES[i].id;
+      modeEls[id].power.value = state[id].power;
+      modeEls[id].push.value = state[id].push;
+      modeEls[id].shield.value = state[id].shield;
+    }
+  }
+
+  function showMode(id) {
+    state.active = id;
+    for (var i = 0; i < MODES.length; i++) {
+      var m = MODES[i].id, on = (m === id);
+      modeEls[m].tab.setAttribute("aria-selected", on ? "true" : "false");
+      modeEls[m].tab.tabIndex = on ? 0 : -1;
+      if (on) { modeEls[m].panel.removeAttribute("hidden"); }
+      else { modeEls[m].panel.setAttribute("hidden", "hidden"); }
+    }
+    render();
+  }
+
+  function applyPreset(key) {
+    var p = PRESETS[key];
+    if (!p) return;
+    state.hull = p.hull; state.dia = p.dia; state.pay = p.pay;
+    state.acc = p.acc; state.even = p.even; state.speed = p.speed;
+    for (var i = 0; i < MODES.length; i++) {
+      var id = MODES[i].id;
+      state[id] = { power: p[id].power, push: p[id].push, shield: p[id].shield };
+    }
+    syncFromState();
+    render();
+  }
+
+  var buttons = document.querySelectorAll("[data-preset]");
+  for (var b = 0; b < buttons.length; b++) {
+    buttons[b].addEventListener("click", function (e) {
+      applyPreset(e.currentTarget.getAttribute("data-preset"));
+    });
+  }
+
+  els.hull.addEventListener("change", function () { state.hull = els.hull.value; render(); });
+  els.dia.addEventListener("input", function () { state.dia = Number(els.dia.value); render(); });
+  els.pay.addEventListener("input", function () { state.pay = Number(els.pay.value); render(); });
+  els.acc.addEventListener("input", function () { state.acc = Number(els.acc.value); render(); });
+  els.even.addEventListener("input", function () { state.even = Number(els.even.value); render(); });
+  els.speed.addEventListener("input", function () { state.speed = Number(els.speed.value); render(); });
+
+  (function wireModes() {
+    for (var i = 0; i < MODES.length; i++) {
+      (function (id) {
+        var e = modeEls[id];
+        e.power.addEventListener("change", function () { state[id].power = e.power.value; render(); });
+        e.push.addEventListener("change", function () { state[id].push = e.push.value; render(); });
+        e.shield.addEventListener("change", function () { state[id].shield = e.shield.value; render(); });
+        e.tab.addEventListener("click", function () { showMode(id); });
+        e.tab.addEventListener("keydown", function (ev) {
+          var k = ev.key, n = -1, j;
+          for (j = 0; j < MODES.length; j++) { if (MODES[j].id === id) n = j; }
+          var to = -1;
+          if (k === "ArrowRight" || k === "ArrowDown") to = (n + 1) % MODES.length;
+          else if (k === "ArrowLeft" || k === "ArrowUp") to = (n - 1 + MODES.length) % MODES.length;
+          else if (k === "Home") to = 0;
+          else if (k === "End") to = MODES.length - 1;
+          if (to >= 0) {
+            ev.preventDefault();
+            showMode(MODES[to].id);
+            modeEls[MODES[to].id].tab.focus();
+          }
+        });
+      })(MODES[i].id);
+    }
+  })();
+
+  applyPreset("three");
+  showMode("air");
+})();
+
+</script>
 </body>
 </html>
