@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tesla, Recalculated · Extreme Matter Atlas</title>
+<meta name="description" content="Tesla published enough figures for anyone to recompute the physics: the Earth's resonance, the magnifying transmitter, wireless power, the bladeless turbine and corona, worked through with the sums shown.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="tesla"] { --accent: #fde047; --accent2: #38bdf8; }
+
+body[data-page="tesla"] .hero {
+  background-image:
+    repeating-linear-gradient(90deg, rgba(253, 224, 71, 0.07) 0 1px, transparent 1px 27px),
+    repeating-linear-gradient(0deg, rgba(56, 189, 248, 0.05) 0 1px, transparent 1px 27px);
+}
+
+/* ---- the worked block ---- */
+body[data-page="tesla"] .recalc {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 22px 22px 24px; margin: 22px 0;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+}
+body[data-page="tesla"] .rc-head {
+  display: flex; gap: 13px; align-items: baseline; flex-wrap: wrap; margin-bottom: 4px;
+}
+body[data-page="tesla"] .rc-num {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em;
+  color: var(--accent); padding: 3px 11px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+body[data-page="tesla"] .rc-head h3 { margin: 0; font-size: 19px; line-height: 1.25; }
+
+body[data-page="tesla"] .rc-claim {
+  border-left: 3px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 8%, var(--bg2));
+  border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 15px 0 16px;
+}
+body[data-page="tesla"] .rc-claim p { font-size: 15.5px; color: var(--ink); max-width: none; }
+body[data-page="tesla"] .rc-claim cite {
+  display: block; margin-top: 9px; font-style: normal;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+body[data-page="tesla"] .rc-work {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px; margin: 14px 0 6px;
+}
+@media (max-width: 760px) { body[data-page="tesla"] .rc-work { grid-template-columns: 1fr; } }
+body[data-page="tesla"] .rc-box {
+  border: 1px solid var(--line-bright); border-radius: 13px;
+  padding: 13px 15px; background: var(--bg2); min-width: 0;
+}
+body[data-page="tesla"] .rc-lab {
+  display: block; font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+}
+body[data-page="tesla"] .rc-box code {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--ink);
+  display: block; overflow-x: auto; line-height: 1.7; white-space: nowrap; padding-bottom: 3px;
+}
+body[data-page="tesla"] .rc-box ul { list-style: none; font-size: 14px; color: var(--muted); }
+body[data-page="tesla"] .rc-box li { padding: 3px 0; }
+body[data-page="tesla"] .rc-box li b {
+  color: var(--ink); font-weight: 600; font-family: var(--font-mono); font-size: 13px;
+}
+body[data-page="tesla"] .recalc > p { font-size: 15.5px; max-width: none; }
+body[data-page="tesla"] .recalc .stat-row { margin: 18px 0 16px; }
+body[data-page="tesla"] .recalc .stat .num { font-size: clamp(19px, 2.4vw, 25px); }
+body[data-page="tesla"] .recalc .table-scroll { margin: 16px 0; }
+
+/* ---- the bench ---- */
+body[data-page="tesla"] .bench-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;
+}
+@media (max-width: 940px) { body[data-page="tesla"] .bench-grid { grid-template-columns: 1fr; } }
+
+body[data-page="tesla"] .bench-panel {
+  border: 1px solid var(--line-bright); border-radius: 18px; padding: 20px;
+  background: radial-gradient(130% 130% at 50% 0%, var(--bg2), var(--bg));
+  box-shadow: inset 0 0 60px -34px color-mix(in srgb, var(--accent) 45%, transparent);
+  min-width: 0;
+}
+body[data-page="tesla"] .bench-panel h3 { margin-bottom: 4px; }
+body[data-page="tesla"] .bench-panel > p { font-size: 14.5px; color: var(--muted); }
+
+body[data-page="tesla"] .formula {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--ink);
+  border: 1px dashed var(--line-bright); border-radius: 12px;
+  padding: 11px 14px; margin: 14px 0; background: color-mix(in srgb, var(--accent) 5%, transparent);
+  overflow-x: auto; line-height: 1.8;
+}
+body[data-page="tesla"] .formula b { color: var(--accent); font-weight: 600; }
+body[data-page="tesla"] .formula span { display: block; white-space: nowrap; }
+
+body[data-page="tesla"] .slide { display: block; margin: 16px 0; }
+body[data-page="tesla"] .slide label {
+  display: block; font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+}
+body[data-page="tesla"] .slide .now {
+  display: block; font-family: var(--font-mono); font-size: 14px; color: var(--accent); margin-bottom: 2px;
+}
+body[data-page="tesla"] input[type="range"] {
+  width: 100%; height: 44px; padding: 19px 0; box-sizing: border-box;
+  background-clip: content-box;
+}
+body[data-page="tesla"] input[type="range"]::-webkit-slider-thumb { width: 22px; height: 22px; }
+body[data-page="tesla"] input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; }
+
+body[data-page="tesla"] .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+body[data-page="tesla"] .preset-row .btn {
+  padding: 10px 15px; font-size: 13.5px; min-height: 44px; display: inline-flex; align-items: center;
+}
+body[data-page="tesla"] .preset-lab {
+  display: block; font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin: 18px 0 2px;
+}
+
+body[data-page="tesla"] .readout {
+  font-family: var(--font-mono); font-size: 14px; color: var(--ink); line-height: 1.75;
+  padding: 13px 16px; border: 1px solid var(--line-bright); border-radius: 13px;
+  background: var(--panel2); margin: 16px 0;
+}
+body[data-page="tesla"] .readout b { color: var(--accent); font-weight: 600; }
+body[data-page="tesla"] .readout i { font-style: normal; color: var(--accent2); font-weight: 600; }
+body[data-page="tesla"] .readout span { display: block; }
+
+body[data-page="tesla"] .frow {
+  display: grid; grid-template-columns: 132px 1fr 74px; gap: 10px; align-items: center;
+  margin: 8px 0; font-size: 13.5px;
+}
+body[data-page="tesla"] .frow .who {
+  font-weight: 600; line-height: 1.25; font-size: 13px;
+}
+body[data-page="tesla"] .frow .val {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); text-align: right;
+}
+body[data-page="tesla"] .ftrack {
+  position: relative; height: 16px; border-radius: 999px; overflow: hidden;
+  background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 9)), var(--bg2);
+  border: 1px solid var(--line);
+}
+body[data-page="tesla"] .ftrack .bar { height: 100%; border-radius: 999px 0 0 999px; }
+body[data-page="tesla"] .ftrack .bar.ref {
+  background: linear-gradient(90deg, var(--line-bright), var(--muted)); box-shadow: none; opacity: 0.9;
+}
+body[data-page="tesla"] .fscale {
+  display: flex; justify-content: space-between; margin-top: 7px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+}
+@media (max-width: 560px) { body[data-page="tesla"] .frow { grid-template-columns: 96px 1fr 64px; } }
+
+body[data-page="tesla"] .mini-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 14px 0 4px; }
+body[data-page="tesla"] .mini-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); padding: 8px 10px 8px 0;
+  border-bottom: 1px solid var(--line-bright);
+}
+body[data-page="tesla"] .mini-table td {
+  padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 13px;
+}
+body[data-page="tesla"] .mini-table td:first-child { font-family: var(--font-body); font-size: 13.5px; }
+body[data-page="tesla"] .mini-table tr:last-child td { border-bottom: 0; }
+body[data-page="tesla"] .mini-table .hit { color: var(--accent); }
+
+/* ---- record and gap tables ---- */
+body[data-page="tesla"] .data-table td.figure {
+  font-family: var(--font-mono); font-size: 13px; white-space: nowrap;
+}
+body[data-page="tesla"] .data-table td.wide { min-width: 220px; }
+body[data-page="tesla"] .src-list a { overflow-wrap: anywhere; }
+
+body[data-page="tesla"] .record {
+  display: grid; grid-template-columns: 128px 1fr; gap: 18px;
+  padding: 16px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="tesla"] .record:last-child { border-bottom: 0; }
+body[data-page="tesla"] .record .when {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent);
+  line-height: 1.4; padding-top: 3px;
+}
+body[data-page="tesla"] .record p { font-size: 15px; color: var(--muted); max-width: none; }
+body[data-page="tesla"] .record p strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="tesla"] .record { grid-template-columns: 1fr; gap: 4px; }
+}
+</style>
+</head>
+<body data-page="tesla">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">His figures · the formulas · the working</span>
+      <h1 class="display">Tesla, Recalculated</h1>
+      <p class="lede">Much of Nikola Tesla's later work is not in public hands. What is in public hands is a pile of <strong>numbers he published himself</strong>: patent specifications, signed articles, a laboratory notebook and a technical paper. Numbers can be checked. So here they are, run through the formulas, with the arithmetic shown at every step. Where the sums close, the working says so. Where they do not close with what a 1900 workshop could buy, the shortfall is written as an engineering figure with units on it. No belief is needed from anyone, and none is asked for.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">7.49 Hz</span><span class="lbl">one wave wrapped once round the planet at light speed, against the 7.83 hertz the Earth's cavity is measured at</span></div>
+        <div class="stat"><span class="num">0.07%</span><span class="lbl">how closely his stated propagation speed of 471,240 km/s matches &pi;/2 times the speed of light</span></div>
+        <div class="stat"><span class="num">54.24 kHz</span><span class="lbl">what his own notebook capacitance and coil figures give, against the 50,000 per second he published</span></div>
+        <div class="stat"><span class="num">43.6%</span><span class="lbl">the turbine efficiency his own reported steam consumption supports, from a single 1911 test line</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What is available, and <span class="hue">what is not</span></h2>
+      <p>Before any arithmetic, the record of what happened to the papers. Reported as record: who did what, when, and in what document.</p>
+
+      <div class="panel">
+        <div class="record">
+          <span class="when">7 January 1943</span>
+          <div><p>Tesla dies in room 3327 of the Hotel New Yorker. His body is found on the morning of <strong>8 January</strong>, with death recorded as the previous day.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">Within two days</span>
+          <div><p>Several trunks of papers, records and equipment are removed from the room by the <strong>Office of Alien Property Custodian</strong>, a wartime agency of the United States Department of Justice. The material goes to the Manhattan Storage and Warehouse Company, where some of his property had already been in store since the 1930s. The warehouse record describes four men depositing almost two truckloads: furniture, 30 barrels, and boxes of papers. Around <strong>80 trunks</strong> are recorded among his effects. The Federal Bureau of Investigation's later statement is that it was not involved in searching the effects and never had possession of the papers.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">January 1943</span>
+          <div><p>An American court awards custody of the property to <strong>Sava Kosanovic</strong>, son of Tesla's sister Marica.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">26 to 27 January 1943</span>
+          <div><p><strong>John George Trump</strong>, professor of electrical engineering at the Massachusetts Institute of Technology, examines the stored material at the warehouse. The record names those present with him: John Newington of the New York office of the Office of Alien Property, Charles Hedetniemi as its Washington representative, Willis George of the Office of Naval Intelligence, and Edward Palmer and John Corbett of the United States Marine Reserves. The warehouse floor manager, Michael King, reported that photographs were taken and microfilm equipment was in use.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">30 January 1943</span>
+          <div><p>Trump's report is filed from MIT under Technical Aids, Division 14 of the National Defense Research Committee. The wording is narrower than the summary usually attached to it. He writes that Tesla's <strong>"thoughts and efforts during at least the past 15 years were primarily of a speculative, philosophical, and somewhat promotional character"</strong> and did <strong>"not include new, sound, workable principles or methods for realizing such results"</strong>. The assessment addresses roughly the last fifteen years and the question of whether the material would be a hazard in other hands. It is not a review of the patents, the notebooks or the turbine work, and it is a judgement written in three days on material spanning a career.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">September 1951</span>
+          <div><p>The Nikola Tesla Museum's own account: <strong>"Packed in sixty packages, suitcases, metal trunks and barrels, the legacy of Nikola Tesla arrived on the ship Serbia in the port of Rijeka in September, 1951."</strong> Other accounts date the release to 1952, after a United States court ruling. Both datings circulate; the museum's is the one from the receiving end.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">1952 to 1955</span>
+          <div><p>The museum is founded by resolution of the Yugoslav Government on 5 December 1952 and opens to the public on 20 October 1955. Tesla's ashes are placed on display in 1957.</p></div>
+        </div>
+        <div class="record">
+          <span class="when">Now</span>
+          <div><p>The Belgrade archive holds <strong>more than 160,000 original documents</strong>, over 1,200 technical exhibits, more than 1,500 photographs and glass plates, and over 1,000 plans and drawings. A second museum-side count gives 164,000 documents in 548 boxes; the difference is a cataloguing count. The archive was inscribed on the UNESCO Memory of the World Register in 2003. The 1935 paper on projecting concentrated energy through the natural media is in it.</p></div>
+        </div>
+      </div>
+
+      <p>The counting gap is the piece worth stating plainly, as a number rather than a story. Around 80 trunks were recorded at seizure. Sixty packages arrived in Belgrade. That is <strong>a counting discrepancy of about twenty containers</strong> between two inventories taken eight years and one ocean apart, by different people using different units, and it is what the phrase "the missing papers" refers to. What the difference contains is not on any list that has been published.</p>
+
+      <p>Everything recomputed below comes from documents that were already public before January 1943, or from the Belgrade archive. The figures fall into four kinds and they are kept apart in the working: <strong>patent specifications</strong>, whose text is fixed and quotable; <strong>his own signed articles and lectures</strong>; the <strong>Colorado Springs Notes of 1899 to 1900</strong>, which are working laboratory books rather than published claims, so the numbers in them are measurements and running sums he made for himself; and <strong>press reports</strong> from 1911 onwards, where the figures are as printed by journalists, sometimes inside quotation marks and sometimes not. Each block below says which kind it is drawing on.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The Earth <span class="hue">as a resonator</span></h2>
+      <p>Resonance is the habit a system has of preferring certain rates of wobble over all others, the way a guitar string of a given length sounds one note rather than any note. Tesla put a figure on the Earth's preferred rate somewhere between 1899 and 1905. Winfried Otto Schumann, at the Technical University of Munich, predicted the same kind of resonance on theoretical grounds in 1952, and Martin Balser and Charles Wagner measured it at MIT Lincoln Laboratory in 1960. Three numbers, three sources, all recomputable. Set them side by side.</p>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">01</span><h3>One wave round the world.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"The wave or wave-train should continue for a certain interval of time, which I have estimated to be not less than one-twelfth or probably 0.08484 of a second and which is taken in passing to and returning from the region diametrically opposite the pole over the earth's surface with a mean velocity of about four hundred and seventy-one thousand two hundred and forty kilometers per second&hellip; The lowest frequency would appear to be six per second, in which case there will be but one node, at or near the ground-plate."</p>
+          <cite>United States patent 787,412, filed 16 May 1900, issued 18 April 1905</cite>
+        </blockquote>
+        <p>The simplest possible statement of a planet as a resonator: fit exactly one wave around it. Frequency is speed divided by wavelength, and here the wavelength is the whole way round.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>f = v &divide; (2 &pi; R)</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>mean radius R = <b>6,371 km</b></li>
+              <li>mean circumference = <b>40,030 km</b>, one lap of the planet</li>
+              <li>equatorial circumference = <b>40,075 km</b></li>
+              <li>light speed v = <b>299,792.458 km/s</b>, seven and a half laps every second</li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">7.489 Hz</span><span class="lbl">from the mean circumference</span></div>
+          <div class="stat"><span class="num">7.481 Hz</span><span class="lbl">from the equatorial circumference</span></div>
+          <div class="stat"><span class="num">7.83 Hz</span><span class="lbl">the measured fundamental of the Earth's cavity</span></div>
+          <div class="stat"><span class="num">4.35%</span><span class="lbl">how far the one-wave figure sits below the measurement</span></div>
+        </div>
+        <p>Run it the other way and it is neater still. A wave at 7.83 hertz travelling at light speed is <strong>38,288 kilometres long</strong>, against a circumference of 40,030 kilometres. The measured fundamental is very nearly one wave round the world, within four and a half per cent, which is exactly the geometric picture patent 787,412 describes. The arithmetic that gets there is one division.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">02</span><h3>Five numbers for the same frequency.</h3></div>
+        <p>The textbook treatment models the space between the ground and the lower edge of the ionosphere, the electrically conducting layer of the upper atmosphere, as a hollow shell with perfectly conducting walls. That gives a ladder of allowed rates, one for each pattern the shell will hold.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>f&#8345; = (c &divide; 2 &pi; a) &times; &radic;(n(n+1))</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>shell radius a = <b>6,371 km</b></li>
+              <li>n = <b>1 to 5</b>, the pattern number</li>
+              <li>walls taken as <b>perfect conductors</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Pattern</th><th>Perfect shell</th><th>Measured</th><th>Difference</th></tr></thead>
+            <tbody>
+              <tr><td class="figure">n = 1</td><td class="figure">10.591 Hz</td><td class="figure">7.83 Hz</td><td>the shell figure is 35.3 per cent high</td></tr>
+              <tr><td class="figure">n = 2</td><td class="figure">18.345 Hz</td><td class="figure">14.3 Hz</td><td>28.3 per cent high</td></tr>
+              <tr><td class="figure">n = 3</td><td class="figure">25.943 Hz</td><td class="figure">20.8 Hz</td><td>24.7 per cent high</td></tr>
+              <tr><td class="figure">n = 4</td><td class="figure">33.493 Hz</td><td class="figure">27.3 Hz</td><td>22.7 per cent high</td></tr>
+              <tr><td class="figure">n = 5</td><td class="figure">41.020 Hz</td><td class="figure">33.8 Hz</td><td>21.4 per cent high</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The measured set used here is the one commonly quoted at 7.83, 14.3, 20.8, 27.3 and 33.8 hertz. Balser and Wagner's own 1960 readings came out slightly different, at 7.8, 14.1 and 20.3 hertz for the first three, and both sets circulate; the conventions differ by a fraction of a hertz and the picture is the same either way.</p>
+        <p>Now put every figure for the fundamental in one column and the result is the ordering.</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Where the number comes from</th><th>Fundamental</th><th>Against the measurement</th></tr></thead>
+            <tbody>
+              <tr><td class="wide">Patent 787,412, his own rule applied to his own transit time: 1 &divide; (2 &times; 0.08484 s)</td><td class="figure">5.893 Hz</td><td>24.7 per cent low</td></tr>
+              <tr><td class="wide">Patent 787,412, as he wrote it: "six per second"</td><td class="figure">6.000 Hz</td><td>23.4 per cent low</td></tr>
+              <tr><td class="wide">One wave round the circumference at light speed</td><td class="figure">7.489 Hz</td><td>4.4 per cent low</td></tr>
+              <tr><td class="wide">Balser and Wagner, MIT Lincoln Laboratory, 1960</td><td class="figure">7.8 Hz</td><td>the measurement</td></tr>
+              <tr><td class="wide">Commonly quoted modern value</td><td class="figure">7.83 Hz</td><td>the measurement</td></tr>
+              <tr><td class="wide">Perfectly conducting shell, n = 1</td><td class="figure">10.591 Hz</td><td>35.3 per cent high</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The two calculated figures err in opposite directions and by comparable amounts, and the measurement sits between them. The textbook figure overshoots because its upper wall is a perfect conductor and the real ionosphere is lossy and finite, which pulls the observed rate down. Tesla's six per second undershoots. The plainest arithmetic in the set, speed divided by circumference, lands closest of all.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">03</span><h3>The patent's four numbers check against each other.</h3></div>
+        <p>Patent 787,412 states a propagation speed, a transit time, a lowest frequency and a band of observed wavelengths. Those four can be tested against one another without any outside data at all, which is the cleanest kind of check available: it needs nothing but the document.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>ratio = v &divide; c<br>T = circumference &divide; v<br>f = 1 &divide; (2 T)<br>f = v &divide; &lambda;</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs, all from the patent</span>
+            <ul>
+              <li>v = <b>471,240 km/s</b>, about 11.8 laps of the planet a second</li>
+              <li>transit time = <b>0.08484 s</b>, or "not less than one-twelfth"</li>
+              <li>lowest frequency = <b>six per second</b></li>
+              <li>observed wavelengths <b>25 to 70 km</b>, frequency ceiling <b>20,000 per second</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">1.5719</span><span class="lbl">his velocity divided by the speed of light, against &pi;/2 = 1.5708, agreeing to 0.07 per cent</span></div>
+          <div class="stat"><span class="num">0.08488 s</span><span class="lbl">40,000 km at his velocity, against the 0.08484 s he wrote, agreeing to 0.05 per cent</span></div>
+          <div class="stat"><span class="num">6.000 Hz</span><span class="lbl">one over twice one-twelfth of a second, exactly his stated lowest frequency</span></div>
+          <div class="stat"><span class="num">6,732 to 18,850 Hz</span><span class="lbl">his wavelength band at his own velocity, under his stated 20,000 ceiling</span></div>
+        </div>
+        <p>The document is internally consistent to better than a tenth of a per cent. His velocity is &pi;/2 times the speed of light to five figures, his transit time is one full circumference at that velocity, his six per second is one over twice that transit, and his working band sits just inside the ceiling he gives. Whatever premise produced the factor of &pi;/2, everything downstream of it is exact arithmetic.</p>
+        <p>One thing the same document does, and it is worth naming rather than smoothing over: it describes <strong>two regimes at once</strong>. The six per second belongs to the whole-Earth mode. The 25 to 70 kilometre wavelengths belong to the apparatus, and they sit about 1,100 times higher in frequency. Both statements are in the same specification, and they are not the same system.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The transmitter, <span class="hue">from his own dimensions</span></h2>
+      <p>The Colorado Springs Notes give conductor lengths, turn counts, capacitances and inductances. Capacitance is the ability of a pair of surfaces to hold charge, measured in farads; inductance is the ability of a coil to store energy in its magnetic field, measured in henries, and Tesla writes it in centimetres, which is the old unit where one centimetre equals one nanohenry. Those figures are enough to compute an operating frequency two independent ways.</p>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">04</span><h3>The quarter-wave rule, worked in his own example.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"A frequency of nine hundred and twenty-five per second would maintain nine hundred and twenty-five stationary waves in a circuit one hundred and eighty-five thousand miles long&hellip; each wave would be two hundred miles in length&hellip; I would use a secondary of fifty miles in length."</p>
+          <cite>United States patent 649,621, filed 19 February 1900, issued 15 May 1900</cite>
+        </blockquote>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>&lambda; = v &divide; f<br>quarter wave = v &divide; 4f</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>v = <b>185,000 miles/s</b> = 297,729 km/s</li>
+              <li>f = <b>925 per second</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">200.0 miles</span><span class="lbl">wavelength, exactly the figure he gives</span></div>
+          <div class="stat"><span class="num">50.0 miles</span><span class="lbl">quarter wave, exactly the secondary length he specifies</span></div>
+          <div class="stat"><span class="num">925</span><span class="lbl">waves in a 185,000 mile circuit, exactly his count</span></div>
+          <div class="stat"><span class="num">0.9931</span><span class="lbl">his stated velocity as a fraction of the speed of light</span></div>
+        </div>
+        <p>This one closes on the last digit of all three numbers, and his velocity sits within 0.7 per cent of light speed. It matters beyond itself, because it is the design rule that carries into everything else he built: <strong>the conductor length is a quarter of the wavelength in the system.</strong> Every later structure gets measured against it below.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">05</span><h3>Four jars and a coil give 54.24 kilohertz.</h3></div>
+        <blockquote class="rc-claim">
+          <p>Notebook, 8 October 1899: primary capacity "4 tanks = 4 &times; 0.03816 = 0.15264 mfd"; primary inductance "Lp = 56,400" centimetres.<br>
+          Published, June 1900: "The large coil on the right, discharging strongly, is tuned to the fundamental vibration, which is fifty thousand per second."</p>
+          <cite>Colorado Springs Notes 1899 to 1900 · Century Illustrated Magazine, June 1900</cite>
+        </blockquote>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>f = 1 &divide; (2 &pi; &radic;(L C))</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>L = 56,400 cm = <b>56.4 microhenry</b></li>
+              <li>one tank C = <b>0.03816 microfarad</b></li>
+              <li>four tanks C = <b>0.15264 microfarad</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">108.49 kHz</span><span class="lbl">one tank</span></div>
+          <div class="stat"><span class="num">76.71 kHz</span><span class="lbl">two tanks</span></div>
+          <div class="stat"><span class="num">62.63 kHz</span><span class="lbl">three tanks</span></div>
+          <div class="stat"><span class="num">54.24 kHz</span><span class="lbl">four tanks, against his published 50,000 per second</span></div>
+        </div>
+        <p>An 8.5 per cent close from a notebook capacitance and a notebook inductance, with nothing fitted and nothing adjusted. Landing exactly on 50,000 per second at 56.4 microhenry would need 0.17965 microfarad, which is 4.71 tanks rather than four.</p>
+        <p>His other published figure, "one hundred thousand alternations per second", is the same machine counted in half-swings. An alternation is one half-cycle, so 100,000 alternations is 50,000 complete cycles. The two published numbers are one frequency in two conventions, and the tank arithmetic supports that reading.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">06</span><h3>The coil stack meets the tank at 54 kilohertz.</h3></div>
+        <blockquote class="rc-claim">
+          <p>Notebook, 8 October 1899: secondary wire length "803 meters, namely 17 turns each of a diameter of 15 meters"; extra coil "889 meters, namely 149 turns each of diameter of 1.9 meters"; special series coil "307 meters, namely 160 turns each of diam. of 0.61 meter".</p>
+          <cite>Colorado Springs Notes 1899 to 1900</cite>
+        </blockquote>
+        <p>Apply his own quarter-wave rule to those conductor lengths. A wave travels slower along a coiled wire than through free space, and the ratio between the two is the velocity factor. Solve for the velocity factor each length would need to resonate where the tank puts the drive.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>f = c &divide; (4 &times; length)<br>velocity factor = 4 &times; length &times; f &divide; c</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>secondary <b>803 m</b>, extra coil <b>889 m</b>, series coil <b>307 m</b></li>
+              <li>extra plus series in cascade = <b>1,196 m</b></li>
+              <li>drive frequency from the tank = <b>54.24 kHz</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Conductor</th><th>Quarter-wave frequency at light speed</th><th>Velocity factor needed to sit at 54.24 kHz</th></tr></thead>
+            <tbody>
+              <tr><td>Secondary, 803 m</td><td class="figure">93.3 kHz</td><td class="figure">0.581</td></tr>
+              <tr><td>Extra coil, 889 m</td><td class="figure">84.3 kHz</td><td class="figure">0.643</td></tr>
+              <tr><td>Special series coil, 307 m</td><td class="figure">244.1 kHz</td><td class="figure">low, this one runs elsewhere</td></tr>
+              <tr><td>Extra plus series, 1,196 m</td><td class="figure">62.7 kHz</td><td class="figure">0.866</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A velocity factor of 0.866 is ordinary for a large air-cored helix. So the two independent routes to an operating frequency, one from the capacitance of four jars and the inductance of a loop, the other from the physical length of the coil stack, meet at about 54 kilohertz. That is what a tuned system is supposed to do, and it is the sort of agreement that is difficult to arrange by accident across two pages of a notebook.</p>
+        <div class="note"><strong>A seam in the transcription, left open.</strong> The notes of 5 and 6 October 1899 attach the value 56,400 centimetres both to the primary inductance and to the 17-turn, 15 metre diameter secondary. A single circular turn of that diameter computes to 65 to 78 microhenry depending on the thickness of the wire, which brackets 56.4. Seventeen such turns tightly coupled would be of order 20,700 microhenry, about 367 times larger. The two attributions describe different windings, and the primary reading is the one the arithmetic supports. Which winding the figure belongs to is the thing to settle before recomputing that coil any further.</div>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">07</span><h3>Q, and where twelve million volts comes from.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"This result is produced by the discharge of an electrical oscillator giving twelve million volts."</p>
+          <cite>Century Illustrated Magazine, June 1900. His 1935 paper gives twenty million volts for the same 1899 machine.</cite>
+        </blockquote>
+        <p>Q is the quality factor: how many swings a resonator takes to lose its stored energy, and equally how many times the voltage rises above what the drive alone would give. Start with skin effect, the way alternating current crowds into the outer skin of a conductor and leaves the middle idle.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>&delta; = &radic;(&rho; &divide; &pi; f &mu;&#8320;)<br>Q = &omega;L &divide; R</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>copper, f = <b>54.24 kHz</b>, giving skin depth <b>0.280 mm</b></li>
+              <li>889 m of wire, coil inductance taken as <b>33.6 mH</b></li>
+              <li>&omega;L = <b>11,452 ohm</b></li>
+              <li>a proximity penalty of <b>3 to 5 times</b>, the documented cost when conductor radius exceeds two skin depths</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Wire gauge</th><th>Resistance of 889 m</th><th>Q on skin effect alone</th><th>With the proximity penalty</th></tr></thead>
+            <tbody>
+              <tr><td>No. 20</td><td class="figure">31.86 ohm</td><td class="figure">359</td><td class="figure">72 to 120</td></tr>
+              <tr><td>No. 14</td><td class="figure">12.59 ohm</td><td class="figure">909</td><td class="figure">182 to 303</td></tr>
+              <tr><td>No. 10</td><td class="figure">7.35 ohm</td><td class="figure">1,557</td><td class="figure">311 to 519</td></tr>
+              <tr><td>No. 6</td><td class="figure">4.43 ohm</td><td class="figure">2,587</td><td class="figure">517 to 862</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A working band of <strong>Q of about 300 to 1,500</strong> for a coil of those dimensions. That is the same band as the modern measured ceiling for room-temperature copper: the 2007 MIT self-resonant helix measured 950 plus or minus 50, and industry practice puts a few hundred as typical with about a thousand as the practical top. A coil of the Colorado Springs size sits squarely in it.</p>
+        <p>Now the twelve million volts, two ways.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Single-shot transfer</span><code>V&#8322; = V&#8321; &times; &radic;(C&#8321; &divide; C&#8322;)</code></div>
+          <div class="rc-box"><span class="rc-lab">Sustained excitation</span><code>V&#8322; = &radic;(2 P Q &divide; &omega; C&#8322;)</code></div>
+        </div>
+        <p>The terminal is a 30 inch ball, whose capacitance computes to 42.4 picofarad. The primary is 0.15264 microfarad.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="num">2.40 MV</span><span class="lbl">single-shot from a primary charged to 40 kV, well short of twelve million</span></div>
+          <div class="stat"><span class="num">200 kV</span><span class="lbl">the primary charge a single shot would need to reach 12 MV, storing 3,052 joules</span></div>
+          <div class="stat"><span class="num">11.26 MV</span><span class="lbl">sustained excitation at 611 kW and Q of 1,500, a 6 per cent close on his published figure</span></div>
+          <div class="stat"><span class="num">611 kW</span><span class="lbl">what his own patent figures give: 0.15264 &micro;F at 40 kV, discharged 5,000 times a second, about 200 kettles</span></div>
+        </div>
+        <p>That is the useful distinction, and it falls out of his own numbers without any outside assumption. The twelve million volt figure belongs to <strong>a continuously excited resonator, not a single bang</strong>. Patent 1,119,732, filed in January 1902 and issued in December 1914, is explicitly about changing that transfer timing. The break rate of 5,000 per second and the supply of 40 kilovolts are both his, from patent 645,576, and they are what close the sum.</p>
+        <p>The often-repeated "300 kilowatt input" for the station reaches us as a secondary reconstruction rather than a Tesla sentence. His own patent numbers put the machine between 153 and 611 kilowatts across a charging voltage of 20 to 40 kilovolts, and 300 kilowatts falls inside that range at about 28 kilovolts. The reconstruction sits comfortably with the primary-source figures.</p>
+        <div class="note"><strong>What Q does and does not do.</strong> Resonant rise multiplies voltage. It does not multiply energy, and the energy still has to be supplied at the input. That statement rests on a premise worth naming: Emmy Noether proved in 1918 that energy conservation follows from the equations of motion being unchanged by a shift in time. It is a theorem with a premise, not a decree, and every energy ledger on this page holds exactly as far as that premise does.</div>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The resonance <span class="hue">bench</span></h2>
+      <p>Two of those calculations are worth doing by hand rather than reading. Set a cavity and watch its fundamental move; set a coil and a capacitor and try to land on the figures Tesla published. Every formula is on screen and every constant is the real one.</p>
+
+      <div class="bench-grid">
+
+        <div class="bench-panel">
+          <h3>A cavity, and the rate it prefers</h3>
+          <p>Two ways to compute a resonance for a hollow shell: fit one whole wave round it, or solve the shell properly for its ladder of patterns.</p>
+
+          <div class="formula">
+            <span>one wave round:&nbsp; <b>f = v &divide; (2 &pi; a)</b></span>
+            <span>shell patterns:&nbsp; <b>f&#8345; = (v &divide; 2 &pi; a) &times; &radic;(n(n+1))</b></span>
+          </div>
+
+          <div class="slide">
+            <label for="radiusRange">Cavity radius</label>
+            <span class="now" id="radiusNow">6,371 km</span>
+            <input type="range" id="radiusRange" min="3000" max="9000" step="1" value="6371"
+                   aria-describedby="cavityOut">
+          </div>
+
+          <div class="slide">
+            <label for="speedRange">Wave speed</label>
+            <span class="now" id="speedNow">299,792 km/s &middot; 1.000 &times; light speed</span>
+            <input type="range" id="speedRange" min="500" max="2200" step="1" value="1000"
+                   aria-describedby="cavityOut">
+          </div>
+
+          <div class="readout" id="cavityOut" aria-live="polite">
+            <span>circumference <b id="circOut">40,030 km</b></span>
+            <span>one wave round <b id="oneWaveOut">7.489 Hz</b></span>
+            <span>shell pattern n = 1 <b id="shellOut">10.591 Hz</b></span>
+            <span>measured fundamental <i>7.83 Hz</i></span>
+          </div>
+
+          <div class="frow">
+            <span class="who">One wave round</span>
+            <div class="ftrack"><div class="bar" id="barOne" style="width:16.6%"></div></div>
+            <span class="val" id="valOne">7.49</span>
+          </div>
+          <div class="frow">
+            <span class="who">Shell, n = 1</span>
+            <div class="ftrack"><div class="bar" id="barShell" style="width:23.5%"></div></div>
+            <span class="val" id="valShell">10.59</span>
+          </div>
+          <div class="frow">
+            <span class="who">Measured</span>
+            <div class="ftrack"><div class="bar ref" style="width:17.4%"></div></div>
+            <span class="val">7.83</span>
+          </div>
+          <div class="frow">
+            <span class="who">Patent 787,412</span>
+            <div class="ftrack"><div class="bar ref" style="width:13.3%"></div></div>
+            <span class="val">6.00</span>
+          </div>
+          <div class="fscale"><span>0 Hz</span><span>each tick is 5 Hz</span><span>45 Hz</span></div>
+
+          <table class="mini-table">
+            <caption class="rc-lab" style="text-align:left">Shell patterns against the measured set</caption>
+            <thead><tr><th>Pattern</th><th>Your shell</th><th>Measured</th></tr></thead>
+            <tbody id="modeBody"></tbody>
+          </table>
+
+          <span class="preset-lab" id="cavityPresetLab">Jump to a setting</span>
+          <div class="preset-row" role="group" aria-labelledby="cavityPresetLab">
+            <button type="button" class="btn ghost" data-cav="earth">Earth at light speed</button>
+            <button type="button" class="btn ghost" data-cav="tesla">Tesla's 471,240 km/s</button>
+            <button type="button" class="btn ghost" data-cav="wave783">Land one wave on 7.83 Hz</button>
+            <button type="button" class="btn ghost" data-cav="shell783">Land the shell on 7.83 Hz</button>
+          </div>
+        </div>
+
+        <div class="bench-panel">
+          <h3>A coil and a capacitor</h3>
+          <p>The tuned circuit at the heart of the magnifying transmitter. Move the two sliders and try to land on the figures Tesla published for it.</p>
+
+          <div class="formula">
+            <span>resonance:&nbsp; <b>f = 1 &divide; (2 &pi; &radic;(L C))</b></span>
+            <span>quarter wave:&nbsp; <b>&#8467; = c &divide; 4f</b></span>
+          </div>
+
+          <div class="slide">
+            <label for="indRange">Inductance</label>
+            <span class="now" id="indNow">56.4 &micro;H &middot; 56,400 cm</span>
+            <input type="range" id="indRange" min="10" max="2000" step="1" value="564"
+                   aria-describedby="lcOut">
+          </div>
+
+          <div class="slide">
+            <label for="capRange">Capacitance</label>
+            <span class="now" id="capNow">0.15264 &micro;F &middot; 4.00 tanks</span>
+            <input type="range" id="capRange" min="5" max="400" step="1" value="153"
+                   aria-describedby="lcOut">
+          </div>
+
+          <div class="readout" id="lcOut" aria-live="polite">
+            <span>resonance <b id="freqOut">54.24 kHz</b></span>
+            <span>quarter wave at light speed <b id="qwOut">1,382 m</b></span>
+            <span>velocity factor a 1,196 m stack would need <b id="vfOut">0.866</b></span>
+            <span>against his published 50,000 per second <i id="offOut">8.5 per cent high</i></span>
+          </div>
+
+          <table class="mini-table">
+            <thead><tr><th>Figure</th><th>Frequency</th><th>Where it comes from</th></tr></thead>
+            <tbody>
+              <tr><td>Your setting</td><td class="figure hit" id="rowYou">54.24 kHz</td><td>the two sliders</td></tr>
+              <tr><td>Four tanks</td><td class="figure">54.24 kHz</td><td>notebook, 8 October 1899</td></tr>
+              <tr><td>Published</td><td class="figure">50.00 kHz</td><td>Century, June 1900</td></tr>
+              <tr><td>One tank</td><td class="figure">108.49 kHz</td><td>notebook, 5 October 1899</td></tr>
+              <tr><td>Spectral peak</td><td class="figure">150.0 kHz</td><td>modern analysis of his recorded data</td></tr>
+            </tbody>
+          </table>
+
+          <span class="preset-lab" id="lcPresetLab">Jump to a setting</span>
+          <div class="preset-row" role="group" aria-labelledby="lcPresetLab">
+            <button type="button" class="btn ghost" data-lc="four">Four tanks</button>
+            <button type="button" class="btn ghost" data-lc="one">One tank</button>
+            <button type="button" class="btn ghost" data-lc="fifty">Land on 50,000 per second</button>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="note">The tank slider runs from 0.005 to 0.400 microfarad, so his four-tank value of 0.15264 sits near the middle of it, and the inductance slider from 1 to 200 microhenry with 56.4 near the bottom third. Both readouts recompute from the constants, not from a lookup table, so any setting is as valid as his.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Sending the power <span class="hue">somewhere else</span></h2>
+      <p>This is where the arithmetic gets most interesting, because the numbers split cleanly into separate problems that behave very differently, and Tesla's own figures are what separate them.</p>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">08</span><h3>Ten thousand horsepower at a hundred million volts.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"I propose to distribute ten thousand horse-power under a tension of one hundred million volts&hellip; a transmitter will emit a wave complex of total maximum activity of ten million horse-power."</p>
+          <cite>Electrical World and Engineer, 5 March 1904</cite>
+        </blockquote>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>P = hp &times; 745.7 W<br>I = P &divide; V<br>Z = V &divide; I</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>10,000 hp = <b>7.457 MW</b>, about 2,500 kettles boiling at once</li>
+              <li>10,000,000 hp = <b>7.457 GW</b>, about seven large power station units</li>
+              <li>V = <b>100,000,000 volts</b></li>
+              <li>impedance of free space = <b>377 ohm</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">74.6 mA</span><span class="lbl">the current his own two figures demand, less than a small torch draws</span></div>
+          <div class="stat"><span class="num">1.34 G&#8486;</span><span class="lbl">the source impedance that pairing describes</span></div>
+          <div class="stat"><span class="num">3.6 million</span><span class="lbl">times the 377 ohm impedance of free space</span></div>
+          <div class="stat"><span class="num">140.6 A</span><span class="lbl">what the same power through 377 ohm would draw instead, at 53 kV</span></div>
+        </div>
+        <p>The pairing closes exactly on 75 milliamps. That number is the clearest single signature in the whole set of which regime he was designing in: an impedance six and a half orders of magnitude above free space describes <strong>a high-voltage, low-current displacement scheme, not a travelling-wave one</strong>. It is not a small detail of the design. It is the design, stated in one ratio, and it is his own arithmetic that states it.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">09</span><h3>Where the near field ends.</h3></div>
+        <blockquote class="rc-claim">
+          <p>Lamps "lighted to full candle-power by currents induced in a local loop&hellip; at a distance of one hundred feet from the primary circuit."</p>
+          <cite>Century Illustrated Magazine, June 1900</cite>
+        </blockquote>
+        <p>Close to a transmitter, energy sits in the surrounding field and comes back; far away, it leaves and does not. The boundary between the two is fixed by wavelength alone, at one wavelength divided by two &pi;.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>d = &lambda; &divide; 2&pi;</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>frequencies from <b>6 Hz to 2.388 GHz</b></li>
+              <li>the 1899 demonstration at <b>100 feet</b> = 30.5 m</li>
+              <li>the 2007 MIT demonstration at <b>2 m</b>, 9.90 MHz</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Frequency</th><th>Wavelength</th><th>Near-field radius</th><th>What sits there</th></tr></thead>
+            <tbody>
+              <tr><td class="figure">6 Hz</td><td class="figure">49,965 km</td><td class="figure">7,952 km</td><td>patent 787,412's lowest frequency</td></tr>
+              <tr><td class="figure">7.83 Hz</td><td class="figure">38,288 km</td><td class="figure">6,094 km</td><td>the measured Earth fundamental</td></tr>
+              <tr><td class="figure">76 Hz</td><td class="figure">3,945 km</td><td class="figure">628 km</td><td>the Wisconsin and Michigan long-wave stations</td></tr>
+              <tr><td class="figure">24 kHz</td><td class="figure">12.5 km</td><td class="figure">2.0 km</td><td>the Cutler transmitter in Maine</td></tr>
+              <tr><td class="figure">54.24 kHz</td><td class="figure">5.53 km</td><td class="figure">880 m</td><td>Colorado Springs, on the tank arithmetic</td></tr>
+              <tr><td class="figure">150 kHz</td><td class="figure">2.00 km</td><td class="figure">318 m</td><td>the spectral peak in his recorded data</td></tr>
+              <tr><td class="figure">9.90 MHz</td><td class="figure">30.3 m</td><td class="figure">4.82 m</td><td>the 2007 MIT resonant pair</td></tr>
+              <tr><td class="figure">2.388 GHz</td><td class="figure">12.6 cm</td><td class="figure">2.0 cm</td><td>the 1975 Goldstone beaming test</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">&lambda;/181</span><span class="lbl">how far out the 1899 lamps sat, in wavelengths, at 100 feet and 54.24 kHz</span></div>
+          <div class="stat"><span class="num">&lambda;/15</span><span class="lbl">how far out the 2007 MIT pair sat, at 2 m and 9.90 MHz</span></div>
+          <div class="stat"><span class="num">12 times</span><span class="lbl">how much deeper inside the near field the 1899 demonstration was</span></div>
+          <div class="stat"><span class="num">7,952 km</span><span class="lbl">the near-field radius at six per second, against an Earth radius of 6,371 km</span></div>
+        </div>
+        <p>Two things fall straight out of that table. The 1899 lamps and the 2007 laboratory result are <strong>the same regime measured at different scales</strong>, and the 1899 one is further inside it. And at six per second the near-field radius exceeds the radius of the Earth, so choosing that frequency puts the whole planet in the zone where energy is stored in the field rather than launched into it. Whatever else the six per second is, it is a choice that keeps everything inside the reactive zone, which is where the lamp demonstration was already working.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">10</span><h3>What radiating outward costs.</h3></div>
+        <p>Take the 1904 target and let it spread in all directions. Power thins as the surface of a growing sphere, and what a receiver collects is that thinning multiplied by its own catching area.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>S = P &divide; (4 &pi; d&sup2;)<br>P&#8341; = P&#8348; G&#8348; G&#8341; (&lambda; &divide; 4&pi;d)&sup2;<br>A&#8337; = G &lambda;&sup2; &divide; 4&pi;</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>P = <b>7.457 MW</b>, his 10,000 horsepower</li>
+              <li>f = <b>54.24 kHz</b>, &lambda; = 5.53 km</li>
+              <li>gain <b>1.5</b> at each end, a plain resonant element</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Distance</th><th>Flux density</th><th>Into one resonant element</th></tr></thead>
+            <tbody>
+              <tr><td class="figure">1 km</td><td class="figure">0.593 W/m&sup2;</td><td class="figure">3.25 MW</td></tr>
+              <tr><td class="figure">100 km</td><td class="figure">5.93 &times; 10<sup>-5</sup> W/m&sup2;</td><td class="figure">325 W</td></tr>
+              <tr><td class="figure">1,000 km</td><td class="figure">5.93 &times; 10<sup>-7</sup> W/m&sup2;</td><td class="figure">3.25 W</td></tr>
+              <tr><td class="figure">5,000 km</td><td class="figure">2.37 &times; 10<sup>-8</sup> W/m&sup2;</td><td class="figure">0.130 W</td></tr>
+              <tr><td class="figure">20,000 km</td><td class="figure">1.48 &times; 10<sup>-9</sup> W/m&sup2;</td><td class="figure">8.1 mW</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">3.65 km&sup2;</span><span class="lbl">the catching area of one resonant element at 54.24 kHz, about 160 footy ovals</span></div>
+          <div class="stat"><span class="num">42,130 km&sup2;</span><span class="lbl">collector area to gather 1 kW at 5,000 km, about three fifths of Tasmania</span></div>
+          <div class="stat"><span class="num">205 km</span><span class="lbl">the side of that collector if it were square</span></div>
+          <div class="stat"><span class="num">57 million</span><span class="lbl">the factor by which received power falls short of the 1904 delivery target</span></div>
+        </div>
+        <p>Radiated outward in all directions, the 1904 power arrives across the Atlantic as <strong>0.13 watts into a resonant element</strong>. That is a strong signal and it is a different thing from a power delivery, and the reason it is a strong signal is the low frequency: catching area grows with the square of the wavelength, so one element at 54 kilohertz effectively catches over 3.65 square kilometres. Low frequency buys enormous catching area per element. It is exactly why long-wave telegraphy worked across oceans, and the same arithmetic is what puts power delivery in a different class of problem.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">11</span><h3>Through the ground, and what the long-wave stations measure.</h3></div>
+        <blockquote class="rc-claim">
+          <p>Claim 1: transmitting electrical energy "by conduction, through the earth and the air strata".<br>
+          1923 testimony on the Wardenclyffe well: "to have a grip on the earth so the whole of this globe can quiver".</p>
+          <cite>United States patent 645,576, filed 2 September 1897 &middot; foreclosure testimony, 1923</cite>
+        </blockquote>
+        <p>Skin depth is the distance an alternating current sinks into a conductor before it drops to about a third of its surface value. It is set by the medium and the frequency, and not by how hard the transmitter is driven.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>&delta; = &radic;(2 &divide; (&omega; &mu; &sigma;))<br>attenuation = 8.686 &divide; &delta;  dB/m</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs, standard propagation values</span>
+            <ul>
+              <li>sea water <b>5 S/m</b>, wet ground <b>0.01</b></li>
+              <li>average ground <b>0.005</b>, dry ground <b>0.001</b></li>
+              <li>very dry rock <b>0.0003</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Frequency and medium</th><th>Skin depth</th><th>Loss per kilometre</th><th>Over 3,000 km</th></tr></thead>
+            <tbody>
+              <tr><td>6 Hz, average ground</td><td class="figure">2.91 km</td><td class="figure">2.99 dB</td><td class="figure">about 8,970 dB</td></tr>
+              <tr><td>6 Hz, very dry rock</td><td class="figure">11.86 km</td><td class="figure">0.73 dB</td><td class="figure">about 2,200 dB</td></tr>
+              <tr><td>76 Hz, average ground</td><td class="figure">816 m</td><td class="figure">10.6 dB</td><td class="figure">about 31,900 dB</td></tr>
+              <tr><td>54.24 kHz, average ground</td><td class="figure">30.6 m</td><td class="figure">284 dB</td><td class="figure">about 853,000 dB</td></tr>
+              <tr><td>54.24 kHz, sea water</td><td class="figure">0.97 m</td><td class="figure">8,988 dB</td><td class="figure">far beyond arithmetic worth writing</td></tr>
+              <tr><td>150 kHz, average ground</td><td class="figure">18.4 m</td><td class="figure">473 dB</td><td class="figure">about 1,418,000 dB</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Every ten decibels is another factor of ten, so 853,000 decibels is 85,300 factors of ten. That single column is the number that sends every practical system to a guided mode along the surface rather than bulk conduction through the crust.</p>
+        <p>The Wardenclyffe well is the other half of it, and here the arithmetic supports the engineering directly. Spreading resistance is the resistance an electrode meets as current fans out into the ground around it.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>R = 1 &divide; (2 &pi; &sigma; a)</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>&sigma; = <b>0.005 S/m</b>, average ground</li>
+              <li>a 120 foot shaft with sixteen iron pipes driven <b>300 feet deeper</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">31.8 &#8486;</span><span class="lbl">a one metre electrode</span></div>
+          <div class="stat"><span class="num">0.87 &#8486;</span><span class="lbl">the 120 foot shaft taken on its own</span></div>
+          <div class="stat"><span class="num">0.32 &#8486;</span><span class="lbl">shaft plus pipes as a 100 metre effective hemisphere</span></div>
+          <div class="stat"><span class="num">90%</span><span class="lbl">of that resistance is spent within one kilometre of the electrode</span></div>
+        </div>
+        <p>The deep well is the right piece of engineering for the mechanism he described, and the arithmetic says why: growing the electrode from one metre to a hundred cuts the spreading resistance a hundredfold. It also says where the loss lives. Ninety per cent of it is within a kilometre of each end, and the path between two distant electrodes contributes almost nothing, which is why earth-return telegraphy worked across continents. The grip on the earth is real. What it grips is a resistive path whose whole cost is at the ends.</p>
+        <p>Then set his own quarter-wave rule against the largest station of this kind ever built. Project ELF, at Clam Lake in Wisconsin and Republic in Michigan, ran at 76 hertz on about 135 kilometres of ground-dipole line from 1989 until it was dismantled in September 2004.</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Structure</th><th>Quarter wave his rule asks for</th><th>Built</th><th>Fraction</th></tr></thead>
+            <tbody>
+              <tr><td>Project ELF at 76 Hz</td><td class="figure">986 km</td><td class="figure">135 km</td><td class="figure">13.69%</td></tr>
+              <tr><td>ZEVS at 82 Hz, Kola Peninsula</td><td class="figure">914 km</td><td class="figure">60 km</td><td class="figure">6.57%</td></tr>
+              <tr><td>Wardenclyffe at 54.24 kHz</td><td class="figure">1,382 m</td><td class="figure">185 m</td><td class="figure">13.39%</td></tr>
+              <tr><td>Wardenclyffe at 6 Hz</td><td class="figure">12,491 km</td><td class="figure">185 m</td><td class="figure">0.0015%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Wardenclyffe's total vertical structure, 187 feet of tower plus a 120 foot shaft plus 300 feet of driven pipe, comes to 185 metres. That lands at 13.39 per cent of the electrical length the quarter-wave rule asks for at 54 kilohertz. Project ELF landed at 13.69 per cent. <strong>The two convergences are within a third of a per cent of each other</strong>, which makes Project ELF's measured performance the most directly informative number available for the launching problem: 8 watts radiated from 2.6 megawatts of input, a launch efficiency of three parts per million.</p>
+        <p>Radiation resistance goes as the square of that fraction, so the scaling is computable. Building the full 986 kilometres would raise the radiated power by a factor of 53, from 8 watts to about 427 watts, still 0.016 per cent efficient. Tesla's own rule and the measurement agree about where the difficulty sits, and they agree in advance of each other by ninety years. Loading coils supply the missing electrical length for tuning; they do not supply the radiating length. The two roles separate cleanly in the arithmetic.</p>
+        <p>The guided path itself is the cheap part, and this is the piece most easily lost. Measured attenuation in the Earth-ionosphere waveguide at these frequencies is <strong>0.5 to 1 decibel per thousand kilometres</strong>, so 1.5 to 3 decibels across 3,000 kilometres, against roughly 9,000 decibels for bulk diffusion through the crust at the same frequency. Split the scheme into propagation and launch and they behave nothing alike.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="num">4.19 MW</span><span class="lbl">what 7.457 MW launched into the guided mode leaves at 5,000 km</span></div>
+          <div class="stat"><span class="num">13.26 MW</span><span class="lbl">what would have to be radiated to deliver the full 7.457 MW there</span></div>
+          <div class="stat"><span class="num">4,310 GW</span><span class="lbl">the input at Project ELF's measured launch efficiency, about 1.4 billion kettles</span></div>
+          <div class="stat"><span class="num">26.5 MW</span><span class="lbl">the input at 50 per cent launch efficiency, which is one small power station</span></div>
+        </div>
+        <p>Propagation across a hemisphere costs ten to twenty decibels, which is affordable for power. Launch is where the entire budget goes, and the measured figure is three parts per million. <strong>Launch efficiency is the single quantity the whole scheme turns on</strong>, it is a structure-length problem, and the scaling law for it is the one written in his own patent from 1900.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Air, and <span class="hue">what it will hold</span></h2>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">12</span><h3>Corona on the terminal.</h3></div>
+        <p>Corona is the soft glow discharge that starts at the surface of a high-voltage conductor once the field there passes a threshold. Frank Peek measured that threshold and wrote it as a formula in which the only variables are the air density and the radius of the surface. Bigger and smoother holds more.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>E = 30 &delta; (1 + 0.301 &divide; &radic;(&delta; r))  kV/cm<br>V = E &times; r</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>Colorado Springs terminal: <b>30 inch ball</b>, at 2,000 m elevation</li>
+              <li>Wardenclyffe: <b>68 foot cupola</b>, at sea level</li>
+              <li>air density factor <b>0.784</b> at 2,000 m and 25 degrees</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Terminal</th><th>Onset field, sea level</th><th>Onset voltage, sea level</th><th>Onset voltage at 2,000 m</th></tr></thead>
+            <tbody>
+              <tr><td>30 inch ball</td><td class="figure">3.15 MV/m</td><td class="figure">1.20 MV</td><td class="figure">0.95 MV</td></tr>
+              <tr><td>3 foot sphere</td><td class="figure">3.13 MV/m</td><td class="figure">1.43 MV</td><td class="figure">1.13 MV</td></tr>
+              <tr><td>68 foot cupola</td><td class="figure">3.03 MV/m</td><td class="figure">31.4 MV</td><td class="figure">24.6 MV</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>At twelve million volts the Colorado Springs terminal is running about <strong>12.7 times above its own corona threshold</strong>, so the machine was in continuous discharge by design rather than sitting near an edge. That is exactly what he described and photographed: a blaze devouring the nitrogen of the atmosphere, sixty to seventy feet across.</p>
+        <p>The Wardenclyffe cupola tells a different story from the same formula. At 68 feet across its corona ceiling computes to 31.4 megavolts at sea level, comfortably above both his Colorado figures. The tower's terminal was sized for a genuinely quieter high-voltage regime than the one he had been running in, which is a design decision visible in the geometry alone.</p>
+        <p>Peek's formula run backwards gives the terminal each stated voltage would need in open air at 2,000 metres.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="num">33 ft</span><span class="lbl">smooth ball diameter to hold 12 MV without corona</span></div>
+          <div class="stat"><span class="num">55 ft</span><span class="lbl">to hold 20 MV, his 1935 figure for the same machine</span></div>
+          <div class="stat"><span class="num">277 ft</span><span class="lbl">to hold the 100 MV of the 1904 article</span></div>
+          <div class="stat"><span class="num">4.1&times;</span><span class="lbl">how much larger in radius than the 68 foot cupola built</span></div>
+        </div>
+        <p>Altitude cuts both ways in the same design, and the two effects are computable separately. Patent 645,576 wants terminals in thin air because thin air conducts sooner: Paschen's law gives 2,234 kilovolts across a one metre gap at sea-level pressure, and 461 kilovolts at 135 torr, a fall of about 4.8 times. The same thinning lowers the corona ceiling on the terminal by the air density factor: the 68 foot cupola's 31.4 megavolts at sea level computes to <strong>10.1 megavolts at 35,000 feet</strong> and 6.9 megavolts at 43,300 feet. The conduction he wanted and the corona he did not want move together.</p>
+        <p>His stated pressures and his stated altitudes describe two different heights, and that is a seam with a number on it. Working the standard atmosphere, 120 millimetres of mercury sits at 43,306 feet and 150 millimetres at 38,663 feet, while 30,000 feet gives 226 millimetres and 35,000 feet gives 179. The gap between what he specified and what he described is <strong>3,663 to 13,306 feet of height</strong>, or a pressure ratio of 1.19 to 1.88.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">13</span><h3>The spark length is an independent reading.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"The flame-like discharge shown in the photograph measures sixty-five feet across&hellip; a roaring blaze, devouring the nitrogen of the atmosphere and measuring sixty or seventy feet across."</p>
+          <cite>Century Illustrated Magazine, June 1900. Secondary accounts report 135 feet.</cite>
+        </blockquote>
+        <p>Spark length is the one quantity for this machine that anyone standing there could measure with a tape. Long air sparks break down at a gradient that depends on the shape of the impulse, and three published conventions bracket it.</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Discharge</th><th>At 1.5 kV/cm</th><th>At 5 kV/cm</th><th>At 25 kV per inch</th></tr></thead>
+            <tbody>
+              <tr><td>65 feet</td><td class="figure">2.97 MV</td><td class="figure">9.91 MV</td><td class="figure">19.5 MV</td></tr>
+              <tr><td>70 feet</td><td class="figure">3.20 MV</td><td class="figure">10.7 MV</td><td class="figure">21.0 MV</td></tr>
+              <tr><td>135 feet</td><td class="figure">6.17 MV</td><td class="figure">20.6 MV</td><td class="figure">40.5 MV</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>His published twelve million volts across the 65 foot discharge implies a mean gradient of <strong>6.06 kilovolts per centimetre</strong>, a little above the lightning-impulse convention and well inside the range long air sparks show. The three conventions bracket his figure from 2.97 to 19.5 megavolts. The independent measurement supports the order of magnitude he stated, with no adjustment needed to his numbers at all.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The machines <span class="hue">with moving parts</span></h2>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">14</span><h3>The gap between the discs.</h3></div>
+        <blockquote class="rc-claim">
+          <p>Discs "some 9 or 10 in. in diameter, set horizontally, about 1/8 in. apart"; Waterside Station tests at 9,000 revolutions a minute on 18 inch discs with 125 psi inlet.<br>
+          Patent 1,061,206: "the intervening distance should be the greater, the larger the diameter of the disks".</p>
+          <cite>Technical press, December 1911 &middot; United States patent 1,061,206, filed 17 January 1911</cite>
+        </blockquote>
+        <p>The bladeless turbine works on the thin layer of fluid that clings to a moving surface, the boundary layer. Theodore von K&aacute;rm&aacute;n solved the thickness of that layer for a spinning disc, and it depends on the fluid's stickiness and the speed of rotation. Matched design puts the gap at twice the layer thickness, so the layers from both discs just meet in the middle.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>&delta; &asymp; 5.5 &radic;(&nu; &divide; &omega;)</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>&omega; = <b>942.5 rad/s</b>, which is 9,000 rpm, 150 turns a second</li>
+              <li>air at 20 degrees, <b>1.51 &times; 10<sup>-5</sup> m&sup2;/s</b></li>
+              <li>steam at 8.6 bar and 175 degrees, <b>3.33 &times; 10<sup>-6</sup></b></li>
+              <li>steam at one atmosphere, <b>2.0 &times; 10<sup>-5</sup></b></li>
+              <li>his gap: <b>1/8 inch</b> = 3.175 mm, half-gap 1.587 mm</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Working fluid</th><th>Layer thickness at 9,000 rpm</th><th>Half-gap divided by it</th><th>Matched gap</th></tr></thead>
+            <tbody>
+              <tr><td>Air, 20 degrees</td><td class="figure">0.696 mm</td><td class="figure">2.28</td><td class="figure">1.39 mm</td></tr>
+              <tr><td>Air, 150 degrees</td><td class="figure">0.965 mm</td><td class="figure">1.64</td><td class="figure">1.93 mm</td></tr>
+              <tr><td>Steam at one atmosphere</td><td class="figure">0.801 mm</td><td class="figure">1.98</td><td class="figure">1.60 mm</td></tr>
+              <tr><td>Steam at 8.6 bar</td><td class="figure">0.327 mm</td><td class="figure">4.86</td><td class="figure">0.654 mm</td></tr>
+              <tr><td>Water</td><td class="figure">0.179 mm</td><td class="figure">8.86</td><td class="figure">0.358 mm</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>For the atmospheric-exhaust condition the Waterside machine actually ran, the eighth-inch spacing is within a factor of two of the matched value. For a machine whose spacing was set by shop practice rather than by this calculation, that is a close result. At the pressurised inlet the same gap is 4.9 times too wide, so the layers do not meet near the inlet and do meet near the exhaust. His patent rule that spacing should scale with disc diameter has the right sign, because larger discs at a fixed rim speed turn more slowly and grow thicker layers.</p>
+        <p>The other reading of the same operating point is the Reynolds number, which compares the fluid's momentum with its stickiness and tells you whether the flow is smooth or churning.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="num">215.5 m/s</span><span class="lbl">rim speed of an 18 inch disc at 9,000 rpm, about 776 km/h</span></div>
+          <div class="stat"><span class="num">205,000</span><span class="lbl">gap Reynolds number in pressurised steam, against a smooth-flow threshold of 2,300</span></div>
+          <div class="stat"><span class="num">0.036 mm</span><span class="lbl">the gap that would put pressurised steam at that threshold, one seven-hundredth of an inch</span></div>
+          <div class="stat"><span class="num">0.21 mm</span><span class="lbl">the same for atmospheric steam, one hundred and nineteenth of an inch</span></div>
+        </div>
+        <p>At the tested operating point the flow in the gap is churning rather than smooth, by roughly two orders of magnitude, so momentum crosses the gap by turbulent mixing rather than by the smooth viscous adhesion the patent describes. That is a statement about the operating point rather than about the principle. The smooth regime the patent describes is reachable, and the figure that reaches it is a gap of <strong>0.04 to 0.2 millimetres at 9,000 rpm</strong>, one to two orders finer than 1911 shop practice and well inside what modern micro-machining does routinely. It is the most directly testable design change in the whole turbine set.</p>
+        <p>His own optimisation rule sharpens it further. Patent 1,061,206 says maximum work comes "when the effective speed of the runner is one-half of that of the fluid". Steam at 8.6 bar expanding to atmosphere carries an available drop of about 357 kilojoules per kilogram, which gives a jet at 845 metres a second. Half of that is 422.5 metres a second, which on an 18 inch disc is <strong>17,649 rpm</strong>. The machine was tested at 9,000, which is 51 per cent of his own optimum. At 9,000 rpm the fluid passes the rim at 630 metres a second, above the 523 metres a second sound travels in steam at that temperature; at his optimum the relative speed is 422 metres a second, below it. The difference between the tested point and his stated optimum is not a small tuning question. It moves the stage across the speed of sound.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">15</span><h3>What his own steam rate says about efficiency.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"An output of 200 horse-power from a single-stage steam turbine with atmospheric exhaust, weighing less than 2 pounds per horse-power&hellip; consumption under these conditions of maximum output is 38 pounds of saturated steam per horse-power per hour."<br>
+          Tesla's own stated efficiency: "80 per cent or even 90 per cent", against existing turbines at "about 62 per cent".</p>
+          <cite>Technical press reporting the Waterside Station tests, December 1911</cite>
+        </blockquote>
+        <p>A steam rate is a complete efficiency measurement in disguise. Turn the pounds of steam into kilograms, divide one horsepower-hour of work by it, and out comes the work extracted per kilogram of steam.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formula</span><code>work per kg = 1 hp&middot;h &divide; steam rate<br>&eta; = work per kg &divide; available drop</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>38 lb/hp&middot;h = <b>17.24 kg per horsepower-hour</b></li>
+              <li>1 hp&middot;h = <b>2.685 MJ</b>, about 78 mL of petrol</li>
+              <li>available drop = <b>357 kJ/kg</b></li>
+              <li>heat added from saturated feed = <b>2,353 kJ/kg</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">155.7 kJ/kg</span><span class="lbl">work extracted per kilogram of steam</span></div>
+          <div class="stat"><span class="num">43.6%</span><span class="lbl">efficiency against the available drop</span></div>
+          <div class="stat"><span class="num">6.6%</span><span class="lbl">efficiency against the heat put in</span></div>
+          <div class="stat"><span class="num">16.7%</span><span class="lbl">the Carnot ceiling between 175 and 100 degrees</span></div>
+        </div>
+        <p>His own reported steam rate supports 43.6 per cent, which sits at the top of the band modern experimental bladeless turbines measure a century later, generally 20 to 40 per cent, and above most of them. That is what his test data carries when it is worked rather than quoted. The widely repeated 97 per cent figure does not appear in these sources at all; the numbers he gave were 80 to 90, and those are a separate question with an arithmetic answer below.</p>
+        <p>The specific power claim from the same year checks against itself perfectly and against the tested machine not at all, and both of those are informative.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">His three figures</span><code>10 hp/lb = 16.44 kW/kg<br>2.5 lb/hp = 0.658 kW/kg<br>ratio = 25.0</code></div>
+          <div class="rc-box"><span class="rc-lab">For scale</span>
+            <ul>
+              <li>Waterside as tested: <b>0.822 kW/kg</b></li>
+              <li>a modern large turbofan: <b>about 13.8 kW/kg</b></li>
+              <li>a current hybrid racing engine: <b>about 5 kW/kg</b></li>
+              <li>a modern aero piston engine: <b>about 1.5 kW/kg</b></li>
+            </ul>
+          </div>
+        </div>
+        <p>The three numbers in his October 1911 quotation agree with each other to the digit: two and a half pounds at ten horsepower a pound is twenty-five horsepower, and ten against 0.4 is twenty-five times. The 16.44 kilowatts per kilogram they describe sits above a modern large turbofan taken as a whole engine, which places the claim at the boundary of a bare rotor rather than a complete installed plant, while the Waterside figure of 0.822 from the same year is what the complete tested machine delivered. <strong>The two numbers are measuring different boundaries around the same object</strong>, and they differ by a factor of twenty. Naming which components sit inside the boundary is what would settle it: 200 horsepower at 10 hp/lb is a 9.07 kilogram rotor, and 200 horsepower at 2 lb/hp is a 181 kilogram machine.</p>
+        <p>The pump numbers, from the same interview, close cleanly and are physically ordinary. Four thousand gallons a minute lifted 360 feet is 271.6 kilowatts of hydraulic work, or 364 horsepower, needing a rim speed of 33 to 46 metres a second, which on an 18 inch runner is <strong>1,370 to 1,938 rpm</strong>: a routine speed for a pump. And the 110 horsepower nine-inch machine works out at 6.9 horsepower per gap across the sixteen gaps a two-inch stack holds at eighth-inch spacing, which sits between the 5 and 20 horsepower per disc he stated separately. Three statements agreeing without adjustment.</p>
+      </article>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">16</span><h3>The oscillator as a spring.</h3></div>
+        <blockquote class="rc-claim">
+          <p>"He vibrates a weight of approximately 20 pounds at the rate of about 80 per second and with a stroke of about 7/8 inch."<br>
+          Patents 514,169 and 517,900: the period is "no more dependent upon the pressure applied to drive it, than would be the period of oscillation of a pendulum".</p>
+          <cite>Lecture to the Electrical Congress, Chicago, 25 August 1893 &middot; United States patents 514,169 and 517,900</cite>
+        </blockquote>
+        <p>Three numbers, and a mass on a spring is fully determined by two of them. The spring here is a chamber of trapped air.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>k = m &omega;&sup2;<br>a&#8342;&#8337;&#8342;&#8342; = A &omega;&sup2;<br>E = &frac12; m (A&omega;)&sup2;<br>P = 2&pi;f E &divide; Q</code></div>
+          <div class="rc-box"><span class="rc-lab">Inputs</span>
+            <ul>
+              <li>m = 20 lb = <b>9.072 kg</b></li>
+              <li>f = <b>80 per second</b>, &omega; = 502.7 rad/s</li>
+              <li>stroke 7/8 inch, amplitude <b>11.11 mm</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num">2.29 MN/m</span><span class="lbl">air-spring stiffness, a spring that sags one millimetre under 234 kilograms</span></div>
+          <div class="stat"><span class="num">286 g</span><span class="lbl">peak acceleration of the moving mass</span></div>
+          <div class="stat"><span class="num">141.5 J</span><span class="lbl">energy stored at full swing</span></div>
+          <div class="stat"><span class="num">0.7 to 7 kW</span><span class="lbl">power to hold that amplitude, at Q from 100 down to 10</span></div>
+        </div>
+        <p>His three figures give a consistent resonator, and the isochronism claim closes exactly as stated, because the formula for the period contains no pressure term at all. At fixed stiffness and mass, doubling the drive doubles the swing and leaves the rate alone. The premise underneath the claim is that the spring is linear, and an air spring stiffens as it compresses, so the stiffness rises with amplitude. How wide the pressure range can go before the period shifts is set by that stiffening term, and it is directly measurable on a bench today with a laser displacement sensor and an accelerometer.</p>
+        <p>The same arithmetic scales, which is what makes it a civil engineering question rather than a curiosity. A steel-framed tower of 3.31 &times; 10<sup>8</sup> kilograms swaying with an eight second period has a modal stiffness of 204 meganewtons per metre, one millimetre of sway per 20.8 tonnes of steady side push. At resonance the response is multiplied by Q, and structural Q sits at 10 to 50 rather than the hundreds a bare resonator reaches, because a building loses energy into its joints, its cladding and the ground. Twenty-two newtons applied at the resonant rate gives <strong>1 to 5 micrometres</strong> of steady sway. Reaching half a metre would take 2.0 to 10.2 meganewtons. The mechanism is real and the multiplier is exactly Q; the quantity that decides the answer is the damping, and that is a measured property of each structure, not a constant.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The 1935 paper, <span class="hue">as physics</span></h2>
+      <p>The last document with real numbers in it is the technical paper of about 16 May 1935, held in the Belgrade archive. It describes projecting charged particles of matter through open air. Taken purely as physics, it gives a particle mass, a radius and a velocity in the same paragraph, which is enough to check the particle against itself and to place its energy on the same scale as modern accelerators. No construction detail is worked here and none is needed: the arithmetic is about energy and charge.</p>
+
+      <article class="recalc">
+        <div class="rc-head"><span class="rc-num">17</span><h3>A twenty micrometre grain, and where its energy sits.</h3></div>
+        <blockquote class="rc-claim">
+          <p>Tungsten particle of radius "r = 1/100 c.m." with mass "7686/10<sup>11</sup> gram", accelerated to "V = 1,613,000 centimeters or 16,130 meters per second". Terminal potentials given as "6 &times; 10<sup>7</sup> volts", with "one hundred million volts" projected.</p>
+          <cite>"The New Art of Projecting Concentrated Non-dispersive Energy Through Natural Media", circa 16 May 1935</cite>
+        </blockquote>
+        <p>First the particle against itself. A tungsten sphere of the stated radius weighs 8.06 &times; 10<sup>-5</sup> gram, which is 1,049 times his stated mass. Solve the radius back from the mass instead and it comes to 9.84 micrometres, or 1/1016 of a centimetre.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="num">1.6%</span><span class="lbl">how far his mass figure sits from a radius of 1/1000 cm, which is as close as a density estimate gets</span></div>
+          <div class="stat"><span class="num">19.7 &micro;m</span><span class="lbl">the diameter that resolves, about a quarter the width of a human hair</span></div>
+          <div class="stat"><span class="num">58,068 km/h</span><span class="lbl">his stated velocity, about 1.4 times the speed needed to leave Earth</span></div>
+          <div class="stat"><span class="num">10.00 mJ</span><span class="lbl">kinetic energy of one grain, the same as lifting a 20 cent coin 9 centimetres</span></div>
+        </div>
+        <p>The two figures describe the same tungsten sphere if the radius is a thousandth of a centimetre rather than a hundredth. It resolves to a factor of ten in one exponent, the mass figure carries more significant digits, and once resolved the particle is well specified.</p>
+        <p>Now the energy, and this is where one object reads two entirely different ways depending on the unit chosen. Both readings are correct arithmetic.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>E = &frac12; m v&sup2;<br>per nucleon = E &divide; (atoms &times; 183.84)</code></div>
+          <div class="rc-box"><span class="rc-lab">The grain contains</span>
+            <ul>
+              <li><b>2.52 &times; 10<sup>14</sup></b> tungsten atoms</li>
+              <li><b>4.63 &times; 10<sup>16</sup></b> nucleons, which as grains of sand would fill about 9,300 Olympic pools</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>Reading</th><th>Figure</th><th>Set beside</th></tr></thead>
+            <tbody>
+              <tr><td>Energy of the whole grain</td><td class="figure">62.4 PeV</td><td>9,177 times a Large Hadron Collider proton at 6.8 TeV</td></tr>
+              <tr><td>Against a full lead ion</td><td class="figure">276 times</td><td>the LHC's heaviest projectile at 2.26 &times; 10<sup>14</sup> eV</td></tr>
+              <tr><td>Against the highest observed cosmic ray</td><td class="figure">0.0195%</td><td>a single particle at 3.2 &times; 10<sup>20</sup> eV</td></tr>
+              <tr><td>Energy per atom</td><td class="figure">248 eV</td><td>a few times what holds an outer electron in place</td></tr>
+              <tr><td>Energy per nucleon</td><td class="figure">1.35 eV</td><td>the scale of one chemical bond</td></tr>
+              <tr><td>Energy per kilogram</td><td class="figure">130 MJ/kg</td><td>28 times the energy per kilogram in TNT, carried as motion</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>An accelerator concentrates energy into single nucleons. This design spreads it across 4.63 &times; 10<sup>16</sup> of them. That distinction decides what the arithmetic is about: it is a high-speed impact calculation, not a radiation one, and the two obey different formulas from the first line.</p>
+        <p>The charge is where the paper's own figures pull against each other, and the gap has a number.</p>
+        <div class="rc-work">
+          <div class="rc-box"><span class="rc-lab">Formulas</span><code>q = E &divide; V<br>surface field = q &divide; (4 &pi; &epsilon;&#8320; r&sup2;)</code></div>
+          <div class="rc-box"><span class="rc-lab">Results</span>
+            <ul>
+              <li>charge at 60 MV: <b>1.67 &times; 10<sup>-10</sup> C</b>, about a thousand million electron charges</li>
+              <li>surface field that implies: <b>15.5 GV/m</b>, some 5,200 times the field that breaks down dry air</li>
+              <li>charge the surface holds at 3 GV/m: <b>3.23 &times; 10<sup>-11</sup> C</b></li>
+              <li>shortfall: <b>5.2 times</b></li>
+            </ul>
+          </div>
+        </div>
+        <p>The charge his stated terminal voltage implies sits about five times above what a grain that size holds before its own surface field reaches the scale at which a metal surface is stripped by its own electrical stress. Closing that means a terminal at 309 megavolts rather than 60, a factor of 5.2; or a delivered speed of 7,104 metres a second rather than 16,130; or splitting the charge across a train of grains. The first item on his own list of four inventions is <strong>"provisions for imparting to a minute particle an extremely high charge"</strong>, which is precisely the item that would carry the missing figure. He named the gap before anyone else computed it.</p>
+        <p>Two more seams sit in the same document and both are arithmetic rather than argument. The stated beam cross-section of one hundred-millionth of a square centimetre is 1.13 micrometres across, while the grain is 19.7 micrometres across: the grain is 17.4 times wider in diameter, and 304 times larger in frontal area, than the beam it is meant to travel in. And the stated trajectory of 64 kilometres sits between two computable bounds. At sea-level air density a grain that size loses its speed over about <strong>0.41 metres</strong>. In vacuum it would carry 26,531 kilometres at 45 degrees, two thirds of a lap of the planet. For 64 kilometres to be the drag-limited figure, the air along the path has to be at 7.9 &times; 10<sup>-6</sup> kilograms per cubic metre, which is the atmosphere at about 85 kilometres up. That is why his first listed invention is "a new form of high vacuum tube open to the atmosphere": the whole scheme turns on what the medium along the path is, and that is the measurement to make.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would have had to <span class="hue">be different</span></h2>
+      <p>Each row is a gap between a stated figure and what the sums give, written as an engineering quantity with units. Several of them are smaller now than they were then, because materials and machining improved; the last column says which ones moved and by how much.</p>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Where the sum does not close</th><th>The gap, as a number</th><th>Has it moved since?</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="wide">His six per second against the measured 7.83 hertz</td>
+              <td class="wide">Holding his geometry, f = v divided by circumference, the propagation speed would need to be 313,436 km/s, which is 1.046 times light. Holding his own rule f = 1/(2T) it would need 626,873 km/s, or 2.09 times light. Either way the missing quantity is the propagation speed and the correction is a factor between 1.05 and 2.09.</td>
+              <td class="wide">No. The measured cavity fundamental has held at 7.83 hertz since 1960, and it moves only with the ionosphere, by fractions of a hertz.</td>
+            </tr>
+            <tr>
+              <td class="wide">Radiating structure at Wardenclyffe</td>
+              <td class="wide">To reach a quarter wavelength at 54.24 kHz the vertical structure grows from 185 m to 1,382 m, a factor of 7.5, which raises radiation resistance by 56. At 6 hertz the target is 12,491 km of conductor, roughly Sydney to Los Angeles.</td>
+              <td class="wide">No. The tallest guyed masts built since are around 600 m, and Project ELF reached 13.7 per cent of its quarter wave in 1989 using 135 km of ground line.</td>
+            </tr>
+            <tr>
+              <td class="wide">Launch efficiency at very low frequency</td>
+              <td class="wide">Delivering 7.457 MW at 5,000 km needs 13.26 MW radiated. At Project ELF's measured 3 parts per million that is 4,310 GW of input. At 1 per cent it is 1,326 MW. At 50 per cent it is 26.5 MW.</td>
+              <td class="wide">No. The largest ionospheric heating facility radiates under 1 watt and at best about 200 watts at these frequencies from 3.6 MW of drive, which is the same order as Project ELF's 8 watts from 2.6 MW.</td>
+            </tr>
+            <tr>
+              <td class="wide">Delivering power by radiating outward</td>
+              <td class="wide">Short by a factor of 5.7 &times; 10<sup>7</sup> in received power at 5,000 km. Closing it by catching area alone means 4.2 &times; 10<sup>10</sup> square metres per kilowatt delivered. Closing it by focus means transmitting gain of order 10<sup>7</sup>, which is a radiating structure many wavelengths across, and at 54 kHz one wavelength is 5.5 km.</td>
+              <td class="wide">Partly, at short range and high frequency. The 1975 Goldstone test recovered 30.4 kW at 1.6 km using a 26 m dish at 2.388 GHz, which is 245 times short in power and 3,125 times short in distance against the 1904 target.</td>
+            </tr>
+            <tr>
+              <td class="wide">Coil Q for the voltage rise</td>
+              <td class="wide">The sustained-excitation figure of 11.26 MV needs Q of about 1,500 at 611 kW. At Q of 300 the same drive gives 5.04 MV.</td>
+              <td class="wide">Barely, for copper at room temperature. The 2007 MIT helix measured 950 plus or minus 50, and about 1,000 is still the practical ceiling. Superconducting resonators go far higher, at the cost of a cryostat.</td>
+            </tr>
+            <tr>
+              <td class="wide">Terminal size for 100 million volts in open air</td>
+              <td class="wide">A smooth terminal 84.5 m across, that is 277 feet, against the 68 foot cupola built: a factor of 4.1 in radius.</td>
+              <td class="wide">Yes, by changing the gas rather than the terminal. Pressurised sulphur hexafluoride holds several times the field of air at the same pressure, and machines run it at 5 to 7 bar; the Oak Ridge tandem accelerator has operated a terminal at 25.5 MV inside such a tank. That route needs a pressure vessel, which an open-air tower is not.</td>
+            </tr>
+            <tr>
+              <td class="wide">Disc spacing for smooth flow in the turbine</td>
+              <td class="wide">At 9,000 rpm on pressurised steam the matched gap is 0.654 mm, that is 1/38.8 inch rather than 1/8, a factor of 4.9. For smooth rather than churning flow the gap is 0.036 mm. Equivalently, at eighth-inch spacing the matched speed for pressurised steam is 382 rpm.</td>
+              <td class="wide">Yes, and by a lot. Gaps of 0.04 to 0.2 mm across stacked discs are routine micro-machining now. This is the gap that closed most completely, and it is the cheapest experiment on the list.</td>
+            </tr>
+            <tr>
+              <td class="wide">Runner speed against his own half-speed rule</td>
+              <td class="wide">His rule calls for 422.5 m/s of rim speed, which on an 18 inch disc is 17,649 rpm. The tests ran at 9,000, which is 51 per cent of it.</td>
+              <td class="wide">Yes. Modern turbomachinery discs run rim speeds of 400 to 500 m/s in titanium and nickel alloys, so his stated optimum is inside current materials practice.</td>
+            </tr>
+            <tr>
+              <td class="wide">Turbine efficiency of 80 to 90 per cent</td>
+              <td class="wide">The reported 38 lb/hp&middot;h supports 43.6 per cent. Eighty per cent needs 20.7 lb/hp&middot;h and ninety needs 18.4, a factor of 1.83 to 2.06 in steam consumption. The missing figure is the exhaust condition: 38 lb/hp&middot;h is quoted for atmospheric exhaust, and a condensing exhaust raises the available drop and changes the sum.</td>
+              <td class="wide">Open. Modern laboratory bladeless turbines measure 20 to 40 per cent, so his own reported figure still leads the published field a century on.</td>
+            </tr>
+            <tr>
+              <td class="wide">Charge on a 20 micrometre grain</td>
+              <td class="wide">A shortfall of 5.2 times against what the surface will hold at 3 GV/m. Closing it means 309 MV rather than 60, or 7,104 m/s rather than 16,130, or a train of grains sharing the charge.</td>
+              <td class="wide">Partly. Electrospray and charged-droplet work now measures charge limits on micrometre particles directly, so the number can be read off a bench rather than modelled.</td>
+            </tr>
+            <tr>
+              <td class="wide">Driving the Earth's cavity from a coil</td>
+              <td class="wide">The cavity's Q is 4 to 6, so its 3 dB bandwidth is 20 per cent of centre frequency and it holds about 1.6 cycles of ring-down. A copper coil at Q of 300 to 1,500 is 60 to 300 times sharper than the thing it would drive.</td>
+              <td class="wide">No, and it is not a materials problem. The cavity's Q is a property of the atmosphere and the ground, measured repeatedly since 1960 at 4 to 6.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note"><strong>What the cavity actually holds.</strong> Two reservoirs sit in the same system and they are enormously different in size. The steady fair-weather electric field is 100 to 150 volts per metre; the field in the resonance band is about 300 microvolts per metre. That is a ratio of 333,000 in field and 10<sup>11</sup> in energy density. Across the whole shell, 80 kilometres deep over the entire planet, the resonance band holds about <strong>16 joules</strong>, which is what it takes to lift a full kettle one metre, sustained by roughly 160 watts of loss. The global fair-weather circuit runs at about 250 kilovolts and one kiloamp, which is 250 megawatts, against a quoted total dissipation near 400 megawatts. The 1904 target of 7.457 megawatts is 1.9 per cent of that whole circuit; the 7.457 gigawatt wave complex is 18.6 times it.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The nearest <span class="hue">built things</span></h2>
+      <p>Things that exist now and rhyme with what he was doing. These are measured results with distances, powers and efficiencies attached, so every one of them can be set against a figure above.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">🔁</span>
+          <h3>Resonant coupling, 2007</h3>
+          <p>Andre Kurs and colleagues at MIT published in <em>Science</em> in July 2007: two identical self-resonant copper helices, 5.25 turns, 20 centimetres tall, resonating at 9.90 megahertz with a measured Q of 950 plus or minus 50. They transferred <strong>60 watts at about 40 per cent over more than 2 metres</strong>, and efficient transfer out to eight times the coil radius. Their model matched the measurement to within 5 per cent. At that frequency 2 metres is one fifteenth of a wavelength, so it is the same near-field regime the 1899 lamps sat in, twelve times further out in wavelengths.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🚗</span>
+          <h3>Charging at 93 per cent</h3>
+          <p>The SAE J2954 standard for wireless vehicle charging defines classes at 3.7, 7.7 and 11 kilowatts, working at 85 kilohertz, with grid-to-battery efficiency demonstrated to <strong>93 per cent at 250 millimetres of ground clearance</strong>. Disney Research went the other way in 2017 and built the room instead: a 54 cubic metre chamber with aluminium walls and a capacitor-loaded copper pole delivered up to 1,900 watts to small coils almost anywhere inside it, at 40 to 95 per cent. Both show the same rule: efficiency stays high while the separation stays at or below the size of the coil.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">📡</span>
+          <h3>Beaming, 1975 to 2023</h3>
+          <p>At the Goldstone site in 1975, William Brown and Richard Dickinson put about 450 kilowatts through a 26 metre dish at 2.388 gigahertz and recovered <strong>30.4 kilowatts of direct current 1.6 kilometres away</strong>, at about 82.5 per cent rectenna conversion. In a Raytheon laboratory the same year, end-to-end conversion was certified at 54.18 per cent at 495 watts. JAXA delivered 1.8 kilowatts across 55 metres in 2015 and 10 kilowatts across 500 metres; the US Naval Research Laboratory beamed 1.6 kilowatts a full kilometre at 10 gigahertz in 2022 at about 60 per cent; Caltech's MAPLE detected power beamed from orbit to a rooftop in May 2023. Fifty years on, the 1975 recovered-power figure still stands.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">〰️</span>
+          <h3>Long-wave stations</h3>
+          <p>Project ELF, at Clam Lake in Wisconsin and Republic in Michigan, ran at <strong>76 hertz on about 135 kilometres</strong> of above-ground ground-dipole line from 1989 to September 2004, drawing 2.6 megawatts and radiating 8 watts, at roughly three letters in fifteen minutes. Russia's ZEVS on the Kola Peninsula works at 82 hertz on two parallel 60 kilometre lines. The Cutler transmitter in Maine has run since January 1961 at 24 kilohertz on two umbrella arrays each 1.87 kilometres across on a 304 metre central mast, drawing up to 1.8 megawatts for about 300 bits a second, which is 18,000 times the ELF rate.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🌌</span>
+          <h3>Heating the ionosphere</h3>
+          <p>HAARP at Gakona in Alaska, run by the University of Alaska Fairbanks since 2015, puts <strong>3.6 megawatts into 180 crossed dipoles</strong> across 14 hectares, tunable from 2.7 to 10 megahertz, with an effective radiated power quoted up to 5.1 gigawatts. EISCAT at Troms&oslash; reaches about 1,200 megawatts effective; Sura near Vasilsursk runs 80 to 260 megawatts effective from three 250 kilowatt transmitters. When HAARP modulates the auroral electrojet to make a virtual antenna in the sky, the very low frequency power measured from it is under a watt, reaching about 200 watts on rare optimal days.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚙️</span>
+          <h3>Bladeless turbines on the bench</h3>
+          <p>Modern experimental multiple-disc turbines are measured at <strong>20 to 40 per cent</strong> against the available drop, which is the band his own 1911 steam rate of 38 pounds per horsepower-hour puts him at the top of. The pieces the 1911 machines could not have are ordinary now: micro-machined gaps under a tenth of a millimetre, rim speeds of 400 to 500 metres a second in titanium and nickel alloys, and instrumentation that reads torque and mass flow on the same clock.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What a person could <span class="hue">recompute next</span></h2>
+      <p>Eight open calculations, each with the figure that is missing and what it would take to supply it. All of them can be done with the documents already in public hands, a bench, or a spreadsheet.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">📐</span>
+          <h3>The extra coil's height</h3>
+          <p>The notes give 149 turns on 1.9 metres diameter and no winding length. Wheeler's formula across heights of 0.5 to 3.0 metres gives self-inductance from 58.4 down to 20.5 millihenry, a spread of 2.8 times, and every Q figure and every voltage figure downstream inherits that spread. <strong>Needed:</strong> the winding height, from a photograph with a scale in it or from another line in the notebooks.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔍</span>
+          <h3>Which winding is 56,400 centimetres</h3>
+          <p>The notes of 5 and 6 October 1899 attach that value both to the primary and to the 17-turn secondary, and the two readings differ by a factor of 367. The primary reading is what the loop-inductance arithmetic supports. <strong>Needed:</strong> the original notebook page, or the Belgrade archive's own transcription against the manuscript.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🗼</span>
+          <h3>Wardenclyffe's intended frequency</h3>
+          <p>It decides which quarter-wave target applies, and the two targets are 1,382 metres and 12,491 kilometres. Nothing else about the plant's radiating performance can be settled until that number is fixed. <strong>Needed:</strong> a stated operating frequency for the finished plant, from correspondence, the construction record, or the 1923 testimony.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">💨</span>
+          <h3>The exhaust behind 38 pounds</h3>
+          <p>The steam rate supports 43.6 per cent against an atmospheric exhaust. A condensing exhaust raises the available drop and moves the whole efficiency sum. <strong>Needed:</strong> the exhaust pressure at the Waterside tests, and ideally the feedwater temperature, both of which would be in a test report rather than a press item.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚖️</span>
+          <h3>What the ten-horsepower-a-pound boundary counts</h3>
+          <p>Two 1911 figures for the same year differ by twenty times in specific power: 9.07 kilograms of rotor against a 181 kilogram machine. <strong>Needed:</strong> a component list for the 200 horsepower machine, so the mass inside the boundary is named rather than inferred.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🎚️</span>
+          <h3>How much a broad cavity accepts</h3>
+          <p>A resonator at Q of 5 and a coil at Q of 1,000 are 200 times apart in sharpness. How much of a narrowband drive the broad mode actually takes is a coupling question with a measurable answer. <strong>Needed:</strong> a coupling coefficient between a ground-based transmitter and the cavity mode, measured rather than assumed, which the existing Schumann monitoring stations could return.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚡</span>
+          <h3>The charge a grain will hold</h3>
+          <p>The 3 gigavolt per metre stripping field used above is a modelled figure, not a reading for tungsten grains at 20 micrometres. <strong>Needed:</strong> a measured charge limit on micrometre tungsten particles, which electrospray and charged-droplet rigs can supply directly, and which would move the 5.2 shortfall to a real number.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🌀</span>
+          <h3>The turbine at the gap he could not cut</h3>
+          <p>A disc stack at 0.04 to 0.2 millimetres, run at 9,000 rpm, would sit in the smooth-flow regime the patent describes rather than the churning one the 1911 machine ran in. Torque, mass flow and inlet condition on one clock would give an efficiency directly comparable with the 43.6 per cent his own steam rate carries. <strong>Needed:</strong> the rig. Everything else on that list already exists.</p>
+        </div>
+      </div>
+
+      <p>Each of those returns a number rather than an opinion, and each of them changes at least one figure on the page above. That is what the rest of the arithmetic is for.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="resonance.html"><div class="card"><span class="card-glyph">〰️</span><h3>Resonance</h3><p>Why only certain waves fit in a given space, from a tuning fork to an atom. The rule underneath every calculation here.</p></div></a>
+        <a class="card-link" href="zero-point.html"><div class="card"><span class="card-glyph">🌌</span><h3>Zero Point</h3><p>Vacuum energy, the Casimir force and what a working module would need, priced the same way.</p></div></a>
+        <a class="card-link" href="engineering.html"><div class="card"><span class="card-glyph">🏗️</span><h3>Engineering</h3><p>Material records matched to the civil jobs that would use them, with the numbers each job asks for.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>N. Tesla, "Art of Transmitting Electrical Energy Through the Natural Mediums", United States patent 787,412, filed 16 May 1900, issued 18 April 1905 · <a href="https://en.wikisource.org/wiki/United_States_patent_787412" rel="noopener">en.wikisource.org/wiki/United_States_patent_787412</a></li>
+        <li>N. Tesla, "System of Transmission of Electrical Energy", United States patent 645,576, filed 2 September 1897, issued 20 March 1900 · <a href="https://en.wikisource.org/wiki/United_States_patent_645576" rel="noopener">en.wikisource.org/wiki/United_States_patent_645576</a></li>
+        <li>N. Tesla, "Apparatus for Transmission of Electrical Energy", United States patent 649,621, filed 19 February 1900, issued 15 May 1900 · <a href="https://patents.google.com/patent/US649621A/en" rel="noopener">patents.google.com/patent/US649621A/en</a></li>
+        <li>N. Tesla, "Apparatus for Transmitting Electrical Energy", United States patent 1,119,732, filed 18 January 1902, renewed 4 May 1907, issued 1 December 1914.</li>
+        <li>N. Tesla, "Turbine", United States patent 1,061,206, and "Fluid Propulsion", United States patent 1,061,142, both issued 6 May 1913 · <a href="https://patents.google.com/patent/US1061206A/en" rel="noopener">patents.google.com/patent/US1061206A/en</a></li>
+        <li>N. Tesla, "Reciprocating Engine", United States patent 514,169, and "Steam Engine", United States patent 517,900, issued February and April 1894.</li>
+        <li>N. Tesla, "The Problem of Increasing Human Energy", <em>Century Illustrated Magazine</em>, June 1900 · <a href="https://teslauniverse.com/nikola-tesla/articles/problem-increasing-human-energy" rel="noopener">teslauniverse.com/nikola-tesla/articles/problem-increasing-human-energy</a></li>
+        <li>N. Tesla, "The Transmission of Electrical Energy Without Wires", <em>Electrical World and Engineer</em>, 5 March 1904 · <a href="https://teslauniverse.com/nikola-tesla/articles/transmission-electrical-energy-without-wires" rel="noopener">teslauniverse.com/nikola-tesla/articles/transmission-electrical-energy-without-wires</a></li>
+        <li>N. Tesla, "On Mechanical and Electrical Oscillators", lecture to the Electrical Congress, Chicago, 25 August 1893.</li>
+        <li>N. Tesla, <em>Colorado Springs Notes 1899 to 1900</em>, ed. A. Marincic, Nolit, Belgrade, 1978 · <a href="https://teslaresearch.jimdofree.com/books-1/colorado-spring-notes-1899-1900/" rel="noopener">teslaresearch.jimdofree.com/books-1/colorado-spring-notes-1899-1900/</a></li>
+        <li>N. Tesla, "The New Art of Projecting Concentrated Non-dispersive Energy Through Natural Media", circa 16 May 1935, Nikola Tesla Museum archive · <a href="https://tesla-museum.org/en/nikola-tesla-2/writings/" rel="noopener">tesla-museum.org/en/nikola-tesla-2/writings/</a></li>
+        <li>"Tesla's New Monarch of Machines", <em>New York Herald</em>, 15 October 1911; Waterside Station test figures as reported in the technical press, December 1911.</li>
+        <li>J. G. Trump, report to Technical Aids, Division 14, National Defense Research Committee, MIT, 30 January 1943; Office of Alien Property Custodian and Federal Bureau of Investigation records · <a href="https://www.history.com/articles/nikola-tesla-files-declassified-fbi" rel="noopener">history.com/articles/nikola-tesla-files-declassified-fbi</a></li>
+        <li>Nikola Tesla Museum, Belgrade, holdings and history; archive inscribed on the UNESCO Memory of the World Register, 2003 · <a href="https://tesla-museum.org/en/museum/history/" rel="noopener">tesla-museum.org/en/museum/history/</a></li>
+        <li>W. O. Schumann, prediction of the Earth-ionosphere cavity resonances, Technical University of Munich, 1952; M. Balser and C. A. Wagner, "Observations of Earth-Ionosphere Cavity Resonances", <em>Nature</em> 188, 638, 1960 · <a href="https://www.nature.com/articles/188638a0" rel="noopener">nature.com/articles/188638a0</a></li>
+        <li>A. Kurs, A. Karalis, R. Moffatt, J. D. Joannopoulos, P. Fisher and M. Soljacic, "Wireless Power Transfer via Strongly Coupled Magnetic Resonances", <em>Science</em> 317, 83, 6 July 2007 · <a href="https://www.science.org/doi/10.1126/science.1143254" rel="noopener">science.org/doi/10.1126/science.1143254</a></li>
+        <li>W. C. Brown, microwave power transmission at Goldstone, 1975, and the Raytheon certified end-to-end measurement of the same year · <a href="https://ssi.org/wp-content/fbs/sps-billbrown-1977/index.html" rel="noopener">ssi.org/wp-content/fbs/sps-billbrown-1977/index.html</a></li>
+        <li>M. J. Chabalko, M. Shahmohammadi and A. P. Sample, "Quasistatic Cavity Resonance for Ubiquitous Wireless Power Transfer", <em>PLOS ONE</em>, February 2017 · <a href="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0169045" rel="noopener">journals.plos.org/plosone/article?id=10.1371/journal.pone.0169045</a></li>
+        <li>Project Sanguine and Project ELF station records, 1977 to 2004; ZEVS; VLF Transmitter Cutler, Maine · <a href="https://en.wikipedia.org/wiki/Project_Sanguine" rel="noopener">en.wikipedia.org/wiki/Project_Sanguine</a></li>
+        <li>HAARP Ionospheric Research Instrument specifications, University of Alaska Fairbanks; EISCAT Heating, Troms&oslash;; Sura, Vasilsursk · <a href="https://haarp.gi.alaska.edu/faq" rel="noopener">haarp.gi.alaska.edu/faq</a></li>
+        <li>ITU-R Recommendations P.527 and P.368 for the electrical characteristics of the Earth's surface and ground-wave prediction; F. W. Peek's corona formula; Paschen's law for air.</li>
+      </ul>
+      <p class="note">Constants used throughout: speed of light 299,792,458 m/s; permeability of free space 4&pi; &times; 10<sup>-7</sup> H/m; permittivity of free space 8.8542 &times; 10<sup>-12</sup> F/m; elementary charge 1.6022 &times; 10<sup>-19</sup> C; standard gravity 9.80665 m/s&sup2;; one horsepower 745.7 W; copper resistivity 1.68 &times; 10<sup>-8</sup> ohm-metre; tungsten density 19,250 kg/m&sup3;.</p>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var C = 299792458;                 /* m/s */
+  var CKM = 299792.458;              /* km/s */
+  var TAU = Math.PI * 2;
+  var fmt = (window.EMA && window.EMA.fmt) || function (n) { return String(n); };
+
+  function sig(x, n) {
+    var v = Number(x);
+    if (!isFinite(v)) return "?";
+    var s = v.toPrecision(n || 4);
+    if (s.indexOf("e") >= 0) return Number(s).toString();
+    if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+    return s;
+  }
+  function commas(x, dp) {
+    var v = Number(x);
+    if (!isFinite(v)) return "?";
+    return fmt(v, dp === undefined ? 0 : dp);
+  }
+
+  /* =========================================================
+     Panel A: a cavity, and the rate it prefers
+     f = v / (2 pi a)              one wave round
+     f_n = (v / 2 pi a) sqrt(n(n+1))   shell patterns
+     ========================================================= */
+
+  var MEASURED = [7.83, 14.3, 20.8, 27.3, 33.8];
+  var FMAX = 45;                      /* the bar scale, in hertz */
+
+  var radiusRange = document.getElementById("radiusRange");
+  var speedRange  = document.getElementById("speedRange");
+  var radiusNow   = document.getElementById("radiusNow");
+  var speedNow    = document.getElementById("speedNow");
+  var circOut     = document.getElementById("circOut");
+  var oneWaveOut  = document.getElementById("oneWaveOut");
+  var shellOut    = document.getElementById("shellOut");
+  var barOne      = document.getElementById("barOne");
+  var barShell    = document.getElementById("barShell");
+  var valOne      = document.getElementById("valOne");
+  var valShell    = document.getElementById("valShell");
+  var modeBody    = document.getElementById("modeBody");
+
+  function pct(f) {
+    var v = (f / FMAX) * 100;
+    return Math.max(0.8, Math.min(100, v));
+  }
+
+  function refreshCavity() {
+    var aKm = Number(radiusRange.value);                  /* km */
+    var mult = Number(speedRange.value) / 1000;           /* multiples of c */
+    var vKm = CKM * mult;                                 /* km/s */
+    var circKm = TAU * aKm;
+    var base = vKm / circKm;                              /* one wave round, Hz */
+    var shell1 = base * Math.sqrt(2);
+
+    radiusNow.textContent = commas(aKm) + " km";
+    speedNow.textContent = commas(vKm) + " km/s · " + mult.toFixed(3) + " × light speed";
+    circOut.textContent = commas(circKm) + " km";
+    oneWaveOut.textContent = sig(base, 4) + " Hz";
+    shellOut.textContent = sig(shell1, 4) + " Hz";
+
+    barOne.style.width = pct(base) + "%";
+    barShell.style.width = pct(shell1) + "%";
+    valOne.textContent = sig(base, 3);
+    valShell.textContent = sig(shell1, 3);
+
+    var rows = "";
+    for (var n = 1; n <= 5; n++) {
+      var f = base * Math.sqrt(n * (n + 1));
+      var near = Math.abs(f - MEASURED[n - 1]) / MEASURED[n - 1] < 0.02;
+      rows += "<tr><td>n = " + n + "</td>" +
+              '<td class="' + (near ? "hit" : "") + '">' + sig(f, 4) + " Hz</td>" +
+              "<td>" + MEASURED[n - 1].toFixed(2) + " Hz</td></tr>";
+    }
+    modeBody.innerHTML = rows;
+  }
+
+  function setCavity(aKm, mult) {
+    radiusRange.value = Math.round(Math.max(3000, Math.min(9000, aKm)));
+    speedRange.value = Math.round(Math.max(500, Math.min(2200, mult * 1000)));
+    refreshCavity();
+  }
+
+  if (radiusRange && speedRange) {
+    radiusRange.addEventListener("input", refreshCavity);
+    speedRange.addEventListener("input", refreshCavity);
+
+    [].slice.call(document.querySelectorAll("[data-cav]")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var a = 6371, circ = TAU * a;
+        switch (b.getAttribute("data-cav")) {
+          case "earth":    setCavity(6371, 1); break;
+          case "tesla":    setCavity(6371, 471240 / CKM); break;
+          /* v so that v / circumference = 7.83 Hz */
+          case "wave783":  setCavity(6371, (7.83 * circ) / CKM); break;
+          /* v so that the n = 1 shell pattern is 7.83 Hz */
+          case "shell783": setCavity(6371, (7.83 * circ) / (CKM * Math.SQRT2)); break;
+        }
+        radiusRange.focus();
+      });
+    });
+
+    refreshCavity();
+  }
+
+  /* =========================================================
+     Panel B: a coil and a capacitor
+     f = 1 / (2 pi sqrt(L C))
+     ========================================================= */
+
+  var indRange = document.getElementById("indRange");
+  var capRange = document.getElementById("capRange");
+  var indNow   = document.getElementById("indNow");
+  var capNow   = document.getElementById("capNow");
+  var freqOut  = document.getElementById("freqOut");
+  var qwOut    = document.getElementById("qwOut");
+  var vfOut    = document.getElementById("vfOut");
+  var offOut   = document.getElementById("offOut");
+  var rowYou   = document.getElementById("rowYou");
+
+  var TANK = 0.03816;        /* microfarad, one of his jars */
+  var STACK = 1196;          /* metres, extra coil plus special series coil */
+
+  /* slider units: inductance in tenths of a microhenry, capacitance in thousandths of a microfarad */
+  function indValue() { return Number(indRange.value) / 10; }        /* microhenry */
+  function capValue() { return Number(capRange.value) / 1000; }      /* microfarad */
+
+  function refreshLC() {
+    var Luh = indValue();
+    var Cuf = capValue();
+    var L = Luh * 1e-6;
+    var Cf = Cuf * 1e-6;
+    var f = 1 / (TAU * Math.sqrt(L * Cf));                 /* hertz */
+    var quarter = C / (4 * f);                             /* metres, at light speed */
+    var vf = (4 * STACK * f) / C;
+
+    indNow.textContent = sig(Luh, 4) + " µH · " + commas(Luh * 1000) + " cm";
+    capNow.textContent = sig(Cuf, 4) + " µF · " + (Cuf / TANK).toFixed(2) + " tanks";
+    freqOut.textContent = sig(f / 1000, 4) + " kHz";
+    qwOut.textContent = quarter >= 1000
+      ? sig(quarter / 1000, 4) + " km"
+      : commas(quarter) + " m";
+    vfOut.textContent = vf < 10 ? vf.toFixed(3) : sig(vf, 4);
+    rowYou.textContent = sig(f / 1000, 4) + " kHz";
+
+    var off = (f - 50000) / 50000 * 100;
+    var word = Math.abs(off) < 0.05
+      ? "on his published figure"
+      : sig(Math.abs(off), 3) + " per cent " + (off > 0 ? "high" : "low");
+    offOut.textContent = word;
+  }
+
+  function setLC(Luh, Cuf) {
+    indRange.value = Math.round(Math.max(10, Math.min(2000, Luh * 10)));
+    capRange.value = Math.round(Math.max(5, Math.min(400, Cuf * 1000)));
+    refreshLC();
+  }
+
+  if (indRange && capRange) {
+    indRange.addEventListener("input", refreshLC);
+    capRange.addEventListener("input", refreshLC);
+
+    [].slice.call(document.querySelectorAll("[data-lc]")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        switch (b.getAttribute("data-lc")) {
+          case "four": setLC(56.4, 4 * TANK); break;
+          case "one":  setLC(56.4, TANK); break;
+          /* C that puts the present inductance on 50,000 per second */
+          case "fifty":
+            var L = indValue() * 1e-6;
+            var need = 1 / (L * Math.pow(TAU * 50000, 2)) * 1e6;   /* microfarad */
+            if (need > 0.4) { setLC(56.4, 0.17965); }
+            else if (need < 0.005) { setLC(56.4, 0.17965); }
+            else { setLC(indValue(), need); }
+            break;
+        }
+        indRange.focus();
+      });
+    });
+
+    refreshLC();
+  }
+})();
+</script>
+</body>
+</html>
