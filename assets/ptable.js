@@ -420,6 +420,14 @@
     grid.addEventListener("keydown", function (ev) {
       var t = document.activeElement;
       if (!t || !t.classList || !t.classList.contains("el-tile")) return;
+      /* Open on Enter or Space explicitly rather than leaning on the button's
+         built-in activation, so the card opens the same way however the key
+         event reaches us. */
+      if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") {
+        ev.preventDefault();
+        if (t._el) openCard(t._el, t);
+        return;
+      }
       var dx = 0, dy = 0;
       if (ev.key === "ArrowLeft") dx = -1;
       else if (ev.key === "ArrowRight") dx = 1;
