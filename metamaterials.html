@@ -92,7 +92,8 @@ body[data-page="meta"] .slider-cap {
     <h2>Shape first, <span class="hue">recipe second</span></h2>
     <p>Build one plastic three ways and you get three materials in practice: a solid block, a soft foam, and a springy lattice (an open framework of little struts, like scaffolding shrunk small). Same recipe, three behaviours.</p>
     <div class="note"><strong>The working definition.</strong> A metamaterial is a material whose behaviour comes from its repeating internal shape rather than only its ingredients. Change the pattern and you change what it does, without touching the recipe.</div>
-    <p>Scale sets the difficulty. The repeating pattern needs to sit smaller than whatever it has to steer. Everyday sound waves stretch from centimetres to metres, so a sound-steering pattern can be as chunky as marbles. Visible light waves run more than a hundred times thinner than a human hair, so a light-steering pattern has to be finer than a home workshop could cut. That is why the sound tricks reached products first.</p>
+    <p>Scale sets the difficulty, and what counts as small enough depends on the job. To make a wave meet one smooth average instead of a set of obstacles, the repeat sits well under a wavelength, the distance from one crest to the next. To build a gate that turns one band back, the repeat sits near half a wavelength and the scattering does the work, which is how a band gap forms. Both jobs turn up below: the wave gate is the second kind, the backwards-bending lens the first.</p>
+    <p>Either way the wavelength sets the size, so the wave you pick sets the workshop. Everyday sound waves stretch from centimetres to metres, so a sound-steering pattern can be as chunky as marbles. Visible light waves run more than a hundred times thinner than a human hair, so a light-steering pattern lands finer than a home workshop can cut and goes to lithography instead: printing the pattern with light, the way computer chips are made. That is why the sound tricks reached products first.</p>
   </div>
 </section>
 
@@ -122,7 +123,7 @@ body[data-page="meta"] .slider-cap {
 <section id="wavegate">
   <div class="wrap">
     <h2>The <span class="hue">wave gate</span></h2>
-    <p>String beads on springs in a line, alternating a light bead with a heavy one, and the chain becomes choosy. Shake one end slowly and the wiggle strolls to the far end. Shake at certain faster pitches and it dies out within a few beads, as if the chain had shut a gate. That refused range is called a band gap: a speed bump for waves. The rhythm of light and heavy sets where the bump sits.</p>
+    <p>String beads on springs in a line, alternating a light bead with a heavy one, and the chain becomes choosy. Shake one end slowly and the wiggle strolls to the far end. Shake at certain faster pitches and it dies out within a few beads, as if the chain had shut a gate. That refused range is called a band gap: a speed bump for waves. The rhythm of light and heavy sets where the bump sits. The chain below is one worked example: every heavy bead weighs four times its light neighbour, and every spring pulls the same. Those two numbers put the edges of the gap where they land.</p>
     <div class="canvas-frame">
       <canvas id="waveCanvas" role="img" aria-label="A chain of beads joined by springs, shaken from the left end. At some pitches the wiggle travels the chain; in the band gap it fades within a few beads."></canvas>
     </div>
@@ -413,7 +414,7 @@ body[data-page="meta"] .slider-cap {
       var reach = Math.min(N_BEADS - 1, Math.ceil(3 / e.beta) * 2);
       waveOut.innerHTML = "<strong>Band gap.</strong> The wiggle fades to nothing by about bead " + reach + " of " + N_BEADS + ". The pattern refuses to carry this pitch.";
     } else {
-      waveOut.innerHTML = "<strong>Too fast.</strong> Past the top of the second band the beads cannot swing quickly enough, so the wiggle stays near the shaker.";
+      waveOut.innerHTML = "<strong>Above the bands.</strong> Past the top of the second band this chain has no mode that runs: these masses on these springs have nothing left that passes a wiggle along at that pitch, so it stays near the shaker. Change the masses and the top of the band moves with them.";
     }
   }
 
