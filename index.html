@@ -11,50 +11,6 @@
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
 <style>
-body[data-page="index"] .ribbon-wrap {
-  margin: 34px 0 8px;
-  border: 1px solid var(--line-bright);
-  border-radius: 18px;
-  background: radial-gradient(120% 140% at 50% 0%, var(--bg2), var(--bg));
-  padding: 16px 14px 12px;
-  box-shadow: inset 0 0 70px -34px color-mix(in srgb, var(--accent) 45%, transparent);
-}
-body[data-page="index"] .ribbon {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
-  gap: 5px;
-}
-body[data-page="index"] .ribbon a {
-  aspect-ratio: 1 / 1;
-  border-radius: 7px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 1px;
-  font-size: 15px; font-weight: 800; color: #04060c;
-  text-decoration: none; line-height: 1;
-  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
-}
-body[data-page="index"] .ribbon a .num {
-  font-size: 9px; font-weight: 600; opacity: .7;
-}
-@media (min-width: 900px) {
-  body[data-page="index"] .ribbon {
-    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
-    gap: 6px;
-  }
-  body[data-page="index"] .ribbon a { font-size: 16px; }
-}
-body[data-page="index"] .ribbon a:hover,
-body[data-page="index"] .ribbon a:focus-visible {
-  transform: scale(1.9); z-index: 6;
-  filter: brightness(1.2);
-  box-shadow: 0 6px 20px -4px rgba(0,0,0,.9);
-}
-body[data-page="index"] .ribbon-cap {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 12px; flex-wrap: wrap; margin-top: 12px;
-  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
-}
-body[data-page="index"] #ribbon-read { color: var(--ink); font-weight: 600; }
 body[data-page="index"] .door-glyph { font-size: 30px; }
 body[data-page="index"] .door-group {
   font-family: var(--font-display); font-weight: 700;
@@ -97,17 +53,19 @@ body[data-page="index"] .why-grid .card p { color: var(--muted); }
 
   <section>
     <div class="wrap">
-      <h2>The whole shelf, <span class="hue">in one strip</span></h2>
+      <h2>The whole shelf, <span class="hue">on one chart</span></h2>
       <p>
-        Every element, in order, coloured by family. Tap any one to open its card on the full chart.
+        Every element in its seat, coloured by family. Tap a box and its card opens right here:
+        what it weighs, the heat it takes to melt it, how much of the ground is made of it, and
+        any record it holds.
       </p>
-      <div class="ribbon-wrap">
-        <div class="ribbon" id="ribbon"></div>
-        <div class="ribbon-cap">
-          <span id="ribbon-read">Tap or hover an element</span>
-          <span>1 to 118, in order</span>
-        </div>
-      </div>
+      <div id="ptable"></div>
+      <p class="ptable-hint">Click or tap a box for its card. Arrow keys walk the chart, Enter opens a card, Escape closes it. On a narrow screen the chart slides sideways inside its own frame.</p>
+      <p style="margin-top:14px;">
+        Over on <a href="periodic-table.html">the full chart</a> you can recolour the boxes by density,
+        melting point, atom size or how common a thing is, search for an element by name or number, and
+        light up the ones holding a record.
+      </p>
 
       <div class="stat-row">
         <div class="stat">
@@ -261,42 +219,17 @@ body[data-page="index"] .why-grid .card p { color: var(--muted); }
 <div id="site-footer"></div>
 <script src="assets/elements.js"></script>
 <script src="assets/nav.js"></script>
+<script src="assets/ptable.js"></script>
 <script>
-(function () {
-  var els = window.ELEMENTS || [];
-  var host = document.getElementById("ribbon");
-  var read = document.getElementById("ribbon-read");
-  if (!host || !els.length) return;
-
-  var CAT_LABEL = {
-    alkali: "Alkali metal", alkaline: "Alkaline earth metal", transition: "Transition metal",
-    "post-transition": "Post-transition metal", metalloid: "Metalloid", nonmetal: "Non-metal",
-    halogen: "Halogen", noble: "Noble gas", lanthanide: "Lanthanide", actinide: "Actinide",
-    unknown: "Properties still being pinned down"
-  };
-
-  var frag = document.createDocumentFragment();
-  els.forEach(function (el) {
-    var a = document.createElement("a");
-    a.href = "periodic-table.html#el-" + el.sym;
-    a.className = "el-tile " + (window.EMA ? window.EMA.catClass(el.cat) : "cat-" + el.cat);
-    a.innerHTML = '<span class="num">' + el.z + "</span>" + el.sym;
-    a.setAttribute("title", el.z + " " + el.name);
-    a.setAttribute("aria-label", el.name + ", atomic number " + el.z);
-    a.addEventListener("mouseenter", function () { show(el); });
-    a.addEventListener("focus", function () { show(el); });
-    a.addEventListener("touchstart", function () { show(el); }, { passive: true });
-    frag.appendChild(a);
+/* The same component the full chart page mounts, so the boxes and the
+   element card can never drift apart. The extras live over there: here it
+   is the chart and the card, and a tap opens the card in place. */
+if (window.PTable) {
+  window.PTable.mount({
+    container: "#ptable",
+    label: "Periodic table of the 118 elements"
   });
-  host.appendChild(frag);
-
-  function show(el) {
-    var extra = (el.records && el.records.length) ? " · " + el.records[0] : "";
-    read.textContent = el.z + " · " + el.name + " · " + (CAT_LABEL[el.cat] || el.cat) + extra;
-  }
-
-  host.addEventListener("mouseleave", function () { read.textContent = "Tap or hover an element"; });
-})();
+}
 </script>
 </body>
 </html>
