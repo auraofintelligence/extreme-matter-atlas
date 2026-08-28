@@ -814,11 +814,38 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   }
   function celsiusWords(T) {
     var c = T - 273.15;
-    if (T < 1) return "colder than anywhere in deep space";
     if (T < 40) return neg(sig(c, 4)) + " °C";
     if (Math.abs(c) < 1000) return neg(sig(c, 3)) + " °C";
+    /* past ten thousand degrees the 273 stops showing, so both scales land on one figure */
+    if (T >= 100000) return neg(fmt(Math.round(c / 1000) * 1000)) + " °C";
     return neg(fmt(Math.round(c))) + " °C";
   }
+
+  /* whole and rounded celsius, for a figure inside a sentence */
+  function cWhole(T) { return neg(fmt(Math.round(T - 273.15))); }
+  function cSig(T, n) { return neg(sig(T - 273.15, n || 3)); }
+
+  /* at the cold end celsius stops saying much, so say the distance from absolute zero instead */
+  function aboveZeroWords(T) {
+    if (T < 1) {
+      var m = T * 1000;
+      if (m < 1.5) return "about a thousandth of a degree above absolute zero";
+      if (m < 100) return sig(m, 3) + " thousandths of a degree above absolute zero";
+      return sig(T, 2) + " of a degree above absolute zero";
+    }
+    if (T < 1.5) return "about a degree above absolute zero";
+    return sig(T, 3) + " degrees above absolute zero";
+  }
+
+  /* the headline reading: celsius leads, kelvin alongside where it earns its place */
+  function tempReadout(T) {
+    if (T < 10) return tempWords(T) + ", " + aboveZeroWords(T);
+    if (T >= 100000) return celsiusWords(T) + ", the same in kelvin";
+    return celsiusWords(T) + " (" + tempWords(T) + ")";
+  }
+
+  /* the dial, one figure with a plain-words anchor sitting under it */
+  function tempDial(T) { return T < 10 ? tempWords(T) : celsiusWords(T); }
   function tempAnchor(T) {
     if (T < 0.01) return "below anything found in nature";
     if (T < 2.7) return "colder than the space between the galaxies";
@@ -851,8 +878,8 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     if (T >= Ti) {
       return {
         head: "A plasma",
-        body: "The electrons are gone. At about " + fmt(Math.round(Ti / 100) * 100) +
-          " kelvin the average thermal energy per mole matches " + e.name.toLowerCase() +
+        body: "The electrons are gone. At about " + fmt(Math.round((Ti - 273.15) / 100) * 100) +
+          " degrees Celsius the average thermal energy per mole matches " + e.name.toLowerCase() +
           "'s first ionisation energy of " + e.ion1 + " kilojoules per mole, and what is left is " +
           "bare nuclei and loose electrons. <strong>" + e.z + " protons is all that is still " +
           e.name.toLowerCase() + " about it.</strong> Pressure has stopped being a chemical dial here: " +
@@ -865,7 +892,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       return {
         head: "A gas coming apart",
         body: "Hot enough that a fair share of the atoms have lost an electron and the gas conducts. Full stripping " +
-          "sets in near " + fmt(Math.round(Ti / 100) * 100) + " kelvin for " + e.name.toLowerCase() +
+          "sets in near " + fmt(Math.round((Ti - 273.15) / 100) * 100) + " degrees Celsius for " + e.name.toLowerCase() +
           ", and the way in is gradual: the hotter it gets the larger the ionised fraction, and the more the " +
           "material behaves like a plasma and less like a gas of atoms.",
         prov: "The onset scale is the first ionisation energy from the atlas dataset, " + e.ion1 +
@@ -891,26 +918,26 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   var RULES = {
     Na: function (e, P, T) {
       if (P < 0.5) {
-        if (T > e.boil) return { head: "A hot vapour", body: "Above " + e.boil + " kelvin sodium boils. The orange of an old street lamp is one line out of this atom, at 589 nanometres, driven by an electrical discharge rather than by heat.", prov: "Boiling point from the atlas dataset." };
-        if (T > e.melt) return { head: "A molten metal", body: "Sodium melts at " + e.melt + " kelvin, which is 97.8 degrees Celsius. Molten sodium carries heat well enough that it has been used as a reactor coolant.", prov: "Melting point from the atlas dataset." };
+        if (T > e.boil) return { head: "A hot vapour", body: "Above " + cWhole(e.boil) + " degrees Celsius (" + e.boil + " kelvin) sodium boils. The orange of an old street lamp is one line out of this atom, at 589 nanometres, driven by an electrical discharge rather than by heat.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "A molten metal", body: "Sodium melts at 97.8 degrees Celsius, which is " + e.melt + " kelvin. Molten sodium carries heat well enough that it has been used as a reactor coolant.", prov: "Melting point from the atlas dataset." };
         return { head: "A soft silver metal", body: "One loose electron per atom, packed body-centred cubic, and soft enough that <strong>you can cut it with a kitchen knife</strong>. This is sodium doing exactly what group 1 says it should.", prov: "The ordinary bench condition, measured many times over since Humphry Davy isolated it in 1807." };
       }
       var Tm = naMelt(P);
       if (P < 31) {
-        if (T > Tm) return { head: "A dense liquid metal", body: "Under pressure sodium's melting point <strong>climbs</strong>, up towards a peak near 1,000 kelvin at 31 gigapascals. Squeezing it here makes it harder to melt, which is the ordinary behaviour and the last stretch where sodium is ordinary.", prov: "Eugene Gregoryanz and colleagues followed the melting line with synchrotron diffraction, Physical Review Letters, 2005." };
-        return { head: "A metal, close packed", body: "Still a metal, packing tighter. The melting point at this pressure sits near " + Math.round(Tm) + " kelvin and is still rising.", prov: "Melting line measured by Gregoryanz and colleagues, Physical Review Letters, 2005." };
+        if (T > Tm) return { head: "A dense liquid metal", body: "Under pressure sodium's melting point <strong>climbs</strong>, up towards a peak near 730 degrees Celsius (1,000 kelvin) at 31 gigapascals. Squeezing it here makes it harder to melt, which is the ordinary behaviour and the last stretch where sodium is ordinary.", prov: "Eugene Gregoryanz and colleagues followed the melting line with synchrotron diffraction, Physical Review Letters, 2005." };
+        return { head: "A metal, close packed", body: "Still a metal, packing tighter. The melting point at this pressure sits near " + cWhole(Tm) + " degrees Celsius and is still rising.", prov: "Melting line measured by Gregoryanz and colleagues, Physical Review Letters, 2005." };
       }
       if (P < 103) {
         if (T > Tm) return { head: "A liquid metal, on the way down", body: "Past the 31 gigapascal peak the melting line <strong>falls</strong>, and steeply. More pressure now makes sodium easier to melt, which is the opposite of what a simple metal does.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
-        return { head: "A metal, restacking", body: "Solid, but the structures are getting complicated as the core electrons start to feel each other. The melting line above is near " + Math.round(Tm) + " kelvin and dropping.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+        return { head: "A metal, restacking", body: "Solid, but the structures are getting complicated as the core electrons start to feel each other. The melting line above is near " + cWhole(Tm) + " degrees Celsius and dropping.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
       }
       if (P < 118) {
-        if (T > Tm) return { head: "Liquid, and nearly at room temperature", body: "The melting line here is near " + Math.round(Tm) + " kelvin, heading for its floor.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+        if (T > Tm) return { head: "Liquid, and nearly at room temperature", body: "The melting line here is near " + cWhole(Tm) + " degrees Celsius, heading for its floor.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
         return { head: "A dark metal, complex structures", body: "Sodium crystallises in a run of low-symmetry structures through this range, and its melting point is falling towards its minimum.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
       }
       if (P < 130) {
-        if (T > Tm) return { head: "Liquid sodium at room temperature", body: "<strong>The melting line bottoms out at 300 kelvin at 118 gigapascals.</strong> Squeeze sodium this hard and it pours in a warm room. A metal you could cut with a kitchen knife at one atmosphere is a liquid at 20 degrees Celsius at a million.", prov: "Eugene Gregoryanz and colleagues measured the minimum with synchrotron diffraction and reported it in Physical Review Letters in 2005." };
-        return { head: "A dark, dense metal", body: "Solid, in a low-symmetry structure, and darkening. The melting line just above sits near " + Math.round(Tm) + " kelvin.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+        if (T > Tm) return { head: "Liquid sodium at room temperature", body: "<strong>The melting line bottoms out at 27 degrees Celsius (300 kelvin) at 118 gigapascals.</strong> Squeeze sodium this hard and it pours in a warm room. A metal you could cut with a kitchen knife at one atmosphere is a liquid at 20 degrees Celsius at a million.", prov: "Eugene Gregoryanz and colleagues measured the minimum with synchrotron diffraction and reported it in Physical Review Letters in 2005." };
+        return { head: "A dark, dense metal", body: "Solid, in a low-symmetry structure, and darkening. The melting line just above sits near " + cWhole(Tm) + " degrees Celsius.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
       }
       if (P < 195) {
         if (T > 700) return { head: "A dense fluid", body: "Molten. <strong>The measured melting line stops at 130 gigapascals</strong>, so where it runs above this pressure is an open question with a straightforward experiment attached: laser heating inside a diamond anvil cell, watching the diffraction pattern for the moment the crystal peaks vanish.", prov: "Stated as a gap: Gregoryanz and colleagues followed the line to 130 gigapascals in 2005 and no one has taken it further." };
@@ -930,17 +957,17 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
     H: function (e, P, T) {
       if (P < 0.001) {
-        if (T > e.boil) return { head: "A gas of pairs", body: "Two atoms to a molecule, the lightest gas there is, and 75 per cent of the ordinary matter in the universe by mass.", prov: "Boiling point " + e.boil + " kelvin, from the atlas dataset." };
-        if (T > e.melt) return { head: "A liquid", body: "Liquid between " + e.melt + " and " + e.boil + " kelvin, a range of just over six degrees. This is rocket fuel: the Space Shuttle's big orange tank was mostly this.", prov: "Melting and boiling points from the atlas dataset." };
-        return { head: "A soft molecular solid", body: "Hydrogen molecules on a lattice, still spinning freely in place. Transparent, and an insulator.", prov: "Melting point " + e.melt + " kelvin, from the atlas dataset." };
+        if (T > e.boil) return { head: "A gas of pairs", body: "Two atoms to a molecule, the lightest gas there is, and 75 per cent of the ordinary matter in the universe by mass.", prov: "Boiling point " + cSig(e.boil, 4) + " degrees Celsius (" + e.boil + " kelvin), from the atlas dataset." };
+        if (T > e.melt) return { head: "A liquid", body: "Liquid between " + cSig(e.melt, 4) + " and " + cSig(e.boil, 4) + " degrees Celsius (" + e.melt + " to " + e.boil + " kelvin), a range of just over six degrees. This is rocket fuel: the Space Shuttle's big orange tank was mostly this.", prov: "Melting and boiling points from the atlas dataset." };
+        return { head: "A soft molecular solid", body: "Hydrogen molecules on a lattice, still spinning freely in place. Transparent, and an insulator.", prov: "Melting point " + cSig(e.melt, 4) + " degrees Celsius (" + e.melt + " kelvin), from the atlas dataset." };
       }
-      if (T > 900 && P >= 10) return { head: "A hot dense fluid, and metallic", body: "Warm and squeezed at once, hydrogen does not wait for a crystal to become a metal: the liquid does it. Peter Celliers and colleagues trained 168 lasers on deuterium at the National Ignition Facility, compressed it to <strong>600 gigapascals while holding it between 1,000 and 2,000 kelvin</strong>, and found the insulating fluid turning metallic near 200 gigapascals. That is the condition inside Jupiter and Saturn, made on Earth for a few nanoseconds.", prov: "Celliers and colleagues, Science 361, 677, 2018." };
+      if (T > 900 && P >= 10) return { head: "A hot dense fluid, and metallic", body: "Warm and squeezed at once, hydrogen does not wait for a crystal to become a metal: the liquid does it. Peter Celliers and colleagues trained 168 lasers on deuterium at the National Ignition Facility, compressed it to <strong>600 gigapascals while holding it between 730 and 1,730 degrees Celsius</strong> (1,000 to 2,000 kelvin), and found the insulating fluid turning metallic near 200 gigapascals. That is the condition inside Jupiter and Saturn, made on Earth for a few nanoseconds.", prov: "Celliers and colleagues, Science 361, 677, 2018." };
       if (P < 110) return { head: "Molecular hydrogen, squeezed", body: "Still pairs of atoms, still an insulator, still transparent, just closer together. This is phase I, where the molecules spin freely on their lattice sites, and it holds over an enormous span of pressure.", prov: "Mapped by Raman and infrared spectroscopy in diamond anvil cells since the 1980s." };
       if (P < 220) return { head: "Molecules that have stopped spinning", body: "Through this range the molecules settle into fixed orientations rather than tumbling, and the vibration spectrum changes shape. Still an insulator. Still not a metal.", prov: "Phases II and III, from Raman spectroscopy in diamond anvil cells." };
       if (P < 325) return { head: "Layers of two kinds at once", body: "Above 220 gigapascals at room temperature hydrogen takes a structure with two different sorts of layer stacked alternately, one of them nearly molecular and one of them not. Mikhail Eremets and Ivan Troyan reported it in 2011 and it has been reproduced since.", prov: "Phase IV, seen by Raman spectroscopy at room temperature in a diamond anvil cell." };
-      if (P < 425) return { head: "A newer phase again", body: "Above 325 gigapascals at 300 kelvin the Raman signal changes again. Philip Dalladay-Simpson, Ross Howie and Eugene Gregoryanz reported this one in <em>Nature</em> in 2016, and read the changes as the molecular bonds weakening on the way to something else.", prov: "Phase V, Dalladay-Simpson, Howie and Gregoryanz, Nature 529, 63, 2016." };
-      if (P < 495) return { head: "The gap closing", body: "At 425 gigapascals and 80 kelvin the direct band gap drops sharply from <strong>0.6 electronvolts to under 0.1</strong>, and the infrared light that used to pass through is almost entirely absorbed. Wigner and Huntington predicted this in 1935 and put it at 25 gigapascals, using the compressibility measured at zero pressure for every pressure. The idea held; the number did not.", prov: "Paul Loubeyre, Florent Occelli and Paul Dumas, in a toroidal diamond anvil cell at the SOLEIL synchrotron, Nature, 2020." };
-      return { head: "Reflecting like a metal", body: "Ranga Dias and Isaac Silvera reported hydrogen at 495 gigapascals and 5.5 kelvin reflecting light in the way a free-electron metal does. Comments published in the same journal dispute what the reflectance supports, and the authors issued a correction to their fit. <strong>The reading, the objections and the correction sit on the record together</strong>, which is the ordinary condition of a measurement at the edge of what an instrument can do.", prov: "Science, 2017, with the comments and erratum in the same journal. What would settle it is x-ray diffraction on a sample large enough to hold at that pressure." };
+      if (P < 425) return { head: "A newer phase again", body: "Above 325 gigapascals at 27 degrees Celsius (300 kelvin) the Raman signal changes again. Philip Dalladay-Simpson, Ross Howie and Eugene Gregoryanz reported this one in <em>Nature</em> in 2016, and read the changes as the molecular bonds weakening on the way to something else.", prov: "Phase V, Dalladay-Simpson, Howie and Gregoryanz, Nature 529, 63, 2016." };
+      if (P < 495) return { head: "The gap closing", body: "At 425 gigapascals and minus 193 degrees Celsius (80 kelvin) the direct band gap drops sharply from <strong>0.6 electronvolts to under 0.1</strong>, and the infrared light that used to pass through is almost entirely absorbed. Wigner and Huntington predicted this in 1935 and put it at 25 gigapascals, using the compressibility measured at zero pressure for every pressure. The idea held; the number did not.", prov: "Paul Loubeyre, Florent Occelli and Paul Dumas, in a toroidal diamond anvil cell at the SOLEIL synchrotron, Nature, 2020." };
+      return { head: "Reflecting like a metal", body: "Ranga Dias and Isaac Silvera reported hydrogen at 495 gigapascals and 5.5 kelvin, five and a half degrees above absolute zero, reflecting light in the way a free-electron metal does. Comments published in the same journal dispute what the reflectance supports, and the authors issued a correction to their fit. <strong>The reading, the objections and the correction sit on the record together</strong>, which is the ordinary condition of a measurement at the edge of what an instrument can do.", prov: "Science, 2017, with the comments and erratum in the same journal. What would settle it is x-ray diffraction on a sample large enough to hold at that pressure." };
     },
 
     He: function (e, P, T) {
@@ -1098,7 +1125,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     if (!e) return;
 
     pNow.textContent = pressureWords(P);
-    tNow.textContent = tempWords(T) + ", " + celsiusWords(T);
+    tNow.textContent = tempReadout(T);
 
     dAtm.textContent = atmWords(P);
     dAtmSub.textContent = P < 0.00015 ? "the air around you" : "times the air pressure at sea level";
@@ -1108,7 +1135,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     dElephSub.textContent = ew === "nothing"
       ? "six-tonne elephants on one postage stamp: not enough to count"
       : "six-tonne elephants standing on one postage stamp";
-    dTemp.textContent = celsiusWords(T);
+    dTemp.textContent = tempDial(T);
     dTempSub.textContent = tempAnchor(T);
 
     var d = describe(chosen, P, T);
