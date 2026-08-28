@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Out of Phase · Extreme Matter Atlas</title>
+<meta name="description" content="Phase decides whether two waves add up or cancel and it costs nothing to change: the Philadelphia account with its record beside it, matter waves at 170,000 daltons, and the fields that move and rearrange matter today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="outofphase"] { --accent: #67e8f9; --accent2: #f0abfc; }
+
+body[data-page="outofphase"] .hero {
+  background-image:
+    repeating-linear-gradient(115deg, rgba(103, 232, 249, 0.055) 0 2px, transparent 2px 26px),
+    repeating-linear-gradient(65deg, rgba(240, 171, 252, 0.05) 0 2px, transparent 2px 34px);
+}
+
+/* controls: every slider gets a 44px hit area without losing the shared look */
+body[data-page="outofphase"] .control { min-height: 44px; justify-content: center; }
+body[data-page="outofphase"] .control input[type="range"] {
+  height: 44px; background: transparent; width: min(320px, 74vw);
+}
+body[data-page="outofphase"] .control input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px; border-radius: 999px; background: var(--line-bright);
+}
+body[data-page="outofphase"] .control input[type="range"]::-webkit-slider-thumb { margin-top: -6px; }
+body[data-page="outofphase"] .control input[type="range"]::-moz-range-track {
+  height: 6px; border-radius: 999px; background: var(--line-bright);
+}
+body[data-page="outofphase"] .btn { min-height: 44px; }
+body[data-page="outofphase"] .preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
+body[data-page="outofphase"] .preset-row .btn { padding: 10px 15px; font-size: 13.5px; }
+
+body[data-page="outofphase"] .readout {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--ink); line-height: 1.7;
+  padding: 10px 15px; border: 1px solid var(--line-bright); border-radius: 12px;
+  background: var(--panel2); min-height: 44px; display: flex; align-items: center;
+}
+body[data-page="outofphase"] .readout b { color: var(--accent); font-weight: 600; }
+body[data-page="outofphase"] .readout i { color: var(--accent2); font-style: normal; font-weight: 600; }
+
+body[data-page="outofphase"] .cv-caps {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 9px 8px 2px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+}
+body[data-page="outofphase"] .cv-caps b { color: var(--accent); font-weight: 600; }
+
+/* the claim column and the archive column, side by side */
+body[data-page="outofphase"] .ledger { display: grid; gap: 12px; margin: 22px 0; }
+body[data-page="outofphase"] .ledger .row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+}
+body[data-page="outofphase"] .ledger .row > div { padding: 15px 18px; font-size: 14.5px; }
+body[data-page="outofphase"] .ledger .row .a {
+  background: color-mix(in srgb, var(--accent2) 9%, var(--panel));
+  border-right: 1px solid var(--line);
+}
+body[data-page="outofphase"] .ledger .row .b { background: var(--panel); }
+body[data-page="outofphase"] .ledger .head {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; display: block; margin-bottom: 6px;
+}
+body[data-page="outofphase"] .ledger .a .head { color: var(--accent2); }
+body[data-page="outofphase"] .ledger .b .head { color: var(--accent); }
+body[data-page="outofphase"] .ledger .when {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink); font-weight: 600;
+}
+@media (max-width: 700px) {
+  body[data-page="outofphase"] .ledger .row { grid-template-columns: 1fr; }
+  body[data-page="outofphase"] .ledger .row .a { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+
+/* a quoted document, set apart */
+body[data-page="outofphase"] .quoted {
+  border-left: 3px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 7%, var(--panel));
+  border-radius: 0 14px 14px 0; padding: 18px 22px; margin: 20px 0;
+}
+body[data-page="outofphase"] .quoted p { font-size: 16px; color: var(--ink); }
+body[data-page="outofphase"] .quoted .who {
+  display: block; margin-top: 12px;
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em;
+  color: var(--muted); line-height: 1.6;
+}
+
+/* two figures for the same thing, both kept */
+body[data-page="outofphase"] .pair-list { list-style: none; margin: 16px 0; display: grid; gap: 10px; }
+body[data-page="outofphase"] .pair-list li {
+  display: grid; grid-template-columns: 210px 1fr; gap: 14px; align-items: baseline;
+  padding: 12px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel);
+  font-size: 14.5px; color: var(--muted);
+}
+body[data-page="outofphase"] .pair-list li .lab {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; color: var(--accent);
+  line-height: 1.5;
+}
+body[data-page="outofphase"] .pair-list li strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="outofphase"] .pair-list li { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* the field ladder */
+body[data-page="outofphase"] .scalebar { display: grid; gap: 10px; margin: 22px 0; }
+body[data-page="outofphase"] .scalebar .rung {
+  display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: baseline;
+  padding: 12px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel);
+}
+body[data-page="outofphase"] .scalebar .rung .lab {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--accent);
+}
+body[data-page="outofphase"] .scalebar .rung .txt { font-size: 14.5px; color: var(--muted); }
+body[data-page="outofphase"] .scalebar .rung .txt strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="outofphase"] .scalebar .rung { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* the bench, one instrument per block */
+body[data-page="outofphase"] .bench {
+  border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+}
+body[data-page="outofphase"] .bench .when {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent2); display: block; margin-bottom: 6px;
+}
+body[data-page="outofphase"] .bench p { font-size: 15px; }
+body[data-page="outofphase"] .bench dl { margin-top: 14px; font-size: 14px; }
+body[data-page="outofphase"] .bench dt {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-top: 10px;
+}
+body[data-page="outofphase"] .bench dd { color: var(--ink); }
+
+body[data-page="outofphase"] .data-table td.figure {
+  font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap;
+}
+body[data-page="outofphase"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="outofphase"] .fig-note {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+  margin-top: 10px; line-height: 1.65;
+}
+</style>
+</head>
+<body data-page="outofphase">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">Phase · the Philadelphia account · fields on matter</span>
+      <h1 class="display">Out of Phase</h1>
+      <p class="lede">Two waves in the same place either add up or wipe each other out, and the only thing that decides which is <strong>phase</strong>: how far one is shifted along against the other. Phase carries no energy of its own. Nudging it costs nothing. Get two equal waves within about six degrees of opposite and they knock each other down to a tenth. Miss by the same amount the other way and they reinforce. Matter is made of waves too, so this is not only a story about sound and light: an eight nanometre lump of sodium metal was shown interfering with itself in January 2026.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">5.7&deg;</span><span class="lbl">how close to opposite two equal waves have to sit to cancel down to a tenth of one of them</span></div>
+        <div class="stat"><span class="num">170,000</span><span class="lbl">daltons: the mass of the heaviest object measured interfering with itself, Vienna, January 2026</span></div>
+        <div class="stat"><span class="num">zero</span><span class="lbl">the force on the electrons in the Aharonov-Bohm experiment, which shift their fringes anyway</span></div>
+        <div class="stat"><span class="num">1,200 T</span><span class="lbl">the strongest magnetic field made indoors, about 400 times a hospital scanner, Tokyo 2018</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The account of <span class="hue">28 October 1943</span></h2>
+      <p>The canonical story of matter set out of phase with its surroundings is told about a small warship in a shipyard, and it goes like this.</p>
+      <p>USS <em>Eldridge</em>, hull number DE-173, was a Cannon-class destroyer escort: 306 feet long, 1,240 tons standard, four diesels driving generators driving two shafts, 21 knots, a crew of 15 officers and 201 enlisted men. In the account, she is at the Philadelphia Naval Shipyard, wrapped in cable and fed by generators, for a test of a field meant to bend light and radar around the hull. On 22 July 1943 the field is switched on and the ship goes nearly invisible, a greenish fog standing where she was, the crew afterwards badly ill. The gear is said to be out of adjustment, and the test is run again on 28 October 1943. This time the ship does not fade: she goes, in a flash of blue light, and is seen at Norfolk in Virginia, more than 200 miles away, about 320 kilometres, before returning to her berth.</p>
+      <p>The mechanism named in the telling is a military application of Einstein's unified field theory. The cost is paid by the crew.</p>
+
+      <h3>What the letters actually describe</h3>
+      <p>The oldest written source for the crew's condition is a set of letters signed Carlos Miguel Allende, written by Carl Meredith Allen, born 31 May 1925 at Springdale, Pennsylvania. They went to Morris Ketchum Jessup, an astronomer by training who had published <em>The Case for the UFO</em> in 1955. One letter carries a postmark of 5 January 1956 from Gainesville, Texas, and reached Jessup on 13 January; a second is postmarked 25 May 1956 from DuBois, Pennsylvania. Accounts differ on whether the correspondence and the annotated book that followed began in 1955 or in 1956, and both years are in print.</p>
+      <p>In the letters, men "Get Stuck" and hold still until another man touches them, or else they "Freeze". A freeze lasting more than a day sends a man, in his capitals, "Stark Raving, Gibbering, Running MAD". Deeply frozen men are described as breathing and looking ordinary while unaware of anything, in what he calls a "Nether World". Two men carrying compasses went into what he calls "The Flame", and he writes: "THEY BURNED FOR 18 DAYS". One man "walked 'throo' His quarters Wall in sight of His Wife &amp; Child" and was not seen again. The field is put at roughly 100 yards out from each beam, an oblate spheroid, varying with the position of the Moon and with latitude. His summary line is: "The expieriment Was a Complete Success. The Men were Complete Failures."</p>
+      <p>The image most people carry, of sailors found fused into the deck plating and the bulkheads with steel closed around their bodies, is not in those letters. It belongs to the retellings that follow <em>The Philadelphia Experiment: Project Invisibility</em> by Charles Berlitz and William L. Moore, published by Grosset &amp; Dunlap in 1979, which is also where the two-test structure and the 22 July date were fixed in popular form. That book has been noted for elements it shares with the novel <em>Thin Air</em> by George E. Simpson and Neal R. Burger, published in 1977, two years earlier; Simpson and Burger have said their book came first and was not taken from Berlitz and Moore. The 1943 letters and the 1979 book are two different documents, and the deck-fusing detail is in the second one.</p>
+
+      <h3>The annotated copy, and how the Navy came to hold it</h3>
+      <p>A paperback of Jessup's <em>The Case for the UFO</em> arrived at the Office of Naval Research in Washington, addressed to Admiral N. Furth, its margins filled with handwriting in three inks: blue, blue-violet and blue-green, reading as three separate voices, conventionally called Mr A, Mr B and "Jemi", discussing craft propulsion, races of beings and the Navy experiment. Captain Sidney Sherby got the book from Major Darrell L. Ritter on reporting aboard. Sherby and Commander George W. Hoover, the Special Projects Officer, had it retyped complete with every annotation and with the Allen letters, and Varo Manufacturing Corporation of Garland, Texas mimeographed it: close to 200 letter-size pages under plastic covers, typed by a high school student, Michael Ann Dunn, engaged by Varo's president Austin Stanton. That is the Varo edition.</p>
+      <p>How many copies exist is one of the places the record forks, and both figures stay on the table here.</p>
+      <ul class="pair-list">
+        <li><span class="lab">25 copies</span><span>The Office of Naval Research's own information sheet says the two officers "personally had the book retyped and arranged for the reprint, in typewritten form, of 25 copies", and that ONR holds no file copy of the annotated book, the officers and their belongings having left the office many years before.</span></li>
+        <li><span class="lab">127 copies</span><span>The figure repeated through the research literature on the Varo edition and by the people who have handled surviving copies, privately distributed inside the Navy and among interested parties.</span></li>
+      </ul>
+      <p>Jessup was born on 2 March 1900 near Rockville, Indiana, took a BSc in astronomy at Michigan in 1925 and an MSc in 1926, worked as an observer at the Lamont-Hussey Observatory, and set aside his doctoral dissertation in the spring of 1931 without taking the degree, though he was widely styled Dr Jessup afterwards. He earned his living selling automobile parts and taking photographs, and published four books on unidentified craft between 1955 and 1957. He was found on the evening of 20 April 1959 in a park in Dade County, Florida, in his station wagon with a hose run from the exhaust through a partly opened rear window; carbon monoxide poisoning was given as the cause and the death was ruled a suicide. On the record around it: his wife had separated from him about two years earlier, he had been in a serious car accident and was low about his recovery, and in mid-April 1959 he wrote to the radio host Long John Nebel a letter that has been described as a suicide letter. In the literature that follows the Varo edition, his death is instead tied to the annotated book and to pressure from the material.</p>
+
+      <h3>What the Navy's own documents say</h3>
+      <p>Two Navy documents answer the question directly, and it is worth reading what they say rather than a summary of them.</p>
+      <div class="quoted">
+        <p>"ONR has never conducted any investigations on invisibility, either in 1943 or at any other time (ONR was established in 1946.) In view of present scientific knowledge, ONR scientists do not believe that such an experiment could be possible except in the realm of science fiction."</p>
+        <span class="who">Office of Naval Research, Arlington, Virginia, information sheet on the Philadelphia Experiment, dated 8 September 1996.</span>
+      </div>
+      <div class="quoted">
+        <p>"Records in the Operational Archives Branch of the Naval Historical Center have been repeatedly searched, but no documents have been located which confirm the event, or any interest by the Navy in attempting such an achievement." And on the other name the story travels under: "A comprehensive search of the Archives has failed to identify records of a Project Rainbow relating to teleportation or making a ship disappear. In the 1940s, the code name RAINBOW was used to refer to the Rome-Berlin-Tokyo Axis."</p>
+        <span class="who">Department of the Navy, Naval Historical Center, Washington Navy Yard, answer dated 11 December 1998.</span>
+      </div>
+      <p>That answer is stated as an absence: documents have not been located. The same office also reviewed <em>Eldridge</em>'s deck log and war diary from her commissioning on 27 August 1943 at the New York Navy Yard through December 1943, and traced SS <em>Andrew Furuseth</em>, the merchant ship Allende said he watched from, through the Tenth Fleet movement report cards now held at the National Archives at College Park, Maryland.</p>
+
+      <h3>The two sets of dates</h3>
+      <p>The claimed dates and the recorded dates are both written down. They sit alongside each other here.</p>
+      <div class="ledger">
+        <div class="row">
+          <div class="a"><span class="head">The account</span><span class="when">22 July 1943</span><p><em>Eldridge</em> at the Philadelphia Naval Shipyard, first test, the ship rendered nearly invisible.</p></div>
+          <div class="b"><span class="head">The build record</span><span class="when">25 July 1943</span><p>The hull is launched at Federal Shipbuilding and Drydock, Newark, New Jersey, sponsored by Mrs John Eldridge Jr. Keel laid 22 February 1943; commissioned 27 August 1943.</p></div>
+        </div>
+        <div class="row">
+          <div class="a"><span class="head">The account</span><span class="when">28 October 1943</span><p>Second test at Philadelphia. The ship vanishes and is seen at Norfolk, then returns.</p></div>
+          <div class="b"><span class="head">The deck log</span><span class="when">18 Oct to 1 Nov 1943</span><p><em>Eldridge</em> in New York harbour, having come in with a convoy from Bermuda on 18 October, until she leaves on 1 November as escort for Convoy UGS-23, New York Section.</p></div>
+        </div>
+        <div class="row">
+          <div class="a"><span class="head">The account</span><span class="when">28 October 1943</span><p>Allende watches the arrival at Norfolk from the deck of SS <em>Andrew Furuseth</em>.</p></div>
+          <div class="b"><span class="head">Movement report card</span><span class="when">25 October 1943</span><p><em>Andrew Furuseth</em> leaves Norfolk with Convoy UGS-22, arriving at Oran on 12 November and staying in the Mediterranean until January 1944.</p></div>
+        </div>
+        <div class="row">
+          <div class="a"><span class="head">The account</span><span class="when">Philadelphia</span><p>The berth where the field was switched on, giving the story its name.</p></div>
+          <div class="b"><span class="head">The war diary</span><span class="when">2 November 1943</span><p><em>Eldridge</em> enters Naval Operating Base Norfolk with UGS-23, leaves for Casablanca on 3 November and arrives 22 November. The archive's summary of the whole period reads: "During this time frame, Eldridge was never in Philadelphia."</p></div>
+        </div>
+      </div>
+      <p>The archive adds two further items in the same passage: a letter from Lieutenant Junior Grade William S. Dodge, USNR, master of <em>Andrew Furuseth</em> in 1943, "categorically denying that he or his crew observed any unusual event while in Norfolk", and the sentence "Eldridge and Andrew Furuseth were not even in Norfolk at the same time".</p>
+      <p>The men who served aboard have spoken for themselves. The <em>Philadelphia Inquirer</em> of 26 March 1999 covered the first <em>Eldridge</em> crew reunion in 53 years, at Atlantic City. Ed Wise, 74, of Salem, Indiana, called the experiment "somebody's pipe dream". Ted Davis, 72, of Grand Island, Nebraska, said "It never happened". Bill Van Allen, 84, of Charlotte, North Carolina, the ship's executive officer and later her captain, said he saw no sign of any experiment and had no idea how the stories began. Ray Perrino of Cranston, Rhode Island, said he had played along with people asking until they worked out he was pulling their legs.</p>
+
+      <h3>Two threads that run through the story, and where each one lands</h3>
+      <p>Both are checkable, and they land in different places.</p>
+      <p><strong>Nikola Tesla.</strong> He died on 7 January 1943 in Room 3327 of the Hotel New Yorker in Manhattan, aged 86, and was found by a hotel maid on the morning of the 8th; the New York City medical examiner recorded coronary thrombosis. That is nine and a half months before the claimed October date. Within days the Office of Alien Property Custodian took his trunks and notebooks, although he had been a United States citizen since 1891, with his recent public remarks about a directed beam given as the reason. John G. Trump of MIT, a technical aide to the National Defense Research Committee, examined the material and reported nothing in it of significant value to the war effort. His nephew Sava Kosanovic, then Yugoslav ambassador, secured the bulk of the papers and had them shipped to Belgrade in 1952, where the Nikola Tesla Museum opened on 5 December that year. The counts differ: about 80 trunks were taken and about 60 are said to have arrived. The FBI released around 250 pages of Tesla material in 2016.</p>
+      <p><strong>Albert Einstein.</strong> He really was working for the Navy in the window the story covers. Lieutenant Stephen Brunauer, who ran the high explosives research group at the Bureau of Ordnance, approached him in May 1943, and Einstein served as a part-time consultant through 1943 and 1944 on theoretical problems in explosives and explosions. His first suggestion, in June 1943, was a way of making a torpedo detonate as it passed under a ship's keel. He declined to travel from Princeton to Washington regularly on account of his age, so the problems were brought to his house. The National Archives holds 23 pages of Einstein's 1943 to 1944 letters to Brunauer in the Bureau of Ordnance records. The Navy's own line alongside that: "There is no indication that Einstein was involved in research relevant to invisibility or to teleportation", and his unified field theory was never completed.</p>
+
+      <h3>The places the record is still open</h3>
+      <p>These are the loose threads as they stand, each stated as a positive fact about the paperwork rather than a shrug.</p>
+      <ul class="pair-list">
+        <li><span class="lab">The newspaper</span><span>Allende said the tavern incident was reported in a Philadelphia paper, and enclosed a clipping about a bar brawl in which waitresses describe sailors who "just sort of vanished into thin air". ONR's sheet records that <strong>the identity of the newspaper has never been established</strong>.</span></li>
+        <li><span class="lab">The annotated book</span><span>ONR states plainly that it does not hold a file copy. The physical object that started the Varo edition is <strong>not in the office that reprinted it</strong>.</span></li>
+        <li><span class="lab">25 or 127</span><span>The two copy counts for the Varo edition come from the Navy's sheet and from the researchers who have handled surviving copies. <strong>Both figures remain in circulation.</strong></span></li>
+        <li><span class="lab">1955 or 1956</span><span>The mailing of the annotated book is dated by postmark accounts to 1955 and by ONR's sheet to 1956. <strong>The year is given two ways in the sources.</strong></span></li>
+        <li><span class="lab">80 trunks or 60</span><span>The Tesla estate count taken in 1943 and the count that reached Belgrade in 1952 <strong>differ by about twenty trunks</strong>, and no reconciliation of the two has been published.</span></li>
+        <li><span class="lab">NRS-1978-26</span><span>The full action report and war diary coverage for <em>Eldridge</em>, including the remarks section of the 1943 deck log, sits on that microfilm reel. It is <strong>a readable document, not a sealed one</strong>.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What was actually running <span class="hue">in 1943</span></h2>
+      <p>There was a programme in that period for making a ship invisible to something, it involved wrapping the hull in cable and pushing current through it, and it worked. It is called degaussing, and it was cancelling a field rather than a reflection.</p>
+      <p>A steel hull sitting in the Earth's magnetic field becomes a weak magnet, partly by induction while it sits there and partly permanently, hammered in during building. A magnetic mine on the seabed listens for that. Degaussing puts current through coils fitted around the ship so their field is equal and opposite to the ship's own, and the two add to nothing where the mine is listening. It is a cancellation, and cancellation is a phase problem: same size, opposite sign, same place.</p>
+      <p>The Navy's own description of the fit, in the same 1998 answer quoted above: "a system of electrical cables are installed around the circumference of ship's hull, running from bow to stern on both sides. A measured electrical current is passed through these cables to cancel out the ship's magnetic field." And on the limit, in the same passage: degaussing done correctly makes a ship "invisible" to the sensors of magnetic mines, and "the ship remains visible to the human eye, radar, and underwater listening devices."</p>
+      <p>The coils have names and jobs. The M coil, the main one, is a horizontal loop at about the waterline running the length of the ship, and it cancels the vertical part of the field, the part a mine below the keel cares about most. Forecastle and quarterdeck coils, tagged FP-QP and FI-QI, handle the fore-and-aft part. The A coil, athwartships, is a vertical loop running from the keel up to the main deck, dealing with the side-to-side part. Each is fed its own current, set to the ship's own signature, and re-set as she changes latitude, because the Earth's field she is standing in changes with her.</p>
+      <p>Where a ship carried no coils, the field was beaten out of her instead. Wiping, also called flashing, drags a heavy cable along the outside of the hull carrying a pulse of roughly 2,000 amperes, which is around a thousand times what a household kettle draws, and leaves the steel magnetically flattened for a few months. Deperming does the same job at a fixed range with the ship wrapped in temporary cable.</p>
+      <p>Charles Goodeve developed the British version for the Royal Navy from 1939 to 1940, after a German magnetic mine was recovered intact and taken apart. The scale of the fit-out is the part that gets missed: Liberty ships alone, carrying M coils only, accounted for about one per cent of the entire copper consumption of the United States. One per cent of a nation's copper, spent on making ships invisible to one particular kind of eye.</p>
+
+      <div class="note"><strong>Four hulls in the yard, from a man who was there.</strong> Jacques Vallée published interviews in 1994 with Edward Dudgeon, who enlisted in 1942 at sixteen after altering his birth certificate, trained as an electronics specialist and joined USS <em>Engstrom</em>, DE-50, in June 1943. Dudgeon says four destroyer escorts were worked on together at Philadelphia in June and July 1943, DE-48, DE-49, DE-50 and DE-173, taking high-torque screws to change their acoustic signature, new sonar, and Hedgehog. He describes the degaussing as wrapping the ship in cables and putting high voltages through them to scramble the magnetic signature, and says the crews talked about being made invisible in exactly that sense. On Norfolk, he points out that naval ships used the Chesapeake and Delaware Canal, an inland run of about six hours, where merchant ships going round outside took about two days, and that the Norfolk ammunition docks could load a destroyer in four hours. On the green fog, he describes St Elmo's fire around a convoy in an electrical storm, which stopped when the rain came.</div>
+
+      <p>ONR's sheet offers a second and separate source for the stories of levitation and of effects on the crew, and it names a different ship: "experiments with the generating plant of a destroyer, the USS Timmerman. In the 1950's this ship was part of an experiment to test the effects of a small, high-frequency generator providing 1,000 hz instead of the standard 400hz. The higher frequency generator produced corona discharges, and other well known phenomena associated with high frequency generators. None of the crew suffered effects from the experiment."</p>
+      <p>So the 1943 shipyard held real coils, real currents and a real programme for disappearing from one kind of sensor. What it did not hold, on the paperwork located so far, is a coil set aimed at light. That is the gap the rest of this page walks into, because the physics of phase turns out to be far stranger than a cancelled magnet.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Phase, <span class="hue">in plain words</span></h2>
+      <p>Draw a wave. Now draw a second wave of the same size and the same wavelength in the same place, but slid along a little. How much you slid it is the phase difference, measured in degrees, where 360 degrees is a full wavelength and puts you back where you started.</p>
+      <p>Add the two together and the size of what you get depends on that slide and nothing else. Two equal waves come out at twice the height when the slide is nothing, and at exactly zero when the slide is half a wavelength. In between, the height of the sum is two times the cosine of half the phase difference. That single line of arithmetic runs everything below it, from noise-cancelling headphones to gravitational wave detectors to a molecule going through two slits at once.</p>
+
+      <div class="note"><strong>Naming the premise.</strong> A conservation law is a theorem, not a decree. Emmy Noether proved in 1918 that every continuous symmetry of a system carries a conserved quantity with it: a description that does not change as time passes gives you conserved energy, one that does not change as you move along gives conserved momentum, one that does not change as you turn gives conserved angular momentum. So the sentence with the working in it is not "energy is conserved" but "energy is conserved where the description does not change with time". Naming the premise tells you exactly what would have to be true for the conclusion to move. Phase is a useful case: shifting every wave in a system by the same amount changes nothing measurable, and the conserved quantity that comes with that symmetry is electric charge. Shifting one wave against another changes everything measurable, and costs nothing to do.</p></div>
+
+      <p>The everyday version is in a pair of headphones. A microphone on the outside hears the noise, the electronics turn it upside down and the driver plays it back, and if the upside-down copy reaches your eardrum at the same instant as the original, the two sum to nothing. Paul Lueg patented that idea in 1936, United States patent 2,043,416, and it sat for fifty years while electronics caught up. Lufthansa asked Sennheiser for a pilot's headset in 1984 and the LHM-45 shipped in 1987. Amar Bose worked his version out on a flight in 1978; his aviation headset shipped in 1989 and the consumer one in 2000. What active cancellation buys is about 20 decibels on top of what the ear cup already blocks by being in the way, which is a factor of ten in pressure and a hundred in energy.</p>
+      <p>The reason it works on aircraft rumble and gives up on speech is a stopwatch problem, and the numbers are worth having. To knock a wave down to a tenth, the copy has to arrive within 5.7 degrees of opposite. Sound travels 343 metres a second in air. At 100 hertz a wavelength is 3.43 metres, so 5.7 degrees is 5.5 centimetres of position or 159 millionths of a second of timing: comfortable. At 1,000 hertz the wavelength is 34 centimetres and the same 5.7 degrees is 5.5 millimetres and 16 millionths of a second. At 5,000 hertz it is about 1 millimetre. Nothing in the headset can place its anti-noise inside a millimetre of your eardrum, so above roughly one to two kilohertz the electronics stop helping and the foam takes over. Cancellation is a precision job, not a power job, and missing the phase does not give you partial cancellation: it gives you reinforcement.</p>
+
+      <h3>The phase bench</h3>
+      <p>Two wave trains, drawn live, with their sum underneath. Slide the phase and watch the sum vanish and come back. The wavelength control is set out as a sound wave in air so the numbers mean something: the readout gives the tone it corresponds to and how far apart, in centimetres, the two paths would have to be to produce the phase you have dialled in.</p>
+
+      <div class="canvas-frame">
+        <canvas id="waveCanvas" width="1000" height="360" aria-label="Two wave trains drawn one over the other, with their sum drawn beneath. Moving the phase slider slides the second wave along and the sum grows and shrinks."></canvas>
+        <div class="cv-caps">
+          <span>wave one: <b>fixed</b></span>
+          <span>wave two: <b>yours to slide</b></span>
+          <span>underneath: <b>the sum</b></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="phaseRange">Phase of wave two, in degrees</label>
+            <input type="range" id="phaseRange" min="0" max="360" value="180" step="1" aria-describedby="waveReadout">
+          </div>
+          <div class="control">
+            <label for="ampRange">Height of wave two</label>
+            <input type="range" id="ampRange" min="0" max="150" value="100" step="1" aria-describedby="waveReadout">
+          </div>
+          <div class="control">
+            <label for="lamRange">Wavelength</label>
+            <input type="range" id="lamRange" min="10" max="350" value="69" step="1" aria-describedby="waveReadout">
+          </div>
+        </div>
+        <div class="control">
+          <label id="phasePresetLabel">Jump to a phase</label>
+          <div class="preset-row" role="group" aria-labelledby="phasePresetLabel">
+            <button type="button" class="btn ghost" data-phase="0">In step, 0&deg;</button>
+            <button type="button" class="btn ghost" data-phase="90">Quarter, 90&deg;</button>
+            <button type="button" class="btn ghost" data-phase="174">Down to a tenth, 174&deg;</button>
+            <button type="button" class="btn ghost" data-phase="180">Opposite, 180&deg;</button>
+          </div>
+        </div>
+        <div class="control-row">
+          <div class="readout" id="waveReadout" aria-live="polite">
+            Sum height <b id="sumOut">0.00</b> of a single wave &middot; <i id="dbOut">silence</i>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num" id="statSum">0.00&times;</span><span class="lbl">the height of the sum, set against one wave on its own</span></div>
+          <div class="stat"><span class="num" id="statDb">silence</span><span class="lbl">what that is in decibels, up or down, against one wave on its own</span></div>
+          <div class="stat"><span class="num" id="statTone">500 Hz</span><span class="lbl" id="statToneLbl">the tone in air at this wavelength, 0.69 metres</span></div>
+          <div class="stat"><span class="num" id="statPath">34.3 cm</span><span class="lbl">extra path length that would produce this phase at that tone</span></div>
+        </div>
+        <p class="fig-note">Sum height is the square root of one plus the second height squared plus twice the second height times the cosine of the phase, computed live. Decibels are twenty times the base-ten logarithm of that ratio. At equal heights and 180 degrees the sum is exactly nothing, and the readout says so rather than printing a very large negative number.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Matter is <span class="hue">waves too</span></h2>
+      <p>Here is the leap that makes phase a subject for an atlas of matter rather than a subject for acoustics. Louis de Broglie proposed in his 1924 thesis that every particle has a wavelength, and that you get it by dividing Planck's constant by the particle's momentum, its mass times its speed. Planck's constant is 6.62607015 &times; 10<sup>-34</sup> joule seconds, fixed exactly by definition since 2019.</p>
+      <p>Run that on things you can hold and the wave disappears. A 70 kilogram person walking at 1.4 metres a second has a wavelength of 6.8 &times; 10<sup>-36</sup> metres, which is smaller than a proton by a factor of about a hundred million million million. A 160 gram cricket ball at 40 metres a second comes out at 1.0 &times; 10<sup>-34</sup> metres. Nothing in a laboratory reads a length like that, which is why nobody notices they are a wave.</p>
+      <p>Shrink the mass and the wave comes back at sizes instruments can work with. An electron pushed through 100 volts has a wavelength of 0.123 nanometres, about the spacing between atoms in a crystal, which is exactly why Clinton Davisson and Lester Germer saw electrons diffract off a nickel surface in 1927 using 54 electronvolt electrons at 0.167 nanometres. A neutron slowed to 2,200 metres a second by bouncing around a warm moderator comes out at 0.18 nanometres, and neutron diffraction has mapped crystal structures on that number ever since.</p>
+      <p>The interesting question is how far up in mass this goes, and the answer keeps moving.</p>
+
+      <div class="two-col">
+        <div class="bench">
+          <span class="when">Vienna &middot; Nature, 1999</span>
+          <h3>A buckyball through a grating</h3>
+          <p>Markus Arndt, Olaf Nairz, Julian Voss-Andreae, Claudia Keller, Gerbrand van der Zouw and Anton Zeilinger sent a beam of C60 molecules, sixty carbon atoms arranged like a football, through a diffraction grating and got an interference pattern out the other side.</p>
+          <dl>
+            <dt>Mass</dt><dd>720 atomic mass units, about a nanometre across</dd>
+            <dt>Beam speed</dt><dd>around 220 metres a second</dd>
+            <dt>Wavelength</dt><dd>2.5 picometres, roughly one four-hundredth of the molecule's own width</dd>
+            <dt>Source temperature</dt><dd>around 900 kelvin, hot enough to be radiating infrared as it flew, and it interfered anyway</dd>
+          </dl>
+        </div>
+        <div class="bench">
+          <span class="when">Vienna, Basel and Karlsruhe &middot; Nature Physics, 2019</span>
+          <h3>Two thousand atoms at once</h3>
+          <p>Yaakov Fein, Philipp Geyer, Patrick Zwick, Filip Kialka, Sebastian Pedalino, Marcel Mayor, Stefan Gerlich and Markus Arndt interfered a library of tailored oligoporphyrin molecules in a two metre interferometer.</p>
+          <dl>
+            <dt>Mass</dt><dd>beyond 25,000 daltons, up to 2,000 atoms in one molecule</dd>
+            <dt>Wavelength</dt><dd>down to 53 femtometres, five steps of ten smaller than the molecule itself</dd>
+            <dt>Gratings</dt><dd>266 nanometre period, 160 nanometres thick, 43 per cent open, one metre apart</dd>
+            <dt>Beam speed</dt><dd>261 plus or minus 9 metres a second</dd>
+            <dt>Fringe contrast</dt><dd>more than 90 per cent of what the calculation expects</dd>
+            <dt>The Earth got in the way</dt><dd>with a metre between gratings the machine feels the planet turning, and the Coriolis shift had to be compensated to better than 95 per cent; the whole instrument hangs from a 160 kilogram Invar bar on a pendulum with eddy-current damping</dd>
+          </dl>
+        </div>
+      </div>
+
+      <p>The current mark was set on 21 January 2026. Sebastian Pedalino, Bruno Ramirez-Galindo, Richard Ferstl and colleagues with Markus Arndt and Stefan Gerlich at the University of Vienna, working with Klaus Hornberger at the University of Duisburg-Essen, published in <em>Nature</em>, volume 649, pages 866 to 870, an interference pattern from sodium nanoparticles: clusters of 5,000 to 10,000 sodium atoms, the reported ones carrying more than 7,000 atoms and more than 170,000 daltons, about 8 nanometres across. Three diffraction gratings made of ultraviolet laser light, spaced about a ten-thousandth of a millimetre apart, held to about 10 nanometres. That is a lump of metal, wider than the gate of a modern transistor, delocalised across many times its own width. The paper puts its macroscopicity, a single number for how far into everyday scale a quantum experiment has reached, at 15.5, about ten times the 2019 figure of 14.1. The same apparatus works as a force sensor good to about 10<sup>-26</sup> newtons over roughly a hundredth of a second, which is the weight of about two thirds of one proton.</p>
+
+      <h3>The two-slit bench</h3>
+      <p>Drive the mass and watch the wavelength shrink. Everything on this bench moves at 200 metres a second, a real molecular beam speed, through two slits a tenth of a micrometre apart, which is close to the grating spacing in the 2026 experiment. The second slider shifts the phase of one slit on its own, which slides the whole fringe pattern sideways without changing anything else.</p>
+
+      <div class="canvas-frame">
+        <canvas id="slitCanvas" width="1000" height="420" aria-label="An interference pattern from two slits. The upper band is zoomed so that a few fringes fill the width; the lower strip shows one real millimetre of screen at true scale, where the fringes crowd together and blur as the mass rises."></canvas>
+        <div class="cv-caps">
+          <span>upper band: <b>zoomed to fit a few fringes</b></span>
+          <span>lower strip: <b>one real millimetre of screen</b></span>
+          <span>screen distance: <b>one metre</b></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="control-row">
+          <div class="control">
+            <label for="massRange">Mass of the thing going through</label>
+            <input type="range" id="massRange" min="0" max="1000" value="620" step="1" aria-describedby="slitReadout">
+          </div>
+          <div class="control">
+            <label for="slitPhaseRange">Extra phase on one slit, in degrees</label>
+            <input type="range" id="slitPhaseRange" min="0" max="360" value="0" step="1" aria-describedby="slitReadout">
+          </div>
+        </div>
+        <div class="control">
+          <label id="massPresetLabel">Jump to an object</label>
+          <div class="preset-row" role="group" aria-labelledby="massPresetLabel">
+            <button type="button" class="btn ghost" data-mass="9.1093837015e-31">Electron</button>
+            <button type="button" class="btn ghost" data-mass="1.19673e-24">C60 buckyball</button>
+            <button type="button" class="btn ghost" data-mass="4.15135e-23">2019 molecule</button>
+            <button type="button" class="btn ghost" data-mass="2.82292e-22">2026 nanoparticle</button>
+            <button type="button" class="btn ghost" data-mass="1.0472e-15">Dust grain</button>
+          </div>
+        </div>
+        <div class="control-row">
+          <div class="readout" id="slitReadout" aria-live="polite">
+            <span id="slitLine">Mass <b>2.8 &times; 10<sup>-22</sup> kg</b>, about the mass of the 8 nanometre sodium nanoparticle Vienna interfered in 2026 &middot; wavelength <b id="lamOut">11.7 fm</b></span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="num" id="statLam">1.2 &times; 10<sup>-14</sup> m</span><span class="lbl">de Broglie wavelength, Planck's constant divided by mass times speed</span></div>
+          <div class="stat"><span class="num" id="statFringe">117 nm</span><span class="lbl">spacing between bright bands on a screen one metre away</span></div>
+          <div class="stat"><span class="num" id="statPerMm">8,500</span><span class="lbl" id="statPerMmLbl">bright bands falling inside one millimetre of that screen</span></div>
+          <div class="stat"><span class="num" id="statWindow">940 nm</span><span class="lbl">width of the patch of screen drawn in the upper band</span></div>
+        </div>
+        <p class="fig-note">Wavelength is Planck's constant, 6.62607015 &times; 10<sup>-34</sup> joule seconds, divided by mass times 200 metres a second. Band spacing is that wavelength times the one metre screen distance divided by the 100 nanometre slit separation. The lower strip is drawn at true scale with eight samples per pixel, so when the bands fall closer together than a pixel it fills in evenly, which is what a real screen would show.</p>
+      </div>
+
+      <p>Two things come out of driving that slider. The first is that the pattern never goes away: at every mass there is a fringe spacing, and it is a real number. The second is that it stops being reachable. At the electron end the wavelength is larger than the gap between the slits, so the two stop behaving as two slits at all and the beam simply spreads. At a dust grain the bands sit 3 &times; 10<sup>-14</sup> metres apart, which is a fortieth of the width of a single atom, and no screen has that in it. What changes with mass is not whether the wave is there. It is the size of the ruler you would need.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Phase you can measure <span class="hue">but not see</span></h2>
+      <p>Everything above involves a wave you could point at. The next set does not, and it is the strongest argument on this page that phase is a physical thing in its own right rather than a bookkeeping device.</p>
+
+      <h3>A phase from a field the particle never entered</h3>
+      <p>Yakir Aharonov and David Bohm published in <em>Physical Review</em> in 1959, anticipated by Werner Ehrenberg and Raymond Siday in 1949, the result that an electron travelling entirely through field-free space still picks up a phase set by how much magnetic flux is enclosed between its two possible paths. No force acts on it at any point. The phase shift is the enclosed flux divided by a fixed quantum of flux, 4.136 &times; 10<sup>-15</sup> webers, times a full turn.</p>
+      <p>Robert G. Chambers measured it the following year at the H. H. Wills Physics Laboratory in Bristol, published in <em>Physical Review Letters</em> volume 5 on 1 July 1960. Charles Frank suggested the trick: put an iron whisker, a hair-thin crystal that holds its field inside itself, behind the biprism of an electron interferometer. The electrons went past on either side, through space with no field in it, and the fringe pattern moved. Chambers took the Royal Society's Hughes Medal for it in 1994.</p>
+      <p>The objection to Chambers was that a whisker might leak a little field where the electrons went. Akira Tonomura's group at Hitachi closed it in 1986, published in <em>Physical Review Letters</em> volume 56 on 24 February. They made a permalloy doughnut about 6 micrometres across with a 4 micrometre hole, clad it in superconducting niobium and a copper skin, and held it at 5 kelvin. A superconductor expels magnetic field, so there was no field anywhere the electrons could go. Electron holography then read the phase between the beam through the hole and the beam around the outside, and it matched the prediction. Better than that: because the superconducting cladding forces the trapped flux into whole units, the measured phase came out at either nothing or exactly half a turn, depending on whether the number of units inside was even or odd. One experiment, two results: a phase from an untouched field, and flux arriving in lumps.</p>
+
+      <h3>Geometry alone leaves a mark</h3>
+      <p>Michael Berry showed in 1984 that a system taken slowly around a closed loop and brought back to its starting conditions does not always come back unchanged: it can carry an extra phase that depends only on the shape of the loop and not at all on how fast you went round. Akira Tomita and Raymond Chiao measured it two years later at Berkeley, published in <em>Physical Review Letters</em> volume 57 in 1986, by winding a single-mode optical fibre into a helix. The plane of the light's polarisation came out rotated by an angle equal to the solid angle its direction had swept out on a sphere. The telling part is that bending the fibre into a different shape made no difference so long as that solid angle stayed the same. Bitter and Dubbers confirmed the version for neutron spins the following year. The Aharonov-Bohm phase is one case of this larger pattern.</p>
+
+      <h3>The phase that has to close on itself</h3>
+      <p>In a superconductor, all the electrons pair up and share one wave. That wave has to come back to the same phase when you go all the way round a ring, which forces the magnetic flux through the ring to come in whole units. Bascom Deaver and William Fairbank at Stanford and Robert Doll and Martin Nabauer in Munich measured those units independently in 1961, and both got the same answer: 2.067833848 &times; 10<sup>-15</sup> webers, exact by definition since 2019. The number came out at Planck's constant divided by <em>twice</em> the electron charge, and that factor of two is the direct fingerprint of electrons travelling in pairs. To put the size of one unit in the mind's eye: send exactly one through a loop one centimetre square and the average field inside it is 21 picotesla, about one two-millionth of the Earth's field.</p>
+      <p>Turn that ring into an instrument and you get a SQUID: a superconducting loop with one or two weak links in it, whose current is a repeating function of the flux threading it with a period of exactly one unit. It is a two-slit interferometer for the superconducting phase. Brian Josephson predicted the weak-link behaviour in 1962 and took the 1973 Nobel Prize for it; Robert Jaklevic, John Lambe, Arnold Silver and James Mercereau built the first one at the Ford Scientific Laboratory in 1964.</p>
+      <p>What that buys is the most sensitive magnetometer built. A SQUID with a pick-up coil about a centimetre across reads down to around one femtotesla for each second of averaging, which is one fifty-thousand-millionth of the Earth's own field. That is the sensitivity that lets a machine outside your skull read the magnetic field made by currents inside your head, which runs from 10 femtotesla to a picotesla, and it is how magnetoencephalography works. Published roadmaps aim at a tenth of a femtotesla, which is roughly the magnetic noise floor of a human body itself.</p>
+
+      <div class="note"><strong>The point of the three of them together.</strong> A shift in fringes with no force anywhere. A rotation that depends on the shape of a path and not its speed. A flux that arrives only in whole units because a wave has to meet itself coming round. None of those is a picture drawn to help; each is a reading on an instrument, and each is a consequence of phase alone.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Fields that move and change <span class="hue">matter today</span></h2>
+      <p>The account at the top of this page is about a field doing something drastic to matter. That is worth pricing against what fields are measured doing to matter now, because the list is longer and stranger than most people carry.</p>
+
+      <h3>A live frog, held up by a magnet</h3>
+      <p>Andre Geim, with Jan Kees Maan, Humberto Carmona and Peter Main, floated a live frog in a 16 tesla Bitter magnet at the High Field Magnet Laboratory in Nijmegen in 1997. Michael Berry and Geim wrote the theory up as "Of flying frogs and levitrons" in the <em>European Journal of Physics</em>, volume 18, pages 307 to 313, in 1997.</p>
+      <p>Living tissue is mostly water and protein, and both are diamagnetic, which means a magnetic field induces a tiny opposing field in them and pushes them away. It is a very weak effect and it acts on every gram of the animal at once, so there is no local strain: the frog is not hanging from anything, every part of it is being pushed equally. The condition for holding it up depends on the field times its own rate of change with height, and it works out to about 1,360 tesla squared per metre for anything with the density of water. Note what is missing from that: the mass. Density decides, not weight, so a frog and a hazelnut float in the same place.</p>
+      <p>The induced field inside the frog was about 1.5 gauss, roughly three times the Earth's, made by microscopic currents inside atoms rather than any current through the animal, so nothing was shocked. It was held in the energy minimum for up to 30 minutes and came out unharmed. Grasshoppers, water drops, flowers and hazelnuts floated too. A 3 millimetre plastic sphere sat stably between 69 and 86 millimetres above the coil, within a millimetre of where the calculation put it. Geim took the 2000 Ig Nobel Prize for the frog and the 2010 Nobel Prize for graphene.</p>
+      <p>There is a theorem in the way of this, and the way around it is instructive. Samuel Earnshaw proved in 1842 that no fixed arrangement of charges, magnets or masses can hold an object in stable equilibrium, because the energy has saddle points and no minima. The premise is that the object's own magnetism is fixed. For a diamagnet it is not: the field induces the magnetism, so the energy depends on the square of the field, and the size of a magnetic field in free space is allowed a minimum even though its separate components are not. Name the premise and the exception is right there in it.</p>
+
+      <h3>A magnet locked in place by holes in a superconductor</h3>
+      <p>Walther Meissner and Robert Ochsenfeld found in 1933 that a superconductor cooled through its transition pushes magnetic field out of itself entirely, which makes it a perfect diamagnet and gives repulsion but no sideways grip. Type II superconductors add the grip: field threads through them as quantised vortices, each carrying exactly one flux unit, and those vortices catch on defects in the material. Pin them and the magnet is held in position, not just held up, which is why the levitating-puck demonstration stays where you put it and why superconducting maglev works.</p>
+      <p>How much field a thumb-sized piece can hold: 17.6 tesla trapped at 26 kelvin in melt-processed gadolinium barium copper oxide doped with silver and shrink-fitted inside a steel ring, by John Durrell, David Cardwell and colleagues at Cambridge with the National High Magnetic Field Laboratory and Boeing, published in <em>Superconductor Science and Technology</em> on 25 June 2014 and magnetised from a 17.8 tesla field. That is about 3,500 times a fridge magnet, in an object you could close your hand around. On the transport side, JR Central's L0 maglev reached 603 kilometres an hour on the Yamanashi test line on 21 April 2015, and in 2025 a team at China's National University of Defence Technology took a tonne-class maglev vehicle to 700 kilometres an hour in under two seconds along a 400 metre line.</p>
+
+      <h3>Sound holding things up, and light holding things still</h3>
+      <p>A standing sound wave has still points every half wavelength, and small dense objects sit in them. At the usual 40 kilohertz in air a wavelength is 8.6 millimetres, so the still points are 4.3 millimetres apart, and that spacing is exactly why acoustic levitators hold millimetre-sized things and not larger ones. Asier Marzo, Adrian Barnes and Bruce Drinkwater at Bristol published the reference build, TinyLev, in <em>Review of Scientific Instruments</em> in 2017: two opposed bowls of 36 ordinary 40 kilohertz transducers each, run at about 20 volts and 10 watts total, holding objects up to 4 millimetres across and denser than 2.2 grams per cubic centimetre. Water, fused silica beads, small insects and electronic components all floated. The sound involved is fierce: levitators run above 150 decibels and up to about 166, and 160 decibels is around 2,000 pascals of pressure swing, about two per cent of atmospheric. The whole lifting force is the time-averaged push of that field, and because it is a standing wave it is a phase effect: move one emitter half a wavelength and the trap moves with it.</p>
+      <p>Light does the same job with a beam instead of a field of sound. Arthur Ashkin at Bell Labs showed in 1970 that laser light could push and trap micrometre-sized particles, and in 1986, with Joseph Dziedzic, John Bjorkholm and Steven Chu, demonstrated the single-beam gradient trap that everyone now calls optical tweezers. He trapped living viruses and bacteria in 1987 and took half the 2018 Nobel Prize in Physics for it, at 96. The force scale falls out of the momentum of the light: 100 milliwatts of infrared in water gives of order 44 piconewtons. Instruments work from a few tens of femtonewtons up to about 100 piconewtons, with trap stiffness reaching about one piconewton per nanometre. That range is not a coincidence: kinesin, the motor protein that walks cargo along a cell's tracks, stalls at about 5 to 7 piconewtons, RNA polymerase at about 25, and double-stranded DNA gives way and stretches at about 65. A beam of light is a mechanical tool at exactly the scale life works at.</p>
+
+      <h3>The strongest fields made, and what stops them going higher</h3>
+      <p>Three different jobs, three different records.</p>
+      <div class="scalebar">
+        <div class="rung"><span class="lab">48.7 tesla, steady</span><span class="txt">The highest continuous field reached, at the National High Magnetic Field Laboratory in Florida on <strong>11 September 2025</strong>, by dropping a small no-insulation high-temperature superconducting test coil, wound from more than 720 feet of REBCO wire and about the size of a salt shaker, inside an existing 31 tesla resistive magnet. Its predecessor, the same idea at 45.5 tesla, was published in <em>Nature</em> in June 2019.</span></div>
+        <div class="rung"><span class="lab">45.22 tesla, in service</span><span class="txt">The highest steady field from a magnet that runs as a working instrument for experiments, at the Steady High Magnetic Field Facility in Hefei on <strong>12 August 2022</strong>, a resistive insert inside a superconducting outsert with a 32 millimetre bore. It beat 45 tesla set in Florida in 1999.</span></div>
+        <div class="rung"><span class="lab">100.75 tesla, pulsed</span><span class="txt">The highest field from a magnet that survives the shot, at the pulsed field facility at Los Alamos on <strong>22 March 2012</strong>. The pulse lasts about 15 milliseconds, which is around 2,000 times longer than a destructive shot, so real experiments fit inside it.</span></div>
+        <div class="rung"><span class="lab">1,200 tesla, once</span><span class="txt">The strongest field generated indoors, by Daisuke Nakamura, Akihiko Ikeda, Hironobu Sawabe, Yasuhiro Matsuda and Shojiro Takeyama at the Institute for Solid State Physics in Tokyo, published in <em>Review of Scientific Instruments</em> on <strong>14 September 2018</strong>. A coil crushes a metal liner inwards at 5 kilometres a second, squeezing the field inside it; the field lasts about 100 microseconds and the coil is destroyed. Read by shining a laser through the middle and measuring how far the field twists its polarisation.</span></div>
+      </div>
+      <p>What sets the ceiling is one line of arithmetic. A magnetic field pushes outwards on whatever is making it, with a pressure equal to the field squared divided by twice the magnetic constant. At 100 tesla that is 4.0 gigapascals, close to 40,000 atmospheres, which is at the limit of the best steels and composites, and that is precisely why 100 tesla is where non-destructive magnets stop. At 1,200 tesla it is 573 gigapascals, about 5.7 million atmospheres, which is around 1.6 times the pressure at the centre of the Earth. No material holds that, so the coil is spent on every shot.</p>
+
+      <h3>What a field of that size does to the matter inside it</h3>
+      <p>Two numbers say when a magnetic field stops nudging matter and starts running it.</p>
+      <p>The first is the magnetic length: the radius of the smallest circle an electron can be made to travel in. It is 25.7 nanometres divided by the square root of the field in tesla. At 100 tesla that is 2.6 nanometres; at 1,200 tesla it is 0.74 nanometres, which is getting down near the length of a chemical bond. That closing gap is what the Tokyo group means by reaching the quantum limit. The second is the cyclotron energy, how much energy is in one step of that circular motion: at 100 tesla it is 11.6 millielectronvolts for a free electron, which is the same as a temperature of 134 kelvin, so at liquid helium temperatures the field, not the temperature, decides what the electrons do.</p>
+      <p>The natural crossover, where the field's own length matches the size of an atom and atoms stop being round and start being needles, is about 235,000 tesla. That is found around neutron stars, at roughly 100 million tesla, and magnetars, up to a hundred thousand million tesla. Nothing on Earth is close, which is why laboratory fields rearrange electrons inside solids rather than reshaping the atoms themselves. It is a real ceiling with a real number on it, and the number says which side of it any given experiment sits.</p>
+      <p>Inside that regime the effects are drastic enough. Klaus von Klitzing, with Gerhard Dorda and Michael Pepper, measured the Hall voltage of a silicon transistor at about 1.5 kelvin in a field of roughly 15 to 18 tesla on 5 February 1980 and found the resistance locked to fixed steps whose values contain nothing but Planck's constant and the electron charge. A dirty, irregular, impurity-riddled piece of silicon becomes an exact standard when the field is on. Since 20 May 2019 the value is exact by definition: 25,812.807 ohms. It has been the world's resistance standard since 1990 and reproduces to about one part in a thousand million, which is like measuring Sydney to Perth and being out by three millimetres. Its universality was checked head to head: Janssen and colleagues compared graphene against a gallium arsenide device in 2012 and found them agreeing to 8.7 parts in a hundred thousand million, which on the distance to the Moon is about three centimetres.</p>
+      <p>Push the field further and the material makes new pieces. Daniel Tsui and Horst Stormer, on ultra-pure gallium arsenide grown by Arthur Gossard at Bell Labs, found in 1982 that at high field and low temperature the steps appear at fractions nobody had predicted, starting at a third. Robert Laughlin explained it as an incompressible quantum fluid whose ripples carry a fraction of an electron's charge, and the third-of-a-charge was measured directly through electrical noise in 1997. Laughlin, Stormer and Tsui shared the 1998 Nobel Prize. Apply a magnetic field to a sheet of electrons and what comes out carries a third of the charge that went in.</p>
+      <p>Field also works as a thermodynamic handle, in the same way pressure and temperature do. Lanthanum cobalt oxide changes the spin arrangement of its cobalt ions at around 60 to 65 tesla and heads towards turning from an insulator into a metal; a 2024 review in the <em>Journal of the Physical Society of Japan</em> maps that phase diagram out to 600 tesla using flux compression and a strain gauge, and reads the smooth curves as two distinct condensates forming. In the other direction, field can create superconductivity instead of killing it: uranium rhodium germanium superconducts again around 12 tesla after having been switched off at lower field, and a europium tin molybdenum chalcogenide superconducts only between about 4 and 22 tesla, where the applied field cancels an internal one.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Making things <span class="hue">hard to see</span></h2>
+      <p>Bending light around an object is the part of the account with the most direct modern work behind it, and the work comes with dimensions.</p>
+      <p>Two papers in the same issue of <em>Science</em> on 23 June 2006 set out the method. John Pendry at Imperial College with David Schurig and David Smith at Duke, at page 1780, and Ulf Leonhardt at St Andrews, at page 1777. The idea is that Maxwell's equations keep their form if you stretch the coordinates you write them in, so you can distort space on paper, work out what electric and magnetic response a material would need to make light behave as if space really were distorted that way, and then build that material. Squeeze a point out into a sphere and light flows around the hole; anything inside is not lit and casts no shadow. It is a design procedure that tells you the required numbers at every radius, and those numbers are what a <a href="metamaterials.html">metamaterial</a> is built to supply.</p>
+
+      <div class="bench">
+        <span class="when">Duke, Imperial College and SensorMetrix &middot; Science 314, 977, 10 November 2006</span>
+        <h3>The cloak that was built</h3>
+        <p>David Schurig, Jack Mock, Brian Justice, Steven Cummer, John Pendry, Anthony Starr and David Smith made a two-dimensional cylindrical cloak and mapped the field around it point by point, in both size and phase.</p>
+        <dl>
+          <dt>Geometry</dt><dd>inner radius 27.1 millimetres, outer radius 58.9 millimetres, so the shell is about 32 millimetres thick</dd>
+          <dt>Construction</dt><dd>ten concentric cylinders of split-ring resonators, three unit cells tall, unit cell 10/3 of a millimetre, 17 micrometre copper patterned on 381 micrometre Duroid 5870</dd>
+          <dt>Working frequency</dt><dd>8.5 gigahertz, chosen so the free-space wavelength is more than ten times the unit cell</dd>
+          <dt>What it hid</dt><dd>a copper cylinder of 25 millimetre radius, in a parallel-plate waveguide with the plates 11 millimetres apart, lit across 8 to 12 gigahertz</dd>
+          <dt>Result</dt><dd>reduced backscatter and a reduced shadow, using deliberately simplified parameters to make the parts manufacturable, and with the field on the far side noticeably dimmed by absorption in the cloak itself</dd>
+        </dl>
+      </div>
+
+      <p>That last line matters more than it looks. The cloak hid the object from the radar at the cost of being somewhat visible itself, and the authors said so in the paper. The reason is a limit with a proof behind it.</p>
+      <p>Light sent the long way round a cloak has further to travel than the light it is meant to match, so to arrive with the same phase it has to cover that extra path in the same time, which means going faster than light does in free space. A medium can do that for the phase of a wave, but only over a narrow band of frequencies, because the same physics that lets it do so makes its response change sharply with frequency. David Miller made the argument formally in <em>Optics Express</em> in 2006 and John Pendry made the speed version. Perfect invisibility is a single-frequency result. For any tolerance you set on the leftover scattering, causality puts a hard ceiling on the bandwidth you can have, and that ceiling falls as the object gets bigger: the larger the thing, the narrower the band. Later work derives the same bounds from impedance-matching theory for any passive, linear cloak. In practice built cloaks work over a few per cent of their centre frequency.</p>
+      <p>The everyday version of the same phase trick is the Salisbury screen, patented by Winfield Salisbury and in the open literature since 1952. Put a resistive sheet of about 377 ohms per square a quarter of a wavelength in front of a metal backing. The reflection off the sheet and the reflection off the backing come back half a wavelength out of step and cancel, exactly like the headphones. Stack several sheets and spacers and you get a Jaumann absorber: a measured six-layer design returns an average 30 decibels of reduction from 7 to 15 gigahertz, with its worst point 27 decibels at 8 gigahertz. Thirty decibels is a factor of a thousand in reflected power. The nearest built thing you can walk into is an anechoic chamber, the spiky blue-foam room where phones, cars and medical devices are tested for what they radiate: the spikes are a graded absorber doing the Salisbury job across a wide band by shape as well as by material.</p>
+      <p>How much that buys is set by the radar equation, where the range at which something is picked up goes as the fourth root of how much it reflects. Cut the reflection by a factor of four thousand and the range falls by a factor of about eight. The fourth root is why absorbers are hard work: enormous reductions in reflection buy modest reductions in range.</p>
+      <p>Plasma is the other route, and its physics is ordinary. A gas of free electrons has a natural frequency; radio waves below it are reflected or absorbed rather than passing through. The measured everyday case is a spacecraft coming back through the atmosphere: the hot sheath around it blocks radio and the crew lose contact for some minutes. Proposals to put a plasma sheath deliberately around a vehicle run into the engineering rather than the principle, since the electron density has to be held right across the surface, at the right thickness for whatever frequency is arriving, in fast-moving air, and the plasma glows and radiates on its own account. The Keldysh Research Center in Moscow has stated it built a plasma generator weighing under 100 kilograms. No independently verified reduction figures have been published for any of it, which is the difference worth holding on to: the Duke cloak is a fully specified experiment with published dimensions that works across a 32 millimetre shell at 8.5 gigahertz, and the vehicle-scale version is a statement without numbers attached.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>What would <span class="hue">be measured</span></h2>
+      <p>Six things with an instrument attached and a quantity coming back. Each of these moves one of the open questions above rather than settling it by assertion.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">📼</span>
+          <h3>Read the 1943 reel</h3>
+          <p>The full <em>Eldridge</em> war diary and action report coverage, including the remarks section of the 1943 deck log, is microfilm NRS-1978-26. The Tenth Fleet movement report cards are at the National Archives at College Park. Both are readable. What they contain is a matter of reading them page by page and writing down what is on each one.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚖️</span>
+          <h3>Push the interference mass higher</h3>
+          <p>The Vienna instrument now reaches 170,000 daltons at a macroscopicity of 15.5. Every proposal that says a wave stops behaving as a wave above some mass names a mass, so each step up the scale returns a number that either finds that ceiling or moves it. The quantity is fringe contrast against particle mass.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🪶</span>
+          <h3>Use the interferometer as a scale</h3>
+          <p>The same 2026 apparatus senses forces near 10<sup>-26</sup> newtons over about a hundredth of a second, roughly the weight of two thirds of a proton. Point it at anything that would produce a tiny steady push on a neutral nanoparticle and the answer comes back in newtons.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🌀</span>
+          <h3>Map bandwidth against size</h3>
+          <p>The causality bound says a cloak's usable bandwidth falls as the object grows. Build a family of cloaks over a range of diameters, measure the fractional bandwidth of each on the same bench, and plot it. That turns a proof into a curve with data points on it and shows exactly where real materials fall short of the bound.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🧲</span>
+          <h3>Take a material past 600 tesla</h3>
+          <p>Flux compression already reaches 1,200 tesla for about 100 microseconds, and magnetostriction gauges and Faraday rotation already read inside that window. Running a wider set of materials through it returns magnetisation and length change against field, in the regime where the magnetic length closes on a chemical bond.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔦</span>
+          <h3>Read a phase where there is no force</h3>
+          <p>Tonomura's toroid settled the Aharonov-Bohm question at 5 kelvin with a 6 micrometre magnet. Modern electron holography, and the ring geometries now made routinely in solid-state devices, can run the same measurement at higher flux and finer resolution. The quantity is phase in radians per unit of enclosed flux.</p>
+        </div>
+      </div>
+      <p>Phase costs nothing to change and it changes everything about what two waves do together. That is the whole of the noise-cancelling headset, the whole of the gravitational wave detector reading a shift of about a hundred-millionth of a radian across four kilometres of arm, the whole of the SQUID, and the reason an eight nanometre lump of sodium was seen in two places at once in January 2026. What the bench above holds is a set of measured quantities with instruments beside them. What the account at the top of the page describes sits with the documents named alongside it, and both the claim and the archive are in print for anyone who wants to read them.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="metamaterials.html"><div class="card"><span class="card-glyph">🔷</span><h3>Metamaterials</h3><p>Geometry doing the work of chemistry: how a pattern of copper rings gives a material properties no element on the shelf has.</p></div></a>
+        <a class="card-link" href="zero-point.html"><div class="card"><span class="card-glyph">⚡</span><h3>Zero Point</h3><p>What a gap does to the waves nobody put there, weighed at 1.6 piconewtons, and what a working module would need.</p></div></a>
+        <a class="card-link" href="vimana.html"><div class="card"><span class="card-glyph">🛕</span><h3>Vimana</h3><p>Old sky-craft accounts read as a design brief, with hulls, power plants and lift methods priced against what the table can supply.</p></div></a>
+        <a class="card-link" href="sci-fi-lab.html"><div class="card"><span class="card-glyph">🛸</span><h3>Sci-Fi Lab</h3><p>Named fictional technology given a spec sheet, and the nearest built thing that rhymes with each one.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>Department of the Navy, Naval Historical Center, "The Philadelphia Experiment", answer dated 11 December 1998, including the <em>Eldridge</em> deck log and war diary summary, the <em>Andrew Furuseth</em> movement report cards, the Dodge letter, the Project Rainbow search and the degaussing description &middot; <a href="https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/p/philadelphia-experiment.html" rel="noopener">history.navy.mil</a></li>
+        <li>Office of Naval Research, "Information Sheet: Philadelphia Experiment", 8 September 1996, including the annotated book, Captain Sherby and Commander Hoover, the 25-copy figure, the Fourth Naval District explanation and the USS <em>Timmerman</em> generator &middot; <a href="https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/p/philadelphia-experiment/philadelphia-experiment-onr-info-sheet.html" rel="noopener">history.navy.mil</a></li>
+        <li>Carl M. Allen, writing as Carlos Miguel Allende, letters to Morris K. Jessup, 1956, as reproduced in the Varo edition of M. K. Jessup, <em>The Case for the UFO</em> &middot; <a href="https://archive.org/stream/THECASEFORTHEUFOVaroEditionM.K.Jessup/THE+CASE+FOR+THE+UFO+-+Varo+Edition+-M.+K.+Jessup_djvu.txt" rel="noopener">archive.org</a></li>
+        <li>M. K. Jessup, <em>The Case for the UFO</em>, Citadel Press, 1955. Biography and death record as investigated in <em>Skeptical Inquirer</em>, August 2021.</li>
+        <li>C. Berlitz and W. L. Moore, <em>The Philadelphia Experiment: Project Invisibility</em>, Grosset &amp; Dunlap, 1979. G. E. Simpson and N. R. Burger, <em>Thin Air</em>, 1977.</li>
+        <li>J. F. Vallée, <em>Journal of Scientific Exploration</em> 8(1), 47 to 71, 1994, reporting interviews with Edward Dudgeon of USS <em>Engstrom</em> (DE-50).</li>
+        <li>L. McCrary, <em>Philadelphia Inquirer</em>, 26 March 1999, reporting the USS <em>Eldridge</em> crew reunion at Atlantic City.</li>
+        <li>Naval History and Heritage Command, Dictionary of American Naval Fighting Ships, entry for USS <em>Eldridge</em> (DE-173).</li>
+        <li>P. Lueg, "Process of silencing sound oscillations", United States patent 2,043,416, 1936 &middot; <a href="https://patents.google.com/patent/US2043416A/en" rel="noopener">patents.google.com/patent/US2043416A</a></li>
+        <li>M. Arndt, O. Nairz, J. Voss-Andreae, C. Keller, G. van der Zouw and A. Zeilinger, "Wave-particle duality of C60 molecules", <em>Nature</em> 401, 680, 1999.</li>
+        <li>Y. Y. Fein, P. Geyer, P. Zwick, F. Kialka, S. Pedalino, M. Mayor, S. Gerlich and M. Arndt, "Quantum superposition of molecules beyond 25 kDa", <em>Nature Physics</em> 15, 1242, 2019 &middot; <a href="https://www.nature.com/articles/s41567-019-0663-9" rel="noopener">nature.com/articles/s41567-019-0663-9</a></li>
+        <li>S. Pedalino, B. E. Ramírez-Galindo, R. Ferstl et al., "Probing quantum mechanics with nanoparticle matter-wave interferometry", <em>Nature</em> 649, 866 to 870, published 21 January 2026 &middot; <a href="https://www.nature.com/articles/s41586-025-09917-9" rel="noopener">nature.com/articles/s41586-025-09917-9</a></li>
+        <li>Y. Aharonov and D. Bohm, <em>Physical Review</em> 115, 485, 1959. R. G. Chambers, "Shift of an electron interference pattern by enclosed magnetic flux", <em>Physical Review Letters</em> 5, 3, 1 July 1960 &middot; <a href="https://link.aps.org/doi/10.1103/PhysRevLett.5.3" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.5.3</a></li>
+        <li>A. Tonomura et al., "Evidence for Aharonov-Bohm effect with magnetic field completely shielded from electron wave", <em>Physical Review Letters</em> 56, 792, 24 February 1986 &middot; <a href="https://link.aps.org/doi/10.1103/PhysRevLett.56.792" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.56.792</a></li>
+        <li>M. V. Berry, <em>Proceedings of the Royal Society A</em> 392, 45, 1984. A. Tomita and R. Y. Chiao, <em>Physical Review Letters</em> 57, 937, 1986 &middot; <a href="https://link.aps.org/doi/10.1103/PhysRevLett.57.937" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.57.937</a></li>
+        <li>B. S. Deaver and W. M. Fairbank, <em>Physical Review Letters</em> 7, 43, 1961; R. Doll and M. Näbauer, <em>Physical Review Letters</em> 7, 51, 1961. SQUID sensitivity figures from the biomagnetism review literature &middot; <a href="https://iopscience.iop.org/article/10.1088/0953-2048/29/11/113001" rel="noopener">iopscience.iop.org</a></li>
+        <li>M. V. Berry and A. K. Geim, "Of flying frogs and levitrons", <em>European Journal of Physics</em> 18, 307 to 313, 1997 &middot; <a href="https://www.physics.umd.edu/grt/taj/411c/FlyingFrogs.pdf" rel="noopener">physics.umd.edu/grt/taj/411c/FlyingFrogs.pdf</a></li>
+        <li>J. H. Durrell et al., "A trapped field of 17.6 T in melt-processed, bulk Gd-Ba-Cu-O reinforced with shrink-fit steel", <em>Superconductor Science and Technology</em> 27, 082001, 25 June 2014 &middot; <a href="https://iopscience.iop.org/article/10.1088/0953-2048/27/8/082001" rel="noopener">iopscience.iop.org</a></li>
+        <li>A. Marzo, A. Barnes and B. W. Drinkwater, "TinyLev: a multi-emitter single-axis acoustic levitator", <em>Review of Scientific Instruments</em> 88, 085105, 2017 &middot; <a href="https://pubs.aip.org/aip/rsi/article/88/8/085105/962938/" rel="noopener">pubs.aip.org</a></li>
+        <li>A. Ashkin, <em>Physical Review Letters</em> 24, 156, 1970; A. Ashkin, J. M. Dziedzic, J. E. Bjorkholm and S. Chu, <em>Optics Letters</em> 11, 288, 1986. Nobel Prize in Physics 2018.</li>
+        <li>National High Magnetic Field Laboratory, record continuous field of 48.7 tesla, 11 September 2025, and the 45.5 tesla result published in <em>Nature</em> 570, 496, June 2019 &middot; <a href="https://nationalmaglab.org/news-events/news/a-prototype-miniature-superconducting-magnet/" rel="noopener">nationalmaglab.org</a></li>
+        <li>Chinese Academy of Sciences, Steady High Magnetic Field Facility, Hefei, 45.22 tesla steady field, 12 August 2022 &middot; <a href="https://english.cas.cn/head/202208/t20220815_311432.shtml" rel="noopener">english.cas.cn</a></li>
+        <li>D. Nakamura, A. Ikeda, H. Sawabe, Y. H. Matsuda and S. Takeyama, "Record indoor magnetic field of 1200 T generated by electromagnetic flux-compression", <em>Review of Scientific Instruments</em> 89, 095106, 14 September 2018 &middot; <a href="https://arxiv.org/pdf/1705.05520" rel="noopener">arxiv.org/pdf/1705.05520</a></li>
+        <li>K. von Klitzing, G. Dorda and M. Pepper, <em>Physical Review Letters</em> 45, 494, 1980. T.J.B.M. Janssen et al., <em>Metrologia</em> 49, 294, 2012, comparing graphene and gallium arsenide &middot; <a href="https://iopscience.iop.org/article/10.1088/0026-1394/49/3/294" rel="noopener">iopscience.iop.org</a></li>
+        <li>D. C. Tsui, H. L. Stormer and A. C. Gossard, <em>Physical Review Letters</em> 48, 1559, 1982. Nobel Prize in Physics 1998.</li>
+        <li>A. Ikeda, Y. H. Matsuda and colleagues, review of ultrahigh-field magnetism in LaCoO<sub>3</sub>, <em>Journal of the Physical Society of Japan</em> 93, 121005, 2024 &middot; <a href="https://journals.jps.jp/doi/10.7566/JPSJ.93.121005" rel="noopener">journals.jps.jp</a></li>
+        <li>J. B. Pendry, D. Schurig and D. R. Smith, "Controlling electromagnetic fields", <em>Science</em> 312, 1780, 2006; U. Leonhardt, "Optical conformal mapping", <em>Science</em> 312, 1777, 2006.</li>
+        <li>D. Schurig, J. J. Mock, B. J. Justice, S. A. Cummer, J. B. Pendry, A. F. Starr and D. R. Smith, "Metamaterial electromagnetic cloak at microwave frequencies", <em>Science</em> 314, 977, 10 November 2006 &middot; <a href="https://my.ece.utah.edu/~dschurig/Site/Publications_files/977.pdf" rel="noopener">my.ece.utah.edu</a></li>
+        <li>D. A. B. Miller, "On perfect cloaking", <em>Optics Express</em> 14, 12457, 2006, and the later bandwidth bounds derived from impedance-matching theory.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- constants ---------- */
+  var PLANCK = 6.62607015e-34;   /* J s, exact since 2019 */
+  var SOUND = 343;               /* m/s in air */
+  var BEAM = 200;                /* m/s, a molecular beam speed */
+  var SLIT_D = 100e-9;           /* m, gap between the two slits */
+  var SLIT_W = SLIT_D / 3;       /* m, width of each slit */
+  var SCREEN_L = 1;              /* m, slit to screen */
+
+  function sig(x, n) {
+    var s = Number(x).toPrecision(n || 3);
+    if (s.indexOf("e") >= 0) return Number(s).toString();
+    if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+    return s;
+  }
+
+  function commas(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  /* a length in the friendliest unit, for lengths from femtometres up */
+  function lenWords(m) {
+    var a = Math.abs(m);
+    if (a >= 1000) return sig(m / 1000) + " km";
+    if (a >= 1) return sig(m) + " m";
+    if (a >= 1e-3) return sig(m * 1e3) + " mm";
+    if (a >= 1e-6) return sig(m * 1e6) + " µm";
+    if (a >= 1e-9) return sig(m * 1e9) + " nm";
+    if (a >= 1e-12) return sig(m * 1e12) + " pm";
+    if (a >= 1e-15) return sig(m * 1e15) + " fm";
+    return sciHtml(m) + " m";
+  }
+
+  /* scientific notation with a real superscript */
+  function sciHtml(x, dp) {
+    if (x === 0) return "0";
+    var e = Math.floor(Math.log10(Math.abs(x)));
+    var mant = x / Math.pow(10, e);
+    if (Math.abs(mant) >= 9.995) { mant /= 10; e += 1; }
+    return mant.toFixed(dp === undefined ? 1 : dp) + " × 10<sup>" + e + "</sup>";
+  }
+
+  /* =====================================================================
+     Bench one: two wave trains and their sum
+     ===================================================================== */
+  (function () {
+    var cv = document.getElementById("waveCanvas");
+    var phaseR = document.getElementById("phaseRange");
+    var ampR = document.getElementById("ampRange");
+    var lamR = document.getElementById("lamRange");
+    if (!cv || !cv.getContext || !phaseR || !ampR || !lamR) return;
+
+    var sumOut = document.getElementById("sumOut");
+    var dbOut = document.getElementById("dbOut");
+    var statSum = document.getElementById("statSum");
+    var statDb = document.getElementById("statDb");
+    var statTone = document.getElementById("statTone");
+    var statToneLbl = document.getElementById("statToneLbl");
+    var statPath = document.getElementById("statPath");
+
+    var cx = cv.getContext("2d");
+    var css = getComputedStyle(document.body);
+    var ACC = (css.getPropertyValue("--accent") || "#67e8f9").trim();
+    var ACC2 = (css.getPropertyValue("--accent2") || "#f0abfc").trim();
+    var MUT = (css.getPropertyValue("--muted") || "#93a3c4").trim();
+    var LINE = (css.getPropertyValue("--line-bright") || "#2c3c6b").trim();
+
+    var W = 0, H = 0, DPR = 1, raf = 0, visible = true;
+
+    /* state, read from the sliders */
+    var phaseDeg = 180, amp2 = 1, lamM = 0.69;
+
+    function readControls() {
+      phaseDeg = parseFloat(phaseR.value);
+      amp2 = parseFloat(ampR.value) / 100;
+      lamM = parseFloat(lamR.value) / 100;   /* slider 10..350 -> 0.10..3.50 m */
+    }
+
+    /* sum of two waves of height 1 and amp2 with a phase difference */
+    function sumHeight() {
+      var th = phaseDeg * Math.PI / 180;
+      var v = 1 + amp2 * amp2 + 2 * amp2 * Math.cos(th);
+      return Math.sqrt(Math.max(0, v));
+    }
+
+    function refresh() {
+      readControls();
+      var s = sumHeight();
+      var tone = SOUND / lamM;
+      var path = lamM * (phaseDeg / 360);
+
+      sumOut.textContent = s.toFixed(2);
+      statSum.textContent = s.toFixed(2) + "×";
+
+      var words, num;
+      if (s < 1e-6) { words = "silence: the two wipe each other out"; num = "silence"; }
+      else {
+        var db = 20 * Math.log10(s);
+        if (db >= 0.05) { words = "up " + db.toFixed(1) + " dB on one wave alone"; num = "+" + db.toFixed(1) + " dB"; }
+        else if (db <= -0.05) { words = "down " + Math.abs(db).toFixed(1) + " dB on one wave alone"; num = db.toFixed(1) + " dB"; }
+        else { words = "level with one wave alone"; num = "0.0 dB"; }
+      }
+      dbOut.textContent = words;
+      statDb.textContent = num;
+
+      statTone.textContent = (tone >= 1000 ? sig(tone / 1000) + " kHz" : Math.round(tone) + " Hz");
+      statToneLbl.textContent = "the tone in air at this wavelength, " + sig(lamM, 2) + " metres";
+      statPath.textContent = (path >= 1 ? sig(path, 3) + " m" : sig(path * 100, 3) + " cm");
+
+      if (REDUCED) draw(0);
+    }
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 640;
+      var h = Math.max(280, Math.min(380, Math.round(w * 0.36)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+    }
+
+    function axis(y, label) {
+      cx.strokeStyle = LINE;
+      cx.globalAlpha = 0.7;
+      cx.lineWidth = 1;
+      cx.beginPath();
+      cx.moveTo(14, y);
+      cx.lineTo(W - 14, y);
+      cx.stroke();
+      cx.globalAlpha = 1;
+      cx.fillStyle = MUT;
+      cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "left";
+      cx.fillText(label, 16, y - 7);
+    }
+
+    /* one wave train across the canvas */
+    function train(y, amp, pxPerWave, phaseRad, colour, width, alpha) {
+      cx.strokeStyle = colour;
+      cx.lineWidth = width;
+      cx.globalAlpha = alpha;
+      cx.beginPath();
+      for (var x = 14; x <= W - 14; x += 1) {
+        var v = y - amp * Math.sin((2 * Math.PI * (x - 14)) / pxPerWave + phaseRad);
+        if (x === 14) cx.moveTo(x, v); else cx.lineTo(x, v);
+      }
+      cx.stroke();
+      cx.globalAlpha = 1;
+    }
+
+    function draw(t) {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+
+      var run = REDUCED ? 0 : (t / 900);
+      var topY = Math.round(H * 0.27);
+      var botY = Math.round(H * 0.74);
+      var amp = Math.min(46, H * 0.15);
+
+      /* wavelength on screen: the slider's metres mapped to pixels */
+      var pxPerWave = Math.max(26, Math.min(W - 28, (lamM / 3.5) * (W - 28) * 0.9 + 26));
+      var th = phaseDeg * Math.PI / 180;
+
+      axis(topY, "wave one  +  wave two");
+      axis(botY, "their sum");
+
+      /* the envelope the sum is allowed to reach */
+      var s = sumHeight();
+      cx.strokeStyle = MUT;
+      cx.globalAlpha = 0.28;
+      cx.setLineDash([4, 5]);
+      cx.lineWidth = 1;
+      cx.beginPath();
+      cx.moveTo(14, botY - amp * s); cx.lineTo(W - 14, botY - amp * s);
+      cx.moveTo(14, botY + amp * s); cx.lineTo(W - 14, botY + amp * s);
+      cx.stroke();
+      cx.setLineDash([]);
+      cx.globalAlpha = 1;
+
+      train(topY, amp, pxPerWave, run, ACC, 2, 0.95);
+      train(topY, amp * amp2, pxPerWave, run + th, ACC2, 2, 0.95);
+
+      /* the sum, drawn as a filled band so a flat line reads as nothing */
+      cx.beginPath();
+      for (var x = 14; x <= W - 14; x += 1) {
+        var u = (2 * Math.PI * (x - 14)) / pxPerWave + run;
+        var v = botY - amp * (Math.sin(u) + amp2 * Math.sin(u + th));
+        if (x === 14) cx.moveTo(x, v); else cx.lineTo(x, v);
+      }
+      cx.lineTo(W - 14, botY);
+      cx.lineTo(14, botY);
+      cx.closePath();
+      var g = cx.createLinearGradient(0, botY - amp * 2, 0, botY + amp * 2);
+      g.addColorStop(0, ACC2);
+      g.addColorStop(1, ACC);
+      cx.fillStyle = g;
+      cx.globalAlpha = 0.22;
+      cx.fill();
+      cx.globalAlpha = 1;
+
+      cx.strokeStyle = ACC;
+      cx.lineWidth = 2.6;
+      cx.beginPath();
+      for (var x2 = 14; x2 <= W - 14; x2 += 1) {
+        var u2 = (2 * Math.PI * (x2 - 14)) / pxPerWave + run;
+        var v2 = botY - amp * (Math.sin(u2) + amp2 * Math.sin(u2 + th));
+        if (x2 === 14) cx.moveTo(x2, v2); else cx.lineTo(x2, v2);
+      }
+      cx.stroke();
+
+      cx.fillStyle = MUT;
+      cx.font = "600 11px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "left";
+      cx.fillText("phase " + Math.round(phaseDeg) + "°", 16, H - 12);
+      cx.textAlign = "right";
+      cx.fillText("sum height " + s.toFixed(2) + " of one wave", W - 16, H - 12);
+      cx.textAlign = "left";
+    }
+
+    function loop(ts) {
+      draw(ts || 0);
+      raf = (visible && !REDUCED) ? requestAnimationFrame(loop) : 0;
+    }
+    function start() { if (!raf && !REDUCED) raf = requestAnimationFrame(loop); }
+
+    phaseR.addEventListener("input", refresh);
+    ampR.addEventListener("input", refresh);
+    lamR.addEventListener("input", refresh);
+
+    [].slice.call(document.querySelectorAll(".preset-row .btn[data-phase]")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        phaseR.value = b.getAttribute("data-phase");
+        refresh();
+        phaseR.focus();
+      });
+    });
+
+    sizeCanvas();
+    refresh();
+    draw(0);
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (visible) start(); else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+      }, { threshold: 0.05 });
+      io.observe(cv);
+    }
+    start();
+
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { sizeCanvas(); draw(0); }, 150);
+    });
+  })();
+
+  /* =====================================================================
+     Bench two: two slits, a mass slider, and one slit's phase
+     ===================================================================== */
+  (function () {
+    var cv = document.getElementById("slitCanvas");
+    var massR = document.getElementById("massRange");
+    var phR = document.getElementById("slitPhaseRange");
+    if (!cv || !cv.getContext || !massR || !phR) return;
+
+    var slitLine = document.getElementById("slitLine");
+    var lamOut = document.getElementById("lamOut");
+    var statLam = document.getElementById("statLam");
+    var statFringe = document.getElementById("statFringe");
+    var statPerMm = document.getElementById("statPerMm");
+    var statPerMmLbl = document.getElementById("statPerMmLbl");
+    var statWindow = document.getElementById("statWindow");
+
+    /* real objects, masses in kilograms, used to name whatever the slider lands on */
+    var ANCHORS = [
+      { m: 9.1093837015e-31, n: "an electron" },
+      { m: 1.67262192e-27,   n: "a proton" },
+      { m: 6.64648e-27,      n: "a helium atom" },
+      { m: 2.99150e-26,      n: "a water molecule" },
+      { m: 3.22497e-25,      n: "a caffeine molecule" },
+      { m: 1.19673e-24,      n: "a C60 buckyball" },
+      { m: 9.64441e-24,      n: "an insulin molecule" },
+      { m: 4.15135e-23,      n: "the 25,000 dalton molecule Vienna interfered in 2019" },
+      { m: 1.07105e-22,      n: "a haemoglobin molecule" },
+      { m: 2.82292e-22,      n: "the 8 nanometre sodium nanoparticle Vienna interfered in 2026" },
+      { m: 8.1e-21,          n: "a common cold virus particle" },
+      { m: 1.15192e-18,      n: "a 100 nanometre glass bead" },
+      { m: 1.04720e-15,      n: "a one micrometre dust grain" },
+      { m: 2.7e-14,          n: "a red blood cell" },
+      { m: 1.41372e-11,      n: "a grain of pollen" },
+      { m: 5.832e-8,         n: "a grain of table salt" },
+      { m: 3.0e-7,           n: "a poppy seed" }
+    ];
+
+    var LO = Math.log10(ANCHORS[0].m);
+    var HI = Math.log10(ANCHORS[ANCHORS.length - 1].m);
+
+    function massFromSlider(v) { return Math.pow(10, LO + (v / 1000) * (HI - LO)); }
+    function sliderFromMass(m) {
+      var v = Math.round(((Math.log10(m) - LO) / (HI - LO)) * 1000);
+      return Math.max(0, Math.min(1000, v));
+    }
+
+    /* name it against the nearest anchor, and say so plainly when it sits between two */
+    function nameMass(m) {
+      var best = 0, bd = Infinity;
+      for (var i = 0; i < ANCHORS.length; i++) {
+        var d = Math.abs(Math.log10(m / ANCHORS[i].m));
+        if (d < bd) { bd = d; best = i; }
+      }
+      if (bd < Math.log10(2.5)) return "about the mass of " + ANCHORS[best].n;
+      var lower = null, upper = null;
+      for (var j = 0; j < ANCHORS.length; j++) {
+        if (ANCHORS[j].m <= m) lower = ANCHORS[j];
+        if (ANCHORS[j].m > m && upper === null) upper = ANCHORS[j];
+      }
+      if (lower && upper) return "heavier than " + lower.n + ", lighter than " + upper.n;
+      return "about the mass of " + ANCHORS[best].n;
+    }
+
+    var cx = cv.getContext("2d");
+    var css = getComputedStyle(document.body);
+    var ACC = (css.getPropertyValue("--accent") || "#67e8f9").trim();
+    var ACC2 = (css.getPropertyValue("--accent2") || "#f0abfc").trim();
+    var MUT = (css.getPropertyValue("--muted") || "#93a3c4").trim();
+    var LINE = (css.getPropertyValue("--line-bright") || "#2c3c6b").trim();
+
+    var W = 0, H = 0, DPR = 1;
+    var mass = 2.82292e-22, lam = 0, phi = 0;
+
+    function sinc(z) { return Math.abs(z) < 1e-9 ? 1 : Math.sin(z) / z; }
+
+    /* two-slit intensity against the sine of the angle */
+    function intensity(s) {
+      var two = Math.cos(Math.PI * SLIT_D * s / lam + phi / 2);
+      var one = sinc(Math.PI * SLIT_W * s / lam);
+      return two * two * one * one;
+    }
+
+    /* half-width of the drawn window, in sine-of-angle, holding about four bands each side.
+       Capped at 45 degrees, past which a flat screen one metre away runs away from you. */
+    var MAX_HALF = Math.SQRT1_2;
+    function halfWindow() {
+      return Math.min(MAX_HALF, 4.2 * (lam / SLIT_D));
+    }
+    function windowWidth() {
+      var half = halfWindow();
+      return 2 * SCREEN_L * Math.tan(Math.asin(half));
+    }
+
+    function refresh() {
+      mass = massFromSlider(parseFloat(massR.value));
+      phi = parseFloat(phR.value) * Math.PI / 180;
+      lam = PLANCK / (mass * BEAM);
+
+      var fringe = lam * SCREEN_L / SLIT_D;          /* metres between bright bands at 1 m */
+      var perMm = 1e-3 / fringe;
+
+      lamOut.innerHTML = lenWords(lam);
+      statLam.innerHTML = lenWords(lam);
+      statFringe.innerHTML = fringe >= 0.5 ? "wider than a screen" : lenWords(fringe);
+
+      if (perMm < 1) {
+        statPerMm.textContent = "fewer than one";
+        statPerMmLbl.textContent = "bright bands inside one millimetre of that screen: the bands are wider than the strip";
+      } else {
+        if (perMm >= 1e6) statPerMm.innerHTML = sciHtml(perMm, 1);
+        else statPerMm.textContent = commas(Math.round(perMm));
+        statPerMmLbl.textContent = "bright bands falling inside one millimetre of that screen";
+      }
+      statWindow.innerHTML = lenWords(windowWidth());
+
+      slitLine.innerHTML =
+        "Mass <b>" + sciHtml(mass) + " kg</b>, " + nameMass(mass) +
+        " &middot; wavelength <b>" + lenWords(lam) + "</b>";
+
+      draw();
+    }
+
+    function sizeCanvas() {
+      var w = cv.clientWidth || 640;
+      var h = Math.max(300, Math.min(430, Math.round(w * 0.42)));
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h;
+      cv.width = Math.round(w * DPR);
+      cv.height = Math.round(h * DPR);
+      cv.style.height = h + "px";
+    }
+
+    function draw() {
+      cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      cx.clearRect(0, 0, W, H);
+
+      var pad = 14;
+      var bandTop = 40;
+      var bandH = Math.round(H * 0.44);
+      var bandBot = bandTop + bandH;
+      var stripTop = bandBot + 58;
+      var stripH = 46;
+      var innerW = W - pad * 2;
+
+      var half = halfWindow();
+
+      /* upper band: the pattern, zoomed */
+      for (var x = 0; x < innerW; x++) {
+        var s = -half + (x / (innerW - 1)) * 2 * half;
+        var I = intensity(s);
+        cx.fillStyle = ACC;
+        cx.globalAlpha = Math.max(0, Math.min(1, I)) * 0.85;
+        cx.fillRect(pad + x, bandTop, 1, bandH);
+      }
+      cx.globalAlpha = 1;
+
+      /* the curve over the top of it */
+      cx.strokeStyle = ACC2;
+      cx.lineWidth = 2;
+      cx.beginPath();
+      for (var x2 = 0; x2 < innerW; x2++) {
+        var s2 = -half + (x2 / (innerW - 1)) * 2 * half;
+        var y2 = bandBot - Math.max(0, Math.min(1, intensity(s2))) * (bandH - 6);
+        if (x2 === 0) cx.moveTo(pad + x2, y2); else cx.lineTo(pad + x2, y2);
+      }
+      cx.stroke();
+
+      cx.strokeStyle = LINE;
+      cx.lineWidth = 1;
+      cx.strokeRect(pad + 0.5, bandTop + 0.5, innerW - 1, bandH - 1);
+
+      /* lower strip: one real millimetre of screen, supersampled so it fills in truthfully */
+      var fringe = lam * SCREEN_L / SLIT_D;
+      var SUB = 8;
+      for (var x3 = 0; x3 < innerW; x3++) {
+        var acc = 0;
+        for (var k = 0; k < SUB; k++) {
+          var y = (-0.5e-3) + ((x3 + (k + 0.5) / SUB) / innerW) * 1e-3;   /* metres on the screen */
+          acc += intensity(y / SCREEN_L);
+        }
+        cx.fillStyle = ACC;
+        cx.globalAlpha = Math.max(0, Math.min(1, acc / SUB)) * 0.85;
+        cx.fillRect(pad + x3, stripTop, 1, stripH);
+      }
+      cx.globalAlpha = 1;
+      cx.strokeStyle = LINE;
+      cx.strokeRect(pad + 0.5, stripTop + 0.5, innerW - 1, stripH - 1);
+
+      /* labels */
+      cx.fillStyle = MUT;
+      cx.font = "600 11.5px 'JetBrains Mono', Consolas, monospace";
+      cx.textAlign = "left";
+      cx.fillText("ZOOMED: a patch of screen " + lenWords(windowWidth()) + " wide", pad + 2, bandTop - 12);
+      cx.fillText("TRUE SCALE: one millimetre of screen, one metre from the slits", pad + 2, stripTop - 12);
+      cx.textAlign = "right";
+      cx.fillText(fringe >= 0.5 ? "bands wider than a screen" : "bands " + lenWords(fringe) + " apart", W - pad - 2, bandTop - 12);
+      cx.fillText("slit phase " + Math.round(phi * 180 / Math.PI) + "°", W - pad - 2, stripTop - 12);
+      cx.textAlign = "left";
+      cx.fillStyle = ACC2;
+      cx.fillText(lenWords(lam) + " wavelength at " + BEAM + " m/s", pad + 2, H - 10);
+      cx.textAlign = "right";
+      cx.fillStyle = MUT;
+      cx.fillText("slits " + lenWords(SLIT_D) + " apart", W - pad - 2, H - 10);
+      cx.textAlign = "left";
+    }
+
+    massR.addEventListener("input", refresh);
+    phR.addEventListener("input", refresh);
+
+    [].slice.call(document.querySelectorAll(".preset-row .btn[data-mass]")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        massR.value = sliderFromMass(parseFloat(b.getAttribute("data-mass")));
+        refresh();
+        massR.focus();
+      });
+    });
+
+    sizeCanvas();
+    refresh();
+
+    var rt2;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt2);
+      rt2 = setTimeout(function () { sizeCanvas(); draw(); }, 150);
+    });
+  })();
+})();
+</script>
+</body>
+</html>
