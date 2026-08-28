@@ -310,7 +310,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
 
       <h3>A missing atom</h3>
       <p>The simplest fault is an empty site: somewhere the pattern says an atom belongs and there is none. They are not rare, and they are not damage. Heat a metal and the count climbs steeply, because at any temperature above absolute zero there is a bargain to be struck between the energy an empty site costs and the disorder it buys. Careful dilatometry on aluminium, comparing how much a bar grows against how much its lattice spacing grows, puts the count near one site in ten thousand empty right at the melting point of 660 degrees Celsius. One in ten thousand is a full stadium of fifty thousand people with five seats spare.</p>
-      <p>In a piece of aluminium the size of a pinhead, one cubic millimetre, one in ten thousand comes to about six thousand million million empty sites: roughly 750,000 vacancies for every person alive. Those empty sites are how atoms move through a solid at all. An atom cannot walk through a full lattice, but it can step sideways into a hole, and the hole steps the other way. That shuffle is how heat treatment works, how two metals weld without melting, and how salt slowly finds its way through a glaze.</p>
+      <p>In a piece of aluminium the size of a pinhead, one cubic millimetre, one in ten thousand comes to about six thousand million million empty sites: roughly 750,000 vacancies for every person alive. Those empty sites are how most atoms move through a solid. An atom the size of its neighbours cannot get past them in a full lattice, so it waits for a hole and steps sideways into it, and the hole steps the other way. That shuffle is how heat treatment works, how two metals weld without melting, and how salt slowly finds its way through a glaze. Small atoms do not wait: carbon in iron and hydrogen in palladium slip through the gaps between atoms in a lattice with every site filled, which is how case hardening puts carbon into a steel surface without melting anything.</p>
 
       <h3>A squeezed-in atom</h3>
       <p>Next is the opposite: an extra atom shoved into a space the pattern never left for it. It costs more energy than an empty site, so at rest there are fewer of them, but they arrive in pairs the moment something energetic passes through. Knock an atom off its site and you have made a hole and a squeezed-in atom in one stroke. That pair is the first page of radiation damage, in the wall of a reactor, in the sensor of a satellite, in a chip flown at altitude. Watch the drawn sheet bulge around it: the strain reaches several atoms out in every direction, which is why one extra atom is felt by thousands.</p>
@@ -367,7 +367,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       </ul>
       <div class="readout" id="sym-read" aria-live="polite"></div>
 
-      <p>Work through the four repeating patterns and a short list comes back every time: half turns, third turns, quarter turns, sixth turns. Never a fifth. Never a seventh. That is not a shortage of imagination on the part of the tool, and it is not a shortage of clever tilers either. It is arithmetic, and it has been known since the nineteenth century. Evgraf Fedorov in Russia and Arthur Schoenflies in Germany both finished the count in 1891: there are exactly seventeen ways to repeat a pattern across a flat surface, and 230 ways to repeat one through a solid. Every wallpaper in every shop, every tiled floor in every station, every crystal in every rock: seventeen and 230, and no more.</p>
+      <p>Work through the four repeating patterns and a short list comes back every time: half turns, third turns, quarter turns, sixth turns. Never a fifth. Never a seventh. That is not a shortage of imagination on the part of the tool, and it is not a shortage of clever tilers either. It is arithmetic, and it has been known since the nineteenth century. Evgraf Fedorov in Russia and Arthur Schoenflies in Germany both finished the count in 1891: there are exactly seventeen ways to repeat a pattern across a flat surface, and 230 ways to repeat one through a solid. That count rests on one premise: the pattern has to repeat. Every wallpaper in every shop, every tiled floor in every station, every crystal that repeats: seventeen and 230. Drop the repeating, and the count is a different one. Which is the next section.</p>
 
       <div class="lay">
         <div>
@@ -1102,7 +1102,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
 
     var TEXT = {
       perfect: ["A sheet with nothing wrong with it.",
-        "<b>Every site filled, every link the same length.</b> <span class=\"r2\">No real crystal is this clean above absolute zero, and a crystal this clean would be a poor conductor, a poor semiconductor and impossible to bend.</span>"],
+        "<b>Every site filled, every link the same length.</b> <span class=\"r2\">Above absolute zero the energy an empty site costs is outweighed by the disorder it buys, so a real crystal carries a few no matter how it is made. And a crystal this clean would be a poor conductor, a poor semiconductor, and it would need the full 4.5 gigapascals to bend, because with no line of mismatch to travel the whole plane has to break at once.</span>"],
       vacancy: ["One site left empty. The neighbours lean in.",
         "<b>A missing atom, about one site in ten thousand near melting.</b> <span class=\"r2\">Empty sites are how atoms travel through a solid: an atom steps into the hole and the hole steps the other way.</span>"],
       inter: ["One extra atom pushed into a space the pattern did not leave.",
@@ -1770,7 +1770,7 @@ body[data-page="crystal"] .lay { display: grid; gap: 20px; grid-template-columns
       } else if (list.indexOf(6) >= 0) {
         tail = "Sixth turns are the most a repeating pattern can hold, and this one holds them.";
       } else if (list.indexOf(4) >= 0) {
-        tail = "Quarter turns and sixth turns cannot share a pattern, so a square grid never gets six.";
+        tail = "Quarter turns and sixth turns cannot share a repeating pattern, so a square grid never gets six.";
       } else {
         tail = "Whatever the count, a fifth turn is not on the list.";
       }
