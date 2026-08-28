@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zero Point · Extreme Matter Atlas</title>
-<meta name="description" content="Two mirrors a whisker apart are pushed together by empty space: the measured Casimir force, the photons pulled out of the vacuum in 2011, and what a working zero point module would need.">
+<meta name="description" content="The Casimir force is a statement about geometry: a measured repulsion that flips sign with the materials, crystals grown under vacuum that edit what the vacuum does inside them, and the SAFIRE striations paper.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -46,8 +46,8 @@ body[data-page="zeropoint"] .pscale {
   margin-top: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--muted);
 }
 body[data-page="zeropoint"] .preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
-body[data-page="zeropoint"] .preset-row .btn { padding: 8px 14px; font-size: 13.5px; }
-body[data-page="zeropoint"] .control input[type="range"] { width: min(340px, 68vw); }
+body[data-page="zeropoint"] .preset-row .btn { padding: 8px 14px; font-size: 13.5px; min-height: 44px; }
+body[data-page="zeropoint"] .control input[type="range"] { width: min(340px, 68vw); height: 22px; }
 body[data-page="zeropoint"] .readout {
   font-family: var(--font-mono); font-size: 14px; color: var(--ink);
   padding: 9px 15px; border: 1px solid var(--line-bright); border-radius: 12px;
@@ -84,6 +84,18 @@ body[data-page="zeropoint"] .bench dt {
 }
 body[data-page="zeropoint"] .bench dd { color: var(--ink); }
 
+/* full-width bench: the paper block */
+body[data-page="zeropoint"] .bench.full { margin: 24px 0; padding: 24px; }
+body[data-page="zeropoint"] .bench.full dl {
+  display: grid; grid-template-columns: 210px 1fr; gap: 0 20px; align-items: baseline;
+}
+body[data-page="zeropoint"] .bench.full dt { margin-top: 11px; }
+body[data-page="zeropoint"] .bench.full dd { margin-top: 11px; }
+@media (max-width: 640px) {
+  body[data-page="zeropoint"] .bench.full dl { grid-template-columns: 1fr; }
+  body[data-page="zeropoint"] .bench.full dd { margin-top: 2px; }
+}
+
 body[data-page="zeropoint"] .scalebar {
   display: grid; gap: 10px; margin: 22px 0;
 }
@@ -111,13 +123,13 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
   <section class="hero">
     <div class="orbs"><span class="orb3"></span></div>
     <div class="wrap">
-      <span class="kicker">Vacuum energy · the Casimir force · the ZPM</span>
+      <span class="kicker">The Casimir force · structured matter · SAFIRE</span>
       <h1 class="display">Zero Point</h1>
-      <p class="lede">Hold two mirrors a whisker apart in a vacuum and <strong>empty space pushes them together</strong>. At a gap of ten nanometres the push is about 1.3 times the air pressure holding you to the ground. Hendrik Casimir wrote that force down in 1948 at Philips Research in the Netherlands; Steve Lamoreaux measured it on a torsion balance in 1997, and Umar Mohideen and Anushree Roy measured it to about one per cent with an atomic force microscope in 1998. It is the real, weighed thing sitting under the fictional power source that borrowed the words <em>zero point</em>.</p>
+      <p class="lede">Hold two mirrors a whisker apart in a vacuum and <strong>empty space pushes them together</strong>. At a gap of ten nanometres the push is about 1.3 times the air pressure holding you to the ground. Hendrik Casimir wrote that force down in 1948 at Philips Research in the Netherlands; Steve Lamoreaux weighed it on a torsion balance in 1997, and Umar Mohideen and Anushree Roy measured it to about one per cent with an atomic force microscope in 1998. Every term in the answer belongs to the boundary they built: the gap, the shapes, the materials. Which makes the structure the variable worth working, not the emptiness it sits in.</p>
       <div class="stat-row">
         <div class="stat"><span class="num">1.3 atm</span><span class="lbl">the push between two ideal mirrors ten nanometres apart, a gap about 35 gold atoms across</span></div>
-        <div class="stat"><span class="num">160 pN</span><span class="lbl">the force Mohideen and Roy read at closest approach, close to the pull that unfolds one protein</span></div>
-        <div class="stat"><span class="num">2011</span><span class="lbl">the year a team at Chalmers shook a mirror electrically and real photons came out</span></div>
+        <div class="stat"><span class="num">pull, or push</span><span class="lbl">which one the balance reads is set by the materials: gold and silica, with bromobenzene between them, repel</span></div>
+        <div class="stat"><span class="num">2011</span><span class="lbl">the year a boundary was swung eleven billion times a second and real photons came out of it</span></div>
         <div class="stat"><span class="num">10<sup>122</sup></span><span class="lbl">the factor by which the calculated and measured energy of empty space disagree</span></div>
       </div>
     </div>
@@ -129,6 +141,7 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
       <p>In <em>Stargate SG-1</em> and <em>Stargate Atlantis</em>, the Zero Point Module is the thing everyone is short of. It is a cylinder about 28 centimetres long, the size of a large thermos, glowing orange, and it powers a city. Rodney McKay explains it on screen in the 2004 episode "Lost City": the module generates its power from vacuum energy drawn from a self-contained region of subspace time. The reference material built around the show adds that the cylinder holds a large region of that vacuum rather than ordinary space, which is how something you can carry under one arm is meant to hold what it holds.</p>
       <p>There is a detail in the fiction worth noticing. A ZPM runs down: it draws on its enclosed region until that region reaches maximum entropy, its energy spread out evenly with no high side left to fall from, and then it is spent. The writers gave their miracle a fuel gauge, which is the line any claim of an endless supply has to answer. Whatever else it is, it is a battery in the story's own telling, not a machine that runs forever.</p>
       <p>The fan-summarised figure for its capacity is that one cubic centimetre of the contained space, about a sugar cube, holds enough energy to boil all the world's oceans. That number is worked through further down, because it turns out to sit in a very interesting place.</p>
+      <p>Notice what the fiction actually specifies, though. Not empty space. A <strong>region held inside a built object</strong>, with its own rules, engineered. That is a claim about structure, and structure is where the measured results live.</p>
       <div class="note"><strong>The nearest built thing with that shape.</strong> A sealed cylinder, no moving parts, holding a reservoir that quietly runs down over decades: that is a radioisotope thermoelectric generator. Voyager 1 carries three of them, each holding about 4.5 kilograms of plutonium-238. Together they made 470 watts at launch in 1977, about a fifth of a kitchen kettle, and in 2025 they were still delivering roughly 220 watts from more than 25 billion kilometres away. It is not vacuum energy. It is the longest unattended run any power source humans have built has managed: 48 years and still delivering.</div>
     </div>
   </section>
@@ -184,7 +197,49 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
       </div>
 
       <p>That fourth power is the whole story. Move the plates ten times closer and the pressure climbs ten thousand times. It is why the effect was a curiosity on paper for fifty years and is a design constraint now: ten nanometres is a real manufacturing scale, about half the gate length in a leading-edge 2026 logic transistor and half its finest metal pitch. Engineers building micromachines meet the Casimir force as stiction, the tendency of tiny moving parts to snap together and stay stuck once their gaps drop under about a hundred nanometres. A team at Bell Labs, Chan and colleagues, reported in <em>Science</em> in 2001 that they had driven a micromachined torsional plate with it, using the vacuum as the spring.</p>
-      <p>Two things about the force are still argued, and both are the productive kind of argument. The sign is not fixed by the physics: for a thin conducting spherical shell sliced in half, the same calculation says the two halves push apart rather than together, so a vacuum that pulls things in is a description of one geometry, not a rule. And what the force is <em>about</em> is open. Julian Schwinger showed the same number falls out of source theory, treating it as a relativistic version of the ordinary van der Waals attraction between the charges in the two plates, with no zero-point energy invoked at any step. Both routes return the pressure that gets measured.</p>
+      <p>Now read that description again and notice what is missing from it. Nothing in the calculation is a property of the space between the plates. Every term belongs to the boundary: how far apart the surfaces sit, what they are made of, what shape they are cut to. The plates do not sample the vacuum like a bucket sampling a river. They set the conditions the waves have to satisfy, and the number follows from the conditions. <strong>A boundary specification, not a bulk property.</strong> Which puts the interesting variable in the workshop rather than in the emptiness.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The variable is <span class="hue">the structure</span></h2>
+      <p>Casimir used two flat, perfectly conducting plates in 1948 because that geometry solves in closed form on paper. Change the shape, change the materials, or change what sits between them, and the answer changes. Sometimes it changes sign.</p>
+      <p>Two things about the force were argued from the start, and both are the productive kind of argument. The sign is not fixed by the calculation: for a thin conducting spherical shell sliced in half, the same machinery says the two halves push apart rather than together, which Timothy Boyer worked out in 1968. And what the force is <em>about</em> is open. Julian Schwinger showed the same number falls out of source theory, treating it as a relativistic version of the ordinary van der Waals attraction between the charges in the two plates, with no zero-point energy invoked at any step. Both routes return the pressure that gets measured, and both are statements about the boundary rather than about the gap's contents.</p>
+
+      <h3>The sign flip, weighed</h3>
+      <p>In 2009 Jeremy Munday, Federico Capasso and Adrian Parsegian at Harvard put that on a balance. They glued a gold-coated sphere 40 micrometres across, about half a hair's width, to the tip of an atomic force microscope cantilever, and lowered it towards a flat plate through a bath of bromobenzene, a clear liquid. Against a gold plate the sphere was pulled in, as everyone expected. They swapped the plate for silica and the cantilever bent the other way: the sphere was pushed away, by of order tens of piconewtons at the closest separations, tens of nanometres. <em>Nature</em> published it in January 2009.</p>
+      <p>Nothing about the geometry changed between those two runs. Same sphere, same cantilever, same gaps, same liquid. What changed was the ordering of three materials' optical responses: the liquid's response sits between the two solids', and that ordering sets which way the force points. <strong>A measured sign flip driven purely by material choice</strong> is the cleanest evidence there is that this quantity is something you specify, not something you find.</p>
+
+      <h3>Four handles, all of them on the bench</h3>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">🪞</span>
+          <h3>The materials on both sides</h3>
+          <p>Gold against gold pulls. Gold against silica, in bromobenzene, pushes. The 2009 result is the extreme case; every real measurement carries a correction for how the actual metal responds at short wavelengths, which is why the one nanometre row in the table above is the formula's answer rather than a reading.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🪒</span>
+          <h3>The shape cut into the surface</h3>
+          <p>Francesco Intravaia and colleagues, working across Los Alamos, Sandia, Argonne and Indiana, measured the force between a gold-coated sphere and a gold grating cut with trenches narrower than 100 nanometres. They reported in <em>Nature Communications</em> in 2013 that the attraction fell away with distance faster than existing calculations gave. Cutting slots removes metal; it removed more force than the missing metal accounts for.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">〰️</span>
+          <h3>Ripples that line up</h3>
+          <p>Give two facing gold surfaces matching corrugations and a sideways force appears, trying to slide one into register with the other. F. Chen, U. Mohideen, G. L. Klimchitskaya and V. M. Mostepanenko reported that lateral force in <em>Physical Review Letters</em> in 2002, at around a piconewton. A force with a direction that has nothing to do with the gap, produced by a pattern.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">📈</span>
+          <h3>A force that stops behaving</h3>
+          <p>L. Tang, H. B. Chan and colleagues built the force sensor and the actuator into one silicon chip, with nanoscale protrusions on both facing surfaces, and reported in <em>Nature Photonics</em> in 2017 that the Casimir force between them did not simply grow as the gap closed. It rose, fell and rose again with displacement. Structure turned a monotone curve into a shaped one.</p>
+        </div>
+      </div>
+
+      <div class="note"><strong>The one that matters most for a cycle.</strong> AIST is an alloy of silver, indium, antimony and tellurium, and it is the layer that holds the bits in a rewritable optical disc: a heat pulse flips it between a disordered arrangement and an ordered, crystalline one, and its optical properties change with the arrangement. George Palasantzas's group at Groningen, with colleagues at Leicester, Twente and Aachen, measured the Casimir force between a gold surface and an AIST surface in both states, at gaps around 100 nanometres, and reported a change of up to <strong>20 per cent</strong> in <em>Physical Review A</em> in 2010, with the surface topography unchanged. The gap did not move. The lattice did.</div>
+
+      <p>Four handles on one number: the materials facing each other, the medium between them, the shape cut into the surfaces, and the arrangement of the atoms inside one of them. The Casimir force is not a fixed quantity that space hands out. It is a quantity you write a specification for and then build.</p>
     </div>
   </section>
 
@@ -193,7 +248,7 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
   <section class="reveal">
     <div class="wrap">
       <h2>Two benches, <span class="hue">two answers</span></h2>
-      <p>The prediction waited forty-nine years for an instrument fine enough to catch it.</p>
+      <p>The original prediction waited forty-nine years for an instrument fine enough to catch it.</p>
       <div class="two-col">
         <div class="bench">
           <span class="when">Seattle · published January 1997</span>
@@ -222,8 +277,8 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
           </dl>
         </div>
       </div>
-      <p>Two different instruments, two different geometries, two laboratories, and a force that only exists because of what a gap does to waves nobody put there. Later torsion and microscope work has tightened it further.</p>
-      <p>Where it is still loose points at a bench job rather than a debate. Below roughly a hundred nanometres, real metals stop behaving like perfect mirrors: short waves start passing through rather than reflecting, and the measured force sits below the ideal line, which is why the one nanometre row in the table above is the formula's answer rather than a reading. Above roughly a micrometre, the correction for the plates being warm rather than at absolute zero is unsettled: two standard descriptions of how electrons move in a metal, the Drude model and the plasma model, differ there by as much as a factor of two, and no experiment has cleanly separated them.</p>
+      <p>Two different instruments, two different geometries, two laboratories, and a force that only exists because of what a gap does to waves nobody put there. Later torsion and microscope work has tightened it further. Notice that both experimenters spent most of their effort on the same two things: the exact shape of the surfaces, and exactly what those surfaces were made of. That was never housekeeping. That is the physics.</p>
+      <p>Where it is still loose points at a bench job rather than a debate. Below roughly a hundred nanometres, real metals stop behaving like perfect mirrors: short waves start passing through rather than reflecting, and the measured force sits below the ideal line. Above roughly a micrometre, the correction for the plates being warm rather than at absolute zero is unsettled: two standard descriptions of how electrons move in a metal, the Drude model and the plasma model, differ there by as much as a factor of two, and no experiment has cleanly separated them.</p>
     </div>
   </section>
 
@@ -290,7 +345,7 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
           <span class="val">4.9 kPa</span>
         </div>
         <div class="pscale"><span>0.0001 Pa</span><span>each tick is ten times the last</span><span>10 GPa</span></div>
-        <p class="note">The track is squashed so fourteen steps of ten fit across it, which is the only way a millipascal and a gigapascal share a picture. The hand press is five kilograms of force spread over a palm ten centimetres square; the tyre is 35 psi above the air around it.</p>
+        <p class="note">The track is squashed so fourteen steps of ten fit across it, which is the only way a millipascal and a gigapascal share a picture. The hand press is five kilograms of force spread over a palm ten centimetres square; the tyre is 35 psi above the air around it. The slider moves one variable, the gap. The 2009 and 2010 results move two others that no slider here reaches: what the surfaces are made of, and what state their atoms are in.</p>
       </div>
     </div>
   </section>
@@ -300,11 +355,11 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
   <section class="reveal">
     <div class="wrap">
       <h2>What <span class="hue">zero point</span> means</h2>
-      <p>Cool anything down far enough and its parts stop moving. That is the everyday picture, and it is close but not right. A quantum object cannot be brought fully to rest, and the reason is one relation rather than a rule laid down. Position and momentum are a conjugate pair: measuring where a thing is and then how fast it is going does not return quite what you get doing it the other way round, and the size of that difference, the commutator, is fixed at Planck's constant over two pi, about 1.05 &times; 10<sup>-34</sup> joule seconds. The uncertainty relation follows from that single fact. Being fully at rest would mean holding both facts exactly at once, which is what that relation prices. So there is a floor to how still a thing can get, and the leftover motion at that floor is the zero point.</p>
+      <p>Cool anything down far enough and its parts stop moving. That is the everyday picture, and it is close but not right. A quantum object does not come fully to rest, and the reason is one relation rather than a rule laid down. Position and momentum are a conjugate pair: measuring where a thing is and then how fast it is going does not return quite what you get doing it the other way round, and the size of that difference, the commutator, is fixed at Planck's constant over two pi, about 1.05 &times; 10<sup>-34</sup> joule seconds. The uncertainty relation follows from that single fact. Being fully at rest would mean holding both facts exactly at once, which is what that relation prices. So there is a floor to how still a thing can get, and the leftover motion at that floor is the zero point.</p>
       <p>The size of the floor is half a quantum: for a mode wobbling five billion times a second, about twice the frequency your microwave oven runs at, the leftover energy is about 1.7 &times; 10<sup>-24</sup> joules. Small enough that a single gram of sugar carries about ten thousand million million million million times more, and yet it never goes away.</p>
-      <p>You can see it without any of this maths. Liquid helium does not freeze. Cool helium-4 to a hair above absolute zero under its own vapour pressure and it stays liquid, because the leftover jiggle keeps the atoms from settling into a lattice. To make it solid you have to squeeze it at about 25 atmospheres. It is the one element on the shelf that behaves that way, and the reason is the floor.</p>
+      <p>You can see it without any of this maths. Liquid helium does not freeze on cooling alone. Helium-4 boils at 4.2 kelvin, about four degrees above absolute zero, which is minus 269 degrees Celsius, and under its own vapour pressure it keeps flowing all the way down from there, because the leftover jiggle keeps the atoms from settling into a lattice. To make it solid you have to squeeze it to about 25 atmospheres. It is the one element on the shelf that behaves that way, and the reason is the floor.</p>
 
-      <div class="note"><strong>Where the trouble starts.</strong> Quantum field theory says every mode of every field carries that same half quantum, and space has modes at every wavelength. Add them all up and the total does not settle on a number: it grows without limit. Practice is to declare the vacuum to be the zero of the scale and measure everything from there, which has worked for every laboratory prediction it has been checked against, because a bench measures differences and never the absolute level. It stops working when gravity joins in, because general relativity responds to how much energy is actually there, not to differences from a chosen zero.</div>
+      <div class="note"><strong>Where the trouble starts.</strong> Quantum field theory gives every mode of every field that same half quantum, and space has modes at every wavelength. Add them all up and the total does not settle on a number: it grows without limit. Practice is to declare the vacuum to be the zero of the scale and measure everything from there, which has worked for every laboratory prediction it has been checked against, because a bench measures differences and never the absolute level. It stops working when gravity joins in, because general relativity responds to how much energy is actually there, not to differences from a chosen zero.</div>
 
       <p>The same machinery that hides that infinity also produces the sharpest predictions in physics. It gives the Lamb shift, a 1,057 megahertz split in hydrogen that would not exist without the vacuum jostling the electron, and it gives the electron's magnetic moment, where calculation and the 2022 measurement agree to about one part in a million million.</p>
     </div>
@@ -314,10 +369,83 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
 
   <section class="reveal">
     <div class="wrap">
+      <h2>Crystals grown <span class="hue">under vacuum</span></h2>
+      <p>The Casimir plates work because a repeating boundary forbids some waves and allows others. A crystal is a repeating boundary. Build the repeat at the right spacing and the same thing happens inside a solid, and that is bench work with receipts rather than a proposal.</p>
+
+      <h3>A structure that forbids a colour</h3>
+      <p>Eli Yablonovitch at Bell Communications Research and Sajeev John at Toronto published separately in 1987 with the same idea from two directions: lay a material's refractive index, its ability to bend light, out in a repeating pattern at roughly the wavelength of light, and there will be bands of colour that no wave can travel through, exactly as an electron inside a semiconductor has energies it is not allowed to hold. In 1991 Yablonovitch, Gmitter and Leung drilled a block at three angles, produced the first three-dimensional gap of that kind, and measured it in the microwave. An atom sitting inside such a structure, tuned to a forbidden band, has no mode to radiate into across that band, and its emission there is suppressed. That is the vacuum's list of available modes, edited with a drill.</p>
+
+      <h3>The same trick for sound</h3>
+      <p>Do it with a material's stiffness and density instead of its optics and you get a phononic crystal, which forbids a band of vibration. The clearest early demonstration was not built as an experiment at all. In 1995 a group in Madrid measured the sound passing through a minimalist sculpture by Eusebio Sempere, a regular array of steel cylinders standing in a courtyard, and found a band of frequencies it blocked. <em>Nature</em> published the measurement. A pattern of steel rods, put up as art, edits the modes of the air around it. Shrink the same pattern to nanometres, as optomechanical devices now do, and it holds light and mechanical vibration in the same patch of silicon so they can push on each other.</p>
+
+      <h3>Why the growing pressure matters</h3>
+      <p>Building a lattice that clean takes a chamber emptied harder than most people picture. Molecular beam epitaxy fires beams of atoms at a heated wafer and lays material down about one atomic layer at a time: gallium arsenide typically grows at about one micrometre an hour, which works out to just under one atomic layer a second, with the wafer held near <strong>580 degrees Celsius</strong>. The chamber runs at a base pressure near 10<sup>-11</sup> torr, and torr is the unit where 760 is the air pressure at sea level. That is about <strong>76 million million times thinner than the air in the room</strong>.</p>
+      <p>The reason is arithmetic rather than fussiness. At a millionth of a torr, stray gas lands fast enough to cover a fresh surface in roughly a second. At 10<sup>-11</sup> torr the same coverage takes about 28 hours. The vacuum is not there to be empty for its own sake. It is there to buy time to build.</p>
+
+      <h3>No crucible, and then no gravity</h3>
+      <p>A different vacuum-grown crystal sits in most silicon radiation detectors and high-voltage power devices. Float-zone silicon is grown with nothing touching the melt: a radio-frequency coil melts a narrow band of a silicon rod and walks that molten band along it, in vacuum or in an inert gas, with surface tension holding the liquid in place. Silicon melts at <strong>1414 degrees Celsius</strong> (1687 kelvin), and a crucible at that temperature leaks oxygen into the crystal. Crucible-grown silicon carries roughly ten to twenty oxygen atoms per million silicon atoms. Float-zone silicon carries well under one. That difference is why float-zone wafers reach electrical resistances above 100,000 ohm centimetres where crucible-grown silicon rarely passes 100.</p>
+      <p>Take the crucible away and gravity is still in the recipe: the melt convects, denser material sinks, and the crystal grows in a bath stirring itself. Orbit removes that term. NASA's SUBSA furnace has grown semiconductor crystals in sealed ampoules on the space station since 2002. The clearest published number came from a medicine. Merck's team flew pembrolizumab, an antibody drug, to the station in 2017 and crystallised it there. The orbital crystals came back at a single size, around 39 micrometres. The matched ground runs produced two separate populations, at about 13 and about 102 micrometres. Same chemistry, same recipe, one term removed. Reichert and colleagues published it in <em>npj Microgravity</em> in 2019.</p>
+
+      <h3>One defect, put there on purpose</h3>
+      <p>Growing a lattice clean is half the craft. The other half is putting exactly one thing wrong in it, in a chosen place. A nitrogen-vacancy centre is a single nitrogen atom sitting next to a single missing carbon atom in diamond. It absorbs green light and glows red at 637 nanometres, and how brightly it glows depends on its spin, the small magnetic orientation the defect carries. So a microwave pulse writes a quantum state into one atom-sized flaw and a green laser reads it back, at room temperature, about 20 degrees, with no cooling at all.</p>
+      <p>Gopalakrishnan Balasubramanian and colleagues reported in <em>Nature Materials</em> in 2009 that in diamond grown from isotopically purified carbon-12, one carbon variety rather than the natural mix, that state held for about <strong>1.8 milliseconds at room temperature</strong>. Diamond like that is grown by chemical vapour deposition in a vacuum chamber, from a gas, one carbon layer at a time. A grown lattice, a chosen defect, and a quantum state you address with a laser pointer's worth of light. Those defects are what make diamond magnetometers work, and they are also colour: the same family of defects is why some diamonds are pink and some are blue.</p>
+
+      <h3>The atom and the box</h3>
+      <p>The last piece speaks straight to the extraction question. How fast an excited atom gives up its light is not a property of the atom on its own. Edward Purcell noted in 1946 that surrounding a system with a resonant structure changes the rate, because the rate depends on how many modes there are for the light to go into. Detune the structure and there are fewer modes, so the atom holds on.</p>
+      <p>Randall Hulet, Eric Hilfer and Daniel Kleppner put that on an instrument in 1985. They sent caesium atoms in a Rydberg state, one with the outer electron swung far out from the nucleus, between two conducting plates set closer than half the wavelength the atom wanted to emit. The emission switched off abruptly at the cutoff, and the excited state lived <strong>at least 20 times longer</strong>. <em>Physical Review Letters</em> published it. Two years earlier, Goy, Raimond, Gross and Haroche had run it the other way, sending Rydberg atoms through a superconducting cavity tuned to the transition and watching the lifetime shorten sharply. In solids the same handle became engineering: Jean-Michel Gérard's group reported in 1998 that an indium arsenide quantum dot, a speck of semiconductor a few nanometres across holding a single electron and hole, emitted up to <strong>five times faster</strong> when the pillar-shaped cavity grown around it was tuned to its colour.</p>
+
+      <div class="note"><strong>The through-line.</strong> Two conducting plates in 1948. A drilled block in 1991. A grown pillar around a quantum dot in 1998. A grown diamond with one atom missing in 2009. A phase-change lattice flipped between two states in 2010. Every one of them is a built structure, and every one of them measurably changes what the electromagnetic vacuum does inside it. Build the structure and you change the vacuum's behaviour there: that part is measured, repeatedly, in laboratories that were not looking for each other's results. The open question is not whether structured matter changes what the vacuum does. It is whether any of those changes can be arranged into a loop that closes.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>A plasma that <span class="hue">holds its shape</span></h2>
+      <p>There is a second place structure turns up, and there it builds itself. A plasma is a gas with some of its electrons knocked loose, so it carries current and answers to electric and magnetic fields. The picture most people carry is an even, glowing soup. Drive one hard enough, in the right geometry, and it stops being even. It separates into layers and holds them.</p>
+      <p>A <strong>double layer</strong> is the piece of vocabulary worth having. It is a thin sheet inside a plasma where the charge separates, positive on one side and negative on the other, with a voltage step across a sheet only a few atoms' worth of distance thick. It is a wall the plasma makes out of itself. Once one forms, the plasma on either side can sit at a different voltage and a different temperature, which is how a plasma holds structure instead of averaging itself flat. Double layers show up in the aurora, in the solar atmosphere, and on a bench.</p>
+
+      <div class="bench full">
+        <span class="when">Kinema Research and Software · Aurtas International · dated 2 February 2015</span>
+        <h3>Study of striations in a spherically symmetric hydrogen discharge</h3>
+        <p>W. Lowell Morgan of Kinema Research and Software and Montgomery W. Childs of Aurtas International wrote up a hydrogen discharge experiment and prepared it for submission to <em>Physical Review E</em>, with funding from the International Science Foundation. Childs went on to lead the SAFIRE Project, the Stellar Atmospheric Function in Resonance Experiment.</p>
+        <p>The rig is a positive corona discharge, a discharge run from a small sharply curved positive electrode, driven at high power and made as close to spherically symmetric as a bench allows. A glass bell jar is pumped down to about ten microns of mercury, a hundredth of a torr, roughly 76,000 times thinner than sea-level air, then filled with molecular hydrogen. At the centre sits the anode, the positive electrode: an iron sphere a quarter of an inch across, about 0.6 centimetres, near enough a pea. The cathodes, the negative electrodes, are copper, in a range of shapes and sizes, standing many anode radii out.</p>
+        <dl>
+          <dt>Gas and pressure</dt><dd>molecular hydrogen at 0.75 to 3 torr: between about a thousandth and a 250th of sea-level air pressure</dd>
+          <dt>Supply</dt><dd>up to 600 volts and up to 3 amps, about 1.8 kilowatts at the top corner, roughly one kitchen kettle</dd>
+          <dt>What forms</dt><dd>multiple concentric plasma spheres, one nested inside the next, as self-organised double layers</dd>
+          <dt>Where they form</dt><dd>readily observed from about half a torr up to 3 torr</dd>
+          <dt>How long they hold</dt><dd>some discharges stable for several minutes; one at about 0.8 torr switched between modes every 3 to 4 seconds</dd>
+          <dt>The anode</dt><dd>a quarter inch iron sphere, running hot</dd>
+        </dl>
+      </div>
+
+      <h3>What a single layer looks like from the inside</h3>
+      <p>Probe measurements on comparable discharges, by Novopashin and colleagues, give the shape of one layer. The plasma potential rises and falls in a well across each layer. The electric field swings above and below zero rather than pointing steadily one way. The electron temperature steps down across a layer from about 8 electronvolts to about 4, then jumps back up at the next one. An electronvolt as a temperature is about 11,600 degrees, so those steps run from roughly 93,000 degrees down to about 46,000 and back; at that scale Celsius and kelvin differ by less than a third of a per cent, so one figure serves for both. That is the free electrons. The gas itself sits far cooler, which is what lets a glass jar hold the thing.</p>
+
+      <h3>The mechanism they propose</h3>
+      <p>Morgan and Childs read the striations as an instability driven by copious negative ion formation. Free electrons attach to hydrogen molecules and break them apart, the resulting negative ions are heavy and slow compared with electrons, they change the radial space charge, and the electric field reorganises around them into layers.</p>
+      <p>Their supporting evidence is a pattern across gases rather than a single run. The layers turn up in hydrogen, oxygen, carbon dioxide, acetone, methanol and benzene. All six of those come apart readily and form negative ions when an electron attaches to them. The layers do not turn up in nitrogen, helium or argon, which do not.</p>
+      <p>And there is a number underneath it. Whether an attaching electron breaks a hydrogen molecule apart depends steeply on how much that molecule is already vibrating. The cross section, the effective target area the molecule presents, is <strong>1.6 &times; 10<sup>-21</sup> square centimetres</strong> for a molecule sitting in its ground state struck at 3.7 electronvolts. For a molecule already up at its ninth vibrational level, struck at only 0.13 electronvolts, it is <strong>4.8 &times; 10<sup>-16</sup> square centimetres</strong>. That is a factor of about <strong>300,000</strong>. In a mind's eye: the target grows from a pinhead a millimetre across to a disc 55 centimetres across, about a bin lid. In a discharge already shaking its molecules, negative ions are made far faster than the ground-state figure suggests, which is what puts arithmetic under the mechanism rather than assertion.</p>
+
+      <h3>The anode, and iron's odd habit near 770 degrees</h3>
+      <p>They also note that their iron anode ran hot, and point at a property of iron that most designs never meet. Iron's specific heat, the energy it takes to warm one mole of it by one degree, does not climb smoothly with temperature. It spikes at the Curie temperature, about <strong>770 degrees Celsius</strong> (1043 kelvin), the point where iron stops being magnetic. Between about 630 and 830 degrees (900 to 1100 kelvin) it rises from 43 joules per mole per degree to 84 and falls back to 43. So across a swing of two hundred degrees, the rate at which the same power warms the anode changes by a factor of two, and then changes back. Morgan and Childs suggest that could send thermal waves out from the anode, and that it may be connected to the mode switching they watched at 3 to 4 second intervals.</p>
+
+      <h3>What they say to measure next</h3>
+      <p>They name the next experiments themselves, and the list is short: a <strong>larger chamber</strong>, a <strong>larger anode</strong>, a <strong>higher voltage and current supply</strong>, and <strong>Langmuir probes</strong>, which are small wires held at a swept voltage that read electron density and electron temperature at a chosen point inside the plasma rather than through the glass. Bigger geometry, more power, and an instrument that reads the layers from the inside.</p>
+      <p>What the rig puts on the table is structure that assembles itself. Nobody machined those nested spheres. They formed, held for minutes, and in one case switched between arrangements on a clock you could count out loud. That is the other half of the idea running through the whole subject. One half is structure you build: a lattice, a cavity, a grating, a pair of plates. The other is structure a driven system builds for itself, and then keeps.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
       <h2>Photons pulled <span class="hue">out of nothing</span></h2>
-      <p>Gerald Moore worked out in 1970 that a mirror moving fast enough should convert the vacuum's virtual waves into real light: shake the boundary hard, and photons come off it. That is the dynamical Casimir effect, and for forty years it stayed on paper, because the boundary has to move at an appreciable fraction of the speed of light and no material holds together under that. The Wilson paper prices the mechanical route directly: a nanometre swing at two billion times a second, 100 megawatts going in, one photon a day coming out.</p>
-      <p>In 2011 a team led by Chris Wilson at Chalmers University of Technology in Sweden, working with colleagues at RIKEN in Japan, UNSW Sydney and Michigan, stopped trying to move anything. They built a superconducting circuit ending in a SQUID, a small loop whose electrical properties can be swung by a magnetic field, and swung it about eleven billion times a second. To the waves in the line, an electrical boundary sliding back and forth is the same thing as a mirror sliding back and forth, and this one had an effective speed of about five per cent of light.</p>
-      <p>Microwave photons came out. The paper, published in <em>Nature</em> in November 2011, reports them arriving in pairs whose two frequencies add up to the drive frequency, spread broadly rather than at one note, which is what tells them apart from a simple amplifier ringing. The chip sat at 50 millikelvin, cold enough that the expected number of stray heat photons at five gigahertz was 0.008, so the light was not warmth leaking in. The pairs also arrived correlated in the particular way that only vacuum-born pairs are, with cross-correlations about a hundred times the amplifier's own.</p>
+      <p>Gerald Moore worked out in 1970 that a mirror moving fast enough should convert the vacuum's virtual waves into real light: shake the boundary hard, and photons come off it. That is the dynamical Casimir effect, and for forty years it stayed on paper, because the boundary has to move at an appreciable fraction of the speed of light and the materials tried so far come apart well short of that. The Wilson paper prices the mechanical route directly: a nanometre swing at two billion times a second, 100 megawatts going in, one photon a day coming out.</p>
+      <p>In 2011 a team led by Chris Wilson at Chalmers University of Technology in Sweden, working with colleagues at RIKEN in Japan, UNSW Sydney and Michigan, stopped trying to move anything. They built a superconducting circuit ending in a SQUID, a small loop whose electrical properties can be swung by a magnetic field, and swung it about eleven billion times a second. To the waves in the line, an electrical boundary sliding back and forth is the same thing as a mirror sliding back and forth, and this one had an effective speed of about five per cent of light. The boundary was built rather than moved.</p>
+      <p>Microwave photons came out. The paper, published in <em>Nature</em> in November 2011, reports them arriving in pairs whose two frequencies add up to the drive frequency, spread broadly rather than at one note, which is what tells them apart from a simple amplifier ringing. The chip sat at 50 millikelvin, five hundredths of a degree above absolute zero, cold enough that the expected number of stray heat photons at five gigahertz was 0.008, so the light was not warmth leaking in. The pairs also arrived correlated in the particular way that only vacuum-born pairs are, with cross-correlations about a hundred times the amplifier's own.</p>
       <p>The team named their own limitation in the paper: stray resonances in the cabling, with quality factors of 30 to 50, boosted the photon production rate by a factor of 1,000 to 2,000 over what a clean line would have given. The effect is there. The rate they measured is the enhanced one.</p>
       <div class="note"><strong>The nearest built thing is already in the rack.</strong> The SQUID amplifiers that made this possible are now ordinary parts, sold as Josephson parametric amplifiers and used every day to read out the qubits, the bits that hold a blend of nought and one rather than one or the other, inside superconducting quantum computers. The same amplifiers can quieten the vacuum's own jitter in the one direction a measurement cares about, and feeding that quieted vacuum into the LIGO gravitational wave detectors let them pick out a stretch about 30 per cent smaller than before, through an observing run that ran from 2019 to 2020. Handling the vacuum's fluctuations as an engineering material is a thing several laboratories now do before lunch.</div>
     </div>
@@ -328,9 +456,9 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
   <section class="reveal">
     <div class="wrap">
       <h2>The mirror you would <span class="hue">have to shake</span></h2>
-      <p>The Wilson paper opens by explaining why they went electrical, and its costing of the mechanical route is worth writing out in full. Take an ordinary microwave mirror and shake it mechanically at two billion times a second with a swing of about a nanometre. The tip of that swing travels about 13 metres per second, a car's pace on a suburban street, which is four parts in a hundred million of light speed: the yield climbs steeply as the boundary approaches light speed, and this one is nowhere near it. Turning around that fast is the other bill. The peak acceleration comes to about 16 thousand million times gravity, enough that a one gram fleck of metal would pull on its mounting like 16,000 tonnes, about a small cargo ship. The expected yield is about <strong>one photon per day</strong>. To sustain the shaking you would need to supply roughly <strong>100 megawatts</strong> of mechanical power, and hold the whole thing near 20 millikelvin at the same time so the field is genuinely in its ground state.</p>
+      <p>The Wilson paper opens by explaining why they went electrical, and its costing of the mechanical route is worth writing out in full. Take an ordinary microwave mirror and shake it mechanically at two billion times a second with a swing of about a nanometre. The tip of that swing travels about 13 metres per second, a car's pace on a suburban street, which is four parts in a hundred million of light speed: the yield climbs steeply as the boundary approaches light speed, and this one is nowhere near it. Turning around that fast is the other bill. The peak acceleration comes to about 16 thousand million times gravity, enough that a one gram fleck of metal would pull on its mounting like 16,000 tonnes, about a small cargo ship. The expected yield is about <strong>one photon per day</strong>. To sustain the shaking you would need to supply roughly <strong>100 megawatts</strong> of mechanical power, and hold the whole thing near 20 millikelvin at the same time, two hundredths of a degree above absolute zero, so the field is genuinely in its ground state.</p>
       <p>One hundred megawatts is about the continuous output of a mid-size gas turbine, or the draw of roughly 42,000 kettles boiling at once. Run it for a full day and you have put in about 8.6 million million joules. Out comes one microwave photon, carrying about 6.6 &times; 10<sup>-25</sup> joules. The ratio is roughly one part in 10<sup>37</sup>.</p>
-      <p>That figure is not a statement about how much energy the vacuum holds. It is a statement about the cost of stirring it. The circuit version sidesteps the mechanical bill entirely, and it is still a driven amplifier: microwave power goes in, microwave photons come out, and the paper makes no claim of getting back more than was put in.</p>
+      <p>That figure is not a statement about how much energy the vacuum holds. It is the price of stirring it by brute force, in the one geometry where you move a whole mirror. The circuit version sidesteps the mechanical bill entirely by moving a boundary condition instead of a boundary, and it is still a driven amplifier: microwave power goes in, microwave photons come out, and the paper makes no claim of getting back more than was put in.</p>
     </div>
   </section>
 
@@ -340,7 +468,7 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
     <div class="wrap">
       <h2>Two numbers for empty space, <span class="hue">and they do not match</span></h2>
       <p>Here is the crack in the settled picture, and it is a wide one.</p>
-      <p>Quantum field theory says the vacuum carries an energy density. General relativity says energy density bends space and shows up in how the universe expands. So the two can be compared. Add up the half quanta over every mode, stopping at the Planck scale because the theory has nothing to say above it, and the answer is about 4.6 &times; 10<sup>113</sup> joules in every cubic metre. Measure how the universe actually expands, and the answer is about 6 &times; 10<sup>-10</sup> joules in every cubic metre.</p>
+      <p>Quantum field theory gives the vacuum an energy density. General relativity says energy density bends space and shows up in how the universe expands. So the two can be compared. Add up the half quanta over every mode, stopping at the Planck scale because the theory has nothing to say above it, and the answer is about 4.6 &times; 10<sup>113</sup> joules in every cubic metre. Measure how the universe actually expands, and the answer is about 6 &times; 10<sup>-10</sup> joules in every cubic metre.</p>
       <p>The two differ by a factor of about 10<sup>122</sup>. Physicists writing about it call it the largest gap between a calculation and a measurement anywhere in science.</p>
 
       <div class="stat-row">
@@ -357,11 +485,12 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
       <div class="scalebar">
         <div class="rung"><span class="lab">1 cubic metre</span><span class="txt">holds <strong>0.0000000006 joules</strong>. In particle terms, about four protons' worth of mass-energy per cubic metre of space.</span></div>
         <div class="rung"><span class="lab">An Olympic pool</span><span class="txt">2,500 cubic metres of empty space holds <strong>1.5 microjoules</strong>: about the energy of one mosquito flying at walking pace.</span></div>
-        <div class="rung"><span class="lab">One kettle</span><span class="txt">boiling 1.7 litres from 20 degrees takes about 570 kilojoules. Harvesting that from the vacuum would take <strong>a cube of empty space 98 kilometres on a side</strong>, and there is no known way to harvest any of it.</span></div>
+        <div class="rung"><span class="lab">One kettle</span><span class="txt">boiling 1.7 litres from 20 degrees takes about 570 kilojoules. Gathering that much from the bulk vacuum would mean sweeping <strong>a cube of empty space 98 kilometres on a side</strong>, and nobody has published a way to sweep any of it.</span></div>
         <div class="rung"><span class="lab">Against a battery</span><span class="txt">a charged lithium cell packs about 2.5 &times; 10<sup>9</sup> joules per cubic metre. The measured vacuum is <strong>about four billion billion times thinner</strong> than that.</span></div>
         <div class="rung"><span class="lab">Across the sky</span><span class="txt">and yet it holds about 2 &times; 10<sup>71</sup> joules in the observable universe: enough to boil the world's oceans some <strong>10<sup>43</sup> times over</strong>. It dominates because there is a great deal of universe.</span></div>
       </div>
-      <p>It is measured by shape, not by a sample. Supernova distances, the size of the ripples frozen into the microwave background, and the spacing of galaxies all bend the same way if the number is right. Planck's 2018 data with galaxy surveys puts dark energy at 0.6889 plus or minus 0.0056 of the universe's critical density. Nobody has published a way to read the number on a bench.</p>
+      <p>That is the strongest argument for looking at built structures rather than at bulk space. The bulk number is tiny and spread evenly. The numbers that move are the ones set by a boundary: 130,000 pascals between two plates ten nanometres apart, a sign flip from swapping a plate, a fifth of the force gone from re-arranging a lattice. Density and geometry are different questions, and only one of them has knobs on it.</p>
+      <p>The bulk number is measured by shape, not by a sample. Supernova distances, the size of the ripples frozen into the microwave background, and the spacing of galaxies all bend the same way if the number is right. Planck's 2018 data with galaxy surveys puts dark energy at 0.6889 plus or minus 0.0056 of the universe's critical density.</p>
       <p>It may not even be a constant. The DESI survey's 2024 and 2025 data releases hint that dark energy has changed with time, at somewhere between 2.8 and 4.2 sigma depending on which datasets are combined. Sigma counts how far a result sits from what chance alone would throw up, and the usual bar for calling something found is five, so this is interesting rather than decided. If it holds up, the biggest disagreement in the ledger changes shape rather than closing.</p>
     </div>
   </section>
@@ -387,7 +516,7 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
         </div>
       </div>
 
-      <p>So the story is quietly picking the Planck-scale figure and assuming it is real, local and reachable. That is precisely the assumption the 10<sup>122</sup> disagreement is about. The fiction is not making up its physics; it is betting on one side of an open question, which is a more interesting thing to do.</p>
+      <p>So the story is picking the Planck-scale figure and assuming it is real, local and reachable. That is precisely the assumption the 10<sup>122</sup> disagreement is about. The fiction is not making up its physics; it is betting on one side of an open question, which is a more interesting thing to do. It also puts its region inside a built object, which is the same instinct every measured result on this subject has followed.</p>
     </div>
   </section>
 
@@ -395,17 +524,17 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
 
   <section class="reveal">
     <div class="wrap">
-      <h2>What a working module would need, and <span class="hue">where the cycle breaks</span></h2>
-      <p>Write the requirements out as a brief and the obstacle stops being philosophical and becomes a piece of engineering with a number on it.</p>
+      <h2>The cycle is a <span class="hue">geometry and materials problem</span></h2>
+      <p>Write the requirements out as a brief and the obstacle stops being philosophical. It becomes a question about what you build, and what you build it from.</p>
 
       <div class="panel">
         <div class="ladder">
           <span class="lnum">01</span>
-          <div><h3>A reservoir at a lower energy than its surroundings</h3><p>Every power source works down a gradient: hot to cold, charged to flat, high to low. <strong>The vacuum is the field's ground state</strong>, the bottom rung. There is no known lower rung to fall to, so the gradient has to be manufactured rather than found.</p></div>
+          <div><h3>A reservoir at a lower energy than its surroundings</h3><p>Every power source works down a gradient: hot to cold, charged to flat, high to low. <strong>The vacuum is the field's ground state</strong>, the bottom rung. There is no known lower rung to fall to, so the gradient is something you manufacture with structure rather than something you find lying about the room.</p></div>
         </div>
         <div class="ladder">
           <span class="lnum">02</span>
-          <div><h3>A way to lower the vacuum energy in one region</h3><p>Casimir plates do exactly this: the region between them holds fewer allowed modes than open space, so its energy is lower, and the difference is real enough to weigh. <strong>This part already works.</strong> It is the one step of the brief with a laboratory receipt.</p></div>
+          <div><h3>A way to lower the vacuum energy in one region</h3><p>Casimir plates do exactly this: the region between them holds fewer allowed modes than open space, so its energy is lower, and the difference is real enough to weigh. <strong>This part already works.</strong> The 2009 repulsion, the 2013 grating and the 2010 phase-change switch go further: the size of the change, and its sign, are yours to specify.</p></div>
         </div>
         <div class="ladder">
           <span class="lnum">03</span>
@@ -413,18 +542,21 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
         </div>
         <div class="ladder">
           <span class="lnum">04</span>
-          <div><h3>Get back to the start without spending what you gained</h3><p>This is the unsolved one. The Casimir force comes from a potential, which means it is a spring: whatever it gives you on the way in, it takes back on the way out. Friction, sticking, and hysteresis, which is a material never quite retracing its own path on the way back, make the round trip cost more than it returned. <strong>The cycle, not the force, is the open problem.</strong></p></div>
+          <div><h3>Get back to the start without spending what you gained</h3><p>This is the open one, and it is open as engineering rather than as a matter of principle. Between two <em>fixed</em> surfaces the Casimir force comes from a potential, which makes it a spring: whatever it gives you going in, it takes back coming out, and friction, sticking and hysteresis, a material never quite retracing its own path, make the round trip cost more than it returned. <strong>That is a statement about one geometry</strong>, two rigid surfaces moved apart and back. The AIST result is the reason to say so: there, the force changed by up to a fifth with the gap held completely still, because the lattice changed state. A loop whose two legs run through different material states is a different loop, and the rig that books both legs on one ledger has not been built.</p></div>
         </div>
       </div>
 
+      <div class="note"><strong>What a conservation law is, precisely.</strong> Energy conservation is quoted as a decree and it is not one. Emmy Noether proved in 1918 at Göttingen that conservation laws are theorems that follow from symmetries, and the premise behind this one is that the rules governing a system do not change with time. Name the premise and the theorem is exact within it. Where the premise does not hold, the bookkeeping changes: an expanding universe has no global time symmetry of that kind, and light stretching with the expansion loses energy that no ledger recovers. So the useful question about any proposed cycle is not whether it defies a law. It is which premises the cycle keeps, which it breaks, and what an instrument reads when someone runs it.</div>
+
       <h3>The energy budget, written out</h3>
       <p>Numbers make step four concrete. A cubic metre packed with plates ten nanometres apart holds a hundred million gaps, and collapsing all of them releases about <strong>43 kilojoules</strong>: the chemical energy in one gram of petrol, once, and that is before subtracting the volume the metal itself takes up. Matching a single AA alkaline cell, about 13,500 joules, would take 31 square kilometres of perfectly flat, perfectly clean plate, collapsed once. As an energy store that is about 58,000 times thinner than a charged lithium cell and about 780,000 times thinner than petrol.</p>
-      <p>What the Casimir effect offers, on its own numbers, is a spring rather than a fuel.</p>
+      <p>Flat plates, moved apart and back, behave as a spring rather than a fuel. Flat plates are one structure out of the whole catalogue, and they are the one that solves on paper.</p>
 
       <div class="note"><strong>Robert Forward saw this first, and wrote it down that way.</strong> In <em>Physical Review B</em> in 1984, Forward, a physicist at Hughes Research Laboratories and a science fiction novelist, proposed a "vacuum-fluctuation battery": a spiral of very thin metal leaves, every leaf charged to the same polarity so electrostatic repulsion pushes them apart, tuned to sit just under the Casimir attraction. The stack then collapses, and the Casimir force does work on the electric field, raising the stored charge energy. Forward called it a battery, not an engine. Recharging means making the electric forces slightly stronger to re-expand the stack, which costs at least what was gained. The paper claims no net gain anywhere in it, which is worth knowing, because it is the paper most often cited by people claiming one.</div>
 
       <p>The nearest built thing to Forward's design needs no quantum mechanics at all: a static-electricity generator whose plates move, with a sliding slab of insulator between them, does the same job with a much larger force, and returns what was put in. It is a useful comparison because it shows the shape of the problem is old and familiar rather than exotic.</p>
-      <p>Garret Moddel and Dmitri Dmitriyeva sorted the proposals in a 2019 review in <em>Atoms</em>. They group them in three: nonlinear processing of the vacuum's fluctuations, mechanical extraction using Casimir cavities, and pumping gas atoms through a Casimir cavity, read under stochastic electrodynamics, which pictures the vacuum as a real background of random waves rather than empty space. The first two run into the same wall, which is that a system already in thermal equilibrium offers no gradient for a diode or any other one-way part to work with. The third they judge not obviously ruled out, and they describe the experimental results in that class as inconclusive. Inconclusive is where an experiment belongs, not where it ends.</p>
+      <p>Garret Moddel and Dmitri Dmitriyeva sorted the proposals in a 2019 review in <em>Atoms</em>. They group them in three: nonlinear processing of the vacuum's fluctuations, mechanical extraction using Casimir cavities, and pumping gas atoms through a Casimir cavity, read under stochastic electrodynamics, which pictures the vacuum as a real background of random waves rather than empty space. For the first two they name the same obstacle: a system already sitting in thermal equilibrium offers no gradient for a diode or any other one-way part to work with. The third they judge not obviously ruled out, and they describe the experimental results in that class as inconclusive. Inconclusive is where an experiment belongs, not where it ends.</p>
+      <p>Every one of those obstacles is stated for a particular arrangement of matter. Change the arrangement and the statement has to be worked again, which is a bench job with a number at the end of it.</p>
     </div>
   </section>
 
@@ -433,12 +565,32 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
   <section class="reveal">
     <div class="wrap">
       <h2>What would move <span class="hue">the question</span></h2>
-      <p>Six things with instruments attached. Each returns a number somebody could read next year.</p>
+      <p>Nine things with instruments attached. Most of them are about what gets built rather than what gets argued, and each returns a number somebody could read next year.</p>
       <div class="grid">
         <div class="card">
-          <span class="card-glyph">📡</span>
-          <h3>Run 2011 again, cleanly</h3>
-          <p>Repeat the dynamical Casimir measurement in a transmission line without the stray resonances that raised the rate a thousandfold, so the raw production rate is what gets counted. Josephson metamaterials and cold-atom analogues have shown related effects since; a clean rate would let all of them be compared on one scale.</p>
+          <span class="card-glyph">🔀</span>
+          <h3>Switch the lattice, hold the gap</h3>
+          <p>Take the AIST result further. Cycle a phase-change surface between its two states with the two surfaces held fixed, and book the heat that flips it against the work the force change delivers. A fixed gap means no spring to pay back, so the round trip becomes a materials question with a wattmeter on both sides of it. Of everything on this list, it is the one where the geometry stops fighting you.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔁</span>
+          <h3>Build the cycle rig</h3>
+          <p>A Casimir cavity whose gap can be driven and read at once, so the work put in to open it and the work recovered as it closes are counted on the same clock, in the same run. Chan's group already has the force sensor and the actuator on one silicon chip, which is most of the instrument. Whatever it returns, it turns an argument into a measurement.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🪒</span>
+          <h3>Shape the surface and re-weigh</h3>
+          <p>Gratings, corrugations and protrusions already push the measured force away from a flat-plate estimate, in both directions and by tens of per cent. A systematic sweep of one shape parameter, with everything else held identical, would return a curve rather than a scatter of separate results, and a curve is what a designer can use.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">💎</span>
+          <h3>Grow the cavity around the defect</h3>
+          <p>Diamond grown under vacuum, a nitrogen-vacancy centre placed where you want it, and a photonic structure built around it so the defect's emission sits inside a forbidden band. Then measure the emission rate on the band and off it. Every piece exists; the assembly, at a chosen position, is the work.</p>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚡</span>
+          <h3>Take the SAFIRE list</h3>
+          <p>The 2015 paper names its own next steps: a larger chamber, a larger anode, a higher voltage and current supply, and Langmuir probes reading electron density and temperature inside the layers rather than through the glass. Probe traces across a self-organised double layer, in a rig built to be spherical, at that scale, is a dataset that does not exist yet.</p>
         </div>
         <div class="card">
           <span class="card-glyph">🌡️</span>
@@ -446,27 +598,23 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
           <p>Between about one and seven micrometres, the Drude and plasma descriptions of a metal disagree about the force by as much as a factor of two. A torsion balance at that spacing, with the stray electrostatic force properly separated, would return a number that picks one.</p>
         </div>
         <div class="card">
-          <span class="card-glyph">🔬</span>
-          <h3>Take the precision path already mapped</h3>
-          <p>Mohideen and Roy pointed at a further factor of a thousand: lithographic cantilevers with a larger radius of curvature, interferometric readout of the bend rather than optical lever, and lower temperatures to cut thermal noise. Nothing on that list needs inventing.</p>
+          <span class="card-glyph">📡</span>
+          <h3>Run 2011 again, cleanly</h3>
+          <p>Repeat the dynamical Casimir measurement in a transmission line without the stray resonances that raised the rate a thousandfold, so the raw production rate is what gets counted. Mohideen and Roy also mapped a further factor of a thousand for the static measurement: lithographic cantilevers, interferometric readout of the bend, lower temperatures. Nothing on either list needs inventing.</p>
         </div>
         <div class="card">
           <span class="card-glyph">💨</span>
           <h3>Chase the one class not ruled out</h3>
-          <p>Pump gas atoms through a Casimir cavity and measure the temperature and spectrum of what comes out, with every watt of input power counted on the same ledger. The published attempts are inconclusive, which is exactly what makes them worth repeating properly.</p>
+          <p>Pump gas atoms through a Casimir cavity and measure the temperature and spectrum of what comes out, with every watt of input power counted on the same ledger. The published attempts are inconclusive, which is exactly what makes them worth repeating properly, with the cavity geometry treated as the variable it is.</p>
         </div>
         <div class="card">
           <span class="card-glyph">🔭</span>
           <h3>Watch DESI</h3>
           <p>If dark energy turns out to change with time, the energy of empty space is not a fixed number and the 10<sup>122</sup> comparison has to be rewritten. The data releases are already leaning that way, by enough that it is unlikely to be noise but not enough to settle it; more sky and more distance measurements will decide.</p>
         </div>
-        <div class="card">
-          <span class="card-glyph">🔁</span>
-          <h3>Build the cycle rig</h3>
-          <p>The instrument nobody has built: a Casimir cavity whose gap can be driven and read at once, so the work put in to open it and the work recovered as it closes are counted on the same clock, in the same run. Whatever that rig returns, it turns an argument into a measurement.</p>
-        </div>
       </div>
-      <p>The vacuum has already been weighed at 1.6 piconewtons, and shaken hard enough to give up light. Those are the two receipts. The open question is not whether empty space carries energy; it is whether a gradient can be made in it and closed around, and that question has a bench, an instrument list, and a number waiting at the end of it.</p>
+      <p>The vacuum has already been weighed at 1.6 piconewtons, pushed the wrong way by swapping one plate for another, changed by a fifth by re-arranging a lattice without moving anything at all, and shaken hard enough to give up light. Those are the receipts, and every one of them is about a structure somebody built.</p>
+      <p>So the thing to build next is not a larger volume of emptiness. It is a smaller, stranger, better specified piece of matter: a lattice grown under vacuum with a chosen defect in it, a cavity tuned around that defect, a surface whose atomic state can be flipped while it is being weighed, and a driven plasma big enough to put a probe inside its own layers. Four builds, four instruments already on the shelf, four numbers waiting at the end.</p>
     </div>
   </section>
 
@@ -476,8 +624,10 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
     <div class="wrap">
       <h2>Keep <span class="hue">exploring</span></h2>
       <div class="grid">
-        <a class="card-link" href="sci-fi-lab.html"><div class="card"><span class="card-glyph">🛸</span><h3>Sci-Fi Lab</h3><p>Named fictional technology given a spec sheet, with the numbers each one implies and the nearest built thing that rhymes with it.</p></div></a>
+        <a class="card-link" href="crystal-lab.html"><div class="card"><span class="card-glyph">🔷</span><h3>Crystal Lab</h3><p>Build a lattice, twist it, put a defect in it and watch the modes change. The sketchpad version of the structures on this subject.</p></div></a>
+        <a class="card-link" href="metamaterials.html"><div class="card"><span class="card-glyph">🕸️</span><h3>Metamaterials</h3><p>Geometry doing the work of chemistry: patterns that give a material properties its ingredients do not have.</p></div></a>
         <a class="card-link" href="resonance.html"><div class="card"><span class="card-glyph">〰️</span><h3>Resonance</h3><p>Why only certain waves fit in a given space, from a tuning fork to an atom. The same rule that gives the plates their push.</p></div></a>
+        <a class="card-link" href="sci-fi-lab.html"><div class="card"><span class="card-glyph">🛸</span><h3>Sci-Fi Lab</h3><p>Named fictional technology given a spec sheet, with the numbers each one implies and the nearest built thing that rhymes with it.</p></div></a>
         <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where the paths could lead next: the exploration routes still open, told in could and would.</p></div></a>
       </div>
     </div>
@@ -490,10 +640,26 @@ body[data-page="zeropoint"] .data-table td.figure { font-family: var(--font-mono
       <h2><span class="hue">Sources</span></h2>
       <ul class="src-list">
         <li>H. B. G. Casimir, "On the attraction between two perfectly conducting plates", <em>Proceedings of the Koninklijke Nederlandse Akademie van Wetenschappen</em> 51, 793, 1948.</li>
+        <li>T. H. Boyer, "Quantum electromagnetic zero-point energy of a conducting spherical shell and the Casimir model for a charged particle", <em>Physical Review</em> 174, 1764, 1968.</li>
         <li>S. K. Lamoreaux, "Demonstration of the Casimir force in the 0.6 to 6 &micro;m range", <em>Physical Review Letters</em> 78, 5, January 1997 · <a href="https://link.aps.org/doi/10.1103/PhysRevLett.78.5" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.78.5</a></li>
         <li>U. Mohideen and A. Roy, "Precision measurement of the Casimir force from 0.1 to 0.9 &micro;m", <em>Physical Review Letters</em> 81, 4549, December 1998 · <a href="https://arxiv.org/pdf/physics/9805038" rel="noopener">arxiv.org/pdf/physics/9805038</a></li>
         <li>H. B. Chan et al., "Quantum mechanical actuation of microelectromechanical systems by the Casimir force", <em>Science</em> 291, 1941, 2001.</li>
+        <li>F. Chen, U. Mohideen, G. L. Klimchitskaya and V. M. Mostepanenko, "Demonstration of the lateral Casimir force", <em>Physical Review Letters</em> 88, 101801, 2002.</li>
+        <li>J. N. Munday, F. Capasso and V. A. Parsegian, "Measured long-range repulsive Casimir-Lifshitz forces", <em>Nature</em> 457, 170, January 2009 · <a href="https://www.nature.com/articles/nature07610" rel="noopener">nature.com/articles/nature07610</a></li>
+        <li>G. Torricelli, P. J. van Zwol, O. Shpak, C. Binns, G. Palasantzas, B. J. Kooi, V. B. Svetovoy and M. Wuttig, "Switching Casimir forces with phase-change materials", <em>Physical Review A</em> 82, 010101(R), 2010 · <a href="https://arxiv.org/pdf/1006.4065" rel="noopener">arxiv.org/pdf/1006.4065</a></li>
+        <li>F. Intravaia, S. Koev, I. W. Jung, A. A. Talin, P. S. Davids, R. S. Decca, V. A. Aksyuk, D. A. R. Dalvit and D. López, "Strong Casimir force reduction through metallic surface nanostructuring", <em>Nature Communications</em> 4, 2515, 2013 · <a href="https://www.nature.com/articles/ncomms3515" rel="noopener">nature.com/articles/ncomms3515</a></li>
+        <li>L. Tang, M. Wang, C. Y. Ng, M. Nikolic, C. T. Chan, A. W. Rodriguez and H. B. Chan, "Measurement of non-monotonic Casimir forces between silicon nanostructures", <em>Nature Photonics</em> 11, 97, 2017 · <a href="https://arxiv.org/abs/1701.02351" rel="noopener">arxiv.org/abs/1701.02351</a></li>
+        <li>E. Yablonovitch, "Inhibited spontaneous emission in solid-state physics and electronics", <em>Physical Review Letters</em> 58, 2059, 1987; S. John, "Strong localization of photons in certain disordered dielectric superlattices", <em>Physical Review Letters</em> 58, 2486, 1987; E. Yablonovitch, T. J. Gmitter and K. M. Leung, <em>Physical Review Letters</em> 67, 2295, 1991.</li>
+        <li>R. Martínez-Sala, J. Sancho, J. V. Sánchez, V. Gómez, J. Llinares and F. Meseguer, "Sound attenuation by sculpture", <em>Nature</em> 378, 241, 1995.</li>
+        <li>E. M. Purcell, "Spontaneous emission probabilities at radio frequencies", <em>Physical Review</em> 69, 681, 1946.</li>
+        <li>P. Goy, J. M. Raimond, M. Gross and S. Haroche, "Observation of cavity-enhanced single-atom spontaneous emission", <em>Physical Review Letters</em> 50, 1903, 1983 · <a href="https://link.aps.org/doi/10.1103/PhysRevLett.50.1903" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.50.1903</a></li>
+        <li>R. G. Hulet, E. S. Hilfer and D. Kleppner, "Inhibited spontaneous emission by a Rydberg atom", <em>Physical Review Letters</em> 55, 2137, 1985 · <a href="https://link.aps.org/doi/10.1103/PhysRevLett.55.2137" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.55.2137</a></li>
+        <li>J. M. Gérard, B. Sermage, B. Gayral, B. Legrand, E. Costard and V. Thierry-Mieg, "Enhanced spontaneous emission by quantum boxes in a monolithic optical microcavity", <em>Physical Review Letters</em> 81, 1110, 1998 · <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.81.1110" rel="noopener">journals.aps.org/prl/abstract/10.1103/PhysRevLett.81.1110</a></li>
+        <li>G. Balasubramanian et al., "Ultralong spin coherence time in isotopically engineered diamond", <em>Nature Materials</em> 8, 383, 2009.</li>
+        <li>P. Reichert et al., "Pembrolizumab microgravity crystallization experimentation", <em>npj Microgravity</em>, 2019 · <a href="https://www.nature.com/articles/s41526-019-0090-3" rel="noopener">nature.com/articles/s41526-019-0090-3</a></li>
+        <li>W. L. Morgan (Kinema Research and Software) and M. W. Childs (Aurtas International), "Study of striations in a spherically symmetric Hydrogen discharge", dated 2 February 2015, prepared for submission to <em>Physical Review E</em>, funded by the International Science Foundation. Childs went on to lead the SAFIRE Project, the Stellar Atmospheric Function in Resonance Experiment.</li>
         <li>C. M. Wilson, G. Johansson, A. Pourkabirian, J. R. Johansson, T. Duty, F. Nori and P. Delsing, "Observation of the dynamical Casimir effect in a superconducting circuit", <em>Nature</em> 479, 376, November 2011 · <a href="https://arxiv.org/abs/1105.4714" rel="noopener">arxiv.org/abs/1105.4714</a></li>
+        <li>E. Noether, "Invariante Variationsprobleme", <em>Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen</em>, 235, 1918.</li>
         <li>R. L. Forward, "Extracting electrical energy from the vacuum by cohesion of charged foliated conductors", <em>Physical Review B</em> 30, 1700, 1984 · <a href="https://link.aps.org/doi/10.1103/PhysRevB.30.1700" rel="noopener">link.aps.org/doi/10.1103/PhysRevB.30.1700</a></li>
         <li>G. Moddel and O. Dmitriyeva, "Extraction of zero-point energy from the vacuum: assessment of stochastic electrodynamics-based approach as compared to other methods", <em>Atoms</em> 7, 51, 2019 · <a href="https://www.mdpi.com/2218-2004/7/2/51" rel="noopener">mdpi.com/2218-2004/7/2/51</a></li>
         <li>S. M. Carroll, "The cosmological constant", <em>Living Reviews in Relativity</em>, 2001 · <a href="https://ned.ipac.caltech.edu/level5/March01/Carroll/Carroll1.html" rel="noopener">ned.ipac.caltech.edu/level5/March01/Carroll/Carroll1.html</a></li>
