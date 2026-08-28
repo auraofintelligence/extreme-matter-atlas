@@ -510,16 +510,30 @@ input[type="range"]::-moz-range-thumb {
   border-left: 1px solid var(--line-bright);
   box-shadow: -30px 0 80px -30px rgba(0, 0, 0, 0.8);
   transform: translateX(105%);
-  transition: transform .28s cubic-bezier(.2, .8, .2, 1);
-  overflow-y: auto; padding: 26px;
+  visibility: hidden;
+  transition: transform .28s cubic-bezier(.2, .8, .2, 1), visibility 0s linear .28s;
+  overflow-y: auto; overscroll-behavior: contain; padding: 26px;
 }
-.drawer.open { transform: translateX(0); }
+.drawer.open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform .28s cubic-bezier(.2, .8, .2, 1), visibility 0s;
+}
 .drawer .close-x {
   position: absolute; top: 14px; right: 14px;
   background: none; border: 1px solid var(--line-bright); color: var(--muted);
   border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer;
 }
 .drawer .close-x:hover { color: var(--ink); border-color: var(--accent); }
+
+/* the dimmed sheet behind an open drawer */
+.scrim {
+  position: fixed; inset: 0; z-index: 70;
+  background: rgba(4, 6, 12, 0.62);
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s ease;
+}
+.scrim.on { opacity: 1; pointer-events: auto; }
 
 /* ---------- sources ---------- */
 
@@ -580,6 +594,151 @@ input[type="range"]::-moz-range-thumb {
 .cat-lanthanide      { background: var(--cat-lanthanide); }
 .cat-actinide        { background: var(--cat-actinide); }
 .cat-unknown         { background: var(--cat-unknown); color: var(--ink); }
+
+/* ---------- periodic table component (assets/ptable.js) ----------
+   The hub and the full chart page mount the same component, so every
+   class it builds lives here rather than in either page's own block. */
+
+/* the grid rides inside .table-scroll, and keeps its sideways swipe to itself */
+.ptable-frame {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ptable {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0, 1fr));
+  gap: 4px;
+  min-width: 980px;
+  padding: 12px;
+}
+.ptable .el-tile {
+  aspect-ratio: 1 / 1;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden; padding: 4px 4px 5px;
+}
+.ptable .el-tile .z { font-size: 9px; letter-spacing: 0.02em; }
+.ptable .el-tile .sym {
+  font-size: clamp(13px, 1.4vw, 17px); letter-spacing: -0.01em; margin: 1px 0;
+}
+.ptable .el-tile .nm {
+  display: block; font-size: 7.5px; font-weight: 600; opacity: 0.78;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ptable .el-tile .pv {
+  display: none; font-family: var(--font-mono); font-size: 8px; font-weight: 600;
+  opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ptable.mode-prop .el-tile .nm { display: none; }
+.ptable.mode-prop .el-tile .pv { display: block; }
+.ptable.mode-prop .el-tile { color: #04060c; }
+.ptable.mode-prop .el-tile.no-data { color: var(--muted); }
+.ptable .el-tile.dim { opacity: 0.13; filter: saturate(0.25); }
+.ptable .el-tile.dim:hover, .ptable .el-tile.dim:focus-visible { opacity: 0.5; }
+.ptable.show-records .el-tile.has-rec {
+  box-shadow: 0 0 0 2px var(--ink), 0 0 22px 1px rgba(242, 245, 255, 0.55);
+  z-index: 3;
+}
+.ptable .el-tile.picked { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* the dashed gaps in rows six and seven, where the two loose rows belong */
+.ptable-ph {
+  aspect-ratio: 1 / 1; border: 1px dashed var(--line-bright); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: var(--font-mono); font-size: 8.5px; line-height: 1.2; color: var(--muted);
+}
+.ptable-series {
+  grid-column: 1 / 4; display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 10px; text-align: right; line-height: 1.25;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.04em; color: var(--muted);
+}
+.ptable-gap { grid-column: 1 / -1; height: 18px; }
+
+/* the colour key, filled by the component when a page passes it one */
+.ptable-legend {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 6px 0 10px;
+}
+.ptable-legend .ramp {
+  height: 14px; flex: 1 1 200px; min-width: 160px; border-radius: 999px;
+  border: 1px solid var(--line-bright);
+  background: linear-gradient(90deg, #60a5fa, #2dd4bf, #a3e635, #fbbf24, #fb7185);
+}
+.ptable-legend .end {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink); white-space: nowrap;
+}
+.ptable-legend .nodata {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+.ptable-legend .nodata i {
+  width: 15px; height: 15px; border-radius: 4px; display: inline-block;
+  background: #121b33; border: 1px solid var(--line-bright);
+}
+.ptable-legend-note { font-size: 14.5px; color: var(--muted); max-width: 64em; }
+.ptable-search-status {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); min-height: 1.2em;
+}
+.ptable-hint { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+
+.ptable-fam-key {
+  list-style: none; display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); margin-top: 18px;
+}
+.ptable-fam-key li {
+  display: grid; grid-template-columns: 36px 1fr; gap: 13px; align-items: start;
+  padding: 13px 15px; border: 1px solid var(--line); border-radius: 14px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+}
+.ptable-fam-key .sw {
+  width: 36px; height: 36px; border-radius: 10px; display: flex;
+  align-items: center; justify-content: center;
+  color: #04060c; font-weight: 800; font-size: 12px;
+}
+.ptable-fam-key b { display: block; font-size: 14.5px; margin-bottom: 2px; }
+.ptable-fam-key .d { font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+
+/* the element card, written into the drawer by the component */
+.el-card .el-head {
+  display: flex; gap: 15px; align-items: flex-start; padding-right: 44px; margin-bottom: 14px;
+}
+.el-card .el-badge {
+  width: 78px; height: 78px; flex: 0 0 auto; border-radius: 16px; color: #04060c;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.el-card .el-badge .s {
+  font-family: var(--font-display); font-weight: 900; font-size: 27px; line-height: 1;
+}
+.el-card .el-badge .n { font-family: var(--font-mono); font-size: 10px; margin-top: 4px; }
+.el-card .el-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 25px; line-height: 1.1;
+  margin-bottom: 9px;
+}
+.el-card .prop {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; align-items: baseline;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+.el-card .prop .k { font-size: 13.5px; color: var(--muted); }
+.el-card .prop .v { font-family: var(--font-mono); font-size: 14px; text-align: right; }
+.el-card .prop .plain {
+  grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); line-height: 1.45;
+}
+.el-card .sec-h {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent); margin: 22px 0 8px;
+}
+.el-card .rec-list { list-style: none; }
+.el-card .rec-list li {
+  font-size: 14px; padding: 10px 13px; margin-bottom: 8px; border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+  border-left: 3px solid var(--accent);
+}
+.el-card .drawer-note {
+  margin-top: 18px; font-size: 12.5px; color: var(--muted); line-height: 1.5;
+}
+@media (max-width: 620px) {
+  .el-card .el-badge { width: 64px; height: 64px; }
+  .el-card .el-badge .s { font-size: 22px; }
+}
 
 /* ---------- misc ---------- */
 
