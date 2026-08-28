@@ -140,6 +140,68 @@
       "</div></footer>";
   }
 
+  /* previous and next, in the order the nav lists them */
+  if (footer) {
+    var idx = -1;
+    for (var i = 0; i < PAGES.length; i++) { if (PAGES[i].key === current) { idx = i; break; } }
+    if (idx >= 0) {
+      var prev = idx > 0 ? PAGES[idx - 1] : null;
+      var next = idx < PAGES.length - 1 ? PAGES[idx + 1] : null;
+      var wingOf = function (p) {
+        if (!p.wing) return "Start here";
+        for (var j = 0; j < WINGS.length; j++) { if (WINGS[j].id === p.wing) return WINGS[j].label; }
+        return "";
+      };
+      var side = function (p, dir) {
+        if (!p) return '<span class="page-turn-slot"></span>';
+        return '<a class="page-turn-slot turn-' + dir + '" href="' + p.href + '">' +
+          '<span class="turn-dir">' + (dir === "prev" ? "Previous" : "Next") + "</span>" +
+          '<span class="turn-name">' + p.label + "</span>" +
+          '<span class="turn-wing">' + wingOf(p) + "</span></a>";
+      };
+      var turn = document.createElement("nav");
+      turn.className = "page-turn";
+      turn.setAttribute("aria-label", "Previous and next page");
+      turn.innerHTML = side(prev, "prev") + side(next, "next");
+      footer.insertBefore(turn, footer.firstChild);
+    }
+  }
+
+  /* back to top, which steps aside once the footer is in view */
+  (function () {
+    var top = document.createElement("button");
+    top.className = "to-top";
+    top.type = "button";
+    top.setAttribute("aria-label", "Back to top");
+    top.innerHTML = '<span aria-hidden="true">&#8593;</span><span class="to-top-word">Top</span>';
+    document.body.appendChild(top);
+
+    top.addEventListener("click", function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      var h = document.querySelector(".brand");
+      if (h) h.focus({ preventScroll: true });
+    });
+
+    var footEl = footer ? footer.querySelector(".site-footer") : null;
+
+    /* Geometry, not IntersectionObserver: this has to work even where the
+       observer and the animation frame callback are throttled. */
+    var apply = function () {
+      var scrolled = window.scrollY > 600;
+      var atFooter = false;
+      if (footEl) {
+        var r = footEl.getBoundingClientRect();
+        atFooter = r.top < window.innerHeight - 40 && r.bottom > 0;
+      }
+      top.classList.toggle("show", scrolled && !atFooter);
+    };
+
+    window.addEventListener("scroll", apply, { passive: true });
+    window.addEventListener("resize", apply);
+    apply();
+  })();
+
   /* scroll-reveal for .reveal blocks */
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
