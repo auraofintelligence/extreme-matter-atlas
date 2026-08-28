@@ -15,9 +15,12 @@
 body[data-page="beyond"] { --accent: #f0abfc; --accent2: #67e8f9; }
 
 /* ---- the film ---- */
-body[data-page="beyond"] .film { padding: 12px; }
+body[data-page="beyond"] .film {
+  padding: 12px; max-width: 420px; margin-left: auto; margin-right: auto;
+}
 body[data-page="beyond"] .film video {
   display: block; width: 100%; height: auto;
+  max-height: 62vh;
   border-radius: 12px; background: #04060c;
   border: 1px solid var(--line);
 }
