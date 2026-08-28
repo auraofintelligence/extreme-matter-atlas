@@ -507,7 +507,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         </div>
       </div>
 
-      <p class="note">Both dials are squashed so that many steps of ten fit across them, which is the only way a warm room and the inside of a star share one track. The elephant is a six-tonne African bush elephant and the stamp is 24 by 20 millimetres, worked out from its weight over that area. Depths come from integrating the density profile of the Preliminary Reference Earth Model, which puts the core and mantle boundary at 2,891 kilometres and 135.8 gigapascals and the centre at 6,371 kilometres and 364.</p>
+      <p class="note">Both dials are squashed so that many steps of ten fit across them, which is the only way a warm room and the inside of a star share one track. The elephant is a six-tonne African bush elephant and the stamp is 24 by 20 millimetres, worked out from its weight over that area. Depths come from integrating the density profile of the Preliminary Reference Earth Model, which puts the core and mantle boundary at 2,891 kilometres and 135.8 gigapascals and the centre at 6,371 kilometres and 364 gigapascals.</p>
     </div>
   </section>
 
@@ -538,7 +538,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         <div class="card">
           <span class="card-glyph">🟣</span>
           <h3>Oganesson, the noble gas that is not a gas</h3>
-          <p>Element 118 sits under radon at the foot of group 18. Odile Smits, Jan-Michael Mewes and Peter Schwerdtfeger ran two independent methods against a high-accuracy reference and published in <em>Angewandte Chemie</em> in 2020: melting point <strong>325 plus or minus 15 kelvin</strong>, boiling point 450 plus or minus 10, so a solid at ambient conditions with an unusually wide liquid range of 125 kelvin.</p>
+          <p>Element 118 sits under radon at the foot of group 18. Odile Smits, Jan-Michael Mewes, Paul Jerabek and Peter Schwerdtfeger ran two independent methods against a high-accuracy reference and published in <em>Angewandte Chemie</em> in 2020: melting point <strong>325 plus or minus 15 kelvin</strong>, boiling point 450 plus or minus 10, so a solid at ambient conditions with an unusually wide liquid range of 125 kelvin.</p>
           <p>A year earlier the same group with Georg Kresse had put its band gap at <strong>1.5 electronvolts</strong> against radon's 7.1, which makes solid oganesson a semiconductor rather than the transparent insulator every other noble gas freezes into. And in 2018 Paul Jerabek, Bastian Schuetrumpf, Schwerdtfeger and Witold Nazarewicz showed in <em>Physical Review Letters</em> that its electrons lose their shell structure altogether and smear into something closer to a uniform gas.</p>
           <span class="instr">Five atoms have ever been made. Oganesson-294 lasts about 0.69 milliseconds.</span>
         </div>
@@ -727,6 +727,9 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   var ELEPH = 6000;                  /* kilograms, an adult African bush elephant */
   var PER_ELEPHANT = ELEPH * GACC / STAMP;   /* pascals from one elephant on one stamp */
 
+  /* a proper minus sign rather than a hyphen, everywhere a number can go negative */
+  function neg(s) { return String(s).replace(/^-/, "−"); }
+
   function sig(x, n) {
     var s = Number(x).toPrecision(n || 3);
     if (s.indexOf("e") >= 0) return Number(s).toString();
@@ -812,9 +815,9 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   function celsiusWords(T) {
     var c = T - 273.15;
     if (T < 1) return "colder than anywhere in deep space";
-    if (T < 40) return sig(c, 4) + " °C";
-    if (Math.abs(c) < 1000) return sig(c, 3) + " °C";
-    return fmt(Math.round(c)) + " °C";
+    if (T < 40) return neg(sig(c, 4)) + " °C";
+    if (Math.abs(c) < 1000) return neg(sig(c, 3)) + " °C";
+    return neg(fmt(Math.round(c))) + " °C";
   }
   function tempAnchor(T) {
     if (T < 0.01) return "below anything found in nature";
@@ -921,7 +924,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       return {
         head: "Transparent, and widening",
         body: "Past 320 gigapascals the calculation has the band gap <strong>widening rapidly, reaching 6.5 electronvolts by 600 gigapascals</strong>, which is a better insulator than window glass. The structure is a double hexagonal packing squeezed flat along one axis: at 320 gigapascals its height-to-width ratio is 1.391, less than half the value that ordinary close packing gives.",
-        prov: "Measured transparency runs from about 200 gigapascals; the widening gap above that is a GW calculation, in the same 2009 Nature paper by Ma, Eremets, Oganov and colleagues. Taking the measurement up to meet the calculation is an experiment nobody has run yet."
+        prov: "The see-through phase has been measured from about 200 gigapascals; the widening gap above that is a GW calculation, in the same 2009 Nature paper by Ma, Eremets, Oganov and colleagues. Taking the measurement up to meet the calculation is an experiment nobody has run yet."
       };
     },
 
@@ -972,7 +975,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     Hg: function (e, P, T) {
       if (P < 0.5) {
         if (T > e.boil) return { head: "A vapour", body: "Mercury boils at " + e.boil + " kelvin. Its vapour, excited by a discharge, is what lights a fluorescent tube.", prov: "Boiling point from the atlas dataset." };
-        if (T > e.melt) return { head: "A liquid metal", body: "Melting point " + e.melt + " kelvin, which is " + sig(e.melt - 273.15, 3) + " degrees Celsius. It is liquid at 25 degrees because relativity pulls its outer electron pair in tight, so mercury atoms hold each other about as weakly as argon atoms do. <strong>Without that, the calculation gives 355 kelvin</strong> and mercury is a solid you could hold.", prov: "Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran it both ways, Angewandte Chemie, 2013." };
+        if (T > e.melt) return { head: "A liquid metal", body: "Melting point " + e.melt + " kelvin, which is " + neg(sig(e.melt - 273.15, 3)) + " degrees Celsius. It is liquid at 25 degrees because relativity pulls its outer electron pair in tight, so mercury atoms hold each other about as weakly as argon atoms do. <strong>Without that, the calculation gives 355 kelvin</strong> and mercury is a solid you could hold.", prov: "Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran it both ways, Angewandte Chemie, 2013." };
         if (T > 4.2) return { head: "A solid metal", body: "Frozen mercury, rhombohedral, and about as soft as lead. Below " + e.melt + " kelvin, which is a cold winter night in Siberia.", prov: "Melting point from the atlas dataset." };
         return { head: "A superconductor", body: "Below 4.2 kelvin mercury carries current with <strong>no resistance at all</strong>. Heike Kamerlingh Onnes found it at Leiden in 1911, and his plot from 26 October that year shows the resistance dropping from 0.1 ohm to unmeasurable at 4.20 kelvin. Mercury was the first superconductor anyone found.", prov: "Onnes, Leiden, 1911. He had the Nobel Prize in Physics two years later." };
       }
