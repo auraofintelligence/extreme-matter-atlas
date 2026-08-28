@@ -376,7 +376,7 @@ body[data-page="vimana"] .idle { color: var(--muted); }
   <section>
     <div class="wrap">
       <h2>Carrying <span class="hue">more than one mode</span> is ordinary engineering</h2>
-      <p>Before the bench, the design sense behind it. When a vehicle has to work across regimes whose best answers contradict each other, engineers stop looking for one optimum and carry two. Air is free reaction mass low down and absent high up, so you breathe, then you carry. A nozzle shaped for sea level is the wrong shape in vacuum, so you fly two nozzles. Thrust that gets you off a pad is the wrong thrust for a decade of cruise, so you take both. Combustion needs oxygen and a submerged boat has none, so you run diesel, then battery. Every one of these is certificated, flown or sailed hardware. The question is never whether more than one mode is allowed; it is where the changeover sits and what the changeover machinery weighs.</p>
+      <p>Before the bench, the design sense behind it. When a vehicle has to work across regimes whose best answers contradict each other, engineers stop looking for one optimum and carry two. Air is free reaction mass low down and absent high up, so you breathe, then you carry. A nozzle shaped for sea level is the wrong shape in vacuum, so you fly two nozzles. Thrust that gets you off a pad is the wrong thrust for a decade of cruise, so you take both. Combustion needs oxygen and a submerged boat has none, so you run diesel, then battery. Every one of these is certificated, flown or sailed hardware. The question is not whether more than one mode is allowed; it is where the changeover sits and what the changeover machinery weighs.</p>
 
       <div class="grid">
         <div class="card reveal">
@@ -619,7 +619,7 @@ body[data-page="vimana"] .idle { color: var(--muted); }
 
   <section>
     <div class="wrap">
-      <div class="note reveal"><strong>Limits.</strong> Every figure on the bench comes from a present-day record or from arithmetic done on one, and where a number is worked out rather than measured the option says so. What the bench cannot hand you is the craft: that part is yours to work out. If a workshop somewhere ever does produce a silent, wingless palace that changes mode on the way up, the shelf it shops from will be the same 118 elements on the classroom wall.</div>
+      <div class="note reveal"><strong>Limits.</strong> Every figure on the bench comes from a present-day record or from arithmetic done on one, and where a number is worked out rather than measured the option says so. What the bench does not hand you is the craft: that part is yours to work out. If a workshop somewhere ever does produce a silent, wingless palace that changes mode on the way up, the shelf it shops from will be the same 118 elements on the classroom wall.</div>
 
       <h2>Keep <span class="hue">wandering</span></h2>
       <div class="grid">
@@ -681,7 +681,7 @@ body[data-page="vimana"] .idle { color: var(--muted); }
 
     { id: "quasi", name: "Quasicrystal-coated skin", areal: 13.8, arealNote: "titanium at 3 mm plus a 0.1 mm coating", tmax: 500,
       figs: [["Skin mass", "13.8 kg/m2"], ["Holds shape to", "about 500 °C"]],
-      leans: "In 1982 Dan Shechtman photographed a diffraction pattern with five-fold symmetry, an arrangement of atoms that repeats without ever quite repeating. It was thought impossible, and he was told to leave his research group over it. He won the 2011 Nobel Prize in Chemistry for it. Sprayed on as a coating, aluminium-copper-iron quasicrystals are slippery, hard and slow to pass heat; they have been sold on frying pans.",
+      leans: "In 1982 Dan Shechtman photographed a diffraction pattern with five-fold symmetry, an arrangement of atoms that repeats without ever quite repeating. The textbooks of the day ruled that pattern out, and he was told to leave his research group over it. He won the 2011 Nobel Prize in Chemistry for it. Sprayed on as a coating, aluminium-copper-iron quasicrystals are slippery, hard and slow to pass heat; they have been sold on frying pans.",
       buys: "A slippery, heat-shy outer face on a titanium shell. The coating is a fraction of a millimetre, so the metal underneath sets the temperature limit." },
 
     { id: "bnnt", name: "Boron nitride nanotube weave", areal: 3.0, arealNote: "worked from 1.5 g/cm3 at 2 mm", tmax: 900,
@@ -817,7 +817,7 @@ body[data-page="vimana"] .idle { color: var(--muted); }
         carry: { works: false, note: "This throws matter to move, which is the other family." }
       },
       leans: "The baseline that already flies. A Robinson R22 at its 621 kilogram limit hangs off a rotor disc of 46 square metres and hovers on roughly 81 kilowatts, which is about 75 newtons of lift for every kilowatt. Every delivery drone and rescue helicopter in the country works this way.",
-      buys: "It flies, today, for money. This is also the only pick whose figure moves with the design: a wider disc pushes a bigger, slower column of air and hovers for less, so the bench reworks the number from the saucer's own diameter each time. What it will not do is be quiet." },
+      buys: "It flies, today, for money. This is also the only pick whose figure moves with the design: a wider disc pushes a bigger, slower column of air and hovers for less, so the bench reworks the number from the saucer's own diameter each time. Quiet is the line it does not deliver." },
 
     { id: "acoustic", name: "Acoustic levitation", kind: "surface", npkw: 1.39,
       ceil: { kind: "mass", v: 0.00284, what: "2.84 grams, the record" },
@@ -1348,7 +1348,7 @@ body[data-page="vimana"] .idle { color: var(--muted); }
       }
       return head + "<strong>Past what this shielding has flown, by " + sig(v / dm.shield.entryV) + " times.</strong> " + lead +
         "the arithmetic puts about " + temp(T) + " into the flow, against shielding flown at " + sig(ev) +
-        " kilometres a second. Above about two kilometres a second the air comes apart rather than simply compressing, so much of that energy goes into breaking molecules and into light radiated away rather than into the wall: the figure is the heat carried in the flow, and the wall sees a fraction of it. What fraction depends on the nose shape and the density, and the way to settle it is a run at that speed, which is where the ground facilities run out before the flight does.</p>";
+        " kilometres a second. Above about two kilometres a second the air comes apart rather than staying whole under compression, so much of that energy goes into breaking molecules and into light radiated away rather than into the wall: the figure is the heat carried in the flow, and the wall sees a fraction of it. What fraction depends on the nose shape and the density, and the way to settle it is a run at that speed, which is where the ground facilities run out before the flight does.</p>";
     }
     var limit = hull.tmax;
     if (T <= limit) {
@@ -1407,7 +1407,7 @@ body[data-page="vimana"] .idle { color: var(--muted); }
       return head + "<strong>This one does not settle on its own.</strong> " +
         "At " + sig(dm.npkw) + " newtons per kilowatt from " + dm.push.name.toLowerCase() + " and " + commas(dm.power.wkg) + " watts per kilogram from the source, " +
         "the plant needed to move the craft without any plant aboard already weighs <strong>" + bigTimes(factor) + "</strong> what it was meant to move. " +
-        "Add plant to carry the plant and the sum climbs instead of settling, so there is no size at which this build works. " +
+        "Add plant to carry the plant and the sum climbs instead of settling, so the sum does not close at any size on these figures. " +
         "The way out is not a bigger saucer: it is a way of pushing that returns more per kilowatt, or a source that gives more watts per kilogram.</p>";
     }
     var body = "";
