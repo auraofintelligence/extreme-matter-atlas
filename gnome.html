@@ -91,10 +91,10 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
     <div class="wrap">
       <h2>What a crystal <span class="hue">is</span></h2>
       <p>A crystal is a repeating pattern of atoms, like brickwork. Lay one brick pattern down, repeat it in every direction, and you have a wall; repeat one small cluster of atoms in every direction and you have a crystal. Salt, diamond, the quartz in a watch: each is one small arrangement, copied over and over, trillions of times.</p>
-      <p>The pattern is the whole game. Carbon stacked one way is soft grey pencil lead; the same carbon in a tighter pattern is diamond. Change the pattern and you change the material. Glass, by contrast, has no repeat at all: its atoms sit jumbled, like bricks tipped out of a truck.</p>
+      <p>The pattern is the whole game. Carbon stacked one way is soft grey pencil lead; the same carbon in a tighter pattern is diamond. Change the pattern and you change the material. Glass, by contrast, has no long-range repeat. Each atom still holds its immediate neighbours at set distances, but the pattern loses step within a nanometre or so, a millionth of a millimetre, and never comes back: like bricks tipped out of a truck landing on their faces, without a wall ever forming.</p>
       <div class="canvas-frame">
-        <canvas id="latticeCanvas" width="1000" height="320" aria-label="Left half shows dots in a repeating grid, right half shows dots scattered at random"></canvas>
-        <div class="lat-caps"><span>crystal: the pattern repeats</span><span>glass: no pattern</span></div>
+        <canvas id="latticeCanvas" width="1000" height="320" aria-label="Left half shows dots in a repeating grid, right half shows dots spaced close together but never falling into a repeating grid"></canvas>
+        <div class="lat-caps"><span>crystal: the pattern repeats</span><span>glass: the pattern loses step</span></div>
       </div>
     </div>
   </section>
@@ -115,7 +115,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
     <div class="wrap">
       <h2>What GNoME <span class="hue">is</span></h2>
       <p>GNoME reads a crystal the way you might read a dot-to-dot puzzle: each atom is a dot, each bond between atoms is a line. Under the hood it is a graph neural network, which is a program that learns from worked examples which arrangements of dots and lines tend to hold together and which tend to fall apart.</p>
-      <p>Fed the tens of thousands of crystals already in the catalogues, it began proposing new ones: sometimes a known pattern with one kind of atom swapped for another, sometimes a wilder arrangement no bench had tried. Most guesses fail, and that is fine, because it can make millions of them.</p>
+      <p>Fed the tens of thousands of crystals already in the catalogues, it began proposing new ones: sometimes a known pattern with one kind of atom swapped for another, sometimes a wilder arrangement no bench had tried. Most proposals fail the check, and that is fine, because it can make millions of them.</p>
     </div>
   </section>
 
@@ -125,10 +125,10 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
     <div class="wrap">
       <h2>The <span class="hue">loop</span></h2>
       <div class="grid">
-        <div class="card"><span class="step-num">STEP 01</span><h3>Guess</h3><p>GNoME proposes a batch of new atomic arrangements, from careful swaps to long shots.</p></div>
-        <div class="card"><span class="step-num">STEP 02</span><h3>Check</h3><p>Physics maths grades each guess: would this arrangement hold its shape, or collapse into something simpler?</p></div>
-        <div class="card"><span class="step-num">STEP 03</span><h3>Learn</h3><p>The graded guesses, passes and fails alike, go back into the program's training pile.</p></div>
-        <div class="card"><span class="step-num">STEP 04</span><h3>Guess better</h3><p>Each round comes back sharper, and GNoME ran six of them. Of the guesses made by swapping atoms into a known pattern, fewer than 6 in 100 survived the check in the first round and more than 80 in 100 in the last. Guesses built from a formula alone, with no pattern to copy, went from under 3 in 100 to above 33 in 100.</p></div>
+        <div class="card"><span class="step-num">STEP 01</span><h3>Propose</h3><p>GNoME proposes a batch of new atomic arrangements, from careful swaps to long shots.</p></div>
+        <div class="card"><span class="step-num">STEP 02</span><h3>Check</h3><p>Physics maths grades each proposal: would this arrangement hold its shape, or collapse into something simpler?</p></div>
+        <div class="card"><span class="step-num">STEP 03</span><h3>Learn</h3><p>The graded proposals, passes and fails alike, go back into the program's training pile.</p></div>
+        <div class="card"><span class="step-num">STEP 04</span><h3>Propose better</h3><p>Each round comes back sharper, and GNoME ran six of them. Of the proposals made by swapping atoms into a known pattern, fewer than 6 in 100 survived the check in the first round and more than 80 in 100 in the last. Proposals built from a formula alone, with no pattern to copy, went from under 3 in 100 to above 33 in 100.</p></div>
       </div>
       <div class="note"><strong>The checking step</strong> uses density functional theory: a physics calculation that works out how the electrons in a proposed structure would settle, and from that how much energy the arrangement would cost. A low-energy arrangement is one that would rather stay as it is, which is what stable means here.</div>
     </div>
@@ -226,7 +226,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
       <h2><span class="hue">Limits</span></h2>
       <div class="panel">
         <p>A prediction is a computed judgement, not a sample in a jar. The stability check is done with physics maths at idealised conditions, colder and cleaner than any real bench; how a crystal behaves warm, damp and squeezed is a separate question, answered only by making it.</p>
-        <p>Stable does not mean useful, cheap or easy to make. Many of the 380,000 may resist every furnace recipe thrown at them, and most will turn out to be ordinary. The made-so-far numbers, 736 plus the A-Lab's 41, are a first taste, not a verdict on the rest.</p>
+        <p>Stable does not mean useful, cheap or easy to make. Many of the 380,000 may resist every furnace recipe thrown at them, and how many of the rest are worth a factory is a question only a furnace answers. So far 777 have been through one: 736 made by lab teams around the world plus the A-Lab's 41, a first taste and not a verdict on the rest.</p>
         <p>The headline growth is from about 48,000 known stable crystals to about 421,000. That is nearly nine times the earlier count, which the team rounds off to about ten times over. The 800 years figure is the team's own comparison against the earlier pace, and it depends on how that pace is measured.</p>
       </div>
     </div>
@@ -340,7 +340,7 @@ body[data-page="gnome"] .src-list a { overflow-wrap: anywhere; }
         }
       }
 
-      /* right: the jumble, no repeat */
+      /* right: the jumble, no long-range repeat */
       for (i = 0; i < randDots.length; i++) {
         var d = randDots[i];
         var wob = REDUCED ? 0 : 2.2 * Math.sin(t / 1100 + d.p);

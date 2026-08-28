@@ -317,8 +317,8 @@ body[data-page="outofphase"] .fig-note {
         <div class="stat-row">
           <div class="stat"><span class="num" id="statSum">0.00&times;</span><span class="lbl">the height of the sum, set against one wave on its own</span></div>
           <div class="stat"><span class="num" id="statDb">silence</span><span class="lbl">what that is in decibels, up or down, against one wave on its own</span></div>
-          <div class="stat"><span class="num" id="statTone">500 Hz</span><span class="lbl" id="statToneLbl">the tone in air at this wavelength, 0.69 metres</span></div>
-          <div class="stat"><span class="num" id="statPath">34.3 cm</span><span class="lbl">extra path length that would produce this phase at that tone</span></div>
+          <div class="stat"><span class="num" id="statTone">497 Hz</span><span class="lbl" id="statToneLbl">the tone in air at this wavelength, 0.69 metres</span></div>
+          <div class="stat"><span class="num" id="statPath">34.5 cm</span><span class="lbl">extra path length that would produce this phase at that tone</span></div>
         </div>
         <p class="fig-note">Sum height is the square root of one plus the second height squared plus twice the second height times the cosine of the phase, computed live. Decibels are twenty times the base-ten logarithm of that ratio. At equal heights and 180 degrees the sum is exactly nothing, and the readout says so rather than printing a very large negative number.</p>
       </div>
@@ -380,7 +380,7 @@ body[data-page="outofphase"] .fig-note {
         <div class="control-row">
           <div class="control">
             <label for="massRange">Mass of the thing going through</label>
-            <input type="range" id="massRange" min="0" max="1000" value="620" step="1" aria-describedby="slitReadout">
+            <input type="range" id="massRange" min="0" max="1000" value="361" step="1" aria-describedby="slitReadout">
           </div>
           <div class="control">
             <label for="slitPhaseRange">Extra phase on one slit, in degrees</label>
@@ -399,14 +399,14 @@ body[data-page="outofphase"] .fig-note {
         </div>
         <div class="control-row">
           <div class="readout" id="slitReadout" aria-live="polite">
-            <span id="slitLine">Mass <b>2.8 &times; 10<sup>-22</sup> kg</b>, about the mass of the 8 nanometre sodium nanoparticle Vienna interfered in 2026 &middot; wavelength <b id="lamOut">11.7 fm</b></span>
+            <span id="slitLine">Mass <b>2.8 &times; 10<sup>-22</sup> kg</b>, about the mass of the 8 nanometre sodium nanoparticle Vienna interfered in 2026 &middot; wavelength <b id="lamOut">11.8 fm</b></span>
           </div>
         </div>
         <div class="stat-row">
-          <div class="stat"><span class="num" id="statLam">11.7 fm</span><span class="lbl">de Broglie wavelength, Planck's constant divided by mass times speed</span></div>
-          <div class="stat"><span class="num" id="statBandGap">117 nm</span><span class="lbl">spacing between bright bands on a screen one metre away</span></div>
-          <div class="stat"><span class="num" id="statPerMm">8,514</span><span class="lbl" id="statPerMmLbl">bright bands falling inside one millimetre of that screen</span></div>
-          <div class="stat"><span class="num" id="statWindow">493 nm</span><span class="lbl">width of the patch of screen drawn in the upper band</span></div>
+          <div class="stat"><span class="num" id="statLam">11.8 fm</span><span class="lbl">de Broglie wavelength, Planck's constant divided by mass times speed</span></div>
+          <div class="stat"><span class="num" id="statBandGap">118 nm</span><span class="lbl">spacing between bright bands on a screen one metre away</span></div>
+          <div class="stat"><span class="num" id="statPerMm">8,494</span><span class="lbl" id="statPerMmLbl">bright bands falling inside one millimetre of that screen</span></div>
+          <div class="stat"><span class="num" id="statWindow">989 nm</span><span class="lbl">width of the patch of screen drawn in the upper band</span></div>
         </div>
         <p class="fig-note">Wavelength is Planck's constant, 6.62607015 &times; 10<sup>-34</sup> joule seconds, divided by mass times 200 metres a second. Band spacing is that wavelength times the one metre screen distance divided by the 100 nanometre slit separation. The lower strip is drawn at true scale with eight samples per pixel, so when the bands fall closer together than a pixel it fills in evenly, which is what a real screen would show.</p>
       </div>
