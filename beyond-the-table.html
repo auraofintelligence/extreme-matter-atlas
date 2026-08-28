@@ -467,14 +467,14 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
             <div class="slab">
               <label class="fieldlab" for="pRange">Pressure</label>
               <div class="now" id="pNow">1 atmosphere</div>
-              <input type="range" id="pRange" min="0" max="1000" step="1" value="0" aria-describedby="pNow">
+              <input type="range" id="pRange" min="0" max="2000" step="1" value="0" aria-describedby="pNow">
               <div class="ends"><span>1 atmosphere</span><span>each step is ten times the last</span><span>500 GPa</span></div>
             </div>
 
             <div class="slab">
               <label class="fieldlab" for="tRange">Temperature</label>
-              <div class="now" id="tNow">293 K</div>
-              <input type="range" id="tRange" min="0" max="1000" step="1" value="607" aria-describedby="tNow">
+              <div class="now" id="tNow">293.4 K, 20.3 &deg;C</div>
+              <input type="range" id="tRange" min="0" max="2000" step="1" value="1215" aria-describedby="tNow">
               <div class="ends"><span>0.001 K</span><span>each step is ten times the last</span><span>1,000,000 K</span></div>
             </div>
 
@@ -743,15 +743,17 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   var T_MIN = 0.001, T_MAX = 1e6;
   var LT0 = Math.log10(T_MIN), LT1 = Math.log10(T_MAX);
 
-  function pFromSlider(v) { return Math.pow(10, LP0 + (v / 1000) * (LP1 - LP0)); }
+  var STEPS = 2000;                  /* both sliders, so a nudge is a fraction of a per cent */
+
+  function pFromSlider(v) { return Math.pow(10, LP0 + (v / STEPS) * (LP1 - LP0)); }
   function sliderFromP(p) {
-    var v = Math.round(((Math.log10(p) - LP0) / (LP1 - LP0)) * 1000);
-    return Math.max(0, Math.min(1000, v));
+    var v = Math.round(((Math.log10(p) - LP0) / (LP1 - LP0)) * STEPS);
+    return Math.max(0, Math.min(STEPS, v));
   }
-  function tFromSlider(v) { return Math.pow(10, LT0 + (v / 1000) * (LT1 - LT0)); }
+  function tFromSlider(v) { return Math.pow(10, LT0 + (v / STEPS) * (LT1 - LT0)); }
   function sliderFromT(t) {
-    var v = Math.round(((Math.log10(t) - LT0) / (LT1 - LT0)) * 1000);
-    return Math.max(0, Math.min(1000, v));
+    var v = Math.round(((Math.log10(t) - LT0) / (LT1 - LT0)) * STEPS);
+    return Math.max(0, Math.min(STEPS, v));
   }
 
   function pressureWords(p) {
@@ -1082,6 +1084,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     var P = pFromSlider(parseInt(pRange.value, 10));
     var T = tFromSlider(parseInt(tRange.value, 10));
     var e = el(chosen);
+    if (!e) return;
 
     pNow.textContent = pressureWords(P);
     tNow.textContent = tempWords(T) + ", " + celsiusWords(T);
@@ -1104,7 +1107,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     roProv.innerHTML = d.prov ? "<b>Where this comes from.</b> " + d.prov : "";
   }
 
-  if (pick && pRange && tRange) {
+  if (pick && pRange && tRange && ELS.length) {
     pick.addEventListener("click", function (ev) {
       var b = ev.target.closest ? ev.target.closest("button[data-sym]") : null;
       if (!b) return;
