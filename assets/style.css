@@ -28,7 +28,9 @@
   --cat-unknown: #64748b;
 }
 
-/* per-page accent pairs */
+/* per-page accent pairs: every page on the site sets its pair here and nowhere
+   else, so the whole palette reads in one screen. A page's own <style> block
+   carries its layout only. Adding a page means adding a line here. */
 body[data-page="index"]       { --accent: #22d3ee; --accent2: #a78bfa; }
 body[data-page="table"]       { --accent: #2dd4bf; --accent2: #a3e635; }
 body[data-page="extremes"]    { --accent: #fbbf24; --accent2: #fb7185; }
@@ -39,6 +41,14 @@ body[data-page="engineering"] { --accent: #fb923c; --accent2: #fde047; }
 body[data-page="frontiers"]   { --accent: #38bdf8; --accent2: #e879f9; }
 body[data-page="anomalies"]   { --accent: #fb7185; --accent2: #a78bfa; }
 body[data-page="vimana"]      { --accent: #c084fc; --accent2: #fbbf24; }
+body[data-page="beyond"]      { --accent: #f0abfc; --accent2: #67e8f9; }
+body[data-page="claimed"]     { --accent: #f472b6; --accent2: #fbbf24; }
+body[data-page="cymatics"]    { --accent: #22d3ee; --accent2: #fbbf24; }
+body[data-page="resonance"]   { --accent: #fde047; --accent2: #f472b6; }
+body[data-page="redmercury"]  { --accent: #fb7185; --accent2: #7dd3fc; }
+body[data-page="elements115"] { --accent: #fb923c; --accent2: #c084fc; }
+body[data-page="zeropoint"]   { --accent: #67e8f9; --accent2: #c084fc; }
+body[data-page="scifi"]       { --accent: #fb7185; --accent2: #38bdf8; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 

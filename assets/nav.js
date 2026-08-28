@@ -61,7 +61,7 @@
     header.innerHTML =
       '<header class="site-header"><div class="nav-bar">' +
       '<a class="brand" href="index.html">EXTREME MATTER ATLAS</a>' +
-      '<button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="main-nav">' +
+      '<button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">' +
       '<span class="menu-lines" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '<span class="menu-word">Menu</span></button>' +
       '<ul class="pill-nav" id="main-nav">' + MAIN.map(li).join("") + wingHtml + "</ul>" +
