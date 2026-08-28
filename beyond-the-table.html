@@ -89,7 +89,20 @@ body[data-page="beyondtable"] .elpick button[aria-pressed="true"] {
 }
 
 body[data-page="beyondtable"] .slab { margin-top: 20px; }
-body[data-page="beyondtable"] .slab input[type="range"] { width: 100%; height: 8px; }
+/* the track stays thin, the grab area is 44px tall */
+body[data-page="beyondtable"] .slab input[type="range"] {
+  width: 100%; height: 44px; padding: 0; background: transparent;
+}
+body[data-page="beyondtable"] .slab input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px; border-radius: 999px; background: var(--line-bright);
+}
+body[data-page="beyondtable"] .slab input[type="range"]::-webkit-slider-thumb {
+  width: 24px; height: 24px; margin-top: -8px;
+}
+body[data-page="beyondtable"] .slab input[type="range"]::-moz-range-track {
+  height: 8px; border-radius: 999px; background: var(--line-bright);
+}
+body[data-page="beyondtable"] .slab input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; }
 body[data-page="beyondtable"] .slab .now {
   font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--accent);
   margin-bottom: 7px;
@@ -179,7 +192,7 @@ body[data-page="beyondtable"] .relrow .subj b { font-size: 15px; line-height: 1.
 body[data-page="beyondtable"] .relrow .subj em { display: block; font-style: normal; font-size: 12px; color: var(--muted); }
 body[data-page="beyondtable"] .relrow .val {
   font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--accent);
-  margin-bottom: 4px; transition: color .2s ease;
+  margin-bottom: 4px; transition: color .2s ease; overflow-wrap: anywhere;
 }
 body[data-page="beyondtable"] .relrow.off .val { color: var(--muted); }
 body[data-page="beyondtable"] .relrow .txt { font-size: 14.5px; color: var(--muted); }
@@ -258,7 +271,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       <p>Relativity has a reputation for living somewhere else: near a black hole, aboard a spacecraft, inside a particle accelerator. It is also in your car, your wedding ring and the thermometer in the shed. Heavy atoms hold a lot of positive charge in the middle, and the electrons closest in have to move fast to stay in orbit around it. On the simplest estimate, an innermost electron's speed is the atomic number divided by 137.036, so in gold, with 79 protons, that comes to about <strong>58 per cent of the speed of light</strong>. At that speed the electron behaves as though it carries about 22 per cent more mass than at rest, its orbit pulls in tight, and the outer shells that do the chemistry are dragged in with it.</p>
       <p>Three of the results are sitting in your house.</p>
 
-      <div class="note"><strong>How to read a rule.</strong> The group logic of the periodic table is not handed down from anywhere. It follows from a premise: that only the outermost electrons take part in bonding, so elements with the same outer arrangement behave alike. Conservation laws work the same way. Emmy Noether proved at G&ouml;ttingen in 1918 that each one follows from a symmetry: energy conservation from the fact that the rules do not change with the time of day, momentum from the fact that they do not change with the place. That makes a conservation law <strong>a theorem with premises, not a decree</strong>, and a premise is something you can go and check. Squeeze an atom until its core electrons start taking part in bonding and the premise behind the group logic fails. What happens next is the rest of this page.</p></div>
+      <div class="note"><strong>How to read a rule.</strong> The group logic of the periodic table is not handed down from anywhere. It follows from a premise: that only the outermost electrons take part in bonding, so elements with the same outer arrangement behave alike. Conservation laws work the same way. Emmy Noether proved at G&ouml;ttingen in 1918 that each one follows from a symmetry: energy conservation from the fact that the rules do not change with the time of day, momentum from the fact that they do not change with the place. That makes a conservation law <strong>a theorem with premises, not a decree</strong>, and a premise is something you can go and check. Squeeze an atom until its core electrons start taking part in bonding and the premise behind the group logic fails. Everything below is what happens when it does.</p></div>
 
       <h3>Mercury pours, and its neighbours do not</h3>
       <p>Cadmium sits directly above mercury and melts at 594 kelvin. Gold sits beside it and melts at 1,337. Mercury melts at 234.32 kelvin, which is 38.8 degrees below freezing, and that is why it filled thermometers. Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran the calculation both ways and published it in <em>Angewandte Chemie</em> in 2013. With relativity in the equations the melting point comes out at <strong>250 kelvin</strong>, close to the measured 234.32. With the relativistic terms switched off it comes out at <strong>355 kelvin</strong>, which is 82 degrees Celsius: mercury would be a solid you could hold in your hand, and hot tea would not melt it.</p>
@@ -640,7 +653,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       <h2>Keep <span class="hue">exploring</span></h2>
       <div class="grid">
         <a class="card-link" href="periodic-table.html"><div class="card"><span class="card-glyph">🧊</span><h3>The Table</h3><p>All 118 entries with the measured numbers behind them, coloured by whichever property you want to sort on.</p></div></a>
-        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏅</span><h3>Records</h3><p>Which element holds each end of each property, worked out live from the same dataset this page reads.</p></div></a>
+        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏅</span><h3>Records</h3><p>Which element holds each end of each property, worked out live from the same element dataset the bench above reads.</p></div></a>
         <a class="card-link" href="element-115.html"><div class="card"><span class="card-glyph">🟠</span><h3>Element 115</h3><p>Moscovium, the island of stability, and what half-lives at the heavy end actually allow.</p></div></a>
         <a class="card-link" href="claimed-elements.html"><div class="card"><span class="card-glyph">🔎</span><h3>Claimed Elements</h3><p>Every element named in an anomalous claim, and what the shelf says that element does.</p></div></a>
         <a class="card-link" href="metamaterials.html"><div class="card"><span class="card-glyph">🕸️</span><h3>Metamaterials</h3><p>Geometry doing the work of chemistry: the other way to change what a material does without changing what it is.</p></div></a>
@@ -781,8 +794,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   function elephantWords(p) {
     var n = p * 1e9 / PER_ELEPHANT;
     if (n < 0.02) return "nothing";
-    if (n < 1) return "a leg of one";
-    if (n < 2) return "one";
+    if (n < 1.5) return "less than one";
     return fmt(Math.round(n));
   }
 
@@ -887,9 +899,13 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         if (T > Tm) return { head: "Liquid, and nearly at room temperature", body: "The melting line here is near " + Math.round(Tm) + " kelvin, heading for its floor.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
         return { head: "A dark metal, complex structures", body: "Sodium crystallises in a run of low-symmetry structures through this range, and its melting point is falling towards its minimum.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
       }
+      if (P < 130) {
+        if (T > Tm) return { head: "Liquid sodium at room temperature", body: "<strong>The melting line bottoms out at 300 kelvin at 118 gigapascals.</strong> Squeeze sodium this hard and it pours in a warm room. A metal you could cut with a kitchen knife at one atmosphere is a liquid at 20 degrees Celsius at a million.", prov: "Eugene Gregoryanz and colleagues measured the minimum with synchrotron diffraction and reported it in Physical Review Letters in 2005." };
+        return { head: "A dark, dense metal", body: "Solid, in a low-symmetry structure, and darkening. The melting line just above sits near " + Math.round(Tm) + " kelvin.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+      }
       if (P < 200) {
-        if (T > Tm) return { head: "Liquid sodium at room temperature", body: "<strong>The melting line bottoms out at 300 kelvin at 118 gigapascals.</strong> Squeeze sodium this hard and it is a liquid in a warm room. A soft metal you could cut with a knife at one atmosphere pours at 20 degrees Celsius at a million.", prov: "Gregoryanz and colleagues measured the minimum with synchrotron diffraction and reported it in Physical Review Letters in 2005. The measured line stops at 130 gigapascals." };
-        return { head: "A dark, dense metal", body: "Solid again, and darkening. Between here and 200 gigapascals sodium loses its metallic sheen entirely.", prov: "Structures from Gregoryanz and colleagues, 2005; the optical change from Ma and colleagues, Nature, 2009." };
+        if (T > 700) return { head: "A dense fluid", body: "Molten. <strong>The measured melting line stops at 130 gigapascals</strong>, so where it runs above this pressure is an open question with a straightforward experiment attached: laser heating inside a diamond anvil cell, watching the diffraction pattern for the moment the crystal peaks vanish.", prov: "Stated as a gap: Gregoryanz and colleagues followed the line to 130 gigapascals in 2005 and no one has taken it further." };
+        return { head: "A dark, dense metal", body: "Solid again, and darkening. Between here and 200 gigapascals sodium loses its metallic sheen entirely.", prov: "Structures from Gregoryanz and colleagues, 2005; the optical change from Ma and colleagues, Nature, 2009. The melting line above this pressure has not been measured." };
       }
       return {
         head: "A transparent insulator",
@@ -904,6 +920,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         if (T > e.melt) return { head: "A liquid", body: "Liquid between " + e.melt + " and " + e.boil + " kelvin, a range of just over six degrees. This is rocket fuel: the Space Shuttle's big orange tank was mostly this.", prov: "Melting and boiling points from the atlas dataset." };
         return { head: "A soft molecular solid", body: "Hydrogen molecules on a lattice, still spinning freely in place. Transparent, and an insulator.", prov: "Melting point " + e.melt + " kelvin, from the atlas dataset." };
       }
+      if (T > 900 && P >= 10) return { head: "A hot dense fluid, and metallic", body: "Warm and squeezed at once, hydrogen does not wait for a crystal to become a metal: the liquid does it. Peter Celliers and colleagues trained 168 lasers on deuterium at the National Ignition Facility, compressed it to <strong>600 gigapascals while holding it between 1,000 and 2,000 kelvin</strong>, and found the insulating fluid turning metallic near 200 gigapascals. That is the condition inside Jupiter and Saturn, made on Earth for a few nanoseconds.", prov: "Celliers and colleagues, Science 361, 677, 2018." };
       if (P < 110) return { head: "Molecular hydrogen, squeezed", body: "Still pairs of atoms, still an insulator, still transparent, just closer together. This is phase I, where the molecules spin freely on their lattice sites, and it holds over an enormous span of pressure.", prov: "Mapped by Raman and infrared spectroscopy in diamond anvil cells since the 1980s." };
       if (P < 220) return { head: "Molecules that have stopped spinning", body: "Through this range the molecules settle into fixed orientations rather than tumbling, and the vibration spectrum changes shape. Still an insulator. Still not a metal.", prov: "Phases II and III, from Raman spectroscopy in diamond anvil cells." };
       if (P < 325) return { head: "Layers of two kinds at once", body: "Above 220 gigapascals at room temperature hydrogen takes a structure with two different sorts of layer stacked alternately, one of them nearly molecular and one of them not. Mikhail Eremets and Ivan Troyan reported it in 2011 and it has been reproduced since.", prov: "Phase IV, seen by Raman spectroscopy at room temperature in a diamond anvil cell." };
@@ -981,7 +998,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       if (P < 0.001) {
         if (T > e.boil) return { head: "A vapour", body: "Boiling at " + e.boil + " kelvin. Vapour-deposited aluminium is the reflective layer on the back of most telescope mirrors.", prov: "Boiling point from the atlas dataset." };
         if (T > e.melt) return { head: "Molten aluminium", body: "Melting at " + e.melt + " kelvin, " + fmt(Math.round(e.melt - 273.15)) + " degrees Celsius, which is why a drink can is cheap to recycle and a steel one is not.", prov: "Melting point from the atlas dataset." };
-        return { head: "A light metal", body: "Face-centred cubic, the most abundant metal in Earth's crust at " + fmt(e.abundCrust) + " parts per million, and wearing a skin of its own oxide two nanometres thick that stops the rest corroding. Window frames, foil, aeroplanes.", prov: "Crust abundance from the atlas dataset." };
+        return { head: "A light metal", body: "Face-centred cubic, the most abundant metal in Earth's crust at " + fmt(e.abundCrust) + " parts per million, and wearing a skin of its own oxide a few nanometres thick that stops the rest corroding. Window frames, foil, aeroplanes.", prov: "Crust abundance from the atlas dataset." };
       }
       if (P < 216) return { head: "Still cubic, getting dense", body: "Aluminium keeps its ordinary packing over an enormous pressure range, which makes it a favourite test material for compression experiments: you know what you started with.", prov: "X-ray diffraction in diamond anvil cells and in ramp compression." };
       if (P < 321) return { head: "Restacked to hexagonal", body: "At <strong>216 plus or minus 9 gigapascals</strong> aluminium changes from cubic to hexagonal packing. Yasuo Akahama and colleagues caught the same change in a diamond anvil cell at 217 gigapascals, from the other kind of instrument entirely.", prov: "Danae Polsin and colleagues, nanosecond x-ray diffraction under laser-driven ramp compression, Physical Review Letters, 2017; Akahama and colleagues, Physical Review Letters, 2006." };
