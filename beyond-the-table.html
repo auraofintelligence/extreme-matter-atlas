@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beyond the Table · Extreme Matter Atlas</title>
+<meta name="description" content="An element is fixed by its proton count and almost nothing else: mercury is liquid because of relativity, sodium turns transparent at 200 gigapascals, and helium bonds to sodium at 113.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+<style>
+/* page styles, scoped */
+body[data-page="beyondtable"] { --accent: #a78bfa; --accent2: #22d3ee; }
+
+body[data-page="beyondtable"] .hero {
+  background-image:
+    linear-gradient(90deg, rgba(167, 139, 250, 0.09) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(34, 211, 238, 0.07) 1px, transparent 1px);
+  background-size: 58px 58px, 58px 58px;
+}
+
+/* ---- the one-number banner ---- */
+body[data-page="beyondtable"] .znum {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; margin: 26px 0 4px;
+}
+body[data-page="beyondtable"] .znum .zbox {
+  flex: 0 0 auto; min-width: 118px; padding: 14px 18px;
+  border-radius: 16px; border: 1px solid var(--line-bright);
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  text-align: center;
+}
+body[data-page="beyondtable"] .znum .zbox b {
+  display: block; font-family: var(--font-display); font-weight: 900;
+  font-size: 30px; line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="beyondtable"] .znum .zbox span {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
+body[data-page="beyondtable"] .znum .zsep {
+  display: flex; align-items: center; font-size: 26px; color: var(--muted); opacity: 0.55;
+}
+
+/* ---- the conditions bench ---- */
+body[data-page="beyondtable"] .bench {
+  border: 1px solid var(--line-bright); border-radius: 20px;
+  background: radial-gradient(130% 130% at 50% 0%, var(--bg2), var(--bg));
+  padding: 22px; margin: 26px 0;
+  box-shadow: inset 0 0 80px -40px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+body[data-page="beyondtable"] .bench-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 22px; align-items: start;
+}
+@media (max-width: 900px) { body[data-page="beyondtable"] .bench-grid { grid-template-columns: 1fr; } }
+
+body[data-page="beyondtable"] .fieldlab {
+  display: block;
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 9px;
+}
+body[data-page="beyondtable"] .elpick {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 8px;
+}
+body[data-page="beyondtable"] .elpick button {
+  display: flex; align-items: center; gap: 9px;
+  min-height: 48px; padding: 7px 11px;
+  border-radius: 13px; cursor: pointer; text-align: left;
+  background: var(--panel); border: 1px solid var(--line-bright);
+  color: var(--ink); font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+body[data-page="beyondtable"] .elpick button:hover { border-color: var(--accent); transform: translateY(-2px); }
+body[data-page="beyondtable"] .elpick button .chip {
+  flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 600; color: #04060c; line-height: 1;
+}
+body[data-page="beyondtable"] .elpick button .chip i { font-style: normal; font-size: 8px; opacity: 0.8; }
+body[data-page="beyondtable"] .elpick button .chip b { font-size: 13px; }
+body[data-page="beyondtable"] .elpick button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--panel));
+  box-shadow: 0 0 20px -6px color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+body[data-page="beyondtable"] .slab { margin-top: 20px; }
+body[data-page="beyondtable"] .slab input[type="range"] { width: 100%; height: 8px; }
+body[data-page="beyondtable"] .slab .now {
+  font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--accent);
+  margin-bottom: 7px;
+}
+body[data-page="beyondtable"] .slab .ends {
+  display: flex; justify-content: space-between; gap: 10px; margin-top: 6px;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
+}
+body[data-page="beyondtable"] .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+body[data-page="beyondtable"] .presets button {
+  min-height: 44px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  background: transparent; border: 1px solid var(--line-bright); color: var(--ink);
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
+}
+body[data-page="beyondtable"] .presets button:hover { border-color: var(--accent2); color: var(--accent2); }
+
+body[data-page="beyondtable"] .readout {
+  border: 1px solid var(--line-bright); border-radius: 18px;
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  padding: 20px 20px 18px; min-height: 100%;
+}
+body[data-page="beyondtable"] .readout .who {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent2); display: block; margin-bottom: 8px;
+}
+body[data-page="beyondtable"] .readout h3 {
+  font-size: clamp(19px, 2.6vw, 25px); font-weight: 700; margin-bottom: 10px; line-height: 1.15;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-page="beyondtable"] .readout p { font-size: 15px; color: var(--muted); }
+body[data-page="beyondtable"] .readout p strong { color: var(--ink); font-weight: 600; }
+body[data-page="beyondtable"] .readout .prov {
+  margin-top: 14px; padding-top: 13px; border-top: 1px dashed var(--line-bright);
+  font-size: 13.5px; color: var(--muted);
+}
+body[data-page="beyondtable"] .readout .prov b { color: var(--ink); font-weight: 600; }
+
+body[data-page="beyondtable"] .dials {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 10px; margin-top: 16px;
+}
+body[data-page="beyondtable"] .dial {
+  border: 1px solid var(--line); border-radius: 13px; padding: 11px 13px; background: var(--bg2);
+}
+body[data-page="beyondtable"] .dial b {
+  display: block; font-family: var(--font-mono); font-size: 14.5px; color: var(--accent); font-weight: 600;
+}
+body[data-page="beyondtable"] .dial span { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+
+/* ---- relativity toggle ---- */
+body[data-page="beyondtable"] .relswitch {
+  display: inline-flex; align-items: center; gap: 12px;
+  min-height: 52px; padding: 9px 20px; border-radius: 999px; cursor: pointer;
+  font-family: var(--font-body); font-size: 15.5px; font-weight: 700;
+  color: var(--ink); background: var(--panel2); border: 1px solid var(--line-bright);
+}
+body[data-page="beyondtable"] .relswitch[aria-pressed="true"] {
+  color: #04060c; border-color: transparent;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 26px -8px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+body[data-page="beyondtable"] .relswitch .knob {
+  width: 40px; height: 22px; border-radius: 999px; position: relative;
+  background: var(--line-bright); flex: 0 0 auto;
+}
+body[data-page="beyondtable"] .relswitch[aria-pressed="true"] .knob { background: rgba(4, 6, 12, 0.45); }
+body[data-page="beyondtable"] .relswitch .knob::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--muted); transition: transform .2s ease, background .2s ease;
+}
+body[data-page="beyondtable"] .relswitch[aria-pressed="true"] .knob::after {
+  transform: translateX(18px); background: #04060c;
+}
+
+body[data-page="beyondtable"] .relrow {
+  display: grid; grid-template-columns: 168px 1fr; gap: 16px; align-items: start;
+  padding: 15px 0; border-bottom: 1px dashed var(--line);
+}
+body[data-page="beyondtable"] .relrow:last-child { border-bottom: 0; }
+body[data-page="beyondtable"] .relrow .subj { display: flex; align-items: center; gap: 10px; }
+body[data-page="beyondtable"] .relrow .subj .chip {
+  width: 38px; height: 38px; border-radius: 10px; flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: #04060c;
+}
+body[data-page="beyondtable"] .relrow .subj b { font-size: 15px; line-height: 1.2; }
+body[data-page="beyondtable"] .relrow .subj em { display: block; font-style: normal; font-size: 12px; color: var(--muted); }
+body[data-page="beyondtable"] .relrow .val {
+  font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--accent);
+  margin-bottom: 4px; transition: color .2s ease;
+}
+body[data-page="beyondtable"] .relrow.off .val { color: var(--muted); }
+body[data-page="beyondtable"] .relrow .txt { font-size: 14.5px; color: var(--muted); }
+body[data-page="beyondtable"] .relrow .txt strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="beyondtable"] .relrow { grid-template-columns: 1fr; gap: 8px; }
+}
+
+body[data-page="beyondtable"] .goldswatch {
+  display: inline-block; width: 46px; height: 20px; border-radius: 6px; vertical-align: -4px;
+  margin-right: 9px; border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, #ffd75e, #d9a300);
+  transition: background .3s ease;
+}
+body[data-page="beyondtable"] .relrow.off .goldswatch { background: linear-gradient(135deg, #e8ecf4, #aab3c4); }
+
+/* ---- squeeze ladder ---- */
+body[data-page="beyondtable"] .sqz { display: grid; gap: 12px; margin: 24px 0; }
+body[data-page="beyondtable"] .sqz .step {
+  display: grid; grid-template-columns: 128px 1fr; gap: 18px; align-items: start;
+  padding: 16px 18px; border-radius: 16px;
+  border: 1px solid var(--line); background: linear-gradient(160deg, var(--panel2), var(--panel));
+}
+body[data-page="beyondtable"] .sqz .step .p {
+  font-family: var(--font-mono); font-size: 17px; font-weight: 600; color: var(--accent);
+}
+body[data-page="beyondtable"] .sqz .step .p small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 400; margin-top: 3px; }
+body[data-page="beyondtable"] .sqz .step h3 { margin-bottom: 6px; }
+body[data-page="beyondtable"] .sqz .step p { font-size: 15px; color: var(--muted); }
+body[data-page="beyondtable"] .sqz .step p strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 620px) {
+  body[data-page="beyondtable"] .sqz .step { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ---- edge cards ---- */
+body[data-page="beyondtable"] .edge .card p + p { margin-top: 10px; }
+body[data-page="beyondtable"] .edge .card .instr {
+  display: block; margin-top: 12px; padding-top: 11px; border-top: 1px dashed var(--line-bright);
+  font-family: var(--font-mono); font-size: 12px; color: var(--accent2);
+}
+body[data-page="beyondtable"] .data-table td.figure { font-family: var(--font-mono); font-size: 13.5px; white-space: nowrap; }
+body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
+</style>
+</head>
+<body data-page="beyondtable">
+<div id="site-header"></div>
+<main>
+
+  <section class="hero">
+    <div class="orbs"><span class="orb3"></span></div>
+    <div class="wrap">
+      <span class="kicker">One number makes an element</span>
+      <h1 class="display">Beyond the Table</h1>
+      <p class="lede">Count the protons and you have the element. <strong>Everything else about it is negotiable.</strong> Colour, whether it is a metal, whether it is a solid, what it will bond to, even whether the column it sits in predicts it correctly: all of that depends on the conditions it is sitting in. The periodic table is a pattern that works superbly at one atmosphere in a warm room, and it visibly stops working outside those conditions. That is the strongest evidence there is that the rules are layer dependent, and it is shown by measurement.</p>
+
+      <div class="znum">
+        <div class="zbox"><b>80</b><span>protons</span></div>
+        <div class="zsep" aria-hidden="true">&rarr;</div>
+        <div class="zbox"><b>Hg</b><span>mercury, always</span></div>
+        <div class="zsep" aria-hidden="true">&rarr;</div>
+        <div class="zbox"><b id="hgMeltBox">&minus;38.8&nbsp;&deg;C</b><span>melting point, only here</span></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><span class="num">80 to 85%</span><span class="lbl">of the 2.11 volts a lead-acid cell delivers comes from relativity, by the calculation Ahuja and colleagues published in 2011</span></div>
+        <div class="stat"><span class="num">200 GPa</span><span class="lbl">the squeeze at which sodium, a metal soft enough to cut with a knife, turns into a see-through insulator</span></div>
+        <div class="stat"><span class="num">113 GPa</span><span class="lbl">where helium, the element that bonds to nothing at your desk, makes a stable compound with sodium</span></div>
+        <div class="stat"><span class="num">325 K</span><span class="lbl">the melting point calculated for oganesson, which sits under the noble gases and is expected to be a solid</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The table already bends, <span class="hue">in the room you are in</span></h2>
+      <p>Relativity has a reputation for living somewhere else: near a black hole, aboard a spacecraft, inside a particle accelerator. It is also in your car, your wedding ring and the thermometer in the shed. Heavy atoms hold a lot of positive charge in the middle, and the electrons closest in have to move fast to stay in orbit around it. On the simplest estimate, an innermost electron's speed is the atomic number divided by 137.036, so in gold, with 79 protons, that comes to about <strong>58 per cent of the speed of light</strong>. At that speed the electron behaves as though it carries about 22 per cent more mass than at rest, its orbit pulls in tight, and the outer shells that do the chemistry are dragged in with it.</p>
+      <p>Three of the results are sitting in your house.</p>
+
+      <div class="note"><strong>How to read a rule.</strong> The group logic of the periodic table is not handed down from anywhere. It follows from a premise: that only the outermost electrons take part in bonding, so elements with the same outer arrangement behave alike. Conservation laws work the same way. Emmy Noether proved at G&ouml;ttingen in 1918 that each one follows from a symmetry: energy conservation from the fact that the rules do not change with the time of day, momentum from the fact that they do not change with the place. That makes a conservation law <strong>a theorem with premises, not a decree</strong>, and a premise is something you can go and check. Squeeze an atom until its core electrons start taking part in bonding and the premise behind the group logic fails. What happens next is the rest of this page.</p></div>
+
+      <h3>Mercury pours, and its neighbours do not</h3>
+      <p>Cadmium sits directly above mercury and melts at 594 kelvin. Gold sits beside it and melts at 1,337. Mercury melts at 234.32 kelvin, which is 38.8 degrees below freezing, and that is why it filled thermometers. Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran the calculation both ways and published it in <em>Angewandte Chemie</em> in 2013. With relativity in the equations the melting point comes out at <strong>250 kelvin</strong>, close to the measured 234.32. With the relativistic terms switched off it comes out at <strong>355 kelvin</strong>, which is 82 degrees Celsius: mercury would be a solid you could hold in your hand, and hot tea would not melt it.</p>
+      <p>The mechanism is the pulled-in outer shell. Mercury's outermost pair of electrons is held so tightly by the contracted shell that it barely reaches out to the next atom, so mercury atoms grip each other about as weakly as argon atoms do. A metal whose atoms hardly hold hands is a metal that runs.</p>
+
+      <h3>Gold is yellow because its electrons are heavy</h3>
+      <p>Silver and gold sit one above the other and are built the same way. Silver reflects the whole visible band evenly, which is what a mirror finish is. Gold absorbs the blue end, near 2.4 electronvolts, so what bounces back to your eye is short of blue and reads as warm yellow. The absorption is electrons jumping from a full inner shell up to the outer one. Niels Egede Christensen and Bernard Seraphin ran that band structure both with and without relativity at the Technical University of Denmark, published in <em>Physical Review B</em> in 1971, and found the relativistic shifts running to about an electronvolt, the same size as the gaps themselves. Take the shift away and the first absorption moves up into the ultraviolet, out of sight, and the metal reflects the visible band evenly. <strong>Gold would look like silver.</strong></p>
+
+      <h3>Four fifths of your car battery</h3>
+      <p>A lead-acid cell delivers 2.11 volts, and six of them in a row give the 12.7 volts that turns your starter motor. Rajeev Ahuja, Andreas Blomqvist, Peter Larsson, Pekka Pyykk&ouml; and Patryk Zaleski-Ejgierd calculated the energies of the solid materials in that cell from first principles at three levels, non-relativistic, scalar relativistic and fully relativistic, and published the result in <em>Physical Review Letters</em> in 2011. Their average calculated voltage was 2.13 against the measured 2.11, and every version of the calculation agreed that <strong>1.7 to 1.8 volts of it come from relativity</strong>, mostly from the lead dioxide plate. Take those volts away and each cell drops to somewhere between 0.33 and 0.43 volts, and the six-cell battery under your bonnet would hold about 2 to 2.6 volts instead of 12.7.</p>
+      <p>Lead is element 82. It is in the sinker on a fishing line and in the flashing on a roof. The relativity is not exotic; it is load bearing.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Switch relativity <span class="hue">off and on</span></h2>
+      <p>Six properties, each with a published pair of numbers: what the calculation returns with the relativistic terms in, and what the same calculation returns with them out. Nothing about the atoms changes. Only the physics used to describe them.</p>
+
+      <div class="control-row">
+        <button class="relswitch" id="relBtn" type="button" aria-pressed="true">
+          <span class="knob" aria-hidden="true"></span>
+          <span id="relLabel">Relativity is in the calculation</span>
+        </button>
+      </div>
+
+      <div class="panel" id="relPanel">
+        <div class="relrow" data-rel="hg">
+          <div class="subj">
+            <span class="chip cat-transition" aria-hidden="true">Hg</span>
+            <span><b>Mercury melts at</b><em>element 80</em></span>
+          </div>
+          <div>
+            <div class="val" data-on="250 K, measured at 234.32 K" data-off="355 K">250 K, measured at 234.32 K</div>
+            <p class="txt" data-on="A liquid metal at room temperature. The outermost pair of electrons is held in tight, so mercury atoms grip each other about as weakly as argon atoms do." data-off="<strong>A solid you could hold.</strong> 355 kelvin is 82 degrees Celsius, so mercury would still be solid in boiling-hot weather and no one would have put it in a thermometer.">A liquid metal at room temperature. The outermost pair of electrons is held in tight, so mercury atoms grip each other about as weakly as argon atoms do.</p>
+          </div>
+        </div>
+
+        <div class="relrow" data-rel="au">
+          <div class="subj">
+            <span class="chip cat-transition" aria-hidden="true">Au</span>
+            <span><b>Gold looks</b><em>element 79</em></span>
+          </div>
+          <div>
+            <div class="val" data-on="absorbs near 2.4 eV, in the blue" data-off="absorbs in the ultraviolet">absorbs near 2.4 eV, in the blue</div>
+            <p class="txt" data-on="<span class='goldswatch' aria-hidden='true'></span><strong>Yellow.</strong> The light that comes back to your eye is short of blue, and short-of-blue reads as warm gold." data-off="<span class='goldswatch' aria-hidden='true'></span><strong>Like silver.</strong> The absorption moves out of the visible band, the metal reflects every colour evenly, and a wedding ring is white."><span class="goldswatch" aria-hidden="true"></span><strong>Yellow.</strong> The light that comes back to your eye is short of blue, and short-of-blue reads as warm gold.</p>
+          </div>
+        </div>
+
+        <div class="relrow" data-rel="pb">
+          <div class="subj">
+            <span class="chip cat-post-transition" aria-hidden="true">Pb</span>
+            <span><b>Car battery holds</b><em>element 82, six cells</em></span>
+          </div>
+          <div>
+            <div class="val" data-on="12.7 V" data-off="2.0 to 2.6 V">12.7 V</div>
+            <p class="txt" data-on="Six cells at 2.11 volts each, the measured figure. The calculation returns 2.13 volts a cell, and 1.7 to 1.8 of those volts are relativistic." data-off="<strong>The starter motor does not turn.</strong> Each cell falls to between 0.33 and 0.43 volts, which is less than a single AA torch battery across the whole six.">Six cells at 2.11 volts each, the measured figure. The calculation returns 2.13 volts a cell, and 1.7 to 1.8 of those volts are relativistic.</p>
+          </div>
+        </div>
+
+        <div class="relrow" data-rel="cn">
+          <div class="subj">
+            <span class="chip cat-transition" aria-hidden="true">Cn</span>
+            <span><b>Copernicium is</b><em>element 112, under mercury</em></span>
+          </div>
+          <div>
+            <div class="val" data-on="band gap 6.4 eV, melts at 283 &plusmn; 11 K" data-off="an ordinary group 12 metal">band gap 6.4 eV, melts at 283 &plusmn; 11 K</div>
+            <p class="txt" data-on="A volatile liquid held together by the weak attraction between closed shells, with a density close to mercury's and an electronic structure like a noble gas. Kenneth Pitzer suggested exactly this in 1975." data-off="<strong>A normal metal in the mercury column.</strong> The same calculation without relativistic terms raises its melting point by about 300 kelvin and its boiling point by about 700.">A volatile liquid held together by the weak attraction between closed shells, with a density close to mercury's and an electronic structure like a noble gas. Kenneth Pitzer suggested exactly this in 1975.</p>
+          </div>
+        </div>
+
+        <div class="relrow" data-rel="og">
+          <div class="subj">
+            <span class="chip cat-unknown" aria-hidden="true">Og</span>
+            <span><b>Oganesson melts at</b><em>element 118, a noble gas by column</em></span>
+          </div>
+          <div>
+            <div class="val" data-on="325 K" data-off="220 K">325 K</div>
+            <p class="txt" data-on="<strong>A solid on the bench at room temperature</strong>, with a liquid range of 125 kelvin above that. Scalar relativity supplies 48 kelvin of the shift and spin-orbit coupling another 56." data-off="A gas in a warm room, which is what its column predicts. The noble gas nature of the last element in the table hangs on about 100 kelvin of relativity.">
+              <strong>A solid on the bench at room temperature</strong>, with a liquid range of 125 kelvin above that. Scalar relativity supplies 48 kelvin of the shift and spin-orbit coupling another 56.</p>
+          </div>
+        </div>
+
+        <div class="relrow" data-rel="fr">
+          <div class="subj">
+            <span class="chip cat-alkali" aria-hidden="true">Fr</span>
+            <span><b>Francium grips its electron</b><em>element 87, below caesium</em></span>
+          </div>
+          <div>
+            <div class="val" data-on="392.8 kJ/mol, harder than caesium's 375.7" data-off="looser than caesium">392.8 kJ/mol, harder than caesium's 375.7</div>
+            <p class="txt" data-on="Going down group 1 the grip loosens all the way to caesium, and then <strong>tightens again at francium</strong>. The outer shell has been pulled in, so the last electron sits closer to the charge and is harder to take." data-off="The trend would simply keep going, and francium would be the loosest-gripping element on the shelf. The measured value says otherwise.">Going down group 1 the grip loosens all the way to caesium, and then <strong>tightens again at francium</strong>. The outer shell has been pulled in, so the last electron sits closer to the charge and is harder to take.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>One more, without a switch to flip. Gold holds a spare electron nearly as well as iodine does: 222.8 kilojoules per mole against iodine's 295.2. Mix caesium and gold and you do not get an alloy, you get caesium auride, a salt with a gold anion and a 2.6 electronvolt band gap, which is to say a semiconductor made of two metals.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Squeeze it and <span class="hue">the chemistry changes</span></h2>
+      <p>Pressure is measured in pascals, and the useful unit here is the gigapascal. <strong>One gigapascal is about 9,900 atmospheres</strong>, which is roughly what you get by standing eight adult elephants on a single postage stamp. Two diamonds with tips a few tenths of a millimetre across, pressed together with a screw, reach hundreds of gigapascals: that instrument is the diamond anvil cell, and it fits on a laboratory bench.</p>
+      <p>Once the squeeze is hard enough that the inner electron shells of neighbouring atoms start to overlap, those inner electrons stop being spectators and join the bonding. The premise behind the group logic fails, and elements start behaving like elements from other parts of the table. Here is what that looks like, with the depth inside our own planet where each pressure is reached.</p>
+
+      <div class="sqz">
+        <div class="step">
+          <div class="p">21 GPa<small>about 610 km down</small></div>
+          <div>
+            <h3>Xenon starts restacking</h3>
+            <p>Solid xenon changes its packing from cubic to hexagonal. John Caldwell and Jeffrey Nguyen put the equilibrium boundary at <strong>21 plus or minus 3 gigapascals</strong> in <em>Science</em> in 1997, and noted the change is sluggish enough to be caught anywhere between 3 and 70 gigapascals depending on how you get there.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">78 GPa<small>about 1,930 km down</small></div>
+          <div>
+            <h3>Xenon takes on oxygen</h3>
+            <p>Agn&egrave;s Dewaele, Nicholas Worth, Chris Pickard and colleagues made two xenon oxides above 78 gigapascals and reported them in <em>Nature Chemistry</em> in 2016, with the xenon carrying mixed charges and sitting in extended networks of shared oxygen. A noble gas building a framework solid.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">113 GPa<small>about 2,490 km down</small></div>
+          <div>
+            <h3>Helium bonds to sodium</h3>
+            <p>Helium holds its electrons harder than any other element, 2,372 kilojoules per mole, and at your desk it bonds to nothing. Xiao Dong, Artem Oganov, Alexander Goncharov and colleagues loaded sodium into helium in a laser-heated diamond anvil cell, took it to 155 gigapascals, and above 113 saw new single-crystal reflections appear after heating past 1,500 kelvin. The compound is <strong>Na<sub>2</sub>He</strong>, built like fluorite, and it is an insulator: the electron pairs sit in the empty spaces between the atoms rather than on any atom. <em>Nature Chemistry</em>, 2017.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">118 GPa<small>about 2,570 km down</small></div>
+          <div>
+            <h3>Sodium melts at room temperature</h3>
+            <p>Sodium's melting point climbs with pressure to a peak near 1,000 kelvin at 31 gigapascals, then falls off a cliff. Eugene Gregoryanz and colleagues followed it with synchrotron diffraction and reported in <em>Physical Review Letters</em> in 2005 that it bottoms out at <strong>300 kelvin at 118 gigapascals</strong>. Squeeze sodium hard enough and it turns into a liquid at room temperature. The measured line stops at 130 gigapascals.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">132 GPa<small>about 2,850 km down</small></div>
+          <div>
+            <h3>Xenon becomes a metal</h3>
+            <p>Kathleen Goettel and colleagues reported optical evidence for the metallisation of xenon at <strong>132 plus or minus 5 gigapascals</strong> in <em>Physical Review Letters</em> in 1989; Rachel Reichlin and colleagues put the onset nearer 150 in the same issue. The element with a famously full outer shell conducts electricity.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">200 GPa<small>about 3,510 km down</small></div>
+          <div>
+            <h3>Sodium turns transparent</h3>
+            <p>Yanming Ma, Mikhail Eremets, Artem Oganov and colleagues compressed sodium fivefold and photographed it: at 200 gigapascals it is <strong>optically transparent, with a wide band gap and no metallic sheen at all</strong>. Six-coordinated, distorted, close packed. They attribute it not to atoms pairing up but to valence electrons being pushed by the atomic cores into the gaps in the lattice. <em>Nature</em>, 2009.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">216 GPa<small>about 3,690 km down</small></div>
+          <div>
+            <h3>Aluminium restacks, then restacks again</h3>
+            <p>The metal in your window frames changes packing from cubic to hexagonal, then to body-centred cubic at 321 plus or minus 12 gigapascals. Danae Polsin and colleagues watched both changes happen in nanoseconds under laser-driven ramp compression with x-ray diffraction, and followed the last phase out to <strong>475 gigapascals</strong>. <em>Physical Review Letters</em>, 2017.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">425 GPa<small>past Earth's centre</small></div>
+          <div>
+            <h3>Hydrogen's gap closes</h3>
+            <p>Eugene Wigner and Hillard Bell Huntington predicted in 1935 that hydrogen would turn into a metal, and put the pressure at 25 gigapascals using the compressibility measured at zero pressure for every pressure, which is the part that was wrong rather than the idea. Paul Loubeyre, Florent Occelli and Paul Dumas took hydrogen to 425 gigapascals at 80 kelvin in a toroidal diamond anvil cell and watched the direct band gap drop from <strong>0.6 electronvolts to under 0.1</strong>, reported in <em>Nature</em> in 2020.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="p">495 GPa<small>past Earth's centre</small></div>
+          <div>
+            <h3>Hydrogen, reflecting</h3>
+            <p>Ranga Dias and Isaac Silvera reported in <em>Science</em> in 2017 that hydrogen at 495 gigapascals and 5.5 kelvin reflected light in the way a free-electron metal does. Comments published in the same journal dispute what the reflectance data support, and the authors issued a correction to the fit. The reading, the objections and the correction are all on the record together, which is the ordinary condition of a frontier measurement.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>The pattern under all of that: <strong>the periodic table is a map of behaviour at one atmosphere</strong>, and there are other atmospheres. A column tells you what an element does in the conditions the column was drawn in. Change the conditions and elements swap jobs. A metal insulates. A noble gas bonds. A soft solid pours at room temperature.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The conditions <span class="hue">bench</span></h2>
+      <p>Pick an element and drive the two dials. The panel reports what that element is understood to be at those conditions, who found that out and on what instrument, or, where nobody has been there yet, what the calculation returns and what would have to be built to check it.</p>
+
+      <div class="bench">
+        <div class="bench-grid">
+          <div>
+            <span class="fieldlab" id="elpickLab">Element</span>
+            <div class="elpick" id="elPick" role="group" aria-labelledby="elpickLab"></div>
+
+            <div class="slab">
+              <label class="fieldlab" for="pRange">Pressure</label>
+              <div class="now" id="pNow">1 atmosphere</div>
+              <input type="range" id="pRange" min="0" max="1000" step="1" value="0" aria-describedby="pNow">
+              <div class="ends"><span>1 atmosphere</span><span>each step is ten times the last</span><span>500 GPa</span></div>
+            </div>
+
+            <div class="slab">
+              <label class="fieldlab" for="tRange">Temperature</label>
+              <div class="now" id="tNow">293 K</div>
+              <input type="range" id="tRange" min="0" max="1000" step="1" value="607" aria-describedby="tNow">
+              <div class="ends"><span>0.001 K</span><span>each step is ten times the last</span><span>1,000,000 K</span></div>
+            </div>
+
+            <div class="presets" id="presets" role="group" aria-label="Preset conditions">
+              <button type="button" data-p="0.000101325" data-t="293">A warm room</button>
+              <button type="button" data-p="0.000101325" data-t="77">Liquid nitrogen</button>
+              <button type="button" data-p="0.000101325" data-t="5772">The Sun's surface</button>
+              <button type="button" data-p="135.8" data-t="3800">Earth's core boundary</button>
+              <button type="button" data-p="364" data-t="5400">Earth's centre</button>
+              <button type="button" data-p="495" data-t="5.5">The 2017 diamond cell</button>
+            </div>
+
+            <div class="dials">
+              <div class="dial"><b id="dialAtm">1 atm</b><span id="dialAtmSub">the air around you</span></div>
+              <div class="dial"><b id="dialDepth">the surface</b><span>depth inside the Earth reaching this pressure</span></div>
+              <div class="dial"><b id="dialEleph">nothing</b><span id="dialElephSub">six-tonne elephants standing on one postage stamp</span></div>
+              <div class="dial"><b id="dialTemp">20 &deg;C</b><span id="dialTempSub">about room temperature</span></div>
+            </div>
+          </div>
+
+          <div class="readout" id="readout" aria-live="polite">
+            <span class="who" id="roWho">Mercury &middot; 80 protons</span>
+            <h3 id="roHead">A liquid metal</h3>
+            <p id="roBody">Loading.</p>
+            <div class="prov" id="roProv"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="note">Both dials are squashed so that many steps of ten fit across them, which is the only way a warm room and the inside of a star share one track. The elephant is a six-tonne African bush elephant and the stamp is 24 by 20 millimetres, worked out from its weight over that area. Depths come from integrating the density profile of the Preliminary Reference Earth Model, which puts the core and mantle boundary at 2,891 kilometres and 135.8 gigapascals and the centre at 6,371 kilometres and 364.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Where the table must end, and <span class="hue">why that is interesting</span></h2>
+      <p>Elements are counted in protons, so the natural question is how high the count can go. There is a real answer in the mathematics, and it is not a wall so much as a door.</p>
+      <p>Paul Dirac's equation for an electron near a nucleus, with the nucleus treated as a single point of charge, stops returning sensible answers once the charge passes about 137. That number is not a coincidence and it is where the fine structure constant got its nickname: its reciprocal is <strong>137.035999177</strong>, one of the most precisely known numbers in all of measurement, and an innermost electron's speed on the simplest estimate is the atomic number divided by it. At 137 that estimate reaches the speed of light itself, and the equation has nothing left to say.</p>
+      <p>Real nuclei are not points. They are balls a few femtometres across, and giving the charge a realistic size changes the answer: the trouble moves out to roughly <strong>172 to 173 protons</strong>. What the calculation says happens there is the interesting part. The energy of the innermost bound level falls all the way down to meet the sea of negative-energy states below, and empty space around the nucleus stops being stable: it starts producing electron and positron pairs, the electron dropping into the level and the positron flying off free.</p>
+
+      <div class="note"><strong>The atom's own definition changes at that point.</strong> Below it, an atom is a nucleus plus however many electrons you give it. Above it, the vacuum itself supplies electrons whether you offer them or not, and a bare nucleus is not a thing that can be left bare. The question is no longer what element it is; it is whether "element" is still the right word for the object.</p></div>
+
+      <p>What would be measured. Nobody has to make an atom with 173 protons to test this: two heavy nuclei passing close enough together share a charge for a fleeting moment, and 92 plus 92 is 184. Heavy-ion collisions between uranium nuclei put the combined charge over the threshold for around 10<sup>-21</sup> seconds, and the signature to look for is a sharp line in the positrons coming out, at an energy fixed by the depth the level reached rather than by the collision. That experiment has been run before, at GSI in Darmstadt in the 1980s, and it produced lines that later work did not reproduce. It is being set up again with better detectors and better control of the collision geometry, and the quantity it returns is a positron energy spectrum: a number, from an instrument, that either shows the line or does not.</p>
+      <p>Between the heaviest element made so far and that threshold there are 55 more proton counts. <strong>Teams are firing beams at 119 and 120 right now.</strong> In 2024 a group led by Jacklyn Gates at the Lawrence Berkeley National Laboratory made two atoms of livermorium over 22 days by firing titanium-50 at plutonium-244, which was the first time an element in that range had been built with a beam other than calcium-48, and it is the step the search for element 120 was waiting on.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The heavy end <span class="hue">already disagrees with the table</span></h2>
+      <p>You do not have to go to 173 to find the pattern breaking down. It is breaking down at the bottom of the table we already have. In every one of these cases the column makes a prediction, and the calculation or the experiment returns something else.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">🟣</span>
+          <h3>Oganesson, the noble gas that is not a gas</h3>
+          <p>Element 118 sits under radon at the foot of group 18. Odile Smits, Jan-Michael Mewes and Peter Schwerdtfeger ran two independent methods against a high-accuracy reference and published in <em>Angewandte Chemie</em> in 2020: melting point <strong>325 plus or minus 15 kelvin</strong>, boiling point 450 plus or minus 10, so a solid at ambient conditions with an unusually wide liquid range of 125 kelvin.</p>
+          <p>A year earlier the same group with Georg Kresse had put its band gap at <strong>1.5 electronvolts</strong> against radon's 7.1, which makes solid oganesson a semiconductor rather than the transparent insulator every other noble gas freezes into. And in 2018 Paul Jerabek, Bastian Schuetrumpf, Schwerdtfeger and Witold Nazarewicz showed in <em>Physical Review Letters</em> that its electrons lose their shell structure altogether and smear into something closer to a uniform gas.</p>
+          <span class="instr">Five atoms have ever been made. Oganesson-294 lasts about 0.69 milliseconds.</span>
+        </div>
+
+        <div class="card">
+          <span class="card-glyph">🟢</span>
+          <h3>Flerovium, argued both ways from the data</h3>
+          <p>Element 114 sits under lead, so the column says metal. Two gas chromatography experiments sent single atoms down a gold surface and measured how strongly they stuck. The first, reported by Robert Eichler and colleagues in 2010 from the decay chains of three atoms, gave a stickiness that read as noble-gas-like. The second pointed at a volatile metal instead.</p>
+          <p>A 2022 study led by Alexander Yakushev, accounting for the roughness of the real surface, reported flerovium sticking to gold less strongly than mercury does and more strongly than radon does, and read the lower limit as a metal-to-metal bond: <strong>the least reactive member of group 14, and still a metal</strong>. Three atoms at a time is the sample size the whole argument rests on.</p>
+          <span class="instr">Flerovium-289 lasts about 2 seconds.</span>
+        </div>
+
+        <div class="card">
+          <span class="card-glyph">🔵</span>
+          <h3>Copernicium, mercury's neighbour that is not one</h3>
+          <p>Element 112 sits under mercury. Kenneth Pitzer suggested in 1975 that relativity would make it behave like a noble gas instead, and the 2019 calculation by Mewes, Smits, Kresse and Schwerdtfeger came out on his side: a band gap of <strong>6.4 electronvolts</strong>, held together by the same weak attraction that condenses argon, melting at 283 plus or minus 11 kelvin and boiling at 340 plus or minus 10, with a density close to mercury's.</p>
+          <p>The 2008 gold-surface experiment by Eichler and colleagues measured a real interaction with the surface and read it as metallic. The 2019 paper reads the same energy, minus 0.37 electronvolts, as the sort of attraction closed shells have anyway. <strong>Same measurement, two readings</strong>, and the way to settle it is more atoms.</p>
+          <span class="instr">Copernicium-285 lasts about 30 seconds.</span>
+        </div>
+      </div>
+
+      <p>Put those together and the rule for the bottom of the table is plain enough: <strong>the column a superheavy element sits in is a suggestion, not a promise.</strong> It is drawn from how many electrons are in the outer shell, and by element 112 the relativistic pull on those electrons is doing more to set behaviour than the shell count is. The table still puts these elements in the right box for the right reason. It just stops predicting what happens inside the box.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>The same element, <span class="hue">wearing different matter</span></h2>
+      <p>Pressure and temperature are two dials. There are others, and each one produces something with the same proton count and almost nothing else in common with the entry in the table.</p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>An atom the size of a sand grain</h3>
+          <p>Push a single electron into a very distant orbit and the atom swells, because its reach grows as the square of the orbit number. Stephen Hogan, Yhoshua Houston and Baochen Wei at University College London photoexcited helium past orbit number 400 with two colours of continuous-wave laser light and published it in 2018: that atom is about <strong>17 micrometres across</strong>, a quarter of a hair's width, big enough to see under an ordinary microscope.</p>
+          <p>Nature does better. Sergei Stepkin, Alexander Konovalenko and colleagues picked up radio absorption near 26 megahertz from carbon atoms in a cold cloud in the Perseus arm, in front of the Cassiopeia A supernova remnant, sitting at orbit number about <strong>1,009</strong>. Those atoms are 0.11 millimetres across, a grain of very fine sand, one and a half hair widths. If an ordinary carbon atom were a 1 millimetre bead, that one would be a bubble a kilometre across, and it is still carbon: six protons, doing carbon's job in every other respect.</p>
+        </div>
+
+        <div class="panel">
+          <h3>A cloud of atoms behaving as one</h3>
+          <p>Cool a dilute vapour far enough and the atoms stop being separate. Eric Cornell, Carl Wieman and their colleagues Michael Anderson, Jason Ensher and Michael Matthews did it first at Boulder in June 1995 with about <strong>2,000 rubidium-87 atoms at 170 nanokelvin</strong>, held for more than 15 seconds, and reported it in <em>Science</em>. Wolfgang Ketterle's group at MIT reached the same state in sodium later that year with far more atoms. The three shared the 2001 Nobel Prize in Physics.</p>
+          <p>What sits in the trap has 37 protons per atom and is unmistakably rubidium. It also has one shared wave for the whole cloud, and it will interfere with another cloud the way two torch beams will not. Same element. A different kind of matter.</p>
+        </div>
+
+        <div class="panel">
+          <h3>A nucleus holding charge</h3>
+          <p>Hafnium-178 has a state 2.446 million electronvolts above its ground state that cannot easily let go, because shedding the energy would mean shedding sixteen units of spin at once. It sits there for <strong>31 years</strong>. One gram holds about 1.33 billion joules, which is roughly 2,300 kettles brought to the boil, or the energy in about 317 kilograms of TNT, packed into a gram.</p>
+          <p>Carl Collins and colleagues at the University of Texas at Dallas reported in 1999 that a beam of x-rays had prompted some of that energy out early. Other groups have looked for the same effect and not seen it, and the question of whether a stored nuclear state can be tapped on demand is open. It moved recently in a different element: in 2024 Johannes Tiedau's group at Germany's national metrology institute, working with the Vienna University of Technology, drove a thorium-229 nucleus with a tabletop laser at 148 nanometres, the first time a nucleus has been switched by ordinary laser light.</p>
+        </div>
+
+        <div class="panel">
+          <h3>A cluster acting like an element that is not on the shelf</h3>
+          <p>Thirteen aluminium atoms in a compact cluster carry 39 outer electrons, one short of a count that closes a shell. That makes the cluster hungry for one electron in the same way a halogen atom is. Its electron affinity is <strong>3.57 electronvolts against chlorine's 3.62</strong>, and Denis Bergeron, A. Welford Castleman, Shiv Khanna and colleagues showed it forming the aluminium equivalent of a polyhalide and reported it in <em>Science</em> in 2005.</p>
+          <p>Aluminium is in group 13. This is not aluminium behaving as a metal, and it is not a compound of a halogen: it is <strong>a lump of one element doing another element's chemistry</strong> because of how many electrons it happens to hold. The count that decides the behaviour here is a count of electrons in a cluster, not protons in a nucleus.</p>
+        </div>
+      </div>
+
+      <div class="note"><strong>And then there is the end of element identity altogether.</strong> Press matter past the point where nuclei touch, around 2.7 &times; 10<sup>17</sup> kilograms per cubic metre, and the nuclei stop being separate objects: the material becomes one continuous liquid of neutrons with a few per cent protons and electrons. A teaspoon of it weighs about 1.3 billion tonnes, roughly two and a half Sydney Harbours of water in five millilitres. Squeeze further and the calculations say the neutrons themselves come apart into quarks. There is no proton count to read there and no element to name, which sets a plain boundary on where the table's question even applies.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal edge">
+    <div class="wrap">
+      <h2>What this <span class="hue">opens</span></h2>
+      <p>Not a conclusion. Edges worth pushing, each with the instrument that would push it and the quantity it would return.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="card-glyph">💎</span>
+          <h3>Take the anvils higher, and hold them</h3>
+          <p>The toroidal diamond anvil cell that reached 425 gigapascals and the two-stage cells behind the 495 gigapascal reading both work on samples a few tens of micrometres across, and the diamonds themselves are the limit. Larger samples at those pressures would let x-ray diffraction identify the structure directly rather than inferring it from how the sample reflects light, which is precisely what the arguments over hydrogen turn on.</p>
+          <span class="instr">Returns: a diffraction pattern, so a crystal structure</span>
+        </div>
+        <div class="card">
+          <span class="card-glyph">📏</span>
+          <h3>Nail down the pressure scale itself</h3>
+          <p>Every diamond cell reading is calibrated against a standard material. Dayne Fratanduono, Marius Millot and colleagues compressed gold and platinum without a shock at the National Ignition Facility and the Z machine and fixed their pressure and density relationship out to <strong>one terapascal</strong>, twice Earth's central pressure, reported in <em>Science</em> in 2021. Every future number in this field is quoted against work like that.</p>
+          <span class="instr">Returns: pressure against density, absolutely</span>
+        </div>
+        <div class="card">
+          <span class="card-glyph">⚛️</span>
+          <h3>Make 119 and 120</h3>
+          <p>The titanium-50 beam that produced livermorium in 2024 is the route. Element 120 is expected to be 10 to 20 times harder to make than element 116 was, which is a several-year search rather than a closed door. Beams are running at RIKEN in Japan, at Dubna, at Berkeley and at Lanzhou.</p>
+          <span class="instr">Returns: a decay chain, so an atomic number</span>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🕸️</span>
+          <h3>Hold single atoms still and look at them</h3>
+          <p>Optical lattices, which are grids of light that trap atoms one to a well, already hold Bose-Einstein condensates and single-atom arrays. Applied to the short-lived heavy elements they would let a handful of atoms be interrogated repeatedly rather than once, which is the fix for a chemistry argued from three atoms.</p>
+          <span class="instr">Returns: spectra from single atoms, repeatedly</span>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🧲</span>
+          <h3>Turn the magnetic dial</h3>
+          <p>The third dial nobody has driven far. Continuous fields have reached 45.5 tesla and a pulsed field at the University of Tokyo hit <strong>1,200 tesla for 40 microseconds</strong> in 2018, blowing the doors off the containment chamber. Neutron star surfaces run many orders higher, and at those strengths calculations have atoms squeezed into needles and chemistry rewritten. The gap between what has been reached and what would matter is the size of the opportunity.</p>
+          <span class="instr">Returns: spectra and structure under a field</span>
+        </div>
+        <div class="card">
+          <span class="card-glyph">🔭</span>
+          <h3>Read the sky as a pressure cell</h3>
+          <p>The interior of Jupiter, the crust of a neutron star and the cores of white dwarfs sit at pressures no bench reaches, and they are observable. Seismology on the Sun and Jupiter, cooling curves of white dwarfs and the sizes of neutron stars all return numbers that a laboratory equation of state has to match.</p>
+          <span class="instr">Returns: mass, radius and cooling rate</span>
+        </div>
+      </div>
+      <p>The thing worth keeping from all of this is not that the periodic table is wrong. It is right, and it is one of the best pieces of pattern recognition anyone has ever done. What the measurements say is that <strong>it is a map of one layer</strong>, drawn from a premise about which electrons matter, and that the premise has a range. Take an element outside that range and it does something else, and the something else is not chaos: it follows patterns of its own, which people are drawing right now, one anvil cell and one atom at a time.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2>Keep <span class="hue">exploring</span></h2>
+      <div class="grid">
+        <a class="card-link" href="periodic-table.html"><div class="card"><span class="card-glyph">🧊</span><h3>The Table</h3><p>All 118 entries with the measured numbers behind them, coloured by whichever property you want to sort on.</p></div></a>
+        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏅</span><h3>Records</h3><p>Which element holds each end of each property, worked out live from the same dataset this page reads.</p></div></a>
+        <a class="card-link" href="element-115.html"><div class="card"><span class="card-glyph">🟠</span><h3>Element 115</h3><p>Moscovium, the island of stability, and what half-lives at the heavy end actually allow.</p></div></a>
+        <a class="card-link" href="claimed-elements.html"><div class="card"><span class="card-glyph">🔎</span><h3>Claimed Elements</h3><p>Every element named in an anomalous claim, and what the shelf says that element does.</p></div></a>
+        <a class="card-link" href="metamaterials.html"><div class="card"><span class="card-glyph">🕸️</span><h3>Metamaterials</h3><p>Geometry doing the work of chemistry: the other way to change what a material does without changing what it is.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="reveal">
+    <div class="wrap">
+      <h2><span class="hue">Sources</span></h2>
+      <ul class="src-list">
+        <li>F. Calvo, E. Pahl, M. Wormit and P. Schwerdtfeger, "Evidence for low-temperature melting of mercury owing to relativity", <em>Angewandte Chemie International Edition</em> 52, 7583, 2013 &middot; <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/anie.201302742" rel="noopener">onlinelibrary.wiley.com/doi/abs/10.1002/anie.201302742</a></li>
+        <li>N. E. Christensen and B. O. Seraphin, "Relativistic band calculation and the optical properties of gold", <em>Physical Review B</em> 4, 3321, 1971 &middot; <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.4.3321" rel="noopener">journals.aps.org/prb/abstract/10.1103/PhysRevB.4.3321</a></li>
+        <li>R. Ahuja, A. Blomqvist, P. Larsson, P. Pyykk&ouml; and P. Zaleski-Ejgierd, "Relativity and the lead-acid battery", <em>Physical Review Letters</em> 106, 018301, 2011 &middot; <a href="https://arxiv.org/abs/1008.4872" rel="noopener">arxiv.org/abs/1008.4872</a></li>
+        <li>Y. Ma, M. Eremets, A. R. Oganov and colleagues, "Transparent dense sodium", <em>Nature</em> 458, 182, 2009 &middot; <a href="https://arxiv.org/abs/0911.3190" rel="noopener">arxiv.org/abs/0911.3190</a></li>
+        <li>E. Gregoryanz and colleagues, "Melting of dense sodium", <em>Physical Review Letters</em> 94, 185502, 2005 &middot; <a href="https://link.aps.org/doi/10.1103/PhysRevLett.94.185502" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.94.185502</a></li>
+        <li>X. Dong, A. R. Oganov, A. F. Goncharov and colleagues, "A stable compound of helium and sodium at high pressure", <em>Nature Chemistry</em> 9, 440, 2017 &middot; <a href="https://arxiv.org/abs/1309.3827" rel="noopener">arxiv.org/abs/1309.3827</a></li>
+        <li>K. A. Goettel and colleagues, "Optical evidence for the metallization of xenon at 132(5) GPa", <em>Physical Review Letters</em> 62, 665, 1989; R. Reichlin and colleagues, same issue, 669.</li>
+        <li>J. S. Caldwell and J. H. Nguyen, "Structure, bonding, and geochemistry of xenon at high pressures", <em>Science</em> 277, 930, 1997.</li>
+        <li>A. Dewaele, N. Worth, C. J. Pickard and colleagues, "Synthesis and stability of xenon oxides Xe<sub>2</sub>O<sub>5</sub> and Xe<sub>3</sub>O<sub>2</sub> under pressure", <em>Nature Chemistry</em> 8, 784, 2016 &middot; <a href="https://www.nature.com/articles/nchem.2528" rel="noopener">nature.com/articles/nchem.2528</a></li>
+        <li>E. Wigner and H. B. Huntington, "On the possibility of a metallic modification of hydrogen", <em>Journal of Chemical Physics</em> 3, 764, 1935.</li>
+        <li>P. Loubeyre, F. Occelli and P. Dumas, "Synchrotron infrared spectroscopic evidence of the probable transition to metal hydrogen", <em>Nature</em> 577, 631, 2020 &middot; <a href="https://arxiv.org/abs/1906.05634" rel="noopener">arxiv.org/abs/1906.05634</a></li>
+        <li>R. P. Dias and I. F. Silvera, "Observation of the Wigner-Huntington transition to metallic hydrogen", <em>Science</em> 355, 715, 2017, with the published comments and the erratum at <a href="https://www.science.org/doi/10.1126/science.aao5843" rel="noopener">science.org/doi/10.1126/science.aao5843</a></li>
+        <li>P. Dalladay-Simpson, R. T. Howie and E. Gregoryanz, "Evidence for a new phase of dense hydrogen above 325 gigapascals", <em>Nature</em> 529, 63, 2016.</li>
+        <li>D. N. Polsin and colleagues, "Measurement of body-centered-cubic aluminum at 475 GPa", <em>Physical Review Letters</em> 119, 175702, 2017 &middot; <a href="https://link.aps.org/doi/10.1103/PhysRevLett.119.175702" rel="noopener">link.aps.org/doi/10.1103/PhysRevLett.119.175702</a></li>
+        <li>D. E. Fratanduono, M. Millot and colleagues, "Establishing gold and platinum standards to 1 terapascal using shockless compression", <em>Science</em> 372, 1063, 2021.</li>
+        <li>O. R. Smits, J.-M. Mewes, P. Jerabek and P. Schwerdtfeger, "Oganesson: a noble gas element that is neither noble nor a gas", <em>Angewandte Chemie International Edition</em> 59, 23636, 2020 &middot; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7814676/" rel="noopener">pmc.ncbi.nlm.nih.gov/articles/PMC7814676</a></li>
+        <li>J.-M. Mewes, O. R. Smits, G. Kresse and P. Schwerdtfeger, "Oganesson is a semiconductor: on the relativistic band-gap narrowing in the heaviest noble-gas solids", <em>Angewandte Chemie International Edition</em> 58, 17964, 2019.</li>
+        <li>J.-M. Mewes, O. R. Smits, G. Kresse and P. Schwerdtfeger, "Copernicium: a relativistic noble liquid", <em>Angewandte Chemie International Edition</em> 58, 17964, 2019 &middot; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6916354/" rel="noopener">pmc.ncbi.nlm.nih.gov/articles/PMC6916354</a></li>
+        <li>P. Jerabek, B. Schuetrumpf, P. Schwerdtfeger and W. Nazarewicz, "Electron and nucleon localization functions of oganesson: approaching the Thomas-Fermi limit", <em>Physical Review Letters</em> 120, 053001, 2018.</li>
+        <li>A. Yakushev and colleagues, "On the adsorption and reactivity of element 114, flerovium", <em>Frontiers in Chemistry</em> 10, 976635, 2022 &middot; <a href="https://www.frontiersin.org/journals/chemistry/articles/10.3389/fchem.2022.976635/full" rel="noopener">frontiersin.org/journals/chemistry/articles/10.3389/fchem.2022.976635/full</a></li>
+        <li>R. Eichler and colleagues, "Chemical characterization of element 112", <em>Nature</em> 447, 72, 2007, and the 2008 follow-up on its thermochemical properties.</li>
+        <li>J. M. Gates, R. Orford and colleagues, "Toward the discovery of new elements: production of livermorium (Z=116) with <sup>50</sup>Ti", <em>Physical Review Letters</em> 133, 172502, 2024 &middot; <a href="https://arxiv.org/abs/2407.16079" rel="noopener">arxiv.org/abs/2407.16079</a></li>
+        <li>S. D. Hogan, Y. Houston and B. Wei, "Laser photoexcitation of Rydberg states in helium with n &gt; 400", <em>Journal of Physics B</em> 51, 145002, 2018 &middot; <a href="https://discovery.ucl.ac.uk/10052702/" rel="noopener">discovery.ucl.ac.uk/10052702</a></li>
+        <li>S. V. Stepkin, A. A. Konovalenko and colleagues, "Radio recombination lines from the largest bound atoms in space", <em>Monthly Notices of the Royal Astronomical Society</em>, 2007 &middot; <a href="https://arxiv.org/pdf/astro-ph/0610407" rel="noopener">arxiv.org/pdf/astro-ph/0610407</a></li>
+        <li>M. H. Anderson, J. R. Ensher, M. R. Matthews, C. E. Wieman and E. A. Cornell, "Observation of Bose-Einstein condensation in a dilute atomic vapor", <em>Science</em> 269, 198, 1995.</li>
+        <li>C. B. Collins and colleagues, "Depopulation of the isomeric state <sup>178m2</sup>Hf", <em>Physical Review Letters</em> 82, 695, 1999.</li>
+        <li>J. Tiedau and colleagues on the laser excitation of the thorium-229 nuclear transition at 148 nanometres, 2024 &middot; <a href="https://physics.aps.org/articles/v17/71" rel="noopener">physics.aps.org/articles/v17/71</a></li>
+        <li>D. E. Bergeron, P. J. Roach, A. W. Castleman Jr, N. O. Jones and S. N. Khanna, "Al cluster superatoms as halogens in polyhalides and as alkaline earths in iodide salts", <em>Science</em> 307, 231, 2005 &middot; <a href="https://www.science.org/doi/10.1126/science.1105820" rel="noopener">science.org/doi/10.1126/science.1105820</a></li>
+        <li>S. Takeyama and colleagues, the 1,200 tesla pulsed field at the University of Tokyo, 2018 &middot; <a href="https://www.u-tokyo.ac.jp/focus/en/press/z0508_00008.html" rel="noopener">u-tokyo.ac.jp/focus/en/press/z0508_00008.html</a></li>
+        <li>A. M. Dziewonski and D. L. Anderson, "Preliminary reference Earth model", <em>Physics of the Earth and Planetary Interiors</em> 25, 297, 1981. Depths on this bench come from integrating its density profile, which returns 135.8 GPa at the core and mantle boundary and 364 GPa at the centre.</li>
+        <li>Fine structure constant reciprocal 137.035999177(21), CODATA 2022. Element figures throughout come from <a href="periodic-table.html">the atlas dataset</a>.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/elements.js"></script>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var ELS = window.ELEMENTS || [];
+  function el(sym) {
+    for (var i = 0; i < ELS.length; i++) { if (ELS[i].sym === sym) return ELS[i]; }
+    return null;
+  }
+  var fmt = (window.EMA && window.EMA.fmt) || function (n) { return String(n); };
+  var catClass = (window.EMA && window.EMA.catClass) || function (c) { return "cat-" + (c || "unknown"); };
+
+  /* ---------- constants and helpers ---------- */
+  var ATM = 101325;                  /* pascals */
+  var GACC = 9.80665;                /* metres per second squared */
+  var RGAS = 8.314462618;            /* joules per mole per kelvin */
+  var STAMP = 0.024 * 0.020;         /* square metres, a 24 by 20 mm stamp */
+  var ELEPH = 6000;                  /* kilograms, an adult African bush elephant */
+  var PER_ELEPHANT = ELEPH * GACC / STAMP;   /* pascals from one elephant on one stamp */
+
+  function sig(x, n) {
+    var s = Number(x).toPrecision(n || 3);
+    if (s.indexOf("e") >= 0) return Number(s).toString();
+    if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+    return s;
+  }
+
+  /* the hero box reads its melting point from the dataset, in celsius */
+  var hg = el("Hg");
+  var hgBox = document.getElementById("hgMeltBox");
+  if (hg && hgBox) hgBox.innerHTML = "&minus;" + sig(273.15 - hg.melt, 3) + "&nbsp;&deg;C";
+
+  /* ---------- pressure and temperature dials ---------- */
+  var P_MIN = ATM / 1e9;             /* gigapascals: one atmosphere */
+  var P_MAX = 500;
+  var LP0 = Math.log10(P_MIN), LP1 = Math.log10(P_MAX);
+  var T_MIN = 0.001, T_MAX = 1e6;
+  var LT0 = Math.log10(T_MIN), LT1 = Math.log10(T_MAX);
+
+  function pFromSlider(v) { return Math.pow(10, LP0 + (v / 1000) * (LP1 - LP0)); }
+  function sliderFromP(p) {
+    var v = Math.round(((Math.log10(p) - LP0) / (LP1 - LP0)) * 1000);
+    return Math.max(0, Math.min(1000, v));
+  }
+  function tFromSlider(v) { return Math.pow(10, LT0 + (v / 1000) * (LT1 - LT0)); }
+  function sliderFromT(t) {
+    var v = Math.round(((Math.log10(t) - LT0) / (LT1 - LT0)) * 1000);
+    return Math.max(0, Math.min(1000, v));
+  }
+
+  function pressureWords(p) {
+    if (p < 0.00015) return "1 atmosphere";
+    if (p < 0.001) return sig(p * 1e9 / ATM, 2) + " atmospheres";
+    if (p < 1) return sig(p * 1000, 3) + " MPa";
+    return sig(p, 3) + " GPa";
+  }
+  function atmWords(p) {
+    var a = p * 1e9 / ATM;
+    if (a < 1.5) return "1 atm";
+    if (a < 1000) return fmt(Math.round(a)) + " atm";
+    if (a < 1e6) return fmt(Math.round(a / 1000)) + ",000 atm";
+    return sig(a / 1e6, 3) + " million atm";
+  }
+
+  /* depth at which the Earth reaches a given pressure, from integrating
+     the Preliminary Reference Earth Model density profile */
+  var PREM = [
+    [0, 0], [0.605, 24.4], [13.36, 400], [23.85, 670], [50, 1246], [100, 2250],
+    [135.83, 2891], [150, 3025], [200, 3513], [250, 4045], [300, 4678],
+    [329.08, 5150], [350, 5601], [364.08, 6371]
+  ];
+  function depthWords(p) {
+    if (p < 0.02) return "the surface";
+    if (p > PREM[PREM.length - 1][0]) return "past Earth's centre";
+    for (var i = 1; i < PREM.length; i++) {
+      if (p <= PREM[i][0]) {
+        var a = PREM[i - 1], b = PREM[i];
+        var f = (p - a[0]) / (b[0] - a[0]);
+        var d = a[1] + f * (b[1] - a[1]);
+        if (d < 1) return "the top few hundred metres";
+        if (d < 100) return Math.round(d) + " km down";
+        return fmt(Math.round(d / 10) * 10) + " km down";
+      }
+    }
+    return "past Earth's centre";
+  }
+
+  function elephantWords(p) {
+    var n = p * 1e9 / PER_ELEPHANT;
+    if (n < 0.02) return "nothing";
+    if (n < 1) return "a leg of one";
+    if (n < 2) return "one";
+    return fmt(Math.round(n));
+  }
+
+  function tempWords(T) {
+    if (T >= 1000) return fmt(Math.round(T)) + " K";
+    if (T >= 10) return sig(T, 4) + " K";
+    return sig(T, 3) + " K";
+  }
+  function celsiusWords(T) {
+    var c = T - 273.15;
+    if (T < 1) return "colder than anywhere in deep space";
+    if (T < 40) return sig(c, 4) + " °C";
+    if (Math.abs(c) < 1000) return sig(c, 3) + " °C";
+    return fmt(Math.round(c)) + " °C";
+  }
+  function tempAnchor(T) {
+    if (T < 0.01) return "below anything found in nature";
+    if (T < 2.7) return "colder than the space between the galaxies";
+    if (T < 4.3) return "around where liquid helium boils";
+    if (T < 20.4) return "around where liquid hydrogen boils";
+    if (T < 78) return "around where liquid nitrogen boils";
+    if (T < 196) return "around where dry ice turns to gas";
+    if (T < 260) return "a deep freeze";
+    if (T < 276) return "around freezing";
+    if (T < 310) return "about room temperature";
+    if (T < 380) return "around a hot bath to boiling water";
+    if (T < 1000) return "an oven to a wood fire";
+    if (T < 1900) return "hot enough to melt iron";
+    if (T < 4000) return "hotter than a blast furnace";
+    if (T < 7000) return "around the temperature of the Sun's visible surface";
+    if (T < 30000) return "hotter than the hottest ordinary stars";
+    if (T < 300000) return "the temperature range of the Sun's outer atmosphere";
+    return "well into the range of a stellar corona";
+  }
+
+  /* ---------- the bench ---------- */
+  var BENCH = ["Na", "H", "He", "Xe", "Hg", "Au", "Og", "Al"];
+
+  /* the temperature at which the average thermal energy per mole
+     matches the element's own first ionisation energy */
+  function tIon(e) { return e && e.ion1 ? (e.ion1 * 1000 / RGAS) : 60000; }
+
+  function common(e, P, T) {
+    var Ti = tIon(e);
+    if (T >= Ti) {
+      return {
+        head: "A plasma",
+        body: "The electrons are gone. At about " + fmt(Math.round(Ti / 100) * 100) +
+          " kelvin the average thermal energy per mole matches " + e.name.toLowerCase() +
+          "'s first ionisation energy of " + e.ion1 + " kilojoules per mole, and what is left is " +
+          "bare nuclei and loose electrons. <strong>" + e.z + " protons is all that is still " +
+          e.name.toLowerCase() + " about it.</strong> Pressure has stopped being a chemical dial here: " +
+          "it sets the density of the plasma and nothing about the bonding, because there is no bonding.",
+        prov: "Worked out from the first ionisation energy in the atlas dataset, " + e.ion1 +
+          " kilojoules per mole, divided by the gas constant."
+      };
+    }
+    if (T >= Ti / 10) {
+      return {
+        head: "A gas coming apart",
+        body: "Hot enough that a fair share of the atoms have lost an electron and the gas conducts. Full stripping " +
+          "sets in near " + fmt(Math.round(Ti / 100) * 100) + " kelvin for " + e.name.toLowerCase() +
+          ", and the way in is gradual: the hotter it gets the larger the ionised fraction, and the more the " +
+          "material behaves like a plasma and less like a gas of atoms.",
+        prov: "The onset scale is the first ionisation energy from the atlas dataset, " + e.ion1 +
+          " kilojoules per mole, divided by the gas constant."
+      };
+    }
+    return null;
+  }
+
+  /* melting line for sodium, from the anchors Gregoryanz and colleagues measured */
+  var NA_MELT = [[0, 370.94], [31, 1000], [65, 750], [103, 400], [118, 300], [130, 400]];
+  function naMelt(P) {
+    if (P >= 130) return 400;
+    for (var i = 1; i < NA_MELT.length; i++) {
+      if (P <= NA_MELT[i][0]) {
+        var a = NA_MELT[i - 1], b = NA_MELT[i];
+        return a[1] + ((P - a[0]) / (b[0] - a[0])) * (b[1] - a[1]);
+      }
+    }
+    return 400;
+  }
+
+  var RULES = {
+    Na: function (e, P, T) {
+      if (P < 0.5) {
+        if (T > e.boil) return { head: "A hot vapour", body: "Above " + e.boil + " kelvin sodium boils. The orange of an old street lamp is one line out of this atom, at 589 nanometres, driven by an electrical discharge rather than by heat.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "A molten metal", body: "Sodium melts at " + e.melt + " kelvin, which is 97.8 degrees Celsius. Molten sodium carries heat well enough that it has been used as a reactor coolant.", prov: "Melting point from the atlas dataset." };
+        return { head: "A soft silver metal", body: "One loose electron per atom, packed body-centred cubic, and soft enough that <strong>you can cut it with a kitchen knife</strong>. This is sodium doing exactly what group 1 says it should.", prov: "The ordinary bench condition, measured many times over since Humphry Davy isolated it in 1807." };
+      }
+      var Tm = naMelt(P);
+      if (P < 31) {
+        if (T > Tm) return { head: "A dense liquid metal", body: "Under pressure sodium's melting point <strong>climbs</strong>, up towards a peak near 1,000 kelvin at 31 gigapascals. Squeezing it here makes it harder to melt, which is the ordinary behaviour and the last stretch where sodium is ordinary.", prov: "Eugene Gregoryanz and colleagues followed the melting line with synchrotron diffraction, Physical Review Letters, 2005." };
+        return { head: "A metal, close packed", body: "Still a metal, packing tighter. The melting point at this pressure sits near " + Math.round(Tm) + " kelvin and is still rising.", prov: "Melting line measured by Gregoryanz and colleagues, Physical Review Letters, 2005." };
+      }
+      if (P < 103) {
+        if (T > Tm) return { head: "A liquid metal, on the way down", body: "Past the 31 gigapascal peak the melting line <strong>falls</strong>, and steeply. More pressure now makes sodium easier to melt, which is the opposite of what a simple metal does.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+        return { head: "A metal, restacking", body: "Solid, but the structures are getting complicated as the core electrons start to feel each other. The melting line above is near " + Math.round(Tm) + " kelvin and dropping.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+      }
+      if (P < 118) {
+        if (T > Tm) return { head: "Liquid, and nearly at room temperature", body: "The melting line here is near " + Math.round(Tm) + " kelvin, heading for its floor.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+        return { head: "A dark metal, complex structures", body: "Sodium crystallises in a run of low-symmetry structures through this range, and its melting point is falling towards its minimum.", prov: "Gregoryanz and colleagues, Physical Review Letters, 2005." };
+      }
+      if (P < 200) {
+        if (T > Tm) return { head: "Liquid sodium at room temperature", body: "<strong>The melting line bottoms out at 300 kelvin at 118 gigapascals.</strong> Squeeze sodium this hard and it is a liquid in a warm room. A soft metal you could cut with a knife at one atmosphere pours at 20 degrees Celsius at a million.", prov: "Gregoryanz and colleagues measured the minimum with synchrotron diffraction and reported it in Physical Review Letters in 2005. The measured line stops at 130 gigapascals." };
+        return { head: "A dark, dense metal", body: "Solid again, and darkening. Between here and 200 gigapascals sodium loses its metallic sheen entirely.", prov: "Structures from Gregoryanz and colleagues, 2005; the optical change from Ma and colleagues, Nature, 2009." };
+      }
+      return {
+        head: "A transparent insulator",
+        body: "At 200 gigapascals sodium is compressed fivefold, to about 4.9 grams per cubic centimetre, and it is <strong>see-through, with a wide band gap and no metallic sheen at all</strong>. The cause is not atoms pairing off: it is the valence electrons being pushed by the swollen atomic cores into the empty spaces in the lattice, where they stop conducting. A metal has become glass by squeezing alone.",
+        prov: "Yanming Ma, Mikhail Eremets, Artem Oganov and colleagues photographed it in a diamond anvil cell and reported it in Nature in 2009."
+      };
+    },
+
+    H: function (e, P, T) {
+      if (P < 0.001) {
+        if (T > e.boil) return { head: "A gas of pairs", body: "Two atoms to a molecule, the lightest gas there is, and 75 per cent of the ordinary matter in the universe by mass.", prov: "Boiling point " + e.boil + " kelvin, from the atlas dataset." };
+        if (T > e.melt) return { head: "A liquid", body: "Liquid between " + e.melt + " and " + e.boil + " kelvin, a range of just over six degrees. This is rocket fuel: the Space Shuttle's big orange tank was mostly this.", prov: "Melting and boiling points from the atlas dataset." };
+        return { head: "A soft molecular solid", body: "Hydrogen molecules on a lattice, still spinning freely in place. Transparent, and an insulator.", prov: "Melting point " + e.melt + " kelvin, from the atlas dataset." };
+      }
+      if (P < 110) return { head: "Molecular hydrogen, squeezed", body: "Still pairs of atoms, still an insulator, still transparent, just closer together. This is phase I, where the molecules spin freely on their lattice sites, and it holds over an enormous span of pressure.", prov: "Mapped by Raman and infrared spectroscopy in diamond anvil cells since the 1980s." };
+      if (P < 220) return { head: "Molecules that have stopped spinning", body: "Through this range the molecules settle into fixed orientations rather than tumbling, and the vibration spectrum changes shape. Still an insulator. Still not a metal.", prov: "Phases II and III, from Raman spectroscopy in diamond anvil cells." };
+      if (P < 325) return { head: "Layers of two kinds at once", body: "Above 220 gigapascals at room temperature hydrogen takes a structure with two different sorts of layer stacked alternately, one of them nearly molecular and one of them not. Mikhail Eremets and Ivan Troyan reported it in 2011 and it has been reproduced since.", prov: "Phase IV, seen by Raman spectroscopy at room temperature in a diamond anvil cell." };
+      if (P < 425) return { head: "A newer phase again", body: "Above 325 gigapascals at 300 kelvin the Raman signal changes again. Philip Dalladay-Simpson, Ross Howie and Eugene Gregoryanz reported this one in <em>Nature</em> in 2016, and read the changes as the molecular bonds weakening on the way to something else.", prov: "Phase V, Dalladay-Simpson, Howie and Gregoryanz, Nature 529, 63, 2016." };
+      if (P < 495) return { head: "The gap closing", body: "At 425 gigapascals and 80 kelvin the direct band gap drops sharply from <strong>0.6 electronvolts to under 0.1</strong>, and the infrared light that used to pass through is almost entirely absorbed. Wigner and Huntington predicted this in 1935 and put it at 25 gigapascals, using the compressibility measured at zero pressure for every pressure. The idea held; the number did not.", prov: "Paul Loubeyre, Florent Occelli and Paul Dumas, in a toroidal diamond anvil cell at the SOLEIL synchrotron, Nature, 2020." };
+      return { head: "Reflecting like a metal", body: "Ranga Dias and Isaac Silvera reported hydrogen at 495 gigapascals and 5.5 kelvin reflecting light in the way a free-electron metal does. Comments published in the same journal dispute what the reflectance supports, and the authors issued a correction to their fit. <strong>The reading, the objections and the correction sit on the record together</strong>, which is the ordinary condition of a measurement at the edge of what an instrument can do.", prov: "Science, 2017, with the comments and erratum in the same journal. What would settle it is x-ray diffraction on a sample large enough to hold at that pressure." };
+    },
+
+    He: function (e, P, T) {
+      if (P < 0.0025) {
+        if (T > e.boil) return { head: "A gas that bonds to nothing", body: "Helium grips its electrons harder than any other element, <strong>" + e.ion1 + " kilojoules per mole</strong>, which is the highest first ionisation energy on the shelf. At this pressure it will not bond to anything, including itself.", prov: "Ionisation energy and boiling point " + e.boil + " kelvin, from the atlas dataset." };
+        if (T > 2.17) return { head: "A liquid that will not freeze", body: "Helium is the one element that <strong>stays liquid all the way down to absolute zero</strong> at ordinary pressure. Its atoms are so light and so weakly attracted that the leftover quantum jiggle keeps them from settling into a lattice.", prov: "Measured at Leiden by Heike Kamerlingh Onnes, who first liquefied helium in 1908." };
+        return { head: "A superfluid", body: "Below 2.17 kelvin liquid helium-4 flows with no viscosity at all: it climbs the walls of its container and creeps out over the rim. Same two protons. A different kind of matter.", prov: "The transition at 2.17 kelvin has been measured since the 1930s." };
+      }
+      if (P < 113) {
+        if (T > 20) return { head: "A dense fluid", body: "Compressed, still chemically standing apart from everything around it. Helium is the standard pressure-transmitting medium in diamond anvil cells precisely because it stays soft and stays out of the way.", prov: "Everyday laboratory practice in high pressure work." };
+        return { head: "Solid helium", body: "Above about 25 atmospheres near 1 kelvin helium finally freezes. It is a solid you could push your finger through if the cold did not stop you: the softest solid there is.", prov: "The freezing pressure near 1 kelvin has been measured since the 1920s." };
+      }
+      return {
+        head: "Bonded to sodium",
+        body: "Above 113 gigapascals helium forms <strong>Na<sub>2</sub>He</strong>, a thermodynamically stable compound with a fluorite structure. It is an insulator, and the interesting part is where its electrons live: in pairs sitting in the empty cubes between the atoms rather than on any atom at all. The element famous for bonding to nothing has a compound, and it needed a million atmospheres to make.",
+        prov: "Xiao Dong, Artem Oganov, Alexander Goncharov and colleagues loaded sodium into a helium medium in a laser-heated diamond anvil cell, compressed to 155 gigapascals, and saw new single-crystal reflections above 113 after heating past 1,500 kelvin. Nature Chemistry, 2017."
+      };
+    },
+
+    Xe: function (e, P, T) {
+      if (P < 0.001) {
+        if (T > e.boil) return { head: "A heavy gas", body: "Xenon boils at " + e.boil + " kelvin. It is a noble gas that has been doing chemistry since 1962, when Neil Bartlett made a xenon compound at ordinary pressure and ended the idea that group 18 never reacts.", prov: "Boiling point from the atlas dataset." };
+        return { head: "A soft crystal", body: "Solid xenon below " + e.melt + " kelvin: neutral atoms packed cubic, held only by the weak mutual attraction of full shells.", prov: "Melting point from the atlas dataset." };
+      }
+      if (P < 21) return { head: "A close-packed solid", body: "Compressed, cubic, still chemically aloof. Xenon is dense enough at these pressures to be used as a pressure medium in its own right.", prov: "Structure from x-ray diffraction in diamond anvil cells." };
+      if (P < 78) return { head: "Restacked to hexagonal", body: "The packing changes from cubic to hexagonal, with the equilibrium boundary at <strong>21 plus or minus 3 gigapascals</strong>. The change is sluggish enough that it has been caught happening anywhere between 3 and 70 gigapascals depending on the path taken.", prov: "John Caldwell and Jeffrey Nguyen, Science, 1997." };
+      if (P < 132) return { head: "Building oxides", body: "Above 78 gigapascals xenon takes on oxygen and builds extended networks of shared oxygen squares and pyramids, with the xenon carrying mixed charges. Two compounds have been made and identified by x-ray diffraction: <strong>Xe<sub>2</sub>O<sub>5</sub> and Xe<sub>3</sub>O<sub>2</sub></strong>.", prov: "Agnès Dewaele, Nicholas Worth, Chris Pickard and colleagues, Nature Chemistry, 2016. The result bears directly on why Earth's atmosphere holds less xenon than it should." };
+      return { head: "A metal", body: "At <strong>132 plus or minus 5 gigapascals</strong> the band gap closes and xenon conducts. The full outer shell, the whole basis for its place in group 18, is no longer setting the behaviour: the electrons have spread into a band that reaches from atom to atom.", prov: "Kathleen Goettel and colleagues reported the optical evidence in Physical Review Letters in 1989; Rachel Reichlin and colleagues put the onset nearer 150 gigapascals in the same issue." };
+    },
+
+    Hg: function (e, P, T) {
+      if (P < 0.5) {
+        if (T > e.boil) return { head: "A vapour", body: "Mercury boils at " + e.boil + " kelvin. Its vapour, excited by a discharge, is what lights a fluorescent tube.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "A liquid metal", body: "Melting point " + e.melt + " kelvin, which is " + sig(e.melt - 273.15, 3) + " degrees Celsius. It is liquid at 25 degrees because relativity pulls its outer electron pair in tight, so mercury atoms hold each other about as weakly as argon atoms do. <strong>Without that, the calculation gives 355 kelvin</strong> and mercury is a solid you could hold.", prov: "Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran it both ways, Angewandte Chemie, 2013." };
+        if (T > 4.2) return { head: "A solid metal", body: "Frozen mercury, rhombohedral, and about as soft as lead. Below " + e.melt + " kelvin, which is a cold winter night in Siberia.", prov: "Melting point from the atlas dataset." };
+        return { head: "A superconductor", body: "Below 4.2 kelvin mercury carries current with <strong>no resistance at all</strong>. Heike Kamerlingh Onnes found it at Leiden in 1911, and his plot from 26 October that year shows the resistance dropping from 0.1 ohm to unmeasurable at 4.20 kelvin. Mercury was the first superconductor anyone found.", prov: "Onnes, Leiden, 1911. He had the Nobel Prize in Physics two years later." };
+      }
+      if (P < 10) return { head: "A solid metal under pressure", body: "Mercury's melting line rises with pressure. Synchrotron x-ray diffraction has followed liquid mercury to 9.44 gigapascals and 651 kelvin, and there the melting line <strong>flattens out between 6 and 9 gigapascals</strong> rather than continuing to climb, which is the signature of the liquid changing structure underneath.", prov: "In situ synchrotron x-ray diffraction with matching first-principles molecular dynamics, Physical Review B. The earlier boundaries were mapped by Klement, Jayaraman and Kennedy in 1963." };
+      return { head: "A dense metal", body: "Above 10 gigapascals mercury is a solid metal running through a sequence of crystal structures. Wilfried Schulte and Wilhelm Holzapfel drew that phase diagram out to 67 gigapascals and 500 kelvin in 1993. <strong>Beyond 67 gigapascals nobody has drawn the boundaries yet</strong>, which is a gap of a few hundred gigapascals sitting on a bench-scale instrument.", prov: "Schulte and Holzapfel, Physical Review B 48, 14009, 1993. The instrument to close the gap already exists." };
+    },
+
+    Au: function (e, P, T) {
+      if (P < 0.001) {
+        if (T > e.boil) return { head: "A gold vapour", body: "Boiling at " + e.boil + " kelvin. Gold vapour deposited on glass is how a low-emissivity window coating is made.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "Molten gold", body: "Melting at " + e.melt + " kelvin, " + fmt(Math.round(e.melt - 273.15)) + " degrees Celsius. Molten gold is not yellow: it glows the colour of its own temperature, like any hot thing.", prov: "Melting point from the atlas dataset." };
+        return { head: "Yellow metal", body: "Face-centred cubic, the most malleable metal there is, and <strong>yellow because of relativity</strong>. Gold absorbs near 2.4 electronvolts, in the blue, so what comes back to your eye is short of blue. Take the relativistic shift away and the absorption moves into the ultraviolet and gold looks like silver.", prov: "Niels Egede Christensen and Bernard Seraphin ran the band structure with and without relativity, Physical Review B, 1971." };
+      }
+      if (P < 100) return { head: "The measuring stick", body: "Gold stays face-centred cubic and stays metallic, and that reliability is why it is used as the <strong>pressure standard</strong> inside diamond anvil cells: measure how much a gold speck has compressed and you know the pressure. Nearly every other figure on this bench is quoted against a scale like this one.", prov: "Everyday practice in high pressure work; the modern calibration is Fratanduono, Millot and colleagues, Science, 2021." };
+      return { head: "Still gold, calibrated to a terapascal", body: "Dayne Fratanduono, Marius Millot and colleagues compressed gold and platinum without a shock at the National Ignition Facility and the Z machine and fixed the pressure against density relationship out to <strong>one terapascal</strong>, which is 1,000 gigapascals, nearly three times the pressure at Earth's centre. Gold's job at the top of this dial is to tell everyone else what pressure they are at.", prov: "Science 372, 1063, 2021. And a separate change with no pressure involved: gold particles about 20 nanometres across make a ruby-red liquid, which Michael Faraday reported in 1857. Same element, same chemistry, different colour, from size alone." };
+    },
+
+    Og: function (e, P, T) {
+      if (P < 0.001 && T < 220) return { head: "A solid, both ways", body: "Below 220 kelvin the calculation gives a solid whether relativity is in it or not. Everything distinctive about oganesson shows up between 220 and 325 kelvin.", prov: "Odile Smits, Jan-Michael Mewes, Paul Jerabek and Peter Schwerdtfeger, Angewandte Chemie, 2020." };
+      if (P < 0.001 && T < e.melt) return {
+        head: "A solid semiconductor",
+        body: "Element 118 sits under radon in group 18, and the column says gas. The calculation says <strong>solid, melting at " + e.melt + " plus or minus 15 kelvin</strong> and boiling at " + e.boil + " plus or minus 10, an unusually wide liquid range of 125 kelvin. Its band gap comes out at <strong>1.5 electronvolts</strong> against radon's 7.1, which makes solid oganesson a semiconductor rather than the clear insulator every other noble gas freezes into. Run the same calculation without relativistic terms and the melting point drops to 220 kelvin: a gas in a warm room, exactly as the column predicts.",
+        prov: "No instrument has held it. Five atoms have ever been made and oganesson-294 lasts about 0.69 milliseconds, so the figures come from parallel tempering Monte Carlo and thermodynamic integration against a coupled-cluster reference. Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020; the band gap from Mewes, Smits, Kresse and Schwerdtfeger, 2019."
+      };
+      if (P < 0.001 && T < e.boil) return { head: "A liquid, if it lasted", body: "Between " + e.melt + " and " + e.boil + " kelvin the calculation puts oganesson in a liquid range 125 kelvin wide, which is remarkable for a noble gas: argon's liquid range is under 4 kelvin.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020." };
+      if (T < tIon(e) / 10) return {
+        head: "Nobody has been here",
+        body: "There is <strong>no measurement of oganesson under pressure, and no calculation of it either</strong>, because there has never been more than one atom of it in existence at a time and it lasts under a millisecond. The obstacle is not the anvil cell; it is having something to put in one. What would change that is a longer-lived isotope, which is the entire point of the search for the island of stability. Everything else on this dial is a question waiting for a sample.",
+        prov: "Five atoms of oganesson have been made since 2002. Oganesson-294 has a half-life of about 0.69 milliseconds."
+      };
+      return null;
+    },
+
+    Al: function (e, P, T) {
+      if (P < 0.001) {
+        if (T > e.boil) return { head: "A vapour", body: "Boiling at " + e.boil + " kelvin. Vapour-deposited aluminium is the reflective layer on the back of most telescope mirrors.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "Molten aluminium", body: "Melting at " + e.melt + " kelvin, " + fmt(Math.round(e.melt - 273.15)) + " degrees Celsius, which is why a drink can is cheap to recycle and a steel one is not.", prov: "Melting point from the atlas dataset." };
+        return { head: "A light metal", body: "Face-centred cubic, the most abundant metal in Earth's crust at " + fmt(e.abundCrust) + " parts per million, and wearing a skin of its own oxide two nanometres thick that stops the rest corroding. Window frames, foil, aeroplanes.", prov: "Crust abundance from the atlas dataset." };
+      }
+      if (P < 216) return { head: "Still cubic, getting dense", body: "Aluminium keeps its ordinary packing over an enormous pressure range, which makes it a favourite test material for compression experiments: you know what you started with.", prov: "X-ray diffraction in diamond anvil cells and in ramp compression." };
+      if (P < 321) return { head: "Restacked to hexagonal", body: "At <strong>216 plus or minus 9 gigapascals</strong> aluminium changes from cubic to hexagonal packing. Yasuo Akahama and colleagues caught the same change in a diamond anvil cell at 217 gigapascals, from the other kind of instrument entirely.", prov: "Danae Polsin and colleagues, nanosecond x-ray diffraction under laser-driven ramp compression, Physical Review Letters, 2017; Akahama and colleagues, Physical Review Letters, 2006." };
+      return { head: "Body-centred cubic", body: "At <strong>321 plus or minus 12 gigapascals</strong> aluminium restacks a second time, and it holds that arrangement out to 475 gigapascals, past the pressure at Earth's centre. Both changes were watched happening in nanoseconds.", prov: "Polsin and colleagues, Physical Review Letters 119, 175702, 2017. And with no pressure at all: thirteen aluminium atoms in a cluster carry 39 outer electrons, one short of a closed count, and behave chemically like a halogen. Bergeron, Castleman, Khanna and colleagues, Science, 2005." };
+    }
+  };
+
+  function describe(sym, P, T) {
+    var e = el(sym);
+    if (!e) return { head: "No data", body: "", prov: "" };
+    var c = common(e, P, T);
+    if (c) return c;
+    var r = RULES[sym] ? RULES[sym](e, P, T) : null;
+    if (r) return r;
+    return {
+      head: "Not yet mapped",
+      body: "Nobody has taken " + e.name.toLowerCase() + " to these conditions and nobody has calculated them either. That is a plain gap rather than a barrier: the instruments on the last section of this page are the ones that would fill it.",
+      prov: "Stated as a gap because no published figure covers this corner."
+    };
+  }
+
+  /* ---------- wiring ---------- */
+  var pick = document.getElementById("elPick");
+  var pRange = document.getElementById("pRange");
+  var tRange = document.getElementById("tRange");
+  var pNow = document.getElementById("pNow");
+  var tNow = document.getElementById("tNow");
+  var roWho = document.getElementById("roWho");
+  var roHead = document.getElementById("roHead");
+  var roBody = document.getElementById("roBody");
+  var roProv = document.getElementById("roProv");
+  var dAtm = document.getElementById("dialAtm");
+  var dAtmSub = document.getElementById("dialAtmSub");
+  var dDepth = document.getElementById("dialDepth");
+  var dEleph = document.getElementById("dialEleph");
+  var dElephSub = document.getElementById("dialElephSub");
+  var dTemp = document.getElementById("dialTemp");
+  var dTempSub = document.getElementById("dialTempSub");
+
+  var chosen = "Hg";
+
+  if (pick) {
+    pick.innerHTML = BENCH.map(function (s) {
+      var e = el(s);
+      if (!e) return "";
+      return '<button type="button" data-sym="' + s + '" aria-pressed="' + (s === chosen) + '">' +
+        '<span class="chip ' + catClass(e.cat) + '" aria-hidden="true"><i>' + e.z + '</i><b>' + e.sym + '</b></span>' +
+        "<span>" + e.name + "</span></button>";
+    }).join("");
+  }
+
+  function refresh() {
+    var P = pFromSlider(parseInt(pRange.value, 10));
+    var T = tFromSlider(parseInt(tRange.value, 10));
+    var e = el(chosen);
+
+    pNow.textContent = pressureWords(P);
+    tNow.textContent = tempWords(T) + ", " + celsiusWords(T);
+
+    dAtm.textContent = atmWords(P);
+    dAtmSub.textContent = P < 0.00015 ? "the air around you" : "times the air pressure at sea level";
+    dDepth.textContent = depthWords(P);
+    var ew = elephantWords(P);
+    dEleph.textContent = ew;
+    dElephSub.textContent = ew === "nothing"
+      ? "six-tonne elephants on one postage stamp: not enough to count"
+      : "six-tonne elephants standing on one postage stamp";
+    dTemp.textContent = celsiusWords(T);
+    dTempSub.textContent = tempAnchor(T);
+
+    var d = describe(chosen, P, T);
+    roWho.textContent = e.name + " · " + e.z + " protons";
+    roHead.innerHTML = d.head;
+    roBody.innerHTML = d.body;
+    roProv.innerHTML = d.prov ? "<b>Where this comes from.</b> " + d.prov : "";
+  }
+
+  if (pick && pRange && tRange) {
+    pick.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest("button[data-sym]") : null;
+      if (!b) return;
+      chosen = b.getAttribute("data-sym");
+      [].slice.call(pick.querySelectorAll("button[data-sym]")).forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      refresh();
+    });
+    pRange.addEventListener("input", refresh);
+    tRange.addEventListener("input", refresh);
+
+    var presets = document.getElementById("presets");
+    if (presets) {
+      presets.addEventListener("click", function (ev) {
+        var b = ev.target.closest ? ev.target.closest("button[data-p]") : null;
+        if (!b) return;
+        pRange.value = sliderFromP(parseFloat(b.getAttribute("data-p")));
+        tRange.value = sliderFromT(parseFloat(b.getAttribute("data-t")));
+        refresh();
+      });
+    }
+    refresh();
+  }
+
+  /* ---------- relativity toggle ---------- */
+  var relBtn = document.getElementById("relBtn");
+  var relLabel = document.getElementById("relLabel");
+  var relPanel = document.getElementById("relPanel");
+
+  if (relBtn && relPanel) {
+    var rows = [].slice.call(relPanel.querySelectorAll(".relrow"));
+    var setRel = function (on) {
+      relBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      relLabel.textContent = on ? "Relativity is in the calculation" : "Relativity is switched off";
+      rows.forEach(function (r) {
+        r.classList.toggle("off", !on);
+        var v = r.querySelector(".val");
+        var t = r.querySelector(".txt");
+        if (v) v.innerHTML = v.getAttribute(on ? "data-on" : "data-off");
+        if (t) t.innerHTML = t.getAttribute(on ? "data-on" : "data-off");
+      });
+    };
+    relBtn.addEventListener("click", function () {
+      setRel(relBtn.getAttribute("aria-pressed") !== "true");
+    });
+    setRel(true);
+  }
+})();
+</script>
+</body>
+</html>
