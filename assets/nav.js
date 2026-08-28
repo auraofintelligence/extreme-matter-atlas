@@ -205,17 +205,34 @@
     apply();
   })();
 
-  /* scroll-reveal for .reveal blocks */
-  if ("IntersectionObserver" in window) {
+  /* Scroll reveal. Kept deliberately forgiving: a threshold above zero can
+     never be met by a section taller than a few screens, which on a phone
+     leaves the page dark, so this uses a margin instead and reveals
+     everything after a short wait whatever happens. */
+  (function () {
+    var blocks = [].slice.call(document.querySelectorAll(".reveal"));
+    if (!blocks.length) return;
+
+    var showAll = function () {
+      blocks.forEach(function (el) { el.classList.add("in"); });
+    };
+
+    if (!("IntersectionObserver" in window)) { showAll(); return; }
+
+    document.documentElement.classList.add("reveal-on");
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
       });
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
-  }
+    }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+
+    blocks.forEach(function (el) { io.observe(el); });
+
+    /* Safety net: if anything stops the observer firing, nothing stays hidden. */
+    window.setTimeout(showAll, 2500);
+    window.addEventListener("pageshow", showAll);
+  })();
 
   /* shared helpers */
   window.EMA = {

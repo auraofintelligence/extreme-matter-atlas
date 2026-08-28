@@ -585,8 +585,11 @@ input[type="range"]::-moz-range-thumb {
 
 .mono { font-family: var(--font-mono); font-size: 0.92em; }
 
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
-.reveal.in { opacity: 1; transform: none; }
+/* Reveal is opt-in: the class below is added by nav.js once it is running.
+   Without JavaScript, or if the script is throttled or dropped on a long page,
+   every block stays visible instead of the page going dark. */
+html.reveal-on .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+html.reveal-on .reveal.in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -594,7 +597,7 @@ input[type="range"]::-moz-range-thumb {
     transition-duration: 0.001s !important;
   }
   html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; }
+  html.reveal-on .reveal { opacity: 1; transform: none; }
 }
 
 /* ---------- previous and next ---------- */
