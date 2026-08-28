@@ -190,8 +190,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
             <div class="rec-head"><span class="rec-what">Highest melting metal</span><span class="rec-who">Tungsten</span></div>
           </div>
           <div class="rec-val">3,422 &deg;C</div>
-          <span class="rec-unit">melting point, 3,695 kelvin</span>
-          <p>The hottest setting on a kitchen oven is around 250 degrees. Tungsten does not soften until about fourteen times that number. Steel puddles into a bright orange pool at roughly 1,500 degrees; at that heat a tungsten bar is still a bar, and stays one for another 1,900 degrees.</p>
+          <span class="rec-unit">melting point (3,695 kelvin, the same size degrees counted up from absolute zero)</span>
+          <p>The hottest setting on a kitchen oven is around 250 degrees Celsius. Tungsten does not soften until about fourteen times that number. Steel puddles into a bright orange pool at roughly 1,500 degrees; at that heat a tungsten bar is still a bar, and stays one for another 1,900 degrees.</p>
           <p>Which is why a coiled tungsten wire can sit inside a glass globe glowing white and simply keep glowing, and why the black tip on a masonry drill bit is tungsten locked to carbon.</p>
           <a class="rec-more" href="engineering.html">Records matched to real jobs</a>
         </div>
@@ -201,9 +201,9 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
             <div class="rec-tile cat-noble"><span class="s">He</span><span class="z">2</span></div>
             <div class="rec-head"><span class="rec-what">Lowest boiling point</span><span class="rec-who">Helium</span></div>
           </div>
-          <div class="rec-val">-268.9 &deg;C</div>
-          <span class="rec-unit">boiling point, 4.22 kelvin</span>
-          <p>The coldest air ever recorded at a weather station on Earth was about 89 degrees below zero, at Vostok in Antarctica. Helium boils about 180 degrees colder again, a bare four degrees above absolute zero, the bottom of the temperature scale that the third law of thermodynamics puts out of reach in any finite number of cooling steps.</p>
+          <div class="rec-val">4.22 kelvin</div>
+          <span class="rec-unit">boiling point: 4.22 degrees above absolute zero, which is -268.9 &deg;C</span>
+          <p>The coldest air ever recorded at a weather station on Earth was about 89 degrees Celsius below zero, at Vostok in Antarctica. Helium boils about 180 degrees colder again, a bare four degrees above absolute zero, the bottom of the temperature scale that the third law of thermodynamics puts out of reach in any finite number of cooling steps.</p>
           <p>Keep cooling it and nothing else happens. At ordinary air pressure helium stays liquid all the way down, because its atoms keep jiggling even at absolute zero and that jiggle is bigger than the weak pull holding them together. To make it hold still you have to squeeze it as well, to roughly 25 times the pressure of the air around you. It is the only element that behaves this way. Hospitals lean on that: the magnet inside an MRI scanner sits in a bath of liquid helium so it can carry current without heating up.</p>
           <a class="rec-more" href="engineering.html">The cold end of engineering</a>
         </div>
@@ -361,8 +361,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
         <p>The heaviest elements have never been made in weighable amounts, so most of their bulk numbers are calculated from theory rather than measured on a bench. Everything from rutherfordium at 104 up to oganesson at 118 carries estimated values for density, and for melting and boiling points where any are listed at all. Those entries wear an <span class="tag est">est.</span> tag wherever they appear.</p>
         <p>This matters most on the density board. Hassium is calculated at about 40.7 grams per cubic centimetre, well past osmium, and several of its neighbours are calculated past it too. Not one of those figures comes from weighing anything: hassium arrives as single atoms, and even its longest-lasting known form is half gone inside a minute. Osmium at 22.587 is the densest thing anyone has actually put on a scale, and switching the board to measured only puts it back on top.</p>
         <p>Francium and astatine sit in the same position for a different reason. Both occur in nature only in traces that decay within hours or minutes, so their densities, melting points, boiling points and atom sizes are estimates, and francium's electronegativity of 0.70 is an old calculated value. Later work suggests francium may in fact pull slightly harder than caesium, which would hand the low record to caesium at 0.79. Its measured ionisation energy already sits above caesium's.</p>
-        <p>A few values are quirks of pressure rather than errors. Helium's listed melting point of 0.95 kelvin only applies under squeeze; at ordinary air pressure it does not freeze. Carbon tops the melting list at 3,823 kelvin, but at ordinary pressure it turns straight from solid to vapour without a liquid stage in between, as arsenic does. Elements that skip the liquid stage that way have no span to report, so they sit out that board.</p>
-        <p>Rhenium tops the boiling board here at 5,869 kelvin, on the CRC figures. Other reference tables put tungsten above it at about 5,930 kelvin, and the gap between the two is smaller than the disagreement between the tables, so that record turns on which table you read.</p>
+        <p>A few values are quirks of pressure rather than errors. Helium's listed melting point of 0.95 kelvin, less than a degree above absolute zero, only applies under squeeze; at ordinary air pressure it does not freeze. Carbon tops the melting list at 3,550 &deg;C (3,823 kelvin), but at ordinary pressure it turns straight from solid to vapour without a liquid stage in between, as arsenic does. Elements that skip the liquid stage that way have no span to report, so they sit out that board.</p>
+        <p>Rhenium tops the boiling board here at 5,596 &deg;C (5,869 kelvin), on the CRC figures. Other reference tables put tungsten above it at about 5,657 &deg;C (5,930 kelvin), and the gap between the two is smaller than the disagreement between the tables, so that record turns on which table you read.</p>
         <p>Abundance figures are averages over a whole crust or a whole universe, rounded in the sources to one or two significant figures. They are good for ranking and for order of magnitude, not for splitting hairs between neighbours. The comparison of crust share against universe share inherits that rounding twice over, so read it as a pattern rather than a league ladder.</p>
       </div>
     </div>
@@ -419,6 +419,10 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     return num(v, a >= 100 ? 0 : a >= 10 ? 1 : a >= 1 ? 2 : 3);
   }
   function celsius(k) { return num(k - 273.15, Math.abs(k - 273.15) >= 100 ? 0 : 1) + " °C"; }
+  /* temperatures read in Celsius, the everyday scale here. Within thirty degrees of
+     absolute zero the Celsius figure stops telling you anything, so kelvin leads there
+     and carries the Celsius reading beside it. */
+  function temp(k) { return k < 30 ? num(k, 2) + " K (" + celsius(k) + ")" : celsius(k); }
   function compact(n) {
     if (n >= 1e9) return auto(n / 1e9) + " billion";
     if (n >= 1e6) return auto(n / 1e6) + " million";
@@ -449,21 +453,21 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
     },
     {
       id: "melt", chip: "Melting point", title: "Highest melting point",
-      titleLo: "Lowest melting point", sub: "melting point",
+      titleLo: "Lowest melting point", sub: "melting point, degrees Celsius",
       get: function (e) { return e.melt; },
       est: function (e) { return e.est.indexOf("melt") >= 0; },
-      fmt: celsius,
-      plain: "The heat at which a solid gives way and turns liquid. A kitchen oven tops out near 250 degrees.",
-      gloss: "The temperature at which a solid gives way and turns liquid. A kitchen oven tops out near 250 degrees; steel puddles at about 1,500. Carbon leads this board, though at ordinary air pressure it skips the liquid stage and turns straight to vapour."
+      fmt: temp,
+      plain: "The heat at which a solid gives way and turns liquid. A kitchen oven tops out near 250 degrees Celsius.",
+      gloss: "The temperature at which a solid gives way and turns liquid, read here in degrees Celsius. A kitchen oven tops out near 250 degrees; steel puddles at about 1,500. Carbon leads this board, though at ordinary air pressure it skips the liquid stage and turns straight to vapour. The coldest few lead with kelvin (K), the same size degrees counted up from absolute zero, and carry the Celsius reading beside them."
     },
     {
       id: "boil", chip: "Boiling point", title: "Highest boiling point",
-      titleLo: "Lowest boiling point", sub: "boiling point",
+      titleLo: "Lowest boiling point", sub: "boiling point, degrees Celsius",
       get: function (e) { return e.boil; },
       est: function (e) { return e.est.indexOf("boil") >= 0; },
-      fmt: celsius,
-      plain: "The heat at which a liquid gives up and turns to gas. Water goes at 100 degrees at sea level.",
-      gloss: "The temperature at which a liquid gives up and turns to gas. Water goes at 100 degrees at sea level. The top of this board runs past 5,500 degrees, which is about the temperature of the Sun's visible surface."
+      fmt: temp,
+      plain: "The heat at which a liquid gives up and turns to gas. Water goes at 100 degrees Celsius at sea level.",
+      gloss: "The temperature at which a liquid gives up and turns to gas, read here in degrees Celsius. Water goes at 100 degrees at sea level. The top of this board runs past 5,500 degrees, which is about the temperature of the Sun's visible surface. The coldest few lead with kelvin (K), the same size degrees counted up from absolute zero, and carry the Celsius reading beside them."
     },
     {
       id: "span", chip: "Liquid span", title: "Longest run as a liquid",
@@ -476,7 +480,7 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       est: function (e) { return e.est.indexOf("melt") >= 0 || e.est.indexOf("boil") >= 0; },
       fmt: function (v) { return auto(v) + " degrees"; },
       plain: "How wide a temperature window it stays liquid in, from the moment it melts to the moment it boils.",
-      gloss: "How wide a temperature window an element stays liquid in. Gallium melts in a warm hand at about 30 degrees and holds on until about 2,400, a span of roughly 2,370 degrees starting at body heat. A step in kelvin and a step in Celsius are the same size, so a span reads the same either way."
+      gloss: "How wide a temperature window an element stays liquid in. Gallium melts in a warm hand at about 30 degrees Celsius and holds on until about 2,400, a span of roughly 2,370 degrees starting at body heat. A step in kelvin and a step in Celsius are the same size, so a span reads the same either way."
     },
     {
       id: "mass", chip: "Weight of one atom", title: "Heaviest single atom",
@@ -579,7 +583,8 @@ body[data-page="extremes"] .data-table .mono-cell { font-family: var(--font-mono
       [String(EL.length), "elements on the table, from hydrogen to oganesson"],
       [num(densest.density, 3), "grams per cubic centimetre: " + densest.name + ", the densest ever weighed"],
       [celsius(hotMetal.melt), hotMetal.name + " melts here, the highest of any metal"],
-      [celsius(coldest.boil), coldest.name + " boils here, closer to absolute zero than anything else"]
+      [num(coldest.boil, 2) + " K", coldest.name + " boils here, " + num(coldest.boil, 2) +
+        " degrees above absolute zero and closer to it than anything else, or " + celsius(coldest.boil)]
     ];
     hero.innerHTML = cards.map(function (c) {
       return '<div class="stat"><span class="num">' + c[0] + '</span><span class="lbl">' + c[1] + "</span></div>";

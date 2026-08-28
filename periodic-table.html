@@ -193,7 +193,7 @@ body[data-page="table"] .drawer .drawer-note {
   <section id="chart">
     <div class="wrap">
       <h2>The <span class="hue">chart</span></h2>
-      <p>Two figures on it are worth holding on to. Carbon holds its solid form to 3,823 K, about 3,550 °C, higher than any other element: a wood-fired pizza oven runs near 450 °C, so carbon needs close to eight times that heat before it gives in. And osmium is the heaviest stuff here that anyone has ever weighed. Fill a 600 mL drink bottle with it and you would be holding about 13.5 kg, more than a full slab of cans.</p>
+      <p>Two figures on it are worth holding on to. Carbon holds its solid form to about 3,550 °C, which is 3,823 K, higher than any other element: a wood-fired pizza oven runs near 450 °C, so carbon needs close to eight times that heat before it gives in. And osmium is the heaviest stuff here that anyone has ever weighed. Fill a 600 mL drink bottle with it and you would be holding about 13.5 kg, more than a full slab of cans.</p>
       <p>Colour the chart by share of the crust and one box burns brightest: oxygen, which is about 46 per cent of the weight of the ground under your feet, locked into rock rather than floating about as air.</p>
 
       <div class="control-row">
@@ -246,7 +246,8 @@ body[data-page="table"] .drawer .drawer-note {
 
       <h3 style="margin-top:28px">Units on the cards</h3>
       <ul class="unit-list">
-        <li><b>K</b> Kelvin, a temperature scale whose zero is the point where a body has given up all the heat it has to give. The third law of thermodynamics prices the last step: each halving of the gap costs at least as much work as the halving before it, so laboratories get within billionths of a degree and no further. Ice melts at 273 K and a kettle boils at 373 K. Each card gives the everyday Celsius figure alongside.</li>
+        <li><b>°C</b> Degrees Celsius, the everyday scale here. Water freezes at 0 and boils at 100, and a warm summer day on the coast sits near 30. Every temperature on a card leads with this figure.</li>
+        <li><b>K</b> Kelvin, a temperature scale whose zero is the point where a body has given up all the heat it has to give, sitting 273.15 degrees below the freezing point of water. A step of one kelvin is the same size as a step of one degree Celsius, so the two scales differ only in where they start counting. The third law of thermodynamics prices the last step: each halving of the gap costs at least as much work as the halving before it, so laboratories get within billionths of a degree and no further. Ice melts at 0 °C, which is 273 K, and a kettle boils at 100 °C, which is 373 K. Cards carry kelvin in brackets, and lead with it for the handful of elements sitting so close to absolute zero that a Celsius reading stops telling you much.</li>
         <li><b>g/cm³</b> What one cubic centimetre weighs, about a sugar cube's worth. Water is 1, so anything under 1 is lighter than water.</li>
         <li><b>u</b> How heavy one atom is, measured against a carbon atom set at 12.</li>
         <li><b>pm</b> A picometre: a millionth of a millionth of a metre. A reach from the middle of one atom to the middle of a bonded partner runs a hundred or two of them.</li>
@@ -379,8 +380,26 @@ body[data-page="table"] .drawer .drawer-note {
     if (v >= 0.001) return trim(v * 1000) + " mg per tonne";
     return "under a milligram per tonne";
   }
-  function kelvinPair(k) {
-    return fmt(k, k < 100 ? 2 : 0) + " K (" + fmt(k - 273.15, 0) + " °C)";
+  /* Temperatures read in degrees Celsius first, kelvin alongside in brackets.
+     Below COLD_K the Celsius figure stops carrying any feel for how cold a thing is,
+     so kelvin leads there and a plain line says how far above absolute zero it sits. */
+  var COLD_K = 30;
+  function celNum(k) {
+    var s = fmt(k - 273.15, 0);
+    return s === "-0" ? "0" : s;
+  }
+  function kelvinTxt(k) {
+    return fmt(k, k < 100 ? 2 : 0) + " K";
+  }
+  function tempPair(k) {
+    return k < COLD_K
+      ? kelvinTxt(k) + " (" + celNum(k) + " °C)"
+      : celNum(k) + " °C (" + kelvinTxt(k) + ")";
+  }
+  function tempPlain(k) {
+    if (k >= COLD_K) return null;
+    if (k < 1) return "Less than a degree above absolute zero.";
+    return "About " + fmt(k, 0) + " degrees above absolute zero.";
   }
   function densFmt(d) {
     return String(Number(Number(d).toPrecision(d < 1 ? 3 : 5)));
@@ -414,13 +433,13 @@ body[data-page="table"] .drawer .drawer-note {
       tile: function (v) { return densFmt(v); },
       end: function (v) { return densFmt(v) + " g/cm³"; } },
     { key: "melt", label: "Melting point",
-      note: "The temperature where a solid gives up and turns liquid. Ice does it at 273 K; caesium melts in a warm hand; carbon holds out past 3,800 K.",
-      tile: function (v) { return fmt(v, 0); },
-      end: function (v) { return fmt(v, v < 10 ? 2 : v < 100 ? 1 : 0) + " K"; } },
+      note: "The temperature where a solid gives up and turns liquid. Boxes carry degrees Celsius: ice does it at 0 °C, which is 273 K, caesium melts in a warm hand, and carbon holds out past 3,500 °C. Down the cold end, helium takes pressure as well as chill before it will set at all, at 0.95 K, less than a degree above absolute zero. The ends of the ramp give kelvin alongside.",
+      tile: function (v) { return celNum(v); },
+      end: function (v) { return tempPair(v); } },
     { key: "boil", label: "Boiling point",
-      note: "The temperature where a liquid turns to vapour. A kettle gets water there at 373 K. Helium turns to vapour at 4 K, barely above the background chill of deep space; rhenium holds out to 5,869 K.",
-      tile: function (v) { return fmt(v, 0); },
-      end: function (v) { return fmt(v, v < 10 ? 2 : v < 100 ? 1 : 0) + " K"; } },
+      note: "The temperature where a liquid turns to vapour. Boxes carry degrees Celsius: a kettle gets water there at 100 °C, which is 373 K, and rhenium holds out to 5,596 °C. Down the cold end, helium turns to vapour at 4.22 K, about four degrees above absolute zero and barely above the background chill of deep space. The ends of the ramp give kelvin alongside.",
+      tile: function (v) { return celNum(v); },
+      end: function (v) { return tempPair(v); } },
     { key: "en", label: "Pull on shared electrons",
       note: "When two atoms share electrons, one usually pulls harder. That tug is scored on the Pauling scale, from 0.7 for caesium up to 3.98 for fluorine. Eighteen boxes hold no score, because they hardly share at all.",
       tile: function (v) { return trim(v); },
@@ -688,9 +707,11 @@ body[data-page="table"] .drawer .drawer-note {
     h += propRow("Atomic mass", massFmt(e.mass) + " u", null);
     h += propRow("Density", densFmt(e.density) + " g/cm³", densityPlain(e.density), isEst("density"));
     h += propRow("Melting point",
-      e.melt === null ? "no settled figure" : kelvinPair(e.melt), null, isEst("melt"));
+      e.melt === null ? "no settled figure" : tempPair(e.melt),
+      e.melt === null ? null : tempPlain(e.melt), isEst("melt"));
     h += propRow("Boiling point",
-      e.boil === null ? "no settled figure" : kelvinPair(e.boil), null, isEst("boil"));
+      e.boil === null ? "no settled figure" : tempPair(e.boil),
+      e.boil === null ? null : tempPlain(e.boil), isEst("boil"));
     h += propRow("Pull on shared electrons",
       e.en === null ? "none assigned" : trim(e.en),
       e.en === null ? "It hardly shares electrons at all, so it sits off the scale."
