@@ -35,10 +35,10 @@ arguments sit in the same drawers as the answers.
 | [periodic-table.html](periodic-table.html) | All 118, colour by any property, click for the full card |
 | [extremes.html](extremes.html) | The record book, computed live from the dataset |
 | [claimed-elements.html](claimed-elements.html) | Elements named in strange stories, and what they actually do |
-| [anomalous-materials.html](anomalous-materials.html) | Samples that arrived with a story, and what instruments returned |
 | **Patterns** | |
 | [crystal-lab.html](crystal-lab.html) | Lattice sketchpad: stack it, twist it, break it, watch it vibrate |
 | [metamaterials.html](metamaterials.html) | Geometry doing the work of chemistry |
+| [anomalous-materials.html](anomalous-materials.html) | Crystal lattices, 2D layer stacks and interface physics compounded into extreme material systems |
 | [cymatics.html](cymatics.html) | Chladni plates you can drive, and a ripple tank |
 | [resonance.html](resonance.html) | One idea from a playground swing to a single atom |
 | **Engines** | |

@@ -22,9 +22,9 @@ share the same drawers on purpose: that arrangement is the argument. Nav groups 
 | periodic-table.html | table | elements | 118 elements, colour-by-property, detail drawer |
 | extremes.html | extremes | elements | Leaderboards computed live from the dataset |
 | claimed-elements.html | claimed | elements | Every element named in an anomalous claim, and what it actually does |
-| anomalous-materials.html | anomalies | elements | Claimed samples: story, claim, what instruments returned |
 | crystal-lab.html | crystal | patterns | Lattice sketchpad: 2D to 3D, twist, defects, vibrating modes |
 | metamaterials.html | meta | patterns | Geometry doing the work of chemistry |
+| anomalous-materials.html | anomalies | patterns | Crystal lattices, 2D layer stacks, interface physics and field-responsive material systems |
 | cymatics.html | cymatics | patterns | Chladni plates, standing waves, patterns you can drive |
 | resonance.html | resonance | patterns | Resonance from a tuning fork to an atom |
 | vimana.html | vimana | engines | Old sky-craft stories read as a design brief |
