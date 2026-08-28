@@ -939,6 +939,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         if (T > 20) return { head: "A dense fluid", body: "Compressed, still chemically standing apart from everything around it. Helium is the standard pressure-transmitting medium in diamond anvil cells precisely because it stays soft and stays out of the way.", prov: "Everyday laboratory practice in high pressure work." };
         return { head: "Solid helium", body: "Above about 25 atmospheres near 1 kelvin helium finally freezes. It is a solid you could push your finger through if the cold did not stop you: the softest solid there is.", prov: "The freezing pressure near 1 kelvin has been measured since the 1920s." };
       }
+      if (T > 2500) return { head: "A hot dense fluid", body: "Too hot for the compound. The laser heating that made Na<sub>2</sub>He ran to about 1,500 kelvin and the crystal grew; well above that the material is a fluid again, and the melting line of Na<sub>2</sub>He has not been measured.", prov: "Stated as a gap. Synthesis conditions from Dong, Oganov, Goncharov and colleagues, Nature Chemistry, 2017." };
       return {
         head: "Bonded to sodium",
         body: "Above 113 gigapascals helium forms <strong>Na<sub>2</sub>He</strong>, a thermodynamically stable compound with a fluorite structure. It is an insulator, and the interesting part is where its electrons live: in pairs sitting in the empty cubes between the atoms rather than on any atom at all. The element famous for bonding to nothing has a compound, and it needed a million atmospheres to make.",
@@ -953,7 +954,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       }
       if (P < 21) return { head: "A close-packed solid", body: "Compressed, cubic, still chemically aloof. Xenon is dense enough at these pressures to be used as a pressure medium in its own right.", prov: "Structure from x-ray diffraction in diamond anvil cells." };
       if (P < 78) return { head: "Restacked to hexagonal", body: "The packing changes from cubic to hexagonal, with the equilibrium boundary at <strong>21 plus or minus 3 gigapascals</strong>. The change is sluggish enough that it has been caught happening anywhere between 3 and 70 gigapascals depending on the path taken.", prov: "John Caldwell and Jeffrey Nguyen, Science, 1997." };
-      if (P < 132) return { head: "Building oxides", body: "Above 78 gigapascals xenon takes on oxygen and builds extended networks of shared oxygen squares and pyramids, with the xenon carrying mixed charges. Two compounds have been made and identified by x-ray diffraction: <strong>Xe<sub>2</sub>O<sub>5</sub> and Xe<sub>3</sub>O<sub>2</sub></strong>.", prov: "Agnès Dewaele, Nicholas Worth, Chris Pickard and colleagues, Nature Chemistry, 2016. The result bears directly on why Earth's atmosphere holds less xenon than it should." };
+      if (P < 132) return { head: "A noble gas that reacts", body: "Above 78 gigapascals, with oxygen in the cell, xenon takes it on and builds extended networks of shared oxygen squares and pyramids, with the xenon carrying mixed charges. Two compounds have been made and identified by x-ray diffraction: <strong>Xe<sub>2</sub>O<sub>5</sub> and Xe<sub>3</sub>O<sub>2</sub></strong>.", prov: "Agnès Dewaele, Nicholas Worth, Chris Pickard and colleagues, Nature Chemistry, 2016. The result bears directly on why Earth's atmosphere holds less xenon than it should." };
       return { head: "A metal", body: "At <strong>132 plus or minus 5 gigapascals</strong> the band gap closes and xenon conducts. The full outer shell, the whole basis for its place in group 18, is no longer setting the behaviour: the electrons have spread into a band that reaches from atom to atom.", prov: "Kathleen Goettel and colleagues reported the optical evidence in Physical Review Letters in 1989; Rachel Reichlin and colleagues put the onset nearer 150 gigapascals in the same issue." };
     },
 
@@ -964,8 +965,11 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
         if (T > 4.2) return { head: "A solid metal", body: "Frozen mercury, rhombohedral, and about as soft as lead. Below " + e.melt + " kelvin, which is a cold winter night in Siberia.", prov: "Melting point from the atlas dataset." };
         return { head: "A superconductor", body: "Below 4.2 kelvin mercury carries current with <strong>no resistance at all</strong>. Heike Kamerlingh Onnes found it at Leiden in 1911, and his plot from 26 October that year shows the resistance dropping from 0.1 ohm to unmeasurable at 4.20 kelvin. Mercury was the first superconductor anyone found.", prov: "Onnes, Leiden, 1911. He had the Nobel Prize in Physics two years later." };
       }
-      if (P < 10) return { head: "A solid metal under pressure", body: "Mercury's melting line rises with pressure. Synchrotron x-ray diffraction has followed liquid mercury to 9.44 gigapascals and 651 kelvin, and there the melting line <strong>flattens out between 6 and 9 gigapascals</strong> rather than continuing to climb, which is the signature of the liquid changing structure underneath.", prov: "In situ synchrotron x-ray diffraction with matching first-principles molecular dynamics, Physical Review B. The earlier boundaries were mapped by Klement, Jayaraman and Kennedy in 1963." };
-      return { head: "A dense metal", body: "Above 10 gigapascals mercury is a solid metal running through a sequence of crystal structures. Wilfried Schulte and Wilhelm Holzapfel drew that phase diagram out to 67 gigapascals and 500 kelvin in 1993. <strong>Beyond 67 gigapascals nobody has drawn the boundaries yet</strong>, which is a gap of a few hundred gigapascals sitting on a bench-scale instrument.", prov: "Schulte and Holzapfel, Physical Review B 48, 14009, 1993. The instrument to close the gap already exists." };
+      if (P < 10) {
+        if (T > 651) return { head: "Molten under pressure", body: "Above the measured melting line. Synchrotron x-ray diffraction has followed liquid mercury out to 9.44 gigapascals and 651 kelvin, and there the melting line <strong>flattens out between 6 and 9 gigapascals</strong> rather than continuing to climb, which is the signature of the liquid changing structure underneath.", prov: "In situ synchrotron x-ray diffraction with matching first-principles molecular dynamics, Physical Review B. The earlier boundaries were mapped by Klement, Jayaraman and Kennedy in 1963." };
+        return { head: "A solid metal under pressure", body: "Mercury's melting line rises with pressure, so squeezing freezes it. The line has been followed to 9.44 gigapascals and 651 kelvin, and it flattens between 6 and 9 gigapascals rather than continuing to climb.", prov: "In situ synchrotron x-ray diffraction with first-principles molecular dynamics, Physical Review B; earlier boundaries from Klement, Jayaraman and Kennedy, 1963." };
+      }
+      return { head: "A dense metal", body: "Above 10 gigapascals mercury is a solid metal running through a sequence of crystal structures. Wilfried Schulte and Wilhelm Holzapfel drew that phase diagram out to 67 gigapascals and 500 kelvin in 1993. <strong>Beyond 67 gigapascals nobody has drawn the boundaries yet</strong>, which is a gap of a few hundred gigapascals sitting in front of a bench-scale instrument.", prov: "Schulte and Holzapfel, Physical Review B 48, 14009, 1993. Stated as a gap: the diamond anvil cell that would close it is ordinary equipment." };
     },
 
     Au: function (e, P, T) {
@@ -979,19 +983,19 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     },
 
     Og: function (e, P, T) {
-      if (P < 0.001 && T < 220) return { head: "A solid, both ways", body: "Below 220 kelvin the calculation gives a solid whether relativity is in it or not. Everything distinctive about oganesson shows up between 220 and 325 kelvin.", prov: "Odile Smits, Jan-Michael Mewes, Paul Jerabek and Peter Schwerdtfeger, Angewandte Chemie, 2020." };
-      if (P < 0.001 && T < e.melt) return {
+      if (P >= 0.001) return {
+        head: "Nobody has been here",
+        body: "There is <strong>no measurement of oganesson under pressure, and no calculation of it either</strong>, because there has never been more than one atom of it in existence at a time and it lasts less than a millisecond. The obstacle is not the anvil cell; it is having something to put in one. What would change that is a longer-lived isotope, which is exactly what the search towards the island of stability is for. Everything on this dial above one atmosphere is a question waiting for a sample.",
+        prov: "Five atoms of oganesson have been made since 2002. Oganesson-294 has a half-life of about 0.69 milliseconds."
+      };
+      if (T < 220) return { head: "A solid, both ways", body: "Below 220 kelvin the calculation gives a solid whether relativity is in it or not. Everything distinctive about oganesson shows up between 220 and 325 kelvin.", prov: "Odile Smits, Jan-Michael Mewes, Paul Jerabek and Peter Schwerdtfeger, Angewandte Chemie, 2020." };
+      if (T < e.melt) return {
         head: "A solid semiconductor",
         body: "Element 118 sits under radon in group 18, and the column says gas. The calculation says <strong>solid, melting at " + e.melt + " plus or minus 15 kelvin</strong> and boiling at " + e.boil + " plus or minus 10, an unusually wide liquid range of 125 kelvin. Its band gap comes out at <strong>1.5 electronvolts</strong> against radon's 7.1, which makes solid oganesson a semiconductor rather than the clear insulator every other noble gas freezes into. Run the same calculation without relativistic terms and the melting point drops to 220 kelvin: a gas in a warm room, exactly as the column predicts.",
         prov: "No instrument has held it. Five atoms have ever been made and oganesson-294 lasts about 0.69 milliseconds, so the figures come from parallel tempering Monte Carlo and thermodynamic integration against a coupled-cluster reference. Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020; the band gap from Mewes, Smits, Kresse and Schwerdtfeger, 2019."
       };
-      if (P < 0.001 && T < e.boil) return { head: "A liquid, if it lasted", body: "Between " + e.melt + " and " + e.boil + " kelvin the calculation puts oganesson in a liquid range 125 kelvin wide, which is remarkable for a noble gas: argon's liquid range is under 4 kelvin.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020." };
-      if (T < tIon(e) / 10) return {
-        head: "Nobody has been here",
-        body: "There is <strong>no measurement of oganesson under pressure, and no calculation of it either</strong>, because there has never been more than one atom of it in existence at a time and it lasts under a millisecond. The obstacle is not the anvil cell; it is having something to put in one. What would change that is a longer-lived isotope, which is the entire point of the search for the island of stability. Everything else on this dial is a question waiting for a sample.",
-        prov: "Five atoms of oganesson have been made since 2002. Oganesson-294 has a half-life of about 0.69 milliseconds."
-      };
-      return null;
+      if (T < e.boil) return { head: "A liquid, if it lasted", body: "Between " + e.melt + " and " + e.boil + " kelvin the calculation puts oganesson in a liquid range 125 kelvin wide, which is a striking figure for a noble gas: argon's liquid range is under 4 kelvin.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020." };
+      return { head: "A vapour, at last", body: "Above " + e.boil + " plus or minus 10 kelvin the calculation finally gives oganesson the gas its column promised, about 239 kelvin later than radon manages it.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020. No instrument has held it: five atoms have ever been made." };
     },
 
     Al: function (e, P, T) {
@@ -1006,16 +1010,39 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
     }
   };
 
+  /* Hot and squeezed at the same time is the corner where melting lines mostly stop.
+     Sodium's is measured to 130 GPa and hydrogen's fluid has been read at the National
+     Ignition Facility; for the rest, say the line is not drawn rather than guess it. */
+  function hotGuard(e, P, T) {
+    if (P < 1 || T <= 3000) return null;
+    if (e.sym === "H" || e.sym === "He") return null;
+    if (e.sym === "Na" && P <= 130 && T <= 1200) return null;
+    if (e.sym === "Og") return null;
+    return {
+      head: "Hot and squeezed at once",
+      body: "Both dials are hard over, and this is the corner where the maps run out. <strong>The melting line for " +
+        e.name.toLowerCase() + " at " + sig(P, 3) + " gigapascals has not been drawn</strong>, so whether it is a solid or a " +
+        "dense fluid at " + fmt(Math.round(T)) + " kelvin is an open reading rather than a settled one. What is measured at " +
+        "this pressure is the structure of the cold solid. Sodium is the exception on this bench: its line was followed to " +
+        "130 gigapascals in 2005, and it does something nobody expected.",
+      prov: "Stated as a gap. Laser-heated diamond anvil cells and pulsed-power ramp compression both reach here, so the " +
+        "missing line is beam time rather than a missing instrument."
+    };
+  }
+
   function describe(sym, P, T) {
     var e = el(sym);
     if (!e) return { head: "No data", body: "", prov: "" };
     var c = common(e, P, T);
     if (c) return c;
+    var h = hotGuard(e, P, T);
+    if (h) return h;
     var r = RULES[sym] ? RULES[sym](e, P, T) : null;
     if (r) return r;
     return {
       head: "Not yet mapped",
-      body: "Nobody has taken " + e.name.toLowerCase() + " to these conditions and nobody has calculated them either. That is a plain gap rather than a barrier: the instruments on the last section of this page are the ones that would fill it.",
+      body: "Nobody has taken " + e.name.toLowerCase() + " to these conditions and nobody has calculated them either. " +
+        "That is a plain gap rather than a barrier, and the instruments that would fill it are listed further down.",
       prov: "Stated as a gap because no published figure covers this corner."
     };
   }
