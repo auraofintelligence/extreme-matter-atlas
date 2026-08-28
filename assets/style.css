@@ -657,4 +657,4 @@ a.page-turn-slot:hover {
   .to-top { right: 14px; bottom: 14px; padding: 12px 15px; }
   .to-top-word { display: none; }
 }
-body[data-page="layers"]      { --accent: #a78bfa; --accent2: #22d3ee; }
+body[data-page="beyondtable"] { --accent: #a78bfa; --accent2: #22d3ee; }

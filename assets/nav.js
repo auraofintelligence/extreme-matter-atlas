@@ -9,7 +9,7 @@
     { key: "extremes",    href: "extremes.html",            label: "Records",          wing: "elements" },
     { key: "claimed",     href: "claimed-elements.html",    label: "Claimed Elements", wing: "elements" },
 
-    { key: "layers",      href: "layers.html",              label: "Layers",           wing: "patterns" },
+    { key: "beyondtable", href: "beyond-the-table.html",    label: "Beyond the Table", wing: "elements" },
     { key: "crystal",     href: "crystal-lab.html",         label: "Crystal Lab",      wing: "patterns" },
     { key: "meta",        href: "metamaterials.html",       label: "Metamaterials",    wing: "patterns" },
     { key: "anomalies",   href: "anomalous-materials.html", label: "Anomalous Metamaterials", wing: "patterns" },
