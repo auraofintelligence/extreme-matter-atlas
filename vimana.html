@@ -370,8 +370,291 @@ body[data-page="vimana"] .idle { color: var(--muted); }
       </div>
     </div>
   </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>Carrying <span class="hue">more than one mode</span> is ordinary engineering</h2>
+      <p>Before the bench, the design sense behind it. When a vehicle has to work across regimes whose best answers contradict each other, engineers stop looking for one optimum and carry two. Air is free reaction mass low down and absent high up, so you breathe, then you carry. A nozzle shaped for sea level is the wrong shape in vacuum, so you fly two nozzles. Thrust that gets you off a pad is the wrong thrust for a decade of cruise, so you take both. Combustion needs oxygen and a submerged boat has none, so you run diesel, then battery. Every one of these is certificated, flown or sailed hardware. The question is never whether more than one mode is allowed; it is where the changeover sits and what the changeover machinery weighs.</p>
+
+      <div class="grid">
+        <div class="card reveal">
+          <span class="card-glyph">🌬️</span>
+          <h3>One engine, two cycles</h3>
+          <p>SABRE breathes air below the changeover and runs on carried oxygen above it, through the same combustion chambers. Specific impulse, the measure of how much push you get per kilogram of propellant spent, is about 3,600 seconds breathing and about 460 seconds as a vacuum rocket: an eightfold difference from one engine. The change happens at Mach 5.14 and 28.5 kilometres, where the inlet cone shuts.</p>
+          <p>The precooler is the hard part and the enabling part: 16,800 thin-walled tubes running a helium loop that drops incoming air from about 1,000 degrees to minus 150 in a hundredth of a second. Frost blocking the tubes was a real failure mode, answered with a methanol de-icer patented in 2015. Reaction Engines went into administration on 31 October 2024. In July 2025 ESA and Frazer-Nash started INVICTUS, taking on former Reaction Engines staff, to fly a reusable Mach 5 precooled vehicle, with a first flight targeted for early 2031.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🛩️</span>
+          <h3>An engine that changes what it is, in flight</h3>
+          <p>The Pratt &amp; Whitney J58 in the SR-71 is a conventional afterburning turbojet for take-off. Above about Mach 2 to 2.2 six bypass tubes open and dump air from the fourth compressor stage straight into the afterburner, and the propulsive cycle becomes a turbo-ramjet. At Mach 3.2 cruise the engine core itself supplies about 20 per cent of the thrust. Nobody in 1966 called that exotic; it was the answer to an aircraft that had to leave a runway and then cruise at Mach 3.2. It flew until 1998.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🔻</span>
+          <h3>The airframe reshaping itself</h3>
+          <p>A supersonic inlet has to slow the air to subsonic before the compressor, and the shock structure that does it only sits right at one speed unless the geometry moves. So it moves. The SR-71's inlet spike translates 26 inches between Mach 1.6 and its Mach 3.2 design point, and at cruise the inlet contributes 54 per cent of the thrust against the engine's 17 and the ejector's 29. Concorde's hinged intake ramps take Mach 2 down to about Mach 0.5 at the compressor face, and the intake assemblies make 63 per cent of the powerplant's net thrust when the shocks sit where they should.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🔩</span>
+          <h3>Same chemistry, two geometries</h3>
+          <p>Falcon 9 flies essentially the same Merlin engine on both stages, with a far larger nozzle expansion on the upper one, 165 to 1, because it never runs in atmosphere. Sea level: 854 kilonewtons at 282 seconds. Vacuum: 981 kilonewtons at 348 seconds. Nothing changed but the shape of the bell, and the specific impulse moved 23 per cent. Starship does the same by flying sea-level Raptors and vacuum Raptors side by side on one stage.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🌊</span>
+          <h3>Diesel, then battery, then a third mode</h3>
+          <p>The diesel-electric submarine has been a two-mode vehicle since before the First World War, for the plain reason that combustion needs oxygen and the boat has none down there. Surfaced or at snorkel depth the diesels charge the bank; submerged, motors run off stored charge, and the mast and exhaust plume make the changeover a tactical event rather than a convenience. Air-independent propulsion adds a third mode sized for endurance instead of speed: a Gotland-class boat on Stirling AIP stays down at 5 knots for roughly two weeks against a few days on batteries alone.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🛰️</span>
+          <h3>Chemical departure, ion cruise</h3>
+          <p>Dawn had to enter orbit at Vesta, leave, and enter orbit at Ceres: about 11 kilometres a second of velocity change after launch. Its NSTAR thrusters gave 92 millinewtons at 2.6 kilowatts, throttling from 3,200 seconds of specific impulse down to 1,900 as sunlight thinned, and down to 19 millinewtons at half a kilowatt; twelve 0.9 newton hydrazine engines did the work that had to happen at a particular moment. Hayabusa's ion set delivered 1,400 metres a second on 22 kilograms of xenon across 25,800 thruster-hours. BepiColombo's T6 thrusters throw xenon out above 50 kilometres a second. Neither engine type is the better one; they are different engines for different regimes.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:34px; font-size:20px;">What one mode is bounded by</h3>
+      <p>Tsiolkovsky's equation says the velocity change a rocket gets is its exhaust speed multiplied by the natural logarithm of the mass ratio: what the vehicle weighs full, divided by what it weighs empty. The exhaust speed is set by chemistry and nozzle shape and does not move much; the best flown chemical exhaust runs about 3.73 kilometres a second. Everything else has to come out of that logarithm, and a logarithm is a slow way to buy anything: you multiply the mass ratio to add velocity in even steps.</p>
+      <p>Low Earth orbit costs about 9.4 kilometres a second of velocity change: 7.8 for the orbit itself, roughly 1.0 to 1.5 lost climbing against gravity, 0.1 to 0.15 to drag, then manoeuvring and margin. Run the equation backwards at 3.73 and the mass ratio comes to about 12.5, which puts 92 per cent of the liftoff mass into propellant. Structure, engines, tanks, shielding, landing gear and payload share the other 8 per cent. That is why rockets stage, and why taking the oxidiser out of the air for part of the climb is worth the trouble of building a precooler.</p>
+      <p>Starship is the current worked example, and the published figures let anyone check the sums. Super Heavy carries 3,400 tonnes of propellant at 3,675 tonnes gross: a propellant fraction of 92.5 per cent. The upper stage carries 1,500 tonnes at 1,585 gross, 94.6 per cent. The full stack before payload is about 5,260 tonnes, of which 4,900 is propellant, 93.2 per cent. Liftoff thrust is 89.5 meganewtons, enough to hold up about 9,100 tonnes, roughly 4,300 loaded utes. Raptor runs 327 seconds of specific impulse at sea level and 380 in the vacuum version, and both fly on the same vehicle. Staging happens about 141 seconds in, near 64 kilometres. These are the same proportions the Saturn V ran on: 93.8 per cent propellant in the first stage, 92.3 in the second, 89.0 in the third.</p>
+      <p>What one mode buys is a single propellant, a single tank set, a single engine family, and a cadence that gets cheaper the more often it runs. What it costs shows up in the same arithmetic. At 94.6 per cent propellant, every tonne of dry mass on the upper stage comes straight out of payload, and the heat shield is dry mass: about 18,000 tiles, 10.5 tonnes on the first block. Run the equation on that stage at 380 seconds. Empty, the mass ratio is 18.6 and the ideal velocity change is 10.9 kilometres a second. With 100 tonnes aboard the ratio drops to 9.1 and the figure to 8.2, against 9.4 to reach orbit; the booster supplies about 3.4 of it. The margins are thin by design and the vehicle is flying.</p>
+      <div class="pull">Those are the numbers. What they say about designing for one regime is for you to work out, and the bench below is where to work it out.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">universal shelf</span></h2>
+      <p>Here is the quietly wonderful part, and it is measured, not imagined. Starlight carries a barcode. Split any star's light with a prism and thin dark lines appear at exact colours; each element prints its own line pattern, as personal as a fingerprint. In 1868 astronomers found a pattern in sunlight that matched nothing known on the ground and named the element helium, after the Greek word for the Sun. It took another 27 years for anyone to find helium here on Earth. The Sun's shopping list was read from 150 million kilometres away, a trip a passenger jet would need about twenty years of flying to make, and it was correct.</p>
+      <p>Every star measured so far prints its barcode from the same set of elements. So the shelf is universal: an engineer near any star would be shopping from the same stock list of 118 kinds of atom, and the entire list fits on one classroom wall chart. No secret ingredients have turned up anywhere light has been read.</p>
+      <p>Which means any real edge would come from arrangement, not ingredients. Three arrangements already show what that edge looks like.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <span class="card-glyph">💎</span>
+          <h3>Perfect crystals</h3>
+          <p>A metal's weakness mostly lives in its flaws. Tiny flawless whiskers of iron hold near 13 gigapascals of pull before they part, where a gigapascal is a measure of how hard something is pulled or pressed, close to ten thousand times the pressure of the air around you. Ordinary soft iron from the same shelf gives way near 0.2, about sixty times less. Same atoms, tidier stacking, very different material.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">⚖️</span>
+          <h3>Chosen isotopes</h3>
+          <p>An isotope is the same element at a slightly different weight. Diamond grown from carbon of a single weight sheds heat noticeably better than natural diamond. The chemistry is identical; the sorting does the work.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-glyph">🕸️</span>
+          <h3>Metamaterial lattices</h3>
+          <p>A metamaterial is a material whose trick is its shape, not its chemistry. Built as a fine lattice, an ordinary substance can steer sound or light in ways no plain block of the same stuff can. <a href="metamaterials.html">See how that works</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">back of the shelf</span></h2>
+      <p>If the brief forced a shopping list, an engineer might write down four lines. None of them is a stock item you could order this afternoon; the measurements around each one are real.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <h3>Metallic hydrogen</h3>
+          <p>Squeeze hydrogen hard enough and the prediction, first made in 1935, is that it would turn into a shiny metal. Labs press samples between two shaped diamonds, point to point. Ranga Dias and Isaac Silvera at Harvard reported a reflective sample at 495 gigapascals in Science in 2017, a squeeze beyond the pressure at the centre of the Earth, like parking two thousand utes on a space the size of a fingernail. The sample was lost when a diamond shattered during a follow-up measurement, other groups have questioned how the pressure was worked out, and nobody has repeated it. If it could be kept stable at everyday pressure, predictions say it would carry current without loss and hold about twenty times the energy of the fuel a Space Shuttle main engine burned.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Room-temperature superconductor</h3>
+          <p>A superconductor carries electric current without losing any of it as heat. The warmest confirmed one at everyday pressure works near minus 140 degrees, colder than the coldest outdoor air ever recorded on Earth. Under crushing pressure, hydrogen-rich compounds are reported superconducting near minus 20 degrees, close to a kitchen freezer. A superconductor happy in a warm room at everyday pressure would let a craft's wiring and magnets run without waste; none is confirmed so far.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Orbit-grown single crystals</h3>
+          <p>Labs aboard the space station grow crystals in free fall, and many come back more even than the same recipe grown on the ground; reports describe fewer flaws. Today's best space-grown pieces sit closer to a sugar grain than a brick. A hull grown as one flawless piece would need that process scaled up millions of times, which nobody has attempted.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Lattices thinner than soap film</h3>
+          <p>Graphene is a sheet of carbon one atom thick; a stack of three hundred thousand sheets would be about as thick as a page of a book, and each sheet is far thinner than the wall of a soap bubble. Tiny flawless pieces measure stronger for their weight than any steel. A hull skin assembled layer by chosen layer would be a material with no catalogue entry yet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <div class="wrap">
+      <h2>The <span class="hue">design bench</span></h2>
+      <p>A shopping list is cheap. A sum is not. So here is the brief turned into a bench with a parts catalogue: eight hulls, eight ways of carrying power, eight ways of pushing against the world, and eight ways of shielding. Every option names something built or measured, with its figures attached.</p>
+      <p>The craft has one hull and one set of dimensions. Everything else is chosen mode by mode, because the brief describes three jobs and they do not share an answer.</p>
+      <ul class="mode-list">
+        <li><strong>In air.</strong> The craft holds itself up against gravity and shoves atmosphere aside. Reaction mass is free because it is all around; heat is real because the hull is what does the shoving.</li>
+        <li><strong>Off the air.</strong> Nothing to push against and nothing to heat the skin. Anything thrown had to be carried up first, and debris arrives at ten to twenty kilometres a second.</li>
+        <li><strong>Carried.</strong> The craft is moved by the geometry around it rather than by throwing anything. No reaction mass, no felt load on the crew beyond the gradient across the cabin, and the flow is not arriving at the hull.</li>
+      </ul>
+      <p>Each mode picks its own power source, its own way of pushing and its own shielding, and each is checked against its own requirement. Then the craft has to carry all of it at once, including the parts that earn their keep in one regime and ride along in the others. That last line is where most of the interest sits.</p>
+
+      <div class="panel reveal">
+        <div class="preset-row">
+          <span class="preset-lbl">Start somewhere</span>
+          <button class="btn" type="button" data-preset="three">Three modes, three answers</button>
+          <button class="btn ghost" type="button" data-preset="single">One way of pushing, all three</button>
+          <button class="btn ghost" type="button" data-preset="today">Closest to buildable today</button>
+          <button class="btn ghost" type="button" data-preset="poem">The poem's brief</button>
+        </div>
+
+        <span class="sub-lbl">The whole craft</span>
+        <div class="control-row">
+          <div class="control wide">
+            <label for="sel-hull">Hull</label>
+            <select id="sel-hull"></select>
+          </div>
+          <div class="control wide">
+            <label for="rng-dia">Across the craft · <span class="slider-val" id="val-dia">12 m</span></label>
+            <input type="range" id="rng-dia" min="3" max="30" step="1" value="12">
+          </div>
+          <div class="control wide">
+            <label for="rng-pay">Crew and cargo · <span class="slider-val" id="val-pay">400 kg</span></label>
+            <input type="range" id="rng-pay" min="80" max="4000" step="20" value="400">
+          </div>
+        </div>
+        <div class="control-row">
+          <div class="control wide">
+            <label for="rng-acc">How hard it changes course · <span class="slider-val" id="val-acc">20 g</span></label>
+            <input type="range" id="rng-acc" min="1" max="300" step="1" value="20">
+          </div>
+          <div class="control wide">
+            <label for="rng-even">Field evenness across the cabin · <span class="slider-val" id="val-even">0.1 per cent</span></label>
+            <input type="range" id="rng-even" min="0" max="50" step="1" value="20">
+          </div>
+        </div>
+
+        <div class="rule">
+          <span class="sub-lbl">Set each mode</span>
+          <div class="mode-tabs" role="tablist" aria-label="Craft modes">
+            <button class="mode-tab" type="button" role="tab" id="tab-air" aria-controls="panel-air" aria-selected="true" tabindex="0" data-mode="air">In air<span class="tab-sub">holds itself up, shoves atmosphere</span></button>
+            <button class="mode-tab" type="button" role="tab" id="tab-vac" aria-controls="panel-vac" aria-selected="false" tabindex="-1" data-mode="vac">Off the air<span class="tab-sub">nothing to push, nothing to heat</span></button>
+            <button class="mode-tab" type="button" role="tab" id="tab-carry" aria-controls="panel-carry" aria-selected="false" tabindex="-1" data-mode="carry">Carried<span class="tab-sub">moved by the geometry around it</span></button>
+          </div>
+
+          <div class="mode-panel" role="tabpanel" id="panel-air" aria-labelledby="tab-air">
+            <p class="mode-intro" id="intro-air"></p>
+            <div class="control-row">
+              <div class="control wide">
+                <label for="sel-air-power">In air · power</label>
+                <select id="sel-air-power"></select>
+              </div>
+              <div class="control wide">
+                <label for="sel-air-push">In air · way of pushing</label>
+                <select id="sel-air-push"></select>
+              </div>
+              <div class="control wide">
+                <label for="sel-air-shield">In air · shielding</label>
+                <select id="sel-air-shield"></select>
+              </div>
+            </div>
+            <div class="control-row">
+              <div class="control wide">
+                <label for="rng-speed">Cruise speed in air · <span class="slider-val" id="val-speed">1.2 km/s</span></label>
+                <input type="range" id="rng-speed" min="0.05" max="8" step="0.05" value="1.2">
+              </div>
+            </div>
+          </div>
+
+          <div class="mode-panel" role="tabpanel" id="panel-vac" aria-labelledby="tab-vac" hidden>
+            <p class="mode-intro" id="intro-vac"></p>
+            <div class="control-row">
+              <div class="control wide">
+                <label for="sel-vac-power">Off the air · power</label>
+                <select id="sel-vac-power"></select>
+              </div>
+              <div class="control wide">
+                <label for="sel-vac-push">Off the air · way of pushing</label>
+                <select id="sel-vac-push"></select>
+              </div>
+              <div class="control wide">
+                <label for="sel-vac-shield">Off the air · shielding</label>
+                <select id="sel-vac-shield"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mode-panel" role="tabpanel" id="panel-carry" aria-labelledby="tab-carry" hidden>
+            <p class="mode-intro" id="intro-carry"></p>
+            <div class="control-row">
+              <div class="control wide">
+                <label for="sel-carry-power">Carried · power</label>
+                <select id="sel-carry-power"></select>
+              </div>
+              <div class="control wide">
+                <label for="sel-carry-push">Carried · way of pushing</label>
+                <select id="sel-carry-push"></select>
+              </div>
+              <div class="control wide">
+                <label for="sel-carry-shield">Carried · shielding</label>
+                <select id="sel-carry-shield"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="mode-out" aria-live="polite"></div>
+      </div>
+
+      <div class="panel reveal">
+        <h3>The whole craft, carrying all three</h3>
+        <div id="craft-out"></div>
+      </div>
+
+      <div class="note reveal">
+        <strong>How the sum is done.</strong> The hull is taken as a saucer: a circular floor plan with a shallow dome above and below, plus a rim around the edge, which works out at about two and a half times the area of the circle it covers.
+        <ol class="sum-steps">
+          <li>Hull mass: the skin's mass per square metre, times that skin area.</li>
+          <li>Shielding mass: each different shielding choice is built once and counted once, even where two modes share it. Area shields scale with the skin; the plasma barrier is a fixed 1.5 tonnes and a 16 kilowatt draw.</li>
+          <li>What each mode has to move: in air, the whole craft against gravity at 9.81 metres per second squared. Off the air, the whole craft at whatever acceleration the course-change slider is set to. Carried, the geometry moves it and there is no thrust rating to compute.</li>
+          <li>Power for that mode: force divided by the way of pushing's newtons per kilowatt, plus any draw the shielding wants.</li>
+          <li>Power plant mass: that power divided by the source's watts per kilogram. Two modes on the same source share one plant, sized for the larger of the two demands.</li>
+          <li>The closing test: every plant has to be lifted along with everything else, in every mode, so the sum runs round again until it settles. It settles only if the plants can hold up the craft and themselves. Where it does not settle, the bench sizes the plants for the bare craft and says by what factor they overrun.</li>
+          <li>What the crew feel: a surface push passes through the body in full, so the felt load is the whole acceleration. A body force, applied to every particle at once, leaves only the variation across the cabin, which is the evenness slider.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="note reveal"><strong>Limits.</strong> Every figure on the bench comes from a present-day record or from arithmetic done on one, and where a number is worked out rather than measured the option says so. What the bench cannot hand you is the craft: that part is yours to work out. If a workshop somewhere ever does produce a silent, wingless palace that changes mode on the way up, the shelf it shops from will be the same 118 elements on the classroom wall.</div>
+
+      <h2>Keep <span class="hue">wandering</span></h2>
+      <div class="grid">
+        <a class="card-link" href="anomalous-materials.html"><div class="card reveal">
+          <span class="card-glyph">◎</span>
+          <h3>Anomalous Metamaterials</h3>
+          <p>Build alien or ancient craft skins from crystal geometry, phase memory and field-responsive interfaces.</p>
+        </div></a>
+        <a class="card-link" href="metamaterials.html"><div class="card reveal">
+          <span class="card-glyph">🕸️</span>
+          <h3>Metamaterials</h3>
+          <p>Where shape beats chemistry: lattices that steer sound, light and load.</p>
+        </div></a>
+        <a class="card-link" href="zero-point.html"><div class="card reveal">
+          <span class="card-glyph">🌌</span>
+          <h3>Zero point</h3>
+          <p>The Casimir force is measured. What a machine would have to do with it is the open part.</p>
+        </div></a>
+        <a class="card-link" href="sci-fi-lab.html"><div class="card reveal">
+          <span class="card-glyph">🚀</span>
+          <h3>Sci-fi lab</h3>
+          <p>Named fictional technology, given a spec sheet and a price in real units.</p>
+        </div></a>
+        <a class="card-link" href="frontiers.html"><div class="card reveal">
+          <span class="card-glyph">🧭</span>
+          <h3>Frontiers</h3>
+          <p>The paths from today's records towards materials nobody has held yet.</p>
+        </div></a>
+      </div>
+    </div>
+  </section>
+
 </main>
 <div id="site-footer"></div>
 <script src="assets/nav.js"></script>
+<script src="assets/vimana-bench.js"></script>
 </body>
 </html>
