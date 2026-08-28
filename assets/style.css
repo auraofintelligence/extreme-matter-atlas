@@ -658,3 +658,4 @@ a.page-turn-slot:hover {
   .to-top-word { display: none; }
 }
 body[data-page="beyondtable"] { --accent: #a78bfa; --accent2: #22d3ee; }
+body[data-page="outofphase"]  { --accent: #67e8f9; --accent2: #f0abfc; }

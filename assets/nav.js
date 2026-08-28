@@ -20,6 +20,7 @@
     { key: "redmercury",  href: "red-mercury.html",         label: "Red Mercury",      wing: "engines" },
     { key: "elements115", href: "element-115.html",         label: "Element 115",      wing: "engines" },
     { key: "zeropoint",   href: "zero-point.html",          label: "Zero Point",       wing: "engines" },
+    { key: "outofphase",  href: "out-of-phase.html",        label: "Out of Phase",     wing: "engines" },
 
     { key: "gnome",       href: "gnome.html",               label: "GNoME",            wing: "making" },
     { key: "engineering", href: "engineering.html",         label: "Engineering",      wing: "making" },
