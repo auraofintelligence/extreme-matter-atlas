@@ -146,6 +146,17 @@ NOT apply to whether something existed or was built, because that is not ours to
 Reporting who said what, where and when stays exactly as it is: that is information, not a
 verdict.
 
+**The sub-pattern that keeps slipping through: asserting a ceiling.** Flagged 2026-08-28
+when the hub claimed "nobody is adding a new element to the shopping list any time soon"
+(teams are firing beams at 119 and 120 right now), reduced every record to "hardest,
+lightest, hottest, coldest" (every property has an end, not four of them), said DeepMind
+"guessed" millions of crystals (it predicts, then verifies with density functional theory,
+and calling that guessing is both wrong and belittling), and wrote that people imagined
+riding the sky "long before anything made of metal did". Each of those is a negative claim
+dressed as a fact: nothing more will be found, nothing else counts, nothing was there.
+Before writing any sentence that closes a door, check whether the door is actually shut,
+and if the honest answer is that work is underway or nobody knows, say that instead.
+
 The register is first principles and open exploration: a choose-your-own science adventure
 where the reader can find out for themselves. Give them the numbers, the method and the
 instruments. Never the conclusion.
