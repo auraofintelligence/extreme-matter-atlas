@@ -8,10 +8,10 @@
     { key: "table",       href: "periodic-table.html",      label: "The Table",        wing: "elements" },
     { key: "extremes",    href: "extremes.html",            label: "Records",          wing: "elements" },
     { key: "claimed",     href: "claimed-elements.html",    label: "Claimed Elements", wing: "elements" },
-    { key: "anomalies",   href: "anomalous-materials.html", label: "Samples",          wing: "elements" },
 
     { key: "crystal",     href: "crystal-lab.html",         label: "Crystal Lab",      wing: "patterns" },
     { key: "meta",        href: "metamaterials.html",       label: "Metamaterials",    wing: "patterns" },
+    { key: "anomalies",   href: "anomalous-materials.html", label: "Anomalous Metamaterials", wing: "patterns" },
     { key: "cymatics",    href: "cymatics.html",            label: "Cymatics",         wing: "patterns" },
     { key: "resonance",   href: "resonance.html",           label: "Resonance",        wing: "patterns" },
 
@@ -28,7 +28,7 @@
 
   var WINGS = [
     { id: "elements", label: "Elements", blurb: "The shelf everything is built from, and the pieces people argue about" },
-    { id: "patterns", label: "Patterns", blurb: "Structure, vibration, and the shapes waves leave behind" },
+    { id: "patterns", label: "Patterns", blurb: "Structure, vibration, responsive matter and the shapes waves leave behind" },
     { id: "engines",  label: "Engines",  blurb: "Ways of moving, from old stories to open physics" },
     { id: "making",   label: "Making",   blurb: "Finding new materials and building with them" }
   ];

@@ -3,161 +3,659 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Samples · Extreme Matter Atlas</title>
-<meta name="description" content="Nine pieces of metal, ceramic and slag that arrived with a story attached: what was claimed, who measured what and when, and the ordinary material each recipe matches.">
+<title>Metaphysics of Metamaterials · Extreme Matter Atlas</title>
+<meta name="description" content="Build crystal lattices and stack 2D materials to explore how symmetry, interfaces and fields create properties no single element owns.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
 <style>
-/* page-specific styles, scoped */
-body[data-page="anomalies"] h4 {
-  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
-  margin: 0 0 9px;
+body[data-page="anomalies"] { --accent: #67e8f9; --accent2: #fbbf24; }
+
+body[data-page="anomalies"] section { padding: 58px 0; }
+
+body[data-page="anomalies"] .lab-hero {
+  padding: 74px 0 52px;
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(rgba(103,232,249,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103,232,249,.045) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-/* ---- isotope widget ---- */
-body[data-page="anomalies"] .iso-row { margin: 20px 0 24px; }
-body[data-page="anomalies"] .iso-head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 12px; margin-bottom: 7px;
-}
-body[data-page="anomalies"] .iso-name { font-weight: 600; font-size: 15px; }
-body[data-page="anomalies"] .iso-name span { color: var(--muted); font-weight: 400; }
-body[data-page="anomalies"] .iso-val {
-  font-family: var(--font-mono); font-size: 19px; font-weight: 600;
-  white-space: nowrap; color: var(--ink);
-}
-body[data-page="anomalies"] .iso-track {
-  height: 26px; border-radius: 999px; overflow: hidden;
-  background: var(--bg2); border: 1px solid var(--line);
-}
-body[data-page="anomalies"] .iso-fill {
-  height: 100%; width: 0; border-radius: 999px;
-  transition: width .7s cubic-bezier(.2, .8, .2, 1);
-}
-body[data-page="anomalies"] .iso-a .iso-fill { background: linear-gradient(90deg, #fb7185, #f472b6); box-shadow: 0 0 20px -5px #fb7185; }
-body[data-page="anomalies"] .iso-a .iso-val { color: #fb7185; }
-body[data-page="anomalies"] .iso-b .iso-fill { background: linear-gradient(90deg, #fbbf24, #fde047); box-shadow: 0 0 20px -5px #fbbf24; }
-body[data-page="anomalies"] .iso-b .iso-val { color: #fbbf24; }
-body[data-page="anomalies"] .iso-c .iso-fill { background: linear-gradient(90deg, #a78bfa, #22d3ee); box-shadow: 0 0 20px -5px #a78bfa; }
-body[data-page="anomalies"] .iso-c .iso-val { color: #a78bfa; }
-
-body[data-page="anomalies"] .iso-dev {
-  display: grid; grid-template-columns: 168px 1fr 128px; gap: 12px;
-  align-items: center; margin-top: 9px;
-}
-body[data-page="anomalies"] .dev-label,
-body[data-page="anomalies"] .dev-val {
-  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
-  letter-spacing: 0.06em;
-}
-body[data-page="anomalies"] .dev-val { text-align: right; }
-body[data-page="anomalies"] .dev-track {
-  position: relative; height: 10px; border-radius: 999px;
-  background: var(--bg2); border: 1px solid var(--line);
-}
-body[data-page="anomalies"] .dev-mid {
-  position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1px;
-  background: var(--line-bright);
-}
-body[data-page="anomalies"] .dev-bar {
-  position: absolute; top: 1px; bottom: 1px; left: 50%; width: 0;
-  border-radius: 999px; background: var(--ink); opacity: 0.85;
-  transition: left .7s cubic-bezier(.2, .8, .2, 1), width .7s cubic-bezier(.2, .8, .2, 1);
-}
-body[data-page="anomalies"] .dev-bar.clamped { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-body[data-page="anomalies"] .iso-total {
-  font-family: var(--font-mono); font-size: 13px; color: var(--muted);
-  border-top: 1px dashed var(--line); padding-top: 14px; margin-top: 6px;
-}
-body[data-page="anomalies"] .iso-total b { color: var(--ink); font-weight: 600; }
-body[data-page="anomalies"] .iso-src {
-  display: block; font-size: 13.5px; color: var(--muted);
-  border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
-  padding: 4px 0 4px 12px; margin: 14px 0 4px;
-}
-body[data-page="anomalies"] .iso-src b { color: var(--ink); font-weight: 600; }
-@media (max-width: 620px) {
-  body[data-page="anomalies"] .iso-dev { grid-template-columns: 1fr 92px; }
-  body[data-page="anomalies"] .dev-label { grid-column: 1 / -1; }
+body[data-page="anomalies"] .lab-hero .display {
+  max-width: 13em;
+  font-size: clamp(38px, 6.4vw, 70px);
 }
 
-/* ---- jump-to-a-case row ---- */
-body[data-page="anomalies"] .jump-row {
-  display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 26px;
-  padding: 0; list-style: none;
+body[data-page="anomalies"] .lab-hero .lede { max-width: 54em; }
+
+body[data-page="anomalies"] .thesis-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 30px;
 }
-body[data-page="anomalies"] .jump {
-  display: inline-flex; align-items: center; min-height: 40px;
-  padding: 7px 15px; border-radius: 999px;
-  font-family: var(--font-mono); font-size: 12.5px; font-weight: 600;
-  color: var(--ink); background: var(--panel2);
+
+body[data-page="anomalies"] .thesis-cell {
+  min-height: 118px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(13,19,38,.92);
+}
+
+body[data-page="anomalies"] .thesis-cell b {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font: 600 12px var(--font-mono);
+}
+
+body[data-page="anomalies"] .thesis-cell span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+body[data-page="anomalies"] .section-intro {
+  max-width: 52em;
+  margin-bottom: 26px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+body[data-page="anomalies"] .structure-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 16px;
+}
+
+body[data-page="anomalies"] .structure-button,
+body[data-page="anomalies"] .lab-button {
+  min-height: 44px;
+  padding: 9px 14px;
   border: 1px solid var(--line-bright);
-  transition: border-color .15s ease, transform .15s ease;
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--panel);
+  font: 600 13px var(--font-body);
+  cursor: pointer;
 }
-body[data-page="anomalies"] .jump:hover {
-  text-decoration: none; border-color: var(--accent); transform: translateY(-2px);
-}
-body[data-page="anomalies"] .jump .n { color: var(--accent); margin-right: 8px; }
 
-/* ---- specimen cards ---- */
-body[data-page="anomalies"] .spec { margin: 20px 0; padding: 28px 26px; scroll-margin-top: 90px; }
-body[data-page="anomalies"] .spec:focus { outline: none; }
-body[data-page="anomalies"] .spec-head {
-  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px;
-}
-body[data-page="anomalies"] .spec-head h3 { margin: 0; font-size: 20px; }
-body[data-page="anomalies"] .spec-num {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent);
-}
-body[data-page="anomalies"] .spec-where {
-  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
-  letter-spacing: 0.05em; margin-bottom: 14px;
-}
-body[data-page="anomalies"] .spec-story { font-size: 15.5px; color: var(--muted); margin-bottom: 20px; }
-body[data-page="anomalies"] .spec-story strong { color: var(--ink); }
-body[data-page="anomalies"] .lines { list-style: none; margin: 0; }
-body[data-page="anomalies"] .lines li {
-  font-size: 14.5px; color: var(--muted); line-height: 1.55;
-  padding: 9px 0; border-bottom: 1px dashed var(--line);
-}
-body[data-page="anomalies"] .lines li:last-child { border-bottom: 0; }
-body[data-page="anomalies"] .lines b { color: var(--ink); font-weight: 600; }
-body[data-page="anomalies"] .lines .when {
-  font-family: var(--font-mono); font-size: 12px; color: var(--accent);
-  letter-spacing: 0.04em; margin-right: 8px;
-}
-body[data-page="anomalies"] .spec-open {
-  margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line);
-}
-body[data-page="anomalies"] .spec-open p { font-size: 14.5px; color: var(--muted); }
-body[data-page="anomalies"] .xlink { font-size: 14.5px; color: var(--muted); margin-top: 12px; }
-body[data-page="anomalies"] details.spec-src { margin-top: 16px; }
-body[data-page="anomalies"] details.spec-src summary {
-  cursor: pointer; font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
-  list-style: none; padding: 7px 0;
-}
-body[data-page="anomalies"] details.spec-src summary::-webkit-details-marker { display: none; }
-body[data-page="anomalies"] details.spec-src summary::before { content: "+ "; }
-body[data-page="anomalies"] details.spec-src[open] summary::before { content: "- "; }
-body[data-page="anomalies"] .src-list a { overflow-wrap: anywhere; }
+body[data-page="anomalies"] .structure-button:hover,
+body[data-page="anomalies"] .lab-button:hover { border-color: var(--accent); }
 
-/* ---- recipe-match table ---- */
-body[data-page="anomalies"] .data-table td.samp { color: var(--ink); font-weight: 600; }
-body[data-page="anomalies"] .data-table td.came { font-family: var(--font-mono); font-size: 13px; }
+body[data-page="anomalies"] .structure-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: #04060c;
+  background: var(--accent);
+}
 
-/* ---- what-would-move-it ladder ---- */
-body[data-page="anomalies"] .settle { counter-reset: settle; }
-body[data-page="anomalies"] .settle .card { padding-top: 30px; }
-body[data-page="anomalies"] .settle .card::before {
-  counter-increment: settle; content: counter(settle);
-  position: absolute; top: 16px; right: 20px;
-  font-family: var(--font-display); font-weight: 900; font-size: 34px;
-  color: color-mix(in srgb, var(--accent) 30%, transparent);
+body[data-page="anomalies"] .lattice-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+body[data-page="anomalies"] .canvas-panel,
+body[data-page="anomalies"] .readout-panel {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(155deg, var(--panel2), var(--panel));
+}
+
+body[data-page="anomalies"] .canvas-panel { min-width: 0; }
+
+body[data-page="anomalies"] #latticeCanvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.35 / 1;
+  background: #070b15;
+}
+
+body[data-page="anomalies"] .canvas-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font: 11px var(--font-mono);
+}
+
+body[data-page="anomalies"] .key-item { display: inline-flex; align-items: center; gap: 7px; }
+body[data-page="anomalies"] .key-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dot); }
+
+body[data-page="anomalies"] .readout-panel { padding: 22px; }
+
+body[data-page="anomalies"] .formula {
+  display: inline-block;
+  margin: 3px 0 15px;
+  padding: 7px 10px;
+  border: 1px solid var(--line-bright);
+  border-radius: 8px;
+  color: var(--accent2);
+  background: #070b15;
+  font: 600 13px var(--font-mono);
+}
+
+body[data-page="anomalies"] .model-copy { color: var(--muted); font-size: 14.5px; }
+
+body[data-page="anomalies"] .parameter-control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 9px 12px;
+  margin: 22px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(7,11,21,.7);
+}
+
+body[data-page="anomalies"] .parameter-control label {
+  color: var(--muted);
+  font: 600 11px var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+body[data-page="anomalies"] .parameter-control output {
+  color: var(--ink);
+  font: 600 12px var(--font-mono);
+}
+
+body[data-page="anomalies"] .parameter-control input { width: 100%; grid-column: 1 / -1; }
+
+body[data-page="anomalies"] .probe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+body[data-page="anomalies"] .probe-control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(7,11,21,.55);
+}
+
+body[data-page="anomalies"] .probe-control label {
+  color: var(--muted);
+  font: 600 10px var(--font-mono);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+body[data-page="anomalies"] .probe-control output { color: var(--ink); font: 600 10.5px var(--font-mono); }
+body[data-page="anomalies"] .probe-control input { width: 100%; grid-column: 1 / -1; }
+
+body[data-page="anomalies"] .property-list {
+  display: grid;
+  gap: 0;
+  margin-top: 18px;
+}
+
+body[data-page="anomalies"] .property-list div {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+body[data-page="anomalies"] .property-list dt {
+  color: var(--muted);
+  font: 600 10.5px var(--font-mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+body[data-page="anomalies"] .property-list dd { color: var(--ink); font-size: 13.5px; }
+
+body[data-page="anomalies"] .lab-status {
+  min-height: 3.2em;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+body[data-page="anomalies"] .lab-status strong { color: var(--ink); }
+
+body[data-page="anomalies"] .concept-section {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(7,11,21,.58);
+}
+
+body[data-page="anomalies"] .scale-chain {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 28px;
+}
+
+body[data-page="anomalies"] .scale-node {
+  position: relative;
+  min-height: 164px;
+  padding: 17px 15px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+body[data-page="anomalies"] .scale-node:not(:last-child)::after {
+  content: "+";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -15px;
+  width: 21px;
+  height: 21px;
+  border: 1px solid var(--line-bright);
+  border-radius: 50%;
+  color: var(--accent2);
+  background: var(--bg);
+  font: 600 13px/19px var(--font-mono);
+  text-align: center;
+}
+
+body[data-page="anomalies"] .scale-index {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--accent);
+  font: 600 11px var(--font-mono);
+}
+
+body[data-page="anomalies"] .scale-node h3 { margin-bottom: 8px; font-size: 17px; }
+body[data-page="anomalies"] .scale-node p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+body[data-page="anomalies"] .compiler-grid,
+body[data-page="anomalies"] .physics-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+  gap: 16px;
+  align-items: start;
+}
+
+body[data-page="anomalies"] .stack-card,
+body[data-page="anomalies"] .compound-card,
+body[data-page="anomalies"] .thermal-card,
+body[data-page="anomalies"] .thermal-readout {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(155deg, var(--panel2), var(--panel));
+}
+
+body[data-page="anomalies"] .stack-card,
+body[data-page="anomalies"] .compound-card,
+body[data-page="anomalies"] .thermal-card,
+body[data-page="anomalies"] .thermal-readout { padding: 22px; }
+
+body[data-page="anomalies"] .preset-row,
+body[data-page="anomalies"] .state-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+body[data-page="anomalies"] .preset-button,
+body[data-page="anomalies"] .state-button {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--line-bright);
+  border-radius: 9px;
+  color: var(--ink);
+  background: rgba(7,11,21,.8);
+  font: 600 12px var(--font-body);
+  cursor: pointer;
+}
+
+body[data-page="anomalies"] .preset-button:hover,
+body[data-page="anomalies"] .state-button:hover,
+body[data-page="anomalies"] .preset-button[aria-pressed="true"],
+body[data-page="anomalies"] .state-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: #04060c;
+  background: var(--accent);
+}
+
+body[data-page="anomalies"] .compiler-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+body[data-page="anomalies"] select,
+body[data-page="anomalies"] input[type="number"] {
+  min-height: 42px;
+  border: 1px solid var(--line-bright);
+  border-radius: 9px;
+  color: var(--ink);
+  background: #070b15;
+  font: 500 13px var(--font-body);
+}
+
+body[data-page="anomalies"] select { width: 100%; padding: 8px 10px; }
+body[data-page="anomalies"] option { color: var(--ink); background: #070b15; }
+
+body[data-page="anomalies"] .stack-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body[data-page="anomalies"] .stack-layer {
+  display: grid;
+  grid-template-columns: 8px minmax(140px, 1fr) 92px 54px auto;
+  gap: 9px;
+  align-items: center;
+  min-height: 50px;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(7,11,21,.72);
+}
+
+body[data-page="anomalies"] .layer-swatch {
+  width: 8px;
+  height: 34px;
+  border-radius: 5px;
+  background: var(--layer-colour);
+}
+
+body[data-page="anomalies"] .layer-name { font-size: 13px; font-weight: 600; }
+body[data-page="anomalies"] .layer-name small { display: block; margin-top: 2px; color: var(--muted); font: 10px var(--font-mono); }
+
+body[data-page="anomalies"] .thickness-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font: 10px var(--font-mono);
+}
+
+body[data-page="anomalies"] .thickness-field input {
+  width: 64px;
+  min-height: 34px;
+  padding: 5px 6px;
+  font: 11px var(--font-mono);
+}
+
+body[data-page="anomalies"] .bus-field {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--muted);
+  font: 10px var(--font-mono);
+}
+body[data-page="anomalies"] .bus-field input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+body[data-page="anomalies"] .layer-actions { display: flex; gap: 4px; }
+body[data-page="anomalies"] .layer-action {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line-bright);
+  border-radius: 7px;
+  color: var(--ink);
+  background: var(--panel2);
+  cursor: pointer;
+}
+
+body[data-page="anomalies"] .layer-action:hover { border-color: var(--accent); color: var(--accent); }
+body[data-page="anomalies"] .layer-action:disabled { opacity: .3; cursor: default; }
+
+body[data-page="anomalies"] .cross-section {
+  display: grid;
+  gap: 2px;
+  min-height: 120px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #070b15;
+}
+
+body[data-page="anomalies"] .stack-slice {
+  display: flex;
+  align-items: center;
+  min-height: 18px;
+  padding: 4px 8px;
+  border-left: 5px solid var(--layer-colour);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--layer-colour) 13%, #070b15);
+  font: 10px var(--font-mono);
+}
+
+body[data-page="anomalies"] .interface-control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin: 18px 0 20px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(7,11,21,.65);
+}
+
+body[data-page="anomalies"] .interface-control label { color: var(--muted); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .interface-control output { color: var(--accent2); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .interface-control input { width: 100%; grid-column: 1 / -1; }
+
+body[data-page="anomalies"] .metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+body[data-page="anomalies"] .metric {
+  min-height: 94px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(7,11,21,.68);
+}
+
+body[data-page="anomalies"] .metric span { display: block; color: var(--muted); font: 10px var(--font-mono); }
+body[data-page="anomalies"] .metric strong { display: block; margin: 9px 0 3px; color: var(--accent); font: 700 17px var(--font-mono); }
+body[data-page="anomalies"] .metric small { color: var(--muted); font-size: 10px; }
+
+body[data-page="anomalies"] .role-map { display: grid; gap: 10px; margin-top: 14px; }
+body[data-page="anomalies"] .role-row { display: grid; grid-template-columns: 82px 1fr 34px; gap: 9px; align-items: center; }
+body[data-page="anomalies"] .role-label,
+body[data-page="anomalies"] .role-value { color: var(--muted); font: 10px var(--font-mono); }
+body[data-page="anomalies"] .role-value { color: var(--ink); text-align: right; }
+body[data-page="anomalies"] .role-track { height: 8px; overflow: hidden; border-radius: 5px; background: #070b15; }
+body[data-page="anomalies"] .role-fill { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+body[data-page="anomalies"] .synergy-list { display: grid; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+body[data-page="anomalies"] .synergy-list li {
+  padding: 11px 12px;
+  border-left: 3px solid var(--accent2);
+  color: var(--muted);
+  background: rgba(251,191,36,.055);
+  font-size: 13px;
+}
+body[data-page="anomalies"] .synergy-list strong { color: var(--ink); }
+
+body[data-page="anomalies"] .equation-note {
+  margin-top: 16px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  background: #070b15;
+  font-size: 12px;
+}
+body[data-page="anomalies"] .equation-note code { display: block; margin: 5px 0; color: var(--accent2); font: 11px var(--font-mono); }
+
+body[data-page="anomalies"] .thermal-control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin: 18px 0;
+}
+body[data-page="anomalies"] .thermal-control label { color: var(--muted); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .thermal-control output { color: var(--accent2); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .thermal-control input { width: 100%; grid-column: 1 / -1; }
+
+body[data-page="anomalies"] .thermal-number {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 20px 0;
+}
+body[data-page="anomalies"] .thermal-number div { padding: 13px; border: 1px solid var(--line); border-radius: 10px; background: #070b15; }
+body[data-page="anomalies"] .thermal-number span { display: block; color: var(--muted); font: 10px var(--font-mono); }
+body[data-page="anomalies"] .thermal-number strong { display: block; margin-top: 9px; color: var(--accent); font: 700 17px var(--font-mono); }
+
+body[data-page="anomalies"] #phaseCanvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  margin: 14px 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #070b15;
+}
+
+body[data-page="anomalies"] .emission-panel { margin: 22px 0 12px; }
+body[data-page="anomalies"] .emission-row { display: grid; grid-template-columns: 92px 1fr auto; gap: 9px; align-items: center; margin: 11px 0; }
+body[data-page="anomalies"] .emission-row span,
+body[data-page="anomalies"] .emission-row output { color: var(--muted); font: 10px var(--font-mono); }
+body[data-page="anomalies"] .emission-track { height: 15px; overflow: hidden; border-radius: 8px; background: #070b15; }
+body[data-page="anomalies"] .emission-fill { height: 100%; width: 0; background: var(--accent); }
+body[data-page="anomalies"] .emission-fill.reference { width: 100%; background: rgba(147,163,196,.55); }
+
+body[data-page="anomalies"] .catalogue-grid,
+body[data-page="anomalies"] .reading-grid,
+body[data-page="anomalies"] .horizon-grid,
+body[data-page="anomalies"] .sources-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+body[data-page="anomalies"] .material-card,
+body[data-page="anomalies"] .reading-card,
+body[data-page="anomalies"] .horizon-card,
+body[data-page="anomalies"] .source-card {
+  padding: 19px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+body[data-page="anomalies"] .material-card h3,
+body[data-page="anomalies"] .reading-card h3,
+body[data-page="anomalies"] .horizon-card h3 { margin-bottom: 9px; font-size: 18px; }
+body[data-page="anomalies"] .material-card p,
+body[data-page="anomalies"] .reading-card p,
+body[data-page="anomalies"] .horizon-card p,
+body[data-page="anomalies"] .source-card p { color: var(--muted); font-size: 13.5px; }
+body[data-page="anomalies"] .material-formula { display: block; margin-bottom: 12px; color: var(--accent); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .property-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+body[data-page="anomalies"] .property-tags span { padding: 4px 7px; border: 1px solid var(--line-bright); border-radius: 6px; color: var(--muted); font: 9px var(--font-mono); }
+
+body[data-page="anomalies"] .architecture {
+  display: grid;
+  grid-template-columns: minmax(250px, .72fr) minmax(0, 1.28fr);
+  gap: 22px;
+  align-items: start;
+  margin-top: 30px;
+}
+body[data-page="anomalies"] .architecture-stack { display: grid; gap: 3px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #070b15; }
+body[data-page="anomalies"] .architecture-layer { min-height: 42px; padding: 10px 12px; border-left: 5px solid var(--layer-colour); color: var(--ink); background: color-mix(in srgb, var(--layer-colour) 12%, #070b15); font: 11px var(--font-mono); }
+body[data-page="anomalies"] .architecture-copy { display: grid; gap: 11px; }
+body[data-page="anomalies"] .architecture-copy div { padding: 14px; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); }
+body[data-page="anomalies"] .architecture-copy b { display: block; margin-bottom: 5px; color: var(--accent2); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .architecture-copy span { color: var(--muted); font-size: 13px; }
+
+body[data-page="anomalies"] .observation-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 22px 0 28px;
+}
+body[data-page="anomalies"] .observation-cell {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #070b15;
+}
+body[data-page="anomalies"] .observation-cell strong { display: block; margin-bottom: 6px; color: var(--accent); font: 700 16px var(--font-mono); }
+body[data-page="anomalies"] .observation-cell span { color: var(--muted); font-size: 12px; }
+
+body[data-page="anomalies"] .source-card a { display: inline-block; margin-top: 10px; color: var(--accent); font: 600 11px var(--font-mono); }
+body[data-page="anomalies"] .source-card a:hover { color: var(--accent2); }
+
+body[data-page="anomalies"] .section-note { margin-top: 22px; color: var(--muted); font-size: 12px; }
+body[data-page="anomalies"] .page-links { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+
+body[data-page="anomalies"] .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  body[data-page="anomalies"] .thesis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body[data-page="anomalies"] .lattice-lab { grid-template-columns: 1fr; }
+  body[data-page="anomalies"] #latticeCanvas { aspect-ratio: 1.45 / 1; }
+  body[data-page="anomalies"] .scale-chain { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  body[data-page="anomalies"] .scale-node:nth-child(3)::after { display: none; }
+  body[data-page="anomalies"] .compiler-grid,
+  body[data-page="anomalies"] .physics-grid,
+  body[data-page="anomalies"] .architecture { grid-template-columns: 1fr; }
+  body[data-page="anomalies"] .catalogue-grid,
+  body[data-page="anomalies"] .reading-grid,
+  body[data-page="anomalies"] .horizon-grid,
+  body[data-page="anomalies"] .sources-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body[data-page="anomalies"] .observation-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 540px) {
+  body[data-page="anomalies"] .lab-hero { padding: 46px 0 34px; }
+  body[data-page="anomalies"] .thesis-grid { grid-template-columns: 1fr; }
+  body[data-page="anomalies"] .structure-button { flex: 1 1 calc(50% - 8px); padding-inline: 8px; }
+  body[data-page="anomalies"] #latticeCanvas { aspect-ratio: .72 / 1; }
+  body[data-page="anomalies"] .property-list div { grid-template-columns: 86px 1fr; }
+  body[data-page="anomalies"] .probe-grid { grid-template-columns: 1fr; }
+  body[data-page="anomalies"] .scale-chain,
+  body[data-page="anomalies"] .catalogue-grid,
+  body[data-page="anomalies"] .reading-grid,
+  body[data-page="anomalies"] .horizon-grid,
+  body[data-page="anomalies"] .sources-grid { grid-template-columns: 1fr; }
+  body[data-page="anomalies"] .scale-node::after { display: none; }
+  body[data-page="anomalies"] .stack-layer { grid-template-columns: 7px minmax(120px, 1fr) auto; }
+  body[data-page="anomalies"] .thickness-field { grid-column: 2 / -1; grid-row: 2; justify-content: start; }
+  body[data-page="anomalies"] .bus-field { grid-column: 2; grid-row: 3; justify-content: start; }
+  body[data-page="anomalies"] .metric-grid,
+  body[data-page="anomalies"] .thermal-number { grid-template-columns: 1fr; }
+  body[data-page="anomalies"] .role-row { grid-template-columns: 70px 1fr 30px; }
+  body[data-page="anomalies"] .emission-row { grid-template-columns: 78px 1fr; }
+  body[data-page="anomalies"] .emission-row output { grid-column: 2; text-align: right; }
+  body[data-page="anomalies"] .observation-strip { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -165,613 +663,386 @@ body[data-page="anomalies"] .settle .card::before {
 <div id="site-header"></div>
 <main>
 
-  <section class="hero">
-    <div class="orbs"><span class="orb3"></span></div>
+  <section class="lab-hero">
     <div class="wrap">
-      <span class="kicker">Samples · claimed material, measured and logged</span>
-      <h1 class="display">Samples on the bench</h1>
-      <p class="lede">Every so often a piece of metal turns up with a story attached: it fell out of the sky, it was picked off a beach, it came from a crash. A handful of those pieces have been through real laboratories, sometimes several of them, decades apart. Laid out below are nine of them, with <strong>what was claimed</strong>, <strong>who measured what and when</strong>, and the ordinary material each recipe turns out to match.</p>
-      <div class="stat-row">
-        <div class="stat"><span class="num">9</span><span class="lbl">cases, each with its paperwork in view</span></div>
-        <div class="stat"><span class="num">79 / 10 / 11</span><span class="lbl">Earth's magnesium blend, in atoms per hundred</span></div>
-        <div class="stat"><span class="num">1957</span><span class="lbl">the Ubatuba fragment, still being re-measured today</span></div>
-        <div class="stat"><span class="num"><sup>26</sup>Al</span><span class="lbl">the cosmic-ray clock, and no sample below has publicly been through it</span></div>
+      <h1 class="display">Metaphysics of metamaterials</h1>
+      <p class="lede">Atoms provide the ingredients. <strong>Lattices set the rules.</strong> Interfaces couple those rules together. Fields select which state becomes active. The result is matter with properties no single element owns by itself.</p>
+      <p class="section-intro">This laboratory follows the material architecture wherever it leads: adaptive aerospace skins, alien craft fragments, pre-Younger Dryas devices and region-scale field boundaries.</p>
+      <div class="thesis-grid">
+        <div class="thesis-cell"><b>COMPOSITION</b><span>Which atoms are present and which bonds they offer.</span></div>
+        <div class="thesis-cell"><b>SYMMETRY</b><span>Which motions, bands and directions the lattice permits.</span></div>
+        <div class="thesis-cell"><b>INTERFACE</b><span>What appears when two materials exchange strain, charge, heat or spin.</span></div>
+        <div class="thesis-cell"><b>STATE</b><span>Which possibility is selected by temperature, twist, voltage, pressure or field.</span></div>
       </div>
     </div>
   </section>
 
-  <section class="reveal">
+  <section id="lattice-laboratory">
     <div class="wrap">
-      <h2>The fingerprint a laboratory <span class="hue">reaches for first</span></h2>
-      <p>Pick up a light camera body, a bike frame or a laptop shell and there is a fair chance you are holding magnesium alloy: chosen because it is light, and because it can be cast into shape cheaply. Magnesium also happens to be what several of the samples below are mostly made of, which is lucky, because magnesium carries an unusually clean fingerprint.</p>
-      <p>Magnesium atoms behave the same way chemically, but they do not all weigh the same. The different weights are called isotopes: the same element in a different weight. Magnesium comes in three, a light one, a middle one and a heavy one, and any lump of the metal is a blend of all three.</p>
-      <p>Here is the useful part. Wherever you scoop magnesium from on this planet, the blend comes out close to the same: about 79 atoms in a hundred are the light one, about 10 the middle, about 11 the heavy. Beach sand, North Atlantic seawater, a bag of Epsom salts, a river in the Amazon, the magnesium in your own muscles: same blend, within a whisker. Meteorites carry it too, because they were made from the same cloud of dust the planets were.</p>
-      <p>That is why the blend would matter on a strange sample. The three weights are cooked up in stars, in different amounts depending on the star, and our whole neighbourhood settled into one ratio when the solar system formed. Something grown around a different star, out of a cloud with a different history, would carry a different ratio, and there is no cheap way to fake one: shifting the blend by hand means sorting atoms by weight, which is slow, costly and leaves traces of its own. So the weights are the first reading a laboratory takes when an odd sample lands on the bench. It is quick, the reference numbers are known to several decimal places, and there would be little argument about what an answer meant.</p>
+      <h2>Crystal lattice laboratory</h2>
+      <p class="section-intro">The same atoms behave differently when their spacing, symmetry or layer registry changes. The left side is an active-sublattice schematic, with a moiré registry map for the twisted bilayer. The right side calculates normalised scalar-wave geometric interference from representative site weights. It marks the direct beam separately and reports local diffracted peaks.</p>
 
-      <div class="panel">
-        <div class="control-row">
-          <div class="control">
-            <label for="isoPick">Reading</label>
-            <select id="isoPick"></select>
-          </div>
-        </div>
-        <span class="iso-src" id="isoSrc" aria-live="polite"></span>
-        <div id="isoRows">
-          <div class="iso-row iso-a">
-            <div class="iso-head"><span class="iso-name">Mg&#8209;24 <span>the light one</span></span><span class="iso-val" data-val="0">0%</span></div>
-            <div class="iso-track"><div class="iso-fill"></div></div>
-            <div class="iso-dev">
-              <span class="dev-label">gap from Earth's blend</span>
-              <div class="dev-track"><span class="dev-mid"></span><span class="dev-bar"></span></div>
-              <span class="dev-val">0.00</span>
-            </div>
-          </div>
-          <div class="iso-row iso-b">
-            <div class="iso-head"><span class="iso-name">Mg&#8209;25 <span>the middle one</span></span><span class="iso-val" data-val="0">0%</span></div>
-            <div class="iso-track"><div class="iso-fill"></div></div>
-            <div class="iso-dev">
-              <span class="dev-label">gap from Earth's blend</span>
-              <div class="dev-track"><span class="dev-mid"></span><span class="dev-bar"></span></div>
-              <span class="dev-val">0.00</span>
-            </div>
-          </div>
-          <div class="iso-row iso-c">
-            <div class="iso-head"><span class="iso-name">Mg&#8209;26 <span>the heavy one</span></span><span class="iso-val" data-val="0">0%</span></div>
-            <div class="iso-track"><div class="iso-fill"></div></div>
-            <div class="iso-dev">
-              <span class="dev-label">gap from Earth's blend</span>
-              <div class="dev-track"><span class="dev-mid"></span><span class="dev-bar"></span></div>
-              <span class="dev-val">0.00</span>
-            </div>
-          </div>
-        </div>
-        <p class="iso-total" id="isoTotal" aria-live="polite"></p>
-        <p class="note" id="isoNote" aria-live="polite"></p>
+      <div class="structure-tabs" role="group" aria-label="Crystal structure">
+        <button class="structure-button" type="button" data-structure="honeycomb" aria-pressed="true">Graphene and h-BN</button>
+        <button class="structure-button" type="button" data-structure="kagome" aria-pressed="false">Kagome</button>
+        <button class="structure-button" type="button" data-structure="moire" aria-pressed="false">Twisted WSe<sub>2</sub></button>
+        <button class="structure-button" type="button" data-structure="bct" aria-pressed="false">Fe<sub>16</sub>N<sub>2</sub></button>
+        <button class="structure-button" type="button" data-structure="max" aria-pressed="false">Ti<sub>3</sub>SiC<sub>2</sub></button>
+        <button class="structure-button" type="button" data-structure="moo3" aria-pressed="false">alpha-MoO<sub>3</sub></button>
       </div>
 
-      <p>The thin bars under each fat one show the gap from Earth's blend, stretched so that a tenth of a percentage point is visible. Their full width is one and a half percentage points either way, which is far wider than any of the careful readings need.</p>
-      <p>One catch keeps the readings interesting. Heat, evaporation and hard knocks do nudge the blend a little: boil off some magnesium and the light atoms leave first, so what is left sits slightly heavy. That drift runs along a known line, and every solar-system material measured so far sits on that line, including the layered fragment further down. A sample sitting a little off the reference numbers can still be plain Earth material. What would stand out is a sample sitting off the line altogether.</p>
-    </div>
-  </section>
+      <div class="lattice-lab">
+        <div class="canvas-panel">
+          <canvas id="latticeCanvas" width="840" height="620" role="img" aria-describedby="latticeStatus">Interactive active-sublattice and scalar-wave interference diagram.</canvas>
+          <div class="canvas-key" id="canvasKey"></div>
+        </div>
 
-  <hr class="divider">
+        <aside class="readout-panel">
+          <h3 id="modelTitle">Honeycomb sheet</h3>
+          <span class="formula" id="modelFormula">C / BN</span>
+          <p class="model-copy" id="modelCopy">A hexagonal network becomes either a conducting carbon sheet or a polar dielectric when the two sublattices carry different atoms.</p>
 
-  <section class="reveal">
-    <div class="wrap">
-      <h2>What came back, and the everyday thing <span class="hue">with the same recipe</span></h2>
-      <p>The last column is where most of the work lands. For nearly every sample that reached an instrument, there is a material already made by the tonne somewhere on Earth with the same list of ingredients in roughly the same proportions, and several of them are made within a few kilometres of where the sample turned up.</p>
+          <div class="parameter-control">
+            <label for="structureParameter" id="parameterLabel">Sublattice contrast</label>
+            <output id="parameterValue" for="structureParameter">0%</output>
+            <input id="structureParameter" type="range" min="0" max="100" step="1" value="0">
+          </div>
 
-      <div class="table-scroll">
-        <table class="data-table">
-          <thead>
-            <tr><th>Sample</th><th>What the instruments returned</th><th>Something ordinary with the same recipe</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="samp">Ubatuba fragment, 1957</td>
-              <td class="came">99.88% Mg, several hundred ppm Sr</td>
-              <td>Commercial magnesium of the period, with one thread left hanging: strontium was not a known addition to magnesium then</td>
-            </tr>
-            <tr>
-              <td class="samp">Council Bluffs, 1977</td>
-              <td class="came">C 0.70%, Mn 0.56, Si 0.52, rest iron</td>
-              <td>Plain carbon steel, of the kind poured by the two foundries working in that town on the night</td>
-            </tr>
-            <tr>
-              <td class="samp">V&auml;dd&ouml;, Sweden, 1956</td>
-              <td class="came">Tungsten carbide 94.9%, Co 4.1</td>
-              <td>The tip of a masonry drill bit</td>
-            </tr>
-            <tr>
-              <td class="samp">Maury Island, 1947</td>
-              <td class="came">Ca, Fe, Zn, Ti, traces of Ag, Sn, Cd</td>
-              <td>Smelter slag, matched to the works across the bay that had poured slag into the sound since 1890</td>
-            </tr>
-            <tr>
-              <td class="samp">The layered piece, posted 1996</td>
-              <td class="came">Mg 97.5%, Zn 2%, Bi and Pb banded near 1:1</td>
-              <td>The dross skimmed off a lead refinery: molten magnesium on liquid lead pulls bismuth out and leaves that banding behind</td>
-            </tr>
-            <tr>
-              <td class="samp">Flint Ridge, Ohio</td>
-              <td class="came">Al 86.1%, Si 11.9</td>
-              <td>A cast aluminium housing or engine part: this alloy family has made most shaped aluminium castings since the 1970s</td>
-            </tr>
-            <tr>
-              <td class="samp">Mesa alloy read, 2022</td>
-              <td class="came">Fe, Si, Al, Mg, Ca, Mn</td>
-              <td>Ferrosilicon and the inoculant alloys a foundry stirs into molten iron; also the local mudstone with rig steel in it</td>
-            </tr>
-            <tr>
-              <td class="samp">Mesa ceramic, 2025</td>
-              <td class="came">Ceramic carrying about 1% Fe</td>
-              <td>Alumina or zirconia: what the liner of a drilling rig's mud pump is made of, and it wears out on the job</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="note"><strong>A recipe match is a match of ingredients, not a delivery docket.</strong> It says what a piece of metal is made of. It does not say who carried it, or how it came to be lying where somebody picked it up, and in several of these cases that second question is the one still standing after the chemistry is finished.</div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <section>
-    <div class="wrap">
-      <h2>The <span class="hue">cases</span></h2>
-      <p>Each card carries the same four parts: the story in brief, what was claimed, what the instruments returned, and the questions still open. In several cases the claim and the laboratory report were made about the same fragment, years apart.</p>
-
-      <ul class="jump-row">
-        <li><a class="jump" href="#case-ubatuba"><span class="n">01</span>Ubatuba</a></li>
-        <li><a class="jump" href="#case-council-bluffs"><span class="n">02</span>Council Bluffs</a></li>
-        <li><a class="jump" href="#case-catalogue"><span class="n">03</span>Ten samples</a></li>
-        <li><a class="jump" href="#case-maury"><span class="n">04</span>Maury Island</a></li>
-        <li><a class="jump" href="#case-layered"><span class="n">05</span>The layered piece</a></li>
-        <li><a class="jump" href="#case-flint-ridge"><span class="n">06</span>Flint Ridge</a></li>
-        <li><a class="jump" href="#case-livestock"><span class="n">07</span>Livestock samples</a></li>
-        <li><a class="jump" href="#case-mesa"><span class="n">08</span>Mesa material</a></li>
-        <li><a class="jump" href="#case-papers"><span class="n">09</span>No papers yet</a></li>
-      </ul>
-
-      <div id="specList">
-
-        <!-- 1 -->
-        <article class="card spec" id="case-ubatuba" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">01</span><h3>Ubatuba magnesium fragments</h3></div>
-          <p class="spec-where">1957 as claimed, possibly the early 1930s · Ubatuba coast, S&atilde;o Paulo state, Brazil</p>
-          <p class="spec-story">On 14 September 1957 Ibrahim Sued's column in the Rio de Janeiro paper <em>O Globo</em> printed a letter from a reader whose signature could not be read. He wrote that he had been fishing near Ubatuba when a disc climbing above the sea broke apart, and that he had picked light grey metal off the beach. Three pieces reached the paper, then the physician Olavo Fontes, then a private research group, then a Stanford professor, then a modern bench in 2017. Nobody has identified the man who wrote the letter.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">1960</span> Printed in the APRO Bulletin in March, and the origin of the whole story: the metal is <b>pure magnesium</b>, purer than anything obtainable in 1957, and therefore not made on Earth.</li>
-                <li><span class="when">2021 on</span> Said in interviews by Garry Nolan, the Stanford immunologist who has run several of these samples: one Ubatuba piece put through a fine-beam instrument has magnesium weights <b>about 30 per cent off</b> the ordinary blend, which would mean somebody engineered it. No data table, uncertainty or reference standard for that run has been published. The same speaker says a second piece from the same event, measured on the same instrument on the same day, came back ordinary.</li>
-              </ul>
+          <div class="probe-grid">
+            <div class="probe-control">
+              <label for="probeWavelength">Probe wavelength</label>
+              <output id="wavelengthValue" for="probeWavelength">2.4 a</output>
+              <input id="probeWavelength" type="range" min="0.7" max="6" step="0.1" value="2.4">
             </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">Nov 1957</span> The Brazilian government's Mineral Production Laboratory, arranged by Fontes: no trace elements detected, written up as 100 per cent magnesium. Later readers took that as the instrument running out of sensitivity rather than as real purity.</li>
-                <li><span class="when">Sep 1958</span> Oak Ridge National Laboratory, in a report reproduced in full in the 2022 journal paper: <b>99.8 per cent magnesium</b>, with iron, silicon and aluminium in the parts-per-million range.</li>
-                <li><span class="when">1969</span> Roy Craig, writing up the metal for the Condon Report, had it compared against triply sublimed magnesium supplied by Dow Chemical from Midland, Michigan, and found the fragment <b>less pure</b> than the commercial metal being made in 1957. The composition settled near 99.9 per cent magnesium with strontium at 500 parts per million, zinc 500, barium 160, manganese 35, chromium 32 and copper 3. Craig noted that strontium was not then a known commercial addition to magnesium.</li>
-                <li><span class="when">Feb 1968</span> The National Office Laboratory of the Alcohol and Tobacco Division, by neutron activation: 99.9 per cent magnesium. Its single isotope figure was later traced to the weight of the wrong sample, and is now read as a failed run rather than an oddity.</li>
-                <li><span class="when">1997</span> Reported by Peter Sturrock in the Journal of Scientific Exploration in 2001: all three magnesium weights read at once, and the sample sat <b>about as far from the reference</b> as the shop-bought standard run beside it did, both of them a fraction of a percentage point out.</li>
-                <li><span class="when">2017, 2018</span> Two commercial laboratories on the same dissolved drop. Cerium Laboratories in Austin returned 79.31 / 10.10 / 10.58; ICP &amp; ICP-MS Services in Cleveland returned 79.28 / 9.94 / 10.85. Same liquid, different answers, and both reports are printed in the 2022 paper.</li>
-                <li><span class="when">2022</span> The finding published by Powell, Swords, Rodeghier and Budinger in the Journal of Scientific Exploration, from high-resolution mass spectrometry: the magnesium weights <b>fall inside terrestrial limits</b>. The trace-element weights disagreed between the two laboratories, so the paper draws nothing from them.</li>
-                <li><span class="when">Across all of it</span> What survives is chemistry rather than weights: consistently about <b>99.88 per cent magnesium</b> carrying several hundred parts per million of strontium, which is roughly a pinch of salt in a one kilogram bag of flour.</li>
-                <li><span class="when">2022</span> Chemists at two magnesium firms told the same investigators that strontium is not a by-product of making magnesium and would have to be put in deliberately, and that the recipe was not in use when the sample surfaced.</li>
-              </ul>
+            <div class="probe-control">
+              <label for="probeAngle">Incoming direction</label>
+              <output id="angleValue" for="probeAngle">20°</output>
+              <input id="probeAngle" type="range" min="0" max="180" step="1" value="20">
+            </div>
+            <div class="probe-control">
+              <label for="latticeOrder">Lattice order</label>
+              <output id="orderValue" for="latticeOrder">100%</output>
+              <input id="latticeOrder" type="range" min="0" max="100" step="1" value="100">
             </div>
           </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>The paperwork is broken at the start and sound after it. There is no named finder, no fixed location and no confirmed date, so the metal cannot be tied to anything anybody saw. A later search for a matching event turned up a bright object over Ubatuba in 1933 or 1934, with light material caught in a fishing net around the same time, plus an undisputed aircraft crash in the area in April 1957. What is left is a workshop puzzle rather than a sky one: who made very pure magnesium with strontium added on purpose at that date, and why. The 2022 team recommend separating the trace metals from the bulk magnesium before re-running, because the magnesium outnumbers the traces about a thousand to one and swamps the detector, rather like trying to pick out one voice in a full grandstand.</p>
-            <p class="xlink">Where measurement could go from here is sketched in <a href="frontiers.html">Frontiers</a>; what magnesium and strontium genuinely do is in <a href="claimed-elements.html">Claimed Elements</a>.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Powell, Swords, Rodeghier &amp; Budinger, "Isotope Ratios and Chemical Analysis of the 1957 Brazilian Ubatuba Fragment", Journal of Scientific Exploration 36(1), 39-48, 2022 · <a href="https://journalofscientificexploration.org/index.php/jse/article/view/2415" rel="noopener">journalofscientificexploration.org</a></li>
-              <li>Sturrock, "Composition Analysis of the Brazil Magnesium", Journal of Scientific Exploration 15(1), 2001</li>
-              <li>Kaufmann &amp; Sturrock, "On Events Possibly Related to the Brazil Magnesium", Journal of Scientific Exploration 18(2), 2004</li>
-              <li>Roy Craig, magnesium analysis section, <em>Scientific Study of Unidentified Flying Objects</em> (the Condon Report), 1969</li>
-              <li>Oak Ridge National Laboratory report, September 1958, reproduced in Powell et al. 2022</li>
-              <li>National Office Laboratory of the Alcohol and Tobacco Division, neutron activation report, 27 February 1968</li>
-              <li>Cerium Laboratories (Austin) 2017 and ICP &amp; ICP-MS Services (Cleveland) 2018 reports, both reproduced in Powell et al. 2022</li>
-              <li>Garry Nolan interview transcript, February 2022 · <a href="https://ufos-scientificresearch.blogspot.com/2022/02/a-new-interview-with-dr-garry-nolan.html" rel="noopener">ufos-scientificresearch.blogspot.com</a></li>
-              <li>APRO Bulletin, March 1960, p.3, and the Ibrahim Sued column, O Globo, 14 September 1957</li>
-            </ul>
-          </details>
-        </article>
 
-        <!-- 2 -->
-        <article class="card spec" id="case-council-bluffs" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">02</span><h3>Council Bluffs molten metal</h3></div>
-          <p class="spec-where">17 December 1977 · Big Lake Park levee, Council Bluffs, Iowa</p>
-          <p class="spec-story">At about a quarter to eight one December evening, several separate groups of people in Council Bluffs reported a glowing red mass coming down near Big Lake Park, then a flash and flames a few metres high. Police and fire crews were on the levee within about fifteen minutes and found molten metal running down the bank, glowing red-orange, spread over about two square metres, near enough to half a table tennis table, and weighing somewhere between 16 and 25 kilograms, about a bag of cement. The assistant fire chief's on-the-night estimate of ten centimetres deep does not square with that weight: two square metres of iron at that depth would run to about a tonne and a half, so one of the two figures is an eyeball estimate that missed. Eleven witnesses were documented, among them an assistant fire chief who said the cooled metal could be neither broken nor bent.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">On the night</span> Told by witnesses and recorded in the case file: an unidentified object hovering overhead dropped the molten mass. Some described something round with red blinking lights.</li>
-                <li><span class="when">After</span> The reading that grew up around it in books and articles rather than in reports: the metal itself would turn out to be unusual.</li>
-                <li><span class="when">2022</span> A narrower claim, made in a paper in <em>Progress in Aerospace Sciences</em>: material like this <b>could</b> be discarded slag from an advanced vehicle, and instruments built for biology could characterise it properly.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">On the night</span> A radiation check at the scene: <b>not radioactive</b>.</li>
-                <li><span class="when">Dec 1977</span> Ames Laboratory at Iowa State University, in an analysis by R. S. Hansen and E. DeKalb: chiefly iron with under 1 per cent of other metals, mainly nickel and chromium, plus a slag foam and a white ash of calcium and magnesium.</li>
-                <li><span class="when">21 Dec 1977</span> The laboratory at Griffin Pipe Products, four days after the fall: carbon 0.70 per cent, manganese 0.56, silicon 0.52, the rest traces. That is <b>ordinary carbon steel</b> of a grade poured in commercial foundries, two of which were working in Council Bluffs at the time.</li>
-                <li><span class="when">2022</span> Nolan, Vall&eacute;e, Jiang and Lemke, on a surviving fragment: titanium, iron and chromium weights consistent with terrestrial values. One iron figure came back slightly high, and the authors put it down to a known interference, iron pairing with hydrogen inside the instrument.</li>
-                <li><span class="when">2022</span> The paper's stated finding: the components are consistent with a terrestrial origin, with no sign of being engineered or designed.</li>
-                <li><span class="when">2022</span> The oddity the same paper flags is compositional: five sub-samples differ from each other a lot, with aluminium varying two-fold and iron ten-fold, which reads as a rough industrial process rather than a designed alloy.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>The front of the trail is unusually good and the back of it is thin. Material went from a guarded scene to two named laboratories inside four days, which is why this case, rather than a more famous one, is the one that reached a journal. The specific fragment tested in 2022, though, is documented only as coming from one author's own holdings, with the intervening decades undescribed. The 1977 and 2022 element pictures also disagree: the newer charts put aluminium and silicon above iron in most sub-samples, where the 1977 work called it chiefly iron, and nobody has reconciled the two. The instrument could not see carbon or oxygen, so the obvious plain explanation, scrap metal melted by an improvised thermite reaction, could not be tested. Nothing in the metal is unusual. What stays unexplained is arrival: no foundry, transport route or spill has been matched to it, and a prank would mean somebody moved a bag of cement's worth of molten steel onto a park levee at night, which nobody reported seeing.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Nolan, Vall&eacute;e, Jiang &amp; Lemke, "Improved instrumental techniques, including isotopic analysis, applicable to the characterization of unusual materials with potential relevance to aerospace forensics", Progress in Aerospace Sciences 128, online December 2021, in print January 2022 · <a href="https://www.sciencedirect.com/science/article/am/pii/S0376042121000907" rel="noopener">sciencedirect.com</a></li>
-              <li>Vall&eacute;e, "Physical Analyses in Ten Cases of Unexplained Aerial Objects with Material Samples", Journal of Scientific Exploration 12(3), 1998, Case 9</li>
-              <li>Ames Laboratory, Iowa State University, analysis by R. S. Hansen and E. DeKalb, December 1977</li>
-              <li>Griffin Pipe Products Company laboratory report, 21 December 1977</li>
-              <li>Council Bluffs Historical Society, "UFO Crash at Big Lake Park" · <a href="https://www.thehistoricalsociety.org/h/ufo.html" rel="noopener">thehistoricalsociety.org</a></li>
-              <li>Metabunk review thread on the 2022 paper, method critique · <a href="https://www.metabunk.org/threads/is-improved-instrumental-techniques-nolan-vallee-jiang-lemke-2022-a-useful-paper.13286/" rel="noopener">metabunk.org</a></li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 3 -->
-        <article class="card spec" id="case-catalogue" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">03</span><h3>Ten samples, one catalogue</h3></div>
-          <p class="spec-where">Published 1998, cases spanning 1933 to about 1978 · Brazil, the United States, Sweden, Colombia, Mexico</p>
-          <p class="spec-story">In 1998 Jacques Vall&eacute;e published a survey in the Journal of Scientific Exploration pulling together ten incidents in which physical material was claimed to go with something seen in the sky. The aim was narrower than the subject suggests: to test whether laboratory work on such leftovers is workable at all, and to see what the evidence trail actually looked like when each case was examined one at a time. The ten run from Ubatuba and Maury Island through Sweden, Colombia, Mexico and Iowa.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">Popularly</span> In books and articles rather than reports: these samples are recovered fragments of craft of unknown origin.</li>
-                <li><span class="when">1998</span> The author's own claim, made in the paper itself, is smaller: a physical phenomenon has been reported over a long period, it is said to leave material traces, and those traces <b>can be studied</b> with ordinary laboratory methods.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">Across the ten</span> The material falls into two ordinary families: light metals that conduct well, meaning magnesium and aluminium, and slag-like industrial leftovers, meaning iron with chromium, manganese and silicon.</li>
-                <li><span class="when">Across the ten</span> <b>No rare element turned up</b>, and no unusual isotope weight is reported anywhere in the set.</li>
-                <li><span class="when">Sweden, 1956</span> Tungsten carbide at 94.9 per cent with cobalt at 4.1, analysed through SAAB and associated Swedish, Danish and German laboratories. Good quality for the early 1950s, and a known manufactured product; the same material tips a masonry drill bit.</li>
-                <li><span class="when">Bogot&aacute;</span> Aluminium 93.7 per cent with phosphorus 4.8, an unexplained surface layer, and, oddly for aluminium, no fluoride and no water. The author writes that a hoax could not be ruled out.</li>
-                <li><span class="when">Campinas, Maumee, Jopala</span> About 90 per cent tin; a fibrous piece at 92 per cent magnesium; plain iron with a little silicon, manganese and chromium.</li>
-                <li><span class="when">Council Bluffs</span> The set's best entry for paperwork, and the one case the author says met all four of his conditions. Its metal turned out to be ordinary carbon steel.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>The author's own list of limits is the load-bearing part of the paper: inaccuracies in data gathering, missing dates and times, no detailed field investigation, and no unbroken trail from ground to laboratory. One case in ten clears that bar. Kevin Randle, writing in 2021, argues the reverse of the paper's intent, that including cases with known trail failures, Maury Island above all, weakens the set as a whole. The argument the paper actually makes is about method rather than evidence: that comparative work is worth doing even when the material turns out mundane, and that field protocol has to improve before any sample could carry weight.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Vall&eacute;e, "Physical Analyses in Ten Cases of Unexplained Aerial Objects with Material Samples", Journal of Scientific Exploration 12(3), 1998, 359-375 · <a href="https://www.semanticscholar.org/paper/Physical-Analyses-in-Ten-Cases-of-Unexplained-with-Vallee/ff12dbcb7692a1f9c92a78454497b2beda66ac87" rel="noopener">semanticscholar.org</a></li>
-              <li>Sturrock, "Composition Analysis of the Brazil Magnesium", Journal of Scientific Exploration 15(1), 2001, the companion analysis of Case 1</li>
-              <li>SAAB and associated Swedish, Danish and German laboratories, via Sven Schalin, for the V&auml;dd&ouml; composition</li>
-              <li>Ames Laboratory and Griffin Pipe Products Company reports, December 1977, for Case 9</li>
-              <li>Kevin Randle, "Jacques Vallee and Ten Unexplained UFO Cases and Metallic Debris", December 2021 · <a href="https://kevinrandle.blogspot.com/2021/12/jacques-vallee-and-ten-unexplained-ufo.html" rel="noopener">kevinrandle.blogspot.com</a></li>
-              <li>Preliminary Catalogue of Analysis of Alleged UAP Fragments, Project 1947 · <a href="https://www.project1947.com/kbcat/kbuapfrag.htm" rel="noopener">project1947.com</a></li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 4 -->
-        <article class="card spec" id="case-maury" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">04</span><h3>Maury Island slag</h3></div>
-          <p class="spec-where">21 June 1947 · Maury Island, Puget Sound, Washington state</p>
-          <p class="spec-story">A harbour patrolman said that on a June day in 1947, while working in Puget Sound, he watched six large doughnut-shaped craft overhead, one of which shed a shower of light white material and heavier dark slag-like pieces that damaged his boat. His supervisor said he went to the beach and collected samples. A magazine publisher wired money to a pilot to investigate, and the visit from a man in dark clothing that the patrolman described is where the men-in-black motif starts. The residue was matched to the smelter across the bay.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">1947</span> Told by the two men to the publisher and later to federal investigators: the fragments were debris shed by a damaged disc, and the government suppressed the evidence.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">1947</span> Testing arranged in Chicago by the publisher Ray Palmer identified the material as <b>slag from steel production</b>.</li>
-                <li><span class="when">1947</span> Army and FBI investigators compared it against slag from the Tacoma smelter across the bay, working since 1890 and pouring slag into the sound for decades, and found the two alike. The federal analysis results were not released publicly, which is the one real documentary gap here.</li>
-                <li><span class="when">1998</span> The element list carried in Vall&eacute;e's catalogue is a routine smelter signature: calcium, iron, zinc and titanium as the main constituents, with aluminium, manganese, copper, magnesium, silicon, nickel, lead, strontium and chromium behind them and traces of silver, tin and cadmium. Nothing rare, nothing pure, no unusual weights.</li>
-                <li><span class="when">1947</span> The pilot who was sent to investigate examined the white metal produced for him and found it ordinary, and inconsistent with the finder's own description of what fell.</li>
-                <li><span class="when">FBI file</span> Federal files record the finder saying that if questioned he would call it a hoax because he wanted no further trouble, and record the pair approaching publications hoping to build the story into a paying deal.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>There is no collection record at all: the fragments were said to be picked up loose from a beach next to a working smelter district. Two investigators died when their aircraft came down near Kelso while carrying material from the case, which fed suppression claims for decades and adds no measurement to the pile. Edward Ruppelt, who headed the US Air Force study, called it the dirtiest hoax in the field in his 1956 book, and prosecution was dropped. What no measurement can supply here is the walk from the beach to the laboratory door, because nobody recorded it.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Vall&eacute;e, Journal of Scientific Exploration 12(3), 1998, Case 2, element list and the author's own weak-case assessment</li>
-              <li>Analysis arranged by Ray Palmer at Chicago, 1947; Army and FBI comparison against Tacoma smelter slag</li>
-              <li>FBI investigative file on Dahl and Crisman, 1947</li>
-              <li>HistoryLink.org essay 2068, Dahl and Crisman report a 21 June 1947 explosion · <a href="https://www.historylink.org/File/2068" rel="noopener">historylink.org</a></li>
-              <li>Edward J. Ruppelt, <em>The Report on Unidentified Flying Objects</em>, 1956</li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 5 -->
-        <article class="card spec" id="case-layered" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">05</span><h3>The layered magnesium piece</h3></div>
-          <p class="spec-where">Received 1996, origin claimed as 1947 · posted to a radio host in Nevada; claimed origin New Mexico</p>
-          <p class="spec-story">In 1996 an anonymous correspondent calling himself A Friend posted metal fragments to Art Bell, host of the late-night radio programme <em>Coast to Coast AM</em>, with letters saying his grandfather had been on a 1947 recovery team in New Mexico and had taken the pieces from the underside of a wedge-shaped craft. The best-known piece is about 44 millimetres by 32 and 6 thick, near enough to a matchbox lid. It passed through private hands, then a research group, then To The Stars, which sold it to the US Army in 2019 for 35,000 US dollars, about A$49,000 at 71.7 US cents to the Australian dollar, 28 August 2026. In 2022 the US All-domain Anomaly Resolution Office contracted Oak Ridge National Laboratory to work on it. Nothing about where the piece was before 1996 has been documented.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">2018 on</span> Carried in To The Stars' own material notes, with the provenance conceded as unverifiable: a layered magnesium-zinc and bismuth structure with <b>no manufacturing precedent</b>, the bismuth layers a small fraction of a hair's width at one to four micrometres, and the magnesium-zinc layers about one to two hair widths at one hundred to two hundred micrometres.</li>
-                <li><span class="when">2018 on</span> That the layer spacing would make it a waveguide, a channel that steers a wave the way a hose steers water, for terahertz light, which sits between radio and infrared. The claim is that it would steer waves far longer than the channel should allow, and it has been linked publicly to reducing a craft's effective mass.</li>
-                <li><span class="when">2018 on</span> That a search of national laboratories, metallurgists and the published literature found no evidence anybody had made one.</li>
-                <li><span class="when">Jun 2018</span> Hal Puthoff, addressing a conference in Las Vegas, said it is about as close to technology as anything he holds.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">1996</span> Nicholas Reiter, commissioned by the reporter Linda Moulton Howe, reported the piece as terrestrial, and later pointed at a specific industrial route: in the Betterton-Kroll process, used to clean bismuth out of lead, molten magnesium floated on liquid lead pulls the bismuth out as a magnesium-bismuth compound, and <b>what it leaves behind is intergrown bismuth, lead and magnesium</b>.</li>
-                <li><span class="when">2023 to 2024</span> Oak Ridge National Laboratory, on the parent sample and three earlier sub-samples: about <b>97.5 per cent magnesium</b> by weight with zinc varying band to band between about 1 and 4 per cent, and columnar magnesium grains running across the banding.</li>
-                <li><span class="when">2024</span> Traces in parts per million: bismuth 3,813, lead 2,859, thallium 215, iron 55, gold 11. The bismuth is about 3.8 grams in a kilo, roughly a level teaspoon of sugar in a kilo bag of flour, and lead runs alongside it at close to one to one right through the bands.</li>
-                <li><span class="when">2024</span> Electron diffraction: the bismuth-rich bands are tiny disordered crystals in a glassy surround. The single clean bismuth crystal that the waveguide idea needs <b>is not present</b>, and the report adds that bismuth mixed with lead would not hold the electrical properties the idea rests on either.</li>
-                <li><span class="when">Why lead</span> Bismuth is the awkward element to test with, because it comes in one weight only: every bismuth atom on Earth is bismuth-209, so there is no ratio to compare. That is why the laboratory turned to the lead sitting beside it.</li>
-                <li><span class="when">2024</span> Magnesium weights: shifted by heat and strain, and sitting on the same line as solar-system materials generally, alongside meteorites, seawater, Earth rock and two brands of commercial magnesium metal.</li>
-                <li><span class="when">2024</span> Lead weights: inside the ordinary terrestrial field, and clear of the fields for lunar glass, Mars and meteorite minerals. Lead is the fingerprint geochemists reach for when they want to know where something came from, because three of its four stable weights sit at the end of a decay chain and ore bodies of different ages carry different mixes.</li>
-                <li><span class="when">Apr 2024</span> The reported reading: made on Earth, using a mixture of elements uncommon by today's standards, then damaged by heat and force. The commissioning office set it beside mid-century magnesium alloy programmes, where zinc at 1 to 4 per cent and lead and bismuth additions for corrosion resistance were being tried.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>With no trail before 1996, no measurement can bind the piece to 1947 or to anything seen in the sky. The laboratories could not say whether it is a fragment of something larger, and noted that its layers have come apart and oxidised, so its present shape is probably not its original one, which leaves a waveguide argument about the original state not fully closed by structure alone. What was released is a laboratory synopsis and a supplement rather than a journal paper, and no independent laboratory has published a repeat of the magnesium or lead runs. The group that supplied it accepted publication and said the reports do not settle origin or purpose; its follow-up questions have not appeared. The researcher who rates the piece highest has not published isotope numbers of his own for it.</p>
-            <p class="xlink">A claim about what a shape would do, arriving with a story wrapped around it: <a href="vimana.html">Vimana</a> reads a much older set of stories the same way.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Oak Ridge National Laboratory, "Synopsis: Analysis of a Metallic Specimen", April 2024, released July 2024 · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/ORNL-Synopsis_Analysis_of_a_Metallic_Specimen.pdf" rel="noopener">aaro.mil</a></li>
-              <li>Supplement to Oak Ridge National Laboratory's analysis, July 2024, covering the waveguide reasoning and the mid-century alloy context · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/AAROs_Supplement_to_ORNLs_Analysis_of_a_Metallic_Specimen.pdf" rel="noopener">aaro.mil</a></li>
-              <li>To The Stars, "Material of Interest: Magnesium-Zinc-Bismuth", carrying the terahertz waveguide claim and conceding the provenance cannot be verified · <a href="https://tothestars.media/blogs/press-and-news/material-of-interest-magnesium-zinc-bismuth" rel="noopener">tothestars.media</a></li>
-              <li>Hal Puthoff, address to the SSE/IRVA conference, Las Vegas, June 2018</li>
-              <li>To The Stars, "ORNL and AARO Material Analysis Update" · <a href="https://tothestars.media/blogs/press-and-news/ornl-and-aaro-material-analysis" rel="noopener">tothestars.media</a></li>
-              <li>Nicholas A. Reiter, analysis commissioned by Linda Moulton Howe, 1996, and his later note on the Betterton-Kroll route</li>
-              <li>The anonymous letters to Art Bell, 1996, claiming a grandfather on the 1947 retrieval team</li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 6 -->
-        <article class="card spec" id="case-flint-ridge" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">06</span><h3>Flint Ridge aluminium</h3></div>
-          <p class="spec-where">Mid-1990s as claimed, reported January 2026 · private land near Flint Ridge, central Ohio</p>
-          <p class="spec-story">A property owner in central Ohio said he saw a large unidentified object overhead in or around 1995, and afterwards found metal on his land. What eventually reached the assessing office was three bags of drill shavings, drilled by somebody else before the office took possession, plus one small sectioned piece. Oak Ridge National Laboratory ran the work and the report came out in January 2026, the second of two such reports on privately held metal.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">Owner's account</span> The specimen has unusual composition and structure, and it <b>emits a gamma-ray signal</b>. The claim is anchored to the owner's account of the object rather than to any documented recovery.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">Jan 2026</span> Bulk composition by weight, from Oak Ridge: aluminium 86.1 per cent, silicon 11.9, then iron 0.97, copper 0.37, magnesium 0.30, zinc 0.20, manganese 0.20, titanium 0.03. That is a <b>conventional aluminium-silicon casting alloy</b>, the family used for cast housings and engine parts, closest to two catalogue reference grades.</li>
-                <li><span class="when">Jan 2026</span> Structure: silicon plates and needles in an aluminium surround, ordinary hard specks where iron and manganese have locked into the aluminium, small lead-rich pockets of the kind recycled metal leaves behind, and shrinkage holes up to about a millimetre, roughly the thickness of a five cent coin.</li>
-                <li><span class="when">Jan 2026</span> Feature spacing of a few hundred micrometres, about the thickness of a business card, means the metal <b>cooled slowly in a mould</b>. A fast quench would have left features ten times finer, and it did not.</li>
-                <li><span class="when">Jan 2026</span> Shavings and bulk interior matched chemically within instrument uncertainty, so the alloy identity is not an artefact of the drilling.</li>
-                <li><span class="when">Jan 2026</span> About two days of gamma counting on three pieces: spectra indistinguishable from background. <b>No radioactivity.</b></li>
-                <li><span class="when">Jan 2026</span> The reported reading: most likely an ordinary, conventionally manufactured aluminium alloy. The supplement adds that the piece lacks the strontium or sodium modifiers a high-performance casting would carry, that its shape shows no working geometry, and that this alloy family has accounted for the bulk of shaped aluminium castings since the 1970s.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>No specific source, manufacturer or heat treatment could be pinned down; more pieces or factory records would be needed to narrow it to a catalogue grade. The owner's account is not independently corroborated, and nothing measured connects the metal to it. Isotope weights were not measured on this one at all, only elements, structure and gamma counting, so the test the rest of the collection leans on was not applied here. Aluminium would blunt it anyway: every aluminium atom on Earth is aluminium-27, so there is no ratio to compare, which is why the useful aluminium test is the cosmic-ray clock further down rather than the ordinary one. The shavings were drilled before the office took possession, so that handling is undocumented. The suggested plain candidates, a commercial casting, an industrial by-product, recycled alloy or a slow-cooling melt from a vehicle fire, are candidates rather than a match.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Oak Ridge National Laboratory, "Synopsis: Analysis of an Aluminum Specimen" · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/ORNL_ANALYSIS_OF_AN_ALUMINUM_SPECIMEN.pdf" rel="noopener">aaro.mil</a></li>
-              <li>Supplement to that analysis, cleared for open publication 9 January 2026 · <a href="https://www.aaro.mil/Portals/136/PDFs/Information%20Papers/AARO_Metallic_Materials_Analysis_Supplement_Jan2026.pdf" rel="noopener">aaro.mil</a></li>
-              <li>Fiscal Year 2024 consolidated annual report, recording the taskings and the concurrence with both findings · <a href="https://www.aaro.mil/" rel="noopener">aaro.mil</a></li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 7 -->
-        <article class="card spec" id="case-livestock" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">07</span><h3>Uinta Basin livestock samples</h3></div>
-          <p class="spec-where">1996 to 2004 · Uinta Basin, Utah, and wider Rocky Mountain states</p>
-          <p class="spec-story">The National Institute for Discovery Science, set up and paid for by the property developer Robert Bigelow in 1995, bought a 512 acre Utah ranch in 1996, about 207 hectares or near enough to 115 footy ovals, and put staff on it with cameras, sensors and a permanent presence. Alongside the ranch watch it ran a regional study of unexplained livestock deaths, led by the biochemist Colm Kelleher with veterinary help. Investigators went out with vets, carried out field examinations, and sent blood, tissue and eye fluid to laboratories. Most of the analysed cases were elsewhere in the basin rather than on the ranch itself, which matters when the results get quoted as ranch evidence. The institute wound down in 2004.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">1996 to 2005</span> In the group's own case write-ups and in the 2005 trade book by Kelleher and the reporter George Knapp: precise cuts made with a sharp instrument rather than by scavengers, no blood at the scene, no predator tracks, and in some cases warmth at the cut margins.</li>
-                <li><span class="when">Jul 2001</span> In a technical report on a Dupuyer, Montana case: oxindole, a compound with a sedative effect, present in tissue and eye fluid of one affected animal and absent from a control animal.</li>
-                <li><span class="when">1996 to 2004</span> In the same body of reports: potassium chloride in blood at about ten times the normal level, copper shortfalls in six documented cases, and phenolic compounds with trace formaldehyde in some specimens.</li>
-                <li><span class="when">1998</span> A blue gel-like substance recovered from a site, said to have one rough precedent from the 1970s and none locally.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">1996 to 2004</span> Real bench work sits behind this one: the chemicals were drawn out of the tissue, then split apart and weighed piece by piece on instruments that identify what a sample is made of, run against control animals, and written up in about <b>twenty technical reports</b>.</li>
-                <li><span class="when">Where they went</span> Those reports were published by the body that funded the work and none went to a journal. The individual laboratory reports behind them have not been released as documents, and no single archive of observation logs, calibration records or negative results has been released for anyone outside to work through.</li>
-                <li><span class="when">1 Jan 2001</span> The Deseret News reported that two university veterinary laboratories had confirmed that an eye and part of an ear in a 1998 case were removed with a sharp instrument rather than by scavengers. The universities are not named in the reporting.</li>
-                <li><span class="when">Jul 1999</span> The Deseret News reported the 1998 blue gel as still being analysed, with results due soon. <b>No identification has been published in the years since.</b> Formaldehyde, which later summaries mention, is a common preserving fluid, and that is the first thing a written report would need to address.</li>
-                <li><span class="when">Later</span> Kelleher, the group's deputy administrator and the man who led the animal work, wrote that years of focused investigation produced very little physical evidence, and none that could be considered conclusive proof of anything.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>Which two university laboratories confirmed the sharp-instrument finding, and are their reports retrievable? How many of the analysed animals were actually on the ranch as against elsewhere in the basin? Where did the tissue and blood from the best-known 1997 case go, and does the internal report from that year hold analytical results or only field observations? It is not publicly documented who holds the group's archive now. A later government contract, the Defense Intelligence Agency's Advanced Aerospace Weapon System Applications Program, ran on the same property from 2008; the official historical record published in March 2024 confirms the activity took place and was not requested in the contract's statement of work, and its published output is literature reviews rather than sample reports.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>NIDS technical report on the Dupuyer, Montana case of 27 July 2001, with the oxindole comparison against a control, archived · <a href="https://ufology.patrickgross.org/htm/cattlenids01.htm" rel="noopener">ufology.patrickgross.org</a></li>
-              <li>All-domain Anomaly Resolution Office, Historical Record Report Volume 1, cleared 6 March 2024 · <a href="https://www.aaro.mil/Portals/136/PDFs/AARO_Historical_Record_Report_Vol_1_2024.pdf" rel="noopener">aaro.mil</a></li>
-              <li>Deseret News, "Ranch still studying cattle mutilations, unexplained sightings", 1 January 2001 · <a href="https://www.deseret.com/2001/1/1/19561572/ranch-still-studying-cattle-mutilations-unexplained-sightings/" rel="noopener">deseret.com</a></li>
-              <li>Deseret News, "Answers actively sought in bizarre cattle mutilations", 28 July 1999 · <a href="https://www.deseret.com/1999/7/28/19457864/answers-actively-sought-in-bizarre-cattle-mutilations-br-patterns-are-being-found-151-but-not-explan/" rel="noopener">deseret.com</a></li>
-              <li>Kelleher &amp; Knapp, <em>Hunt for the Skinwalker</em>, Paraview Pocket Books, 2005</li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 8 -->
-        <article class="card spec" id="case-mesa" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">08</span><h3>Skinwalker Ranch mesa material</h3></div>
-          <p class="spec-where">2020 to 2026 · a ranch mesa in the Uinta Basin, Utah</p>
-          <p class="spec-story"><em>The Secret of Skinwalker Ranch</em> premiered on the History channel in March 2020, filming on the same Utah property the earlier group had watched. The owner is the property developer Brandon Fugal; the principal investigator is Erik Bard, a physicist with patents in X-ray instrumentation; the astrophysicist and aerospace engineer Travis Taylor joined from the second season. Since 2020 the team has drilled and dug into a mesa on the property and sifted the spoils with a magnetic wand. Ceramic-looking shards came up from around 143 to 152 metres down, deeper than the Sydney Harbour Bridge is tall, and small metal flakes from around 10 and 16 metres. Both were carried to instruments on camera. Seven seasons in, the material claims arrive with <strong>named instruments and named people</strong>, and no written laboratory report with sample numbers, methods, detection limits and control samples has been published for any of them.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">2022, season 3</span> Material from horizontal drilling into the mesa read on a hand-held X-ray analyser as an alloy of iron, silicon, aluminium, magnesium, calcium and manganese. The instrument was a SciAps X-550, brought by the company's chief technology officer Dave Day and used by Tom Lewis, Bryant Arnold and Erik Bard. SciAps makes analysers rather than running a testing laboratory, and published the visit on its own company blog.</li>
-                <li><span class="when">Aug 2025, season 6</span> The one instance with a named academic laboratory. Ceramic fragments from the drilling spoils were examined by Brian Patchett at Utah Valley University on a Tescan scanning electron microscope with an EDAX X-ray attachment, at 20 kilovolts. On camera, rectangular features and holes appeared to grow while the beam scanned, and to be gone when the microscope was switched off and on again. It was presented as the ceramic healing itself, and the operator is quoted saying he has not seen material do that. <b>No written report from the university has been published.</b></li>
-                <li><span class="when">2025</span> A run on ceramic material, burning a speck and reading the colours of light it gives off, was reported as titanium, calcium, iron, aluminium and vanadium, described on air as similar to the ingredients of stealth materials.</li>
-                <li><span class="when">9 Jul 2026</span> In "Rocket Men", season 7, Erik Bard read a fresh flake on his portable analyser as iron and aluminium with <b>no europium and no tellurium</b>, presented as a difference from earlier flakes reported with both. Those two were described on air as elements found in the materials used to make spacecraft.</li>
-                <li><span class="when">Ongoing</span> The property owner has said the material is manufactured, is not a natural part of the local soil, and that this has been verified. No laboratory is named and no document is pointed to.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">The 2022 list</span> Iron with silicon, aluminium, magnesium, calcium and manganese is a foundry list: it is the recipe of ferrosilicon and of the inoculant and deoxidiser alloys stirred into molten iron. It is also close to the bulk chemistry of the local chalky mudstone with rig steel mixed through it.</li>
-                <li><span class="when">The ceramic</span> The X-ray composition behind it, which was not shown in full on air, ran to roughly <b>1 per cent iron</b>, which fits alumina or zirconia, the two hard ceramics used for wear parts. Those two are the standard materials for mud-pump liners on a drilling rig, which is the machine that made the spoils the shards came out of. A liner grinds itself away in service, and the pieces it sheds go out with the returns.</li>
-                <li><span class="when">The effect</span> Arnold Kruize, a scanning electron microscope specialist who worked for the microscope's maker, attributes the growing and vanishing features to charging: an uncoated insulating ceramic collects electrons under the beam and lets them go again, and that looks like holes opening and closing. The standard fixes, a conductive coating or a low-vacuum mode, were not used on screen, and the imaging voltage changed between shots.</li>
-                <li><span class="when">Ti, Al, V</span> Titanium with aluminium and vanadium is the fingerprint of Ti-6Al-4V, roughly 6 per cent aluminium and 4 per cent vanadium, the most-used titanium alloy on Earth and about half the aerospace titanium market. Vanadium is also close to the local default: the ranch sits on the Green River Formation, an organic-rich mudstone that concentrates vanadium, nickel, copper, cobalt and zinc, and the gilsonite mined in veins across the same county carries vanadium as a matter of course.</li>
-                <li><span class="when">Eu and Te</span> Europium is a phosphor: red and blue emitters in lamps, displays and banknote security ink, and control rods that soak up neutrons. Tellurium goes into thermoelectric modules, thin-film solar cells, rewritable discs, and steel and copper as a machining additive. Neither is a spacecraft structural material. Both also sit in a crowded part of the X-ray spectrum on a hand-held instrument, where their lines are easy to confuse with lines from commoner elements in an iron-rich sample.</li>
-                <li><span class="when">The instrument</span> A hand-held X-ray analyser returns a rough element list for a surface. It does not return crystal phase, structure, trace fingerprint or isotope weights, which is what an origin claim would rest on.</li>
-                <li><span class="when">In writing</span> Nothing has been released for any of it: no spectra, no concentrations with uncertainties, no detection limits, no blanks, and no drilling-mud control, which for material sifted out of a spoils pile is the first control a written report would need.</li>
-                <li><span class="when">Next steps</span> The team said the flakes were going to Utah Valley University for further work; no result has appeared, and the microscope operator has reportedly cited a non-disclosure agreement. The same university has received a five million US dollar donation from the ranch's owner. Both are on the public record.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>What is the local background level of europium and tellurium in mesa rock, and does any flake sit above it? Tellurium turns up in the water that comes up alongside local oil and gas, and the basin's rock carries a natural scatter of uranium and vanadium, so a run against plain mesa rock from the same depth, and against a shop-bought furnace-lining ceramic, would settle most of this in an afternoon. What is the trail from borehole to instrument, and who held each piece along it? Would the ceramic still appear to heal with a conductive coating on it and the voltage held steady, which is the one change that separates charging from a material doing something new? One more thing worth recording plainly: several websites state that a January 2026 paper in the Journal of Scientific Exploration published the ranch's 2022 to 2025 sensor data. The journal's own article index returns no such paper, and those pages give no volume, page numbers, author list or reference number. A separate document covering electromagnetic and radiation readings sits on ResearchGate, posted there by its author rather than published in a journal.</p>
-            <p class="xlink">What europium, tellurium, titanium and vanadium genuinely do, and what each one would be good for testing, is in <a href="claimed-elements.html">Claimed Elements</a>.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>SciAps, "SciAps X-550 visits The Secret of Skinwalker Ranch", 27 June 2022, confirming instrument and operators · <a href="https://www.sciaps.com/post/sciaps-x-550-visits-the-secret-of-skinwalker-ranch" rel="noopener">sciaps.com</a></li>
-              <li>Episode recaps for season 7, aired 26 June and 9 July 2026 · <a href="https://horrorpress.com/tv/13924/the-secret-of-skinwalker-ranch-rocket-men-s7e8/" rel="noopener">horrorpress.com</a></li>
-              <li>Review of season 6 episode 12, "Hard Boiled", aired 19 August 2025 · <a href="https://www.ghosthuntingtheories.com/2025/08/review-secret-of-skinwalker-ranch-s6_19.html" rel="noopener">ghosthuntingtheories.com</a></li>
-              <li>IBTimes UK, owner quotes on manufactured material and verified soil composition · <a href="https://www.ibtimes.co.uk/skinwalker-ranch-manufactured-materials-discovery-1811547" rel="noopener">ibtimes.co.uk</a></li>
-              <li>Metabunk thread, "Self-healing Ceramic Material from Skinwalker Ranch", including the charging account from a scanning electron microscope specialist · <a href="https://www.metabunk.org/threads/self-healing-ceramic-material-from-skinwalker-ranch-sem-scanning-electron-microscope-analysis.14382/" rel="noopener">metabunk.org</a></li>
-              <li>Journal of Scientific Exploration article index, returning no Skinwalker Ranch paper · <a href="https://journalofscientificexploration.org/index.php/jse/search/search?query=Skinwalker" rel="noopener">journalofscientificexploration.org</a></li>
-              <li>"Reconnaissance for Uranium in the Uinta Basin of Colorado and Utah", regional mineralisation background · <a href="https://www.osti.gov/biblio/4084991" rel="noopener">osti.gov</a></li>
-            </ul>
-          </details>
-        </article>
-
-        <!-- 9 -->
-        <article class="card spec" id="case-papers" tabindex="-1">
-          <div class="spec-head"><span class="spec-num">09</span><h3>No papers yet, in the owner's words</h3></div>
-          <p class="spec-where">August 2025 · a public post</p>
-          <p class="spec-story">Asked directly by a follower why his team had not put its findings through peer review, the Utah ranch's owner answered at length in a public post. It is the clearest statement on the record about the state of the written output, from the person who commissions it. It is not a claim about a sample; it is a claim about the absence of paperwork.</p>
-          <div class="two-col">
-            <div>
-              <h4>What was claimed</h4>
-              <ul class="lines">
-                <li><span class="when">10 Aug 2025</span> Posted publicly by Brandon Fugal: the team <b>has not yet submitted papers</b> for peer review, for five stated reasons.</li>
-                <li><span class="when">One</span> The experiments are ongoing and the events are transient and unpredictable, while publication needs robust repeatable evidence.</li>
-                <li><span class="when">Two</span> Equipment failures, power loss and data corruption at key moments.</li>
-                <li><span class="when">Three</span> The work spreads across physics, biology, psychology and archaeology.</li>
-                <li><span class="when">Four</span> Phenomena that appear to actively evade detection, described as cat-and-mouse behaviour.</li>
-                <li><span class="when">Five</span> That submitting inconclusive findings early would damage credibility.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>What was measured</h4>
-              <ul class="lines">
-                <li><span class="when">Nothing on a bench</span> No instrument was involved in this one. What can be checked is the statement itself, which is on the record and has not been withdrawn.</li>
-                <li><span class="when">2021</span> In earlier exchanges over a dropped-bottle experiment, the position given was that releasing partial data before review would confuse the issue. Those text files have not been released.</li>
-                <li><span class="when">Ranch experiments</span> Two university staff members who took part did so under a non-disclosure agreement, according to a news item published by their own university, the University of Alabama in Huntsville.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="spec-open">
-            <h4>Open questions</h4>
-            <p>Is any manuscript in preparation or under review, and with which journal? Whether the agreements around the current programme belong to the broadcaster or to the ranch is not publicly documented. The three collections that would answer most of the questions on the two Utah cards, the 1996 to 2004 archive, any analytical reports from the government contract that followed it, and the current team's raw instrument logs and physical samples, are all held privately, and none has been released.</p>
-          </div>
-          <details class="spec-src">
-            <summary>Sources</summary>
-            <ul class="src-list">
-              <li>Brandon Fugal on X, post of about 10 August 2025 · <a href="https://x.com/BrandonFugal/status/1954403256148672729" rel="noopener">x.com</a></li>
-              <li>Fan wiki transcription of the same exchange · <a href="https://the-secret-of-skinwalker-ranch.fandom.com/wiki/User_blog:Anomalous_Reading/Brandon_Fugal_Q%26A_..._Project_2025" rel="noopener">fandom.com</a></li>
-              <li>Mick West, comment thread on data requests to the ranch team · <a href="https://mickwest.substack.com/p/no-mere-balloons/comments" rel="noopener">mickwest.substack.com</a></li>
-              <li>University of Alabama in Huntsville news item recording participation under a non-disclosure agreement · <a href="https://www.uah.edu/science/departments/physics/news/15032-uah-scientists-brave-curses-spooky-anomalies-to-unravel-secrets-at-skinwalker-ranch" rel="noopener">uah.edu</a></li>
-            </ul>
-          </details>
-        </article>
-
+          <dl class="property-list">
+            <div><dt>Unit cell</dt><dd id="unitCell">Two sites on a hexagonal Bravais lattice</dd></div>
+            <div><dt>Mechanism</dt><dd id="mechanism">Sublattice equivalence or contrast changes the allowed electronic bands.</dd></div>
+            <div><dt>Emergence</dt><dd id="emergence">High in-plane transport, heat spreading or electrical isolation.</dd></div>
+            <div><dt>Stack role</dt><dd id="stackRole">Conductive heat spreader beside an atomically flat dielectric separator.</dd></div>
+            <div><dt>Diffracted peaks</dt><dd id="strongestDirection">Calculating local peaks outside the direct beam.</dd></div>
+            <div><dt>Position order</dt><dd id="coherenceValue">100% wavelength-relative positional-order proxy.</dd></div>
+          </dl>
+          <p class="lab-status" id="latticeStatus" aria-live="polite"><strong>Graphene state:</strong> equivalent carbon sublattices preserve the honeycomb symmetry.</p>
+        </aside>
       </div>
     </div>
   </section>
 
-  <hr class="divider">
-
-  <section class="reveal">
+  <section class="concept-section" id="where-properties-live">
     <div class="wrap">
-      <h2>Where the paperwork <span class="hue">goes thin</span></h2>
-      <div class="panel">
-        <p>The thread that breaks in most of these cases is not the laboratory work. It is the walk from the ground to the laboratory door: who picked the piece up, on what day, and who held it between then and the instrument. That gap sits on most of this bench, including the two most famous fragments, and it is the reason a clean chemical result still leaves the case open.</p>
-        <p>A single reading, unrepeated, is a starting point rather than a finish. The Ubatuba pair showed why: two laboratories given the same drop of dissolved metal returned different trace numbers, and that disagreement is what stopped the trace reading cold.</p>
-        <p>Ordinary is a common result here, and it is still a result. Several of these cases came back as plain steel, plain aluminium or plain smelter slag, and what stayed unexplained afterwards was how the material arrived, which is a different question from what it is made of.</p>
-        <p>Figures given on air or in an interview stand as they were given. Without the working beside them they cannot be followed in either direction, and a figure nobody has followed is not the same thing as a figure somebody has found wrong.</p>
+      <h2>Where the property lives</h2>
+      <p class="section-intro">The central question asks where a capability exists. In engineered matter, a property can live in a repeating relation, a boundary between unlike layers, a collective band state or the coupling between matter and an applied field.</p>
+      <div class="scale-chain">
+        <article class="scale-node"><span class="scale-index">01</span><h3>Atom</h3><p>Charge, mass, orbitals and bonding possibilities enter the design.</p></article>
+        <article class="scale-node"><span class="scale-index">02</span><h3>Lattice</h3><p>Spacing and symmetry decide which motion and exchange pathways are allowed.</p></article>
+        <article class="scale-node"><span class="scale-index">03</span><h3>Band</h3><p>Many atoms act collectively, creating gaps, flat bands, topology and directional transport.</p></article>
+        <article class="scale-node"><span class="scale-index">04</span><h3>Interface</h3><p>Strain, charge, spin, phonons and orbitals cross between materials and create new states.</p></article>
+        <article class="scale-node"><span class="scale-index">05</span><h3>Stack</h3><p>Each layer handles a different part of the job while its neighbours change what it can do.</p></article>
+        <article class="scale-node"><span class="scale-index">06</span><h3>Field</h3><p>Heat, voltage, light, pressure and magnetic flux select and steer the active state.</p></article>
       </div>
     </div>
   </section>
 
-  <hr class="divider">
-
-  <section class="reveal">
+  <section id="stack-compiler">
     <div class="wrap">
-      <h2>What would move <span class="hue">the question</span></h2>
-      <p>Read across nine cases and the shape of a decisive result comes into focus. Six things would do it, they can be done in any order, and not one of them needs an invention. Two of the six are ordinary weekly work in meteorite laboratories already.</p>
-      <div class="grid settle">
-        <div class="card">
-          <h3>A blend off the line</h3>
-          <p>Not a tenth of a per cent off the reference numbers, which heat and handling can do on their own, but a magnesium blend sitting off the line that solar-system material follows. Something the size of a coin would be plenty.</p>
-        </div>
-        <div class="card">
-          <h3>The cosmic-ray clock</h3>
-          <p>Out beyond the air and the Earth's magnetic shield, cosmic rays slowly build two rare atoms inside metal and rock: aluminium-26 and beryllium-10. Their ratio says how long an object sat exposed and how deep inside a larger body it rode. An accelerator mass spectrometer reads both from a gram of sample, and meteorite laboratories run it as routine. No sample above has publicly been through it.</p>
-        </div>
-        <div class="card">
-          <h3>Titanium's birthmark</h3>
-          <p>Titanium comes in five weights, and the tiny differences between them split material that formed inside Jupiter's orbit from material that formed outside it. Grains older than the Sun sit hundreds of parts per thousand away from anything local. It is one of the sharpest origin tests going, it is ordinary work for a meteorite lab, and it has not been run on any of these samples.</p>
-        </div>
-        <div class="card">
-          <h3>Two labs that never spoke</h3>
-          <p>The same material, split and sent to independent laboratories that do not compare notes and are not told what the sample is, each publishing its numbers, its standards, its blanks and its uncertainties.</p>
-        </div>
-        <div class="card">
-          <h3>A trail with names on it</h3>
-          <p>A documented chain of custody: the paperwork that shows nobody swapped the sample. Who picked it up, when, who held it, who signed it across at every handover, from the ground to the instrument. This is the piece missing from nearly every case above, and it costs a notebook.</p>
-        </div>
-        <div class="card">
-          <h3>Rock from next door</h3>
-          <p>For anything dug out of a mesa: soil and rock from off the property, from the same rock layer at the same depth, run on the same instruments in the same session as the sample. It is the cheapest gap on this list to close, and it turns an element list into a comparison.</p>
-        </div>
+      <h2>Layer stack compiler</h2>
+      <p class="section-intro">Build from the outside face down. Change the order, change each thickness and change the interface resistance. The model recomputes in-plane heat flow, through-plane heat flow and sheet conductance, then identifies interfaces where the material families reinforce one another.</p>
+
+      <div class="preset-row" role="group" aria-label="Layer stack presets">
+        <button class="preset-button" type="button" data-stack-preset="hull" aria-pressed="true">Extreme hull</button>
+        <button class="preset-button" type="button" data-stack-preset="moire" aria-pressed="false">Moiré quantum layer</button>
+        <button class="preset-button" type="button" data-stack-preset="thermal" aria-pressed="false">Thermal memory pixel</button>
+        <button class="preset-button" type="button" data-stack-preset="flux" aria-pressed="false">Flux toroid</button>
       </div>
-      <div class="note"><strong>The hopeful part is the instruments.</strong> A multicollector mass spectrometer, which weighs atoms one kind at a time and separates the three magnesium weights cleanly, is not exotic kit. Universities and geology labs around Australia and the world run them daily on rocks, seawater and meteorites, and the reference numbers they check against are already agreed. So the missing pieces are a notebook, an agreement between two labs, and a sample somebody is willing to cut in half. If those three ever line up, the reading itself would take an afternoon.</div>
-      <p>Nine samples have already given up their chemistry. The measurement still waiting is the one that would say where the atoms themselves were made, and the instruments that take it are running already, on meteorites, in laboratories here and overseas.</p>
+
+      <div class="compiler-grid">
+        <div class="stack-card">
+          <h3>Outside to inside</h3>
+          <div class="compiler-toolbar">
+            <label class="sr-only" for="layerSelect">Material layer</label>
+            <select id="layerSelect">
+              <option value="rhea">Ta-Nb-Hf-Zr-Ti refractory alloy</option>
+              <option value="max">Ti3SiC2 MAX phase</option>
+              <option value="mxene">Mo2TiC2Tx MXene</option>
+              <option value="graphene">Graphene</option>
+              <option value="hbn">Hexagonal boron nitride</option>
+              <option value="borophene">Borophene</option>
+              <option value="wse2">WSe2 monolayer</option>
+              <option value="mose2">MoSe2 monolayer</option>
+              <option value="tio2">TiO2 nano-antenna array</option>
+              <option value="gst">GST phase-change layer</option>
+              <option value="aluminium">Aluminium backplane</option>
+              <option value="moo3">alpha-MoO3 layer</option>
+              <option value="fe16n2">Fe16N2 flux guide</option>
+              <option value="fese">FeSe monolayer</option>
+              <option value="sto">SrTiO3 interface layer</option>
+              <option value="rebco">REBCO steady-current layer</option>
+              <option value="mgb2">MgB2 current layer</option>
+              <option value="fetese">FeTeSe topological sensor layer</option>
+              <option value="silicon">Low-spin silicon resonator base</option>
+              <option value="ferrite">Ferrite and MXene absorber</option>
+              <option value="zirconia">ZrO2-SiO2 gradient</option>
+            </select>
+            <button class="lab-button" id="addLayer" type="button">Add layer</button>
+          </div>
+          <ol class="stack-list" id="stackList" aria-label="Current material stack"></ol>
+          <p class="lab-status" id="stackStatus" aria-live="polite"></p>
+          <div class="cross-section" id="stackCrossSection" aria-label="Scaled cross-section of current stack"></div>
+        </div>
+
+        <aside class="compound-card">
+          <h3>Compounded response</h3>
+          <div class="interface-control">
+            <label for="interfaceResistance">Thermal boundary resistance per interface</label>
+            <output id="interfaceValue" for="interfaceResistance">20 × 10<sup>-9</sup> m² K/W</output>
+            <input id="interfaceResistance" type="range" min="0" max="100" step="5" value="20">
+          </div>
+
+          <div class="metric-grid">
+            <div class="metric"><span>In-plane heat</span><strong id="parallelThermal">0</strong><small>k∥ W/mK</small></div>
+            <div class="metric"><span>Through-plane heat</span><strong id="perpendicularThermal">0</strong><small>k⊥ W/mK</small></div>
+            <div class="metric"><span>Selected bus</span><strong id="sheetConductance">0</strong><small>S/□ sheet conductance</small></div>
+          </div>
+
+          <h4>Relative roles</h4>
+          <div class="role-map" id="roleMap"></div>
+          <ul class="synergy-list" id="synergyList" aria-live="polite"></ul>
+          <div class="equation-note">
+            <strong>Transport model</strong>
+            <code>k∥ = Σ(k∥,i tᵢ) / Σtᵢ</code>
+            <code>k⊥ = t<sub>total</sub> / [Σ(tᵢ/k⊥,i) + ΣR<sub>K</sub>]</code>
+            <code>G□ = Σ(σᵢ tᵢ)</code>
+            Representative coefficients make stack order and thickness comparable inside this laboratory. Pair-specific boundary factors make neighbouring order visible in k⊥. G□ includes only layers ticked Bus and models external electrical connection across any separators. FeSe and MgB2 use normal-state conductivity proxies. Measured layer constants and interface data can replace these teaching values as the design matures. The relative role map runs from 0 to 5 and exposes its design rules in the active interface list.
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <hr class="divider">
-
-  <section class="reveal">
+  <section class="concept-section" id="thermal-state-lab">
     <div class="wrap">
-      <h2>Keep <span class="hue">exploring</span></h2>
-      <div class="grid">
-        <a class="card-link" href="claimed-elements.html"><div class="card"><span class="card-glyph">🧪</span><h3>Claimed Elements</h3><p>Every element named in one of these claims, and what it genuinely does when somebody measures it.</p></div></a>
-        <a class="card-link" href="vimana.html"><div class="card"><span class="card-glyph">📜</span><h3>Vimana</h3><p>Old stories read as a design brief, with physics held up beside them as the ruler.</p></div></a>
-        <a class="card-link" href="frontiers.html"><div class="card"><span class="card-glyph">🧭</span><h3>Frontiers</h3><p>Where the exploration paths could lead next, told in could and would.</p></div></a>
-        <a class="card-link" href="extremes.html"><div class="card"><span class="card-glyph">🏆</span><h3>Records</h3><p>The measured record holders among the elements, ranked live from the dataset.</p></div></a>
+      <h2>Thermal state simulator</h2>
+      <p class="section-intro">A patterned resonator above a phase-change film and reflective backplane turns phase into emissivity. The surface can therefore change how much thermal radiation leaves it without changing its physical temperature by the same amount.</p>
+      <div class="physics-grid">
+        <div class="thermal-card">
+          <h3>GST resonant thermal pixel</h3>
+          <p class="model-copy">The phase buttons represent a stored state prepared by a separate set or reset pulse. The temperature control then calculates thermal radiation from that selected state.</p>
+          <div class="state-row" role="group" aria-label="Stored GST effective-emissivity preset">
+            <button class="state-button" type="button" data-emissivity="0.18" data-fraction="0" data-phase="Amorphous" aria-pressed="true">Amorphous</button>
+            <button class="state-button" type="button" data-emissivity="0.52" data-fraction="0.5" data-phase="Intermediate" aria-pressed="false">Intermediate</button>
+            <button class="state-button" type="button" data-emissivity="0.86" data-fraction="1" data-phase="Crystalline" aria-pressed="false">Crystalline</button>
+          </div>
+          <div class="thermal-control">
+            <label for="surfaceTemperature">Physical temperature</label>
+            <output id="temperatureValue" for="surfaceTemperature">420 K</output>
+            <input id="surfaceTemperature" type="range" min="250" max="800" step="5" value="420">
+          </div>
+          <div class="thermal-control">
+            <label for="surfaceEmissivity">Effective emissivity</label>
+            <output id="emissivityValue" for="surfaceEmissivity">0.18</output>
+            <input id="surfaceEmissivity" type="range" min="0.05" max="0.95" step="0.01" value="0.18">
+          </div>
+          <div class="equation-note">
+            <strong>Radiative model</strong>
+            <code>E = εσT⁴</code>
+            <code>T<sub>apparent</sub> = ε<sup>1/4</sup>T</code>
+            The apparent-temperature readout is the blackbody temperature that would produce the same total radiated power in this simplified model.
+          </div>
+        </div>
+
+        <aside class="thermal-readout">
+          <h3 id="thermalPhase">Amorphous state</h3>
+          <canvas id="phaseCanvas" width="700" height="350" role="img" aria-label="Simplified GST coordination changing between disordered and crystalline states"></canvas>
+          <div class="thermal-number">
+            <div><span>Radiated power</span><strong id="radiatedPower">0 W/m²</strong></div>
+            <div><span>Blackbody reference</span><strong id="blackbodyPower">0 W/m²</strong></div>
+            <div><span>Apparent temperature</span><strong id="apparentTemperature">0 K</strong></div>
+          </div>
+          <div class="emission-panel">
+            <div class="emission-row"><span>Selected surface</span><div class="emission-track"><div class="emission-fill" id="selectedEmission"></div></div><output id="selectedEmissionValue">18%</output></div>
+            <div class="emission-row"><span>Blackbody</span><div class="emission-track"><div class="emission-fill reference"></div></div><output>100%</output></div>
+          </div>
+          <p class="model-copy">The coordination drawing is schematic rather than a crystallographic cell. It connects a disordered, lower-coordination covalent network with a more ordered, higher-coordination crystalline network. In the larger architecture, nano-antennas set the resonance, GST or a Se-Te phase-change film stores the optical state, aluminium supplies the reflective backplane, and graphene can spread heat and carry control signals.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="material-architectures">
+    <div class="wrap">
+      <h2>Material architectures</h2>
+      <p class="section-intro">Each family contributes through its atomic order, dimensionality or interface, supplying a specific operation inside a larger architecture.</p>
+      <div class="catalogue-grid">
+        <article class="material-card">
+          <span class="material-formula">Ta-Nb-Hf-Zr-Ti / Mo-Nb-Ta-W-V</span>
+          <h3>Refractory high-entropy alloys</h3>
+          <p>Several principal metals share the same lattice. Local chemical disorder frustrates easy defect motion while high-melting constituents carry heat and load.</p>
+          <div class="property-tags"><span>HOT STRUCTURE</span><span>LOAD PATH</span><span>CHEMICAL COMPLEXITY</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">Ti3SiC2 / Mo2TiC2Tx</span>
+          <h3>MAX and MXene transition</h3>
+          <p>Ti3SiC2 shows how a MAX phase joins stiff carbide slabs to more compliant atomic planes. Related Mo-Ti MAX precursors can be selectively etched into Mo2TiC2Tx; etching Ti3SiC2 instead leads to Ti3C2Tx.</p>
+          <div class="property-tags"><span>THERMAL SHOCK</span><span>CONDUCTION</span><span>SURFACE CONTROL</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">B / C / BN</span>
+          <h3>Borophene, graphene and h-BN</h3>
+          <p>Atom-thin sheets divide jobs cleanly: borophene for directional stiffness, graphene for charge and heat spreading, and h-BN for an atomically flat electrical barrier.</p>
+          <div class="property-tags"><span>2D MECHANICS</span><span>HEAT SPREADING</span><span>ISOLATION</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">WSe2 / MoSe2</span>
+          <h3>Moiré quantum bilayers</h3>
+          <p>A small twist or lattice mismatch creates a superlattice much larger than either atomic cell. That new periodicity can narrow bands, localise excitons and make voltage a geometric control.</p>
+          <div class="property-tags"><span>FLAT BANDS</span><span>EXCITONS</span><span>TWIST CONTROL</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">Co3Sn2S2 / Fe3Sn2</span>
+          <h3>Magnetic Kagome layers</h3>
+          <p>Corner-sharing triangles organise interference and magnetic frustration. Their band geometry can connect magnetism to anomalous Hall transport and large magneto-optical rotation.</p>
+          <div class="property-tags"><span>BERRY CURVATURE</span><span>HALL FLOW</span><span>OPTICAL ROTATION</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">alpha-MoO3</span>
+          <h3>Directional polariton crystal</h3>
+          <p>Its orthogonal crystal axes respond differently in the infrared, confining light-matter waves into steerable directions far below the free-space wavelength.</p>
+          <div class="property-tags"><span>HYPERBOLIC RESPONSE</span><span>IR ROUTING</span><span>SUBWAVELENGTH FLOW</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">Fe16N2 / FeGe</span>
+          <h3>Ordered flux and spin textures</h3>
+          <p>Ordered nitrogen reshapes iron exchange in Fe16N2. Chiral magnets such as FeGe organise spins into skyrmions, allowing magnetic information to live in a stable collective texture.</p>
+          <div class="property-tags"><span>FLUX GUIDANCE</span><span>SPIN TEXTURE</span><span>MAGNETIC MEMORY</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">FeSe / SrTiO3 / FeTeSe</span>
+          <h3>Interface quantum states</h3>
+          <p>A FeSe monolayer on SrTiO3 demonstrates that an interface can support a state unlike either material alone. Iron chalcogenides also connect superconductivity with topological surface behaviour.</p>
+          <div class="property-tags"><span>INTERFACE PAIRING</span><span>TOPOLOGY</span><span>QUANTUM PATH</span></div>
+        </article>
+        <article class="material-card">
+          <span class="material-formula">GST / VO2:W / Mg-MgH2</span>
+          <h3>Reversible state layers</h3>
+          <p>GST can store several non-volatile phase fractions. Tungsten-doped VO2 follows a driven electronic-structural transition, while Mg-MgH2 follows reversible hydrogenation. Each supplies a different route to switch optical and thermal response.</p>
+          <div class="property-tags"><span>PHASE MEMORY</span><span>EMISSIVITY</span><span>REVERSIBLE OPTICS</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="concept-section" id="compounded-skin">
+    <div class="wrap">
+      <h2>One compounded skin</h2>
+      <p class="section-intro">A field-responsive aerospace shell can be read as a mosaic of specialised surface zones. Hot-face tiles, optical windows, thermal pixels and RF regions use different local stacks, then meet a shared sensing and load shell underneath. Capability appears through the order of each stack and the channels passed between zones.</p>
+      <div class="architecture">
+        <div class="architecture-stack" aria-label="Example aerospace material stack from outside to inside">
+          <div class="architecture-layer" style="--layer-colour:#fb7185">Zoned outer face: C-C, SiC or ZrC hot tile, or an optical window</div>
+          <div class="architecture-layer" style="--layer-colour:#fbbf24">TiO2, Si, Te and alpha-MoO3 optical geometry</div>
+          <div class="architecture-layer" style="--layer-colour:#a78bfa">Mg-MgH2 optical switch, with gallium or europium sensing dopants</div>
+          <div class="architecture-layer" style="--layer-colour:#f472b6">GST resonant thermal memory cavity</div>
+          <div class="architecture-layer" style="--layer-colour:#cbd5e1">Graded ZrO2-SiO2 dielectric and impedance transition</div>
+          <div class="architecture-layer" style="--layer-colour:#60a5fa">Ferrite, carbonyl iron and MXene RF control</div>
+          <div class="architecture-layer" style="--layer-colour:#38bdf8">Silicon, selenium and europium sensor plane</div>
+          <div class="architecture-layer" style="--layer-colour:#67e8f9">Graphene and h-BN signal and isolation plane</div>
+          <div class="architecture-layer" style="--layer-colour:#34d399">MAX, RHEA, titanium or aluminium load transition</div>
+        </div>
+        <div class="architecture-copy">
+          <div><b>Heat enters</b><span>The hot face survives the first contact. Ceramic-to-metal gradients spread the strain instead of asking one abrupt interface to carry it.</span></div>
+          <div><b>Light is phased</b><span>Patterned dielectrics and anisotropic crystals set local optical path length, polarisation and direction.</span></div>
+          <div><b>Thermal appearance is selected</b><span>Phase-change cavities alter emissivity while a heat-spreading plane manages the physical temperature underneath.</span></div>
+          <div><b>Electromagnetic impedance is shaped</b><span>Ferrites, conductive 2D sheets and graded dielectrics distribute reflection, absorption and surface current across depth.</span></div>
+          <div><b>Sensors close the loop</b><span>Embedded junctions measure strain, light, temperature and field. A controller selects the local material state for each active zone.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="field-boundary">
+    <div class="wrap">
+      <h2>From lattice to field boundary</h2>
+      <p class="section-intro">The Ranch field observations can be treated as a boundary-material problem: several responses arriving together may be the macroscopic expression of one deeply layered system rather than one mysterious substance. The supplied field map places the active region across roughly 30 to 500 metres laterally and 90 to 1,500 metres in altitude.</p>
+      <div class="observation-strip" aria-label="Field observation markers">
+        <div class="observation-cell"><strong>near 1.6 GHz</strong><span>Recurring RF activity to compare with a driven plasma or resonant boundary.</span></div>
+        <div class="observation-cell"><strong>GPS displacement</strong><span>Position jumps paired with telemetry resets and interrupted links.</span></div>
+        <div class="observation-cell"><strong>LiDAR returns</strong><span>Spatially bounded returns that can be compared across repeated passes.</span></div>
+        <div class="observation-cell"><strong>Laser bloom</strong><span>Optical spreading or termination mapped against the same field geometry.</span></div>
+      </div>
+      <p class="section-note">Provenance: the working dimensions, altitude range and observation markers above are transcribed from the project research brief's field synthesis. They remain distinct from the primary materials papers in the source section below.</p>
+      <div class="reading-grid">
+        <article class="reading-card"><h3>Optical distortion</h3><p>Phase gradients, anisotropic polaritons and tunable-index layers can redirect different wavelengths along different paths.</p></article>
+        <article class="reading-card"><h3>Thermal switching</h3><p>Phase-change resonators can alter emissivity and apparent temperature while the underlying object follows a different heat path.</p></article>
+        <article class="reading-card"><h3>RF irregularity</h3><p>Conductive sheets, ferrites, graded dielectrics and surface geometry can move an electromagnetic boundary without moving the load shell.</p></article>
+        <article class="reading-card"><h3>Magnetic response</h3><p>Ordered magnets, superconducting paths and collective spin textures can guide, store and redirect magnetic flux through a larger structure.</p></article>
+        <article class="reading-card"><h3>Plasma cutoff</h3><p>A driven plasma supplies the first tunable cutoff, phase delay and charge reservoir at the field edge.</p></article>
+        <article class="reading-card"><h3>Stabilisation and sensing</h3><p>Directed phase interference can sit behind the plasma and refractive layers, while feedback sensing holds the larger boundary in registry.</p></article>
+      </div>
+      <div class="equation-note"><strong>Working boundary order</strong><code>plasma cutoff > dielectric and refractive gradient > directed phase interference > stabilisation and sensing</code>The sequence is a material architecture to simulate against repeated spatial, RF, optical and telemetry measurements.</div>
+    </div>
+  </section>
+
+  <section class="concept-section" id="reading-an-artefact">
+    <div class="wrap">
+      <h2>Reading an anomalous artefact</h2>
+      <p class="section-intro">When an artefact arrives without a manufacturing history, chemistry is only the first line. The deeper search is for designed order across scale.</p>
+      <div class="reading-grid">
+        <article class="reading-card"><h3>Composition</h3><p>Which elements, isotopes, vacancies and dopants are present, and where are they concentrated?</p></article>
+        <article class="reading-card"><h3>Crystal order</h3><p>Which unit cells, defects, grain orientations and superlattices repeat through the object?</p></article>
+        <article class="reading-card"><h3>Interfaces</h3><p>Which atomically sharp, graded or deliberately strained boundaries join unlike states?</p></article>
+        <article class="reading-card"><h3>Phase memory</h3><p>Which regions retain a state after heat, pressure, current, light or field has been removed?</p></article>
+        <article class="reading-card"><h3>Coupled channels</h3><p>Does changing one input alter several outputs: optical, thermal, electrical, magnetic or mechanical?</p></article>
+        <article class="reading-card"><h3>Scale hierarchy</h3><p>Does atomic ordering repeat into layers, cells, panels and a larger field boundary?</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="application-horizons">
+    <div class="wrap">
+      <h2>Application horizons</h2>
+      <p class="section-intro">The abundance pathway is a library of controllable structures that uses less mass and energy by putting each function at the scale where it works best.</p>
+      <div class="horizon-grid">
+        <article class="horizon-card"><h3>Adaptive civil aerospace</h3><p>Reusable heat shields, quiet thermal management, lighter power electronics and surfaces that repair or reroute around local damage.</p></article>
+        <article class="horizon-card"><h3>Toroidal field machines</h3><p>Structural hoops, electrical isolation, flux guides, superconducting paths and embedded field sensing treated as one co-designed material object.</p></article>
+        <article class="horizon-card"><h3>Water, shelter and energy</h3><p>Selective membranes, durable hot-zone components, passive cooling and high-efficiency conversion brought into ordinary infrastructure.</p></article>
+        <article class="horizon-card"><h3>Ancient engineering</h3><p>Pre-Younger Dryas artefacts can be examined for layered order, phase memory and field coupling even when their bulk chemistry looks familiar.</p></article>
+        <article class="horizon-card"><h3>Alien craft</h3><p>A recovered skin, fragment or residue can be read as part of a distributed field architecture rather than expected to display its whole purpose in isolation.</p></article>
+        <article class="horizon-card"><h3>Open materials discovery</h3><p>Simulation, robotic synthesis and shared measurement can search combinations faster while communities choose which capabilities serve care and repair.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="concept-section" id="research-sources">
+    <div class="wrap">
+      <h2>Research sources</h2>
+      <p class="section-intro">A starting set of primary research behind the material mechanisms used in the laboratories and architecture map.</p>
+      <div class="sources-grid">
+        <article class="source-card"><p>Twisted WSe2 can form moiré flat bands whose electronic structure changes with twist and reconstruction.</p><a href="https://www.nature.com/articles/s41467-021-25924-6" target="_blank" rel="noopener">Nature Communications, 2021</a></article>
+        <article class="source-card"><p>A one-unit-cell FeSe film on SrTiO3 shows interface-enhanced superconducting behaviour tied to the substrate and interfacial coupling.</p><a href="https://www.nature.com/articles/s41467-019-08560-z" target="_blank" rel="noopener">Nature Communications, 2019</a></article>
+        <article class="source-card"><p>Magnetic Kagome semimetal Co3Sn2S2 exhibits a large intrinsic anomalous Hall effect associated with its band topology.</p><a href="https://www.nature.com/articles/s41567-018-0234-5" target="_blank" rel="noopener">Nature Physics, 2018</a></article>
+        <article class="source-card"><p>alpha-MoO3 supports in-plane hyperbolic phonon-polaritons with strongly directional propagation.</p><a href="https://www.nature.com/articles/s41586-018-0618-9" target="_blank" rel="noopener">Nature, 2018</a></article>
+        <article class="source-card"><p>A GST metasurface can tune thermal emission through phase-dependent optical response.</p><a href="https://www.nature.com/articles/s41377-018-0038-5" target="_blank" rel="noopener">Light: Science and Applications, 2018</a></article>
+        <article class="source-card"><p>Layered Ti3SiC2 combines ceramic and metallic behaviours through its ordered MAX-phase crystal structure.</p><a href="https://www.sciencedirect.com/science/article/abs/pii/S0167577X98002067" target="_blank" rel="noopener">Materials Letters, 1999</a></article>
+        <article class="source-card"><p>Ta-Nb-Hf-Zr-Ti refractory high-entropy alloys retain useful strength at elevated temperature through a chemically complex solid-solution structure.</p><a href="https://www.sciencedirect.com/science/article/pii/S0020740319341013" target="_blank" rel="noopener">International Journal of Refractory Metals and Hard Materials, 2020</a></article>
+        <article class="source-card"><p>NMR measurements probe the local magnetic moments and nitrogen ordering associated with the high-moment Fe16N2 phase.</p><a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.54.51" target="_blank" rel="noopener">Physical Review B, 1996</a></article>
+        <article class="source-card"><p>GNoME combined graph-network prediction, density-functional-theory relaxation and an iterative data flywheel to expand the set of computationally stable crystal candidates.</p><a href="https://www.nature.com/articles/s41586-023-06735-9" target="_blank" rel="noopener">Nature, 2023</a></article>
+      </div>
+      <p class="section-note">The simulations are compact teaching models. They expose their equations and assumptions so a future version can accept measured constants, spectra and layer-specific interface data.</p>
+      <div class="page-links">
+        <a class="button primary" href="#lattice-laboratory">Return to the lattice lab</a>
+        <a class="button ghost" href="vimana.html">Previous: Vimana</a>
+        <a class="button ghost" href="beyond.html">Next: Beyond</a>
       </div>
     </div>
   </section>
@@ -779,116 +1050,6 @@ body[data-page="anomalies"] .settle .card::before {
 </main>
 <div id="site-footer"></div>
 <script src="assets/nav.js"></script>
-<script>
-(function () {
-  /* ---------- isotope comparison ---------- */
-  var EARTH = [78.99, 10.00, 11.01];
-  var DEV_MAX = 1.5; /* percentage points at each end of the fine scale */
-
-  var READINGS = [
-    {
-      name: "Earth's standard blend",
-      v: [78.99, 10.00, 11.01],
-      src: "The agreed reference numbers, from the standard atomic weight tables.",
-      note: "Scoop magnesium out of beach sand, seawater, a bag of Epsom salts or your own muscle and this is the blend that comes back, within a whisker."
-    },
-    {
-      name: "A shop-bought standard bar, 1997",
-      v: [78.76, 10.07, 11.16],
-      src: "Reported by Peter Sturrock in the Journal of Scientific Exploration, 2001, from a 1997 run.",
-      note: "A second reference standard, bought off the shelf and run in the same session as the Ubatuba fragment. Its own gap from the reference numbers is on the thin bars above, and the fragment's gap, measured in the same session, is the next reading in the list."
-    },
-    {
-      name: "Ubatuba fragment, 1997 run",
-      v: [79.25, 9.81, 10.99],
-      src: "Reported by Peter Sturrock in the Journal of Scientific Exploration, 2001, from the same 1997 session.",
-      note: "All three weights measured together on a fine-beam instrument. The gap from the reference came out about the same size as the gap the shop-bought standard run alongside it."
-    },
-    {
-      name: "Ubatuba fragment, Austin lab, 2017",
-      v: [79.31, 10.10, 10.58],
-      src: "Cerium Laboratories, Austin, 2017, printed in the 2022 Journal of Scientific Exploration paper.",
-      note: "One of two commercial laboratories given the same dissolved drop of the fragment. No error bars were supplied with these figures. On the standard chart of that drift this point sits off the line that solar-system materials follow."
-    },
-    {
-      name: "Ubatuba fragment, Cleveland lab, 2018",
-      v: [79.28, 9.94, 10.85],
-      src: "ICP & ICP-MS Services, Cleveland, 2018, printed in the same paper, with confidence intervals.",
-      note: "The other laboratory, same drop of liquid. This point sits on the line, alongside meteorite, seawater, Amazon River, Dead Sea and Australian olivine samples. Because both labs measured the same liquid, the published paper reads the difference between them as measurement error rather than as anything about the sample."
-    },
-    {
-      name: "Described in a 2022 interview",
-      v: [60, 20, 10],
-      src: "Said by Garry Nolan in a February 2022 interview. No data table, uncertainty, blank or standard has been published for the run.",
-      note: "Given as roughly 60, 20 and 10 per cent for a piece from the same event, against the ordinary 79, 10 and 11. As stated the three figures do not add to a hundred. The same speaker says a second piece from that event, measured in the same instrument on the same day, came back ordinary."
-    }
-  ];
-
-  var pick = document.getElementById("isoPick");
-  if (pick) {
-    var rows = document.querySelectorAll("#isoRows .iso-row");
-    var srcOut = document.getElementById("isoSrc");
-    var totalOut = document.getElementById("isoTotal");
-    var noteOut = document.getElementById("isoNote");
-
-    READINGS.forEach(function (r, i) {
-      var opt = document.createElement("option");
-      opt.value = String(i);
-      opt.textContent = r.name;
-      pick.appendChild(opt);
-    });
-
-    function sign(n) { return (n >= 0 ? "+" : "-") + Math.abs(n).toFixed(2); }
-
-    function render() {
-      var r = READINGS[parseInt(pick.value, 10) || 0];
-      var total = 0;
-      for (var i = 0; i < rows.length; i++) {
-        var val = r.v[i];
-        total += val;
-        var row = rows[i];
-        row.querySelector(".iso-fill").style.width = val + "%";
-        row.querySelector(".iso-val").textContent = val.toFixed(2) + "%";
-
-        var d = val - EARTH[i];
-        var mag = Math.abs(d);
-        var w = Math.min(mag, DEV_MAX) / DEV_MAX * 50;
-        var bar = row.querySelector(".dev-bar");
-        bar.style.width = w + "%";
-        bar.style.left = (d >= 0 ? 50 : 50 - w) + "%";
-        bar.classList.toggle("clamped", mag > DEV_MAX);
-        row.querySelector(".dev-val").textContent =
-          sign(d) + (mag > DEV_MAX ? " past the scale" : "");
-      }
-
-      srcOut.textContent = r.src;
-      var gap = Math.abs(100 - total);
-      totalOut.innerHTML = "Three weights add to <b>" + total.toFixed(2) + "%</b>. " +
-        (gap > 0.5
-          ? "That is " + gap.toFixed(0) + " percentage points off a hundred, and the three parts of one blend have to add to a hundred."
-          : "Published figures are rounded, so a careful reading lands near a hundred rather than exactly on it.");
-      noteOut.textContent = r.note;
-    }
-
-    pick.addEventListener("change", render);
-    render();
-  }
-
-  /* ---------- jumping to a case moves the keyboard with it ---------- */
-  var jumpRow = document.querySelector(".jump-row");
-  if (jumpRow) {
-    jumpRow.addEventListener("click", function (e) {
-      var a = e.target;
-      while (a && a !== jumpRow && !(a.className && String(a.className).indexOf("jump") >= 0)) {
-        a = a.parentNode;
-      }
-      if (!a || a === jumpRow) return;
-      var id = (a.getAttribute("href") || "").replace("#", "");
-      var card = document.getElementById(id);
-      if (card) card.focus({ preventScroll: true });
-    });
-  }
-})();
-</script>
+<script src="assets/anomalous-materials.js"></script>
 </body>
 </html>
