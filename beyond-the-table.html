@@ -825,6 +825,13 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   function cWhole(T) { return neg(fmt(Math.round(T - 273.15))); }
   function cSig(T, n) { return neg(sig(T - 273.15, n || 3)); }
 
+  /* the kelvin figure exactly as the dataset holds it, with a thousands comma where it needs one */
+  function kFig(T) {
+    var p = String(T).split(".");
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return p.join(".");
+  }
+
   /* at the cold end celsius stops saying much, so say the distance from absolute zero instead */
   function aboveZeroWords(T) {
     if (T < 1) {
@@ -918,8 +925,8 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
   var RULES = {
     Na: function (e, P, T) {
       if (P < 0.5) {
-        if (T > e.boil) return { head: "A hot vapour", body: "Above " + cWhole(e.boil) + " degrees Celsius (" + e.boil + " kelvin) sodium boils. The orange of an old street lamp is one line out of this atom, at 589 nanometres, driven by an electrical discharge rather than by heat.", prov: "Boiling point from the atlas dataset." };
-        if (T > e.melt) return { head: "A molten metal", body: "Sodium melts at 97.8 degrees Celsius, which is " + e.melt + " kelvin. Molten sodium carries heat well enough that it has been used as a reactor coolant.", prov: "Melting point from the atlas dataset." };
+        if (T > e.boil) return { head: "A hot vapour", body: "Above " + cWhole(e.boil) + " degrees Celsius (" + kFig(e.boil) + " kelvin) sodium boils. The orange of an old street lamp is one line out of this atom, at 589 nanometres, driven by an electrical discharge rather than by heat.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "A molten metal", body: "Sodium melts at 97.8 degrees Celsius, which is " + kFig(e.melt) + " kelvin. Molten sodium carries heat well enough that it has been used as a reactor coolant.", prov: "Melting point from the atlas dataset." };
         return { head: "A soft silver metal", body: "One loose electron per atom, packed body-centred cubic, and soft enough that <strong>you can cut it with a kitchen knife</strong>. This is sodium doing exactly what group 1 says it should.", prov: "The ordinary bench condition, measured many times over since Humphry Davy isolated it in 1807." };
       }
       var Tm = naMelt(P);
@@ -957,9 +964,9 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
     H: function (e, P, T) {
       if (P < 0.001) {
-        if (T > e.boil) return { head: "A gas of pairs", body: "Two atoms to a molecule, the lightest gas there is, and 75 per cent of the ordinary matter in the universe by mass.", prov: "Boiling point " + cSig(e.boil, 4) + " degrees Celsius (" + e.boil + " kelvin), from the atlas dataset." };
-        if (T > e.melt) return { head: "A liquid", body: "Liquid between " + cSig(e.melt, 4) + " and " + cSig(e.boil, 4) + " degrees Celsius (" + e.melt + " to " + e.boil + " kelvin), a range of just over six degrees. This is rocket fuel: the Space Shuttle's big orange tank was mostly this.", prov: "Melting and boiling points from the atlas dataset." };
-        return { head: "A soft molecular solid", body: "Hydrogen molecules on a lattice, still spinning freely in place. Transparent, and an insulator.", prov: "Melting point " + cSig(e.melt, 4) + " degrees Celsius (" + e.melt + " kelvin), from the atlas dataset." };
+        if (T > e.boil) return { head: "A gas of pairs", body: "Two atoms to a molecule, the lightest gas there is, and 75 per cent of the ordinary matter in the universe by mass.", prov: "Boiling point " + cSig(e.boil, 4) + " degrees Celsius (" + kFig(e.boil) + " kelvin), from the atlas dataset." };
+        if (T > e.melt) return { head: "A liquid", body: "Liquid between " + cSig(e.melt, 4) + " and " + cSig(e.boil, 4) + " degrees Celsius (" + kFig(e.melt) + " to " + kFig(e.boil) + " kelvin), a range of just over six degrees. This is rocket fuel: the Space Shuttle's big orange tank was mostly this.", prov: "Melting and boiling points from the atlas dataset." };
+        return { head: "A soft molecular solid", body: "Hydrogen molecules on a lattice, still spinning freely in place. Transparent, and an insulator.", prov: "Melting point " + cSig(e.melt, 4) + " degrees Celsius (" + kFig(e.melt) + " kelvin), from the atlas dataset." };
       }
       if (T > 900 && P >= 10) return { head: "A hot dense fluid, and metallic", body: "Warm and squeezed at once, hydrogen does not wait for a crystal to become a metal: the liquid does it. Peter Celliers and colleagues trained 168 lasers on deuterium at the National Ignition Facility, compressed it to <strong>600 gigapascals while holding it between 730 and 1,730 degrees Celsius</strong> (1,000 to 2,000 kelvin), and found the insulating fluid turning metallic near 200 gigapascals. That is the condition inside Jupiter and Saturn, made on Earth for a few nanoseconds.", prov: "Celliers and colleagues, Science 361, 677, 2018." };
       if (P < 110) return { head: "Molecular hydrogen, squeezed", body: "Still pairs of atoms, still an insulator, still transparent, just closer together. This is phase I, where the molecules spin freely on their lattice sites, and it holds over an enormous span of pressure.", prov: "Mapped by Raman and infrared spectroscopy in diamond anvil cells since the 1980s." };
@@ -972,7 +979,7 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
     He: function (e, P, T) {
       if (P < 0.0025) {
-        if (T > e.boil) return { head: "A gas that bonds to nothing", body: "Helium grips its electrons harder than any other element, <strong>" + e.ion1 + " kilojoules per mole</strong>, which is the highest first ionisation energy on the shelf. At this pressure it will not bond to anything, including itself.", prov: "Ionisation energy from the atlas dataset, and a boiling point of " + e.boil + " kelvin, about four degrees above absolute zero." };
+        if (T > e.boil) return { head: "A gas that bonds to nothing", body: "Helium grips its electrons harder than any other element, <strong>" + e.ion1 + " kilojoules per mole</strong>, which is the highest first ionisation energy on the shelf. At this pressure it will not bond to anything, including itself.", prov: "Ionisation energy from the atlas dataset, and a boiling point of " + kFig(e.boil) + " kelvin, about four degrees above absolute zero." };
         if (T > 2.17) return { head: "A liquid that will not freeze", body: "Helium is the one element that <strong>stays liquid all the way down to absolute zero</strong> at ordinary pressure. Its atoms are so light and so weakly attracted that the leftover quantum jiggle keeps them from settling into a lattice.", prov: "Measured at Leiden by Heike Kamerlingh Onnes, who first liquefied helium in 1908." };
         return { head: "A superfluid", body: "Below 2.17 kelvin, a shade over two degrees above absolute zero, liquid helium-4 flows with no viscosity at all: it climbs the walls of its container and creeps out over the rim. Same two protons. A different kind of matter.", prov: "The transition at 2.17 kelvin has been measured since the 1930s." };
       }
@@ -990,8 +997,8 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
     Xe: function (e, P, T) {
       if (P < 0.001) {
-        if (T > e.boil) return { head: "A heavy gas", body: "Xenon boils at " + cWhole(e.boil) + " degrees Celsius (" + e.boil + " kelvin). It is a noble gas that has been doing chemistry since 1962, when Neil Bartlett made a xenon compound at ordinary pressure and ended the idea that group 18 never reacts.", prov: "Boiling point from the atlas dataset." };
-        return { head: "A soft crystal", body: "Solid xenon below " + cWhole(e.melt) + " degrees Celsius (" + e.melt + " kelvin): neutral atoms packed cubic, held only by the weak mutual attraction of full shells.", prov: "Melting point from the atlas dataset." };
+        if (T > e.boil) return { head: "A heavy gas", body: "Xenon boils at " + cWhole(e.boil) + " degrees Celsius (" + kFig(e.boil) + " kelvin). It is a noble gas that has been doing chemistry since 1962, when Neil Bartlett made a xenon compound at ordinary pressure and ended the idea that group 18 never reacts.", prov: "Boiling point from the atlas dataset." };
+        return { head: "A soft crystal", body: "Solid xenon below " + cWhole(e.melt) + " degrees Celsius (" + kFig(e.melt) + " kelvin): neutral atoms packed cubic, held only by the weak mutual attraction of full shells.", prov: "Melting point from the atlas dataset." };
       }
       if (P < 21) return { head: "A close-packed solid", body: "Compressed, cubic, still chemically aloof. Xenon is dense enough at these pressures to be used as a pressure medium in its own right.", prov: "Structure from x-ray diffraction in diamond anvil cells." };
       if (P < 78) return { head: "Restacked to hexagonal", body: "The packing changes from cubic to hexagonal, with the equilibrium boundary at <strong>21 plus or minus 3 gigapascals</strong>. The change is sluggish enough that it has been caught happening anywhere between 3 and 70 gigapascals depending on the path taken.", prov: "John Caldwell and Jeffrey Nguyen, Science, 1997." };
@@ -1001,9 +1008,9 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
     Hg: function (e, P, T) {
       if (P < 0.5) {
-        if (T > e.boil) return { head: "A vapour", body: "Mercury boils at " + cWhole(e.boil) + " degrees Celsius (" + e.boil + " kelvin). Its vapour, excited by a discharge, is what lights a fluorescent tube.", prov: "Boiling point from the atlas dataset." };
-        if (T > e.melt) return { head: "A liquid metal", body: "Melting point " + cSig(e.melt, 3) + " degrees Celsius, which is " + e.melt + " kelvin. It is liquid at 25 degrees Celsius because relativity pulls its outer electron pair in tight, so mercury atoms hold each other about as weakly as argon atoms do. <strong>Without that, the calculation gives 82 degrees Celsius</strong> (355 kelvin) and mercury is a solid you could hold.", prov: "Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran it both ways, Angewandte Chemie, 2013." };
-        if (T > 4.2) return { head: "A solid metal", body: "Frozen mercury, rhombohedral, and about as soft as lead. Below " + cSig(e.melt, 3) + " degrees Celsius (" + e.melt + " kelvin), which is a cold winter night in Siberia.", prov: "Melting point from the atlas dataset." };
+        if (T > e.boil) return { head: "A vapour", body: "Mercury boils at " + cWhole(e.boil) + " degrees Celsius (" + kFig(e.boil) + " kelvin). Its vapour, excited by a discharge, is what lights a fluorescent tube.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "A liquid metal", body: "Melting point " + cSig(e.melt, 3) + " degrees Celsius, which is " + kFig(e.melt) + " kelvin. It is liquid at 25 degrees Celsius because relativity pulls its outer electron pair in tight, so mercury atoms hold each other about as weakly as argon atoms do. <strong>Without that, the calculation gives 82 degrees Celsius</strong> (355 kelvin) and mercury is a solid you could hold.", prov: "Florent Calvo, Elke Pahl, Michael Wormit and Peter Schwerdtfeger ran it both ways, Angewandte Chemie, 2013." };
+        if (T > 4.2) return { head: "A solid metal", body: "Frozen mercury, rhombohedral, and about as soft as lead. Below " + cSig(e.melt, 3) + " degrees Celsius (" + kFig(e.melt) + " kelvin), which is a cold winter night in Siberia.", prov: "Melting point from the atlas dataset." };
         return { head: "A superconductor", body: "Below 4.2 kelvin, just over four degrees above absolute zero, mercury carries current with <strong>no resistance at all</strong>. Heike Kamerlingh Onnes found it at Leiden in 1911, and his plot from 26 October that year shows the resistance dropping from 0.1 ohm to unmeasurable at 4.20 kelvin. Mercury was the first superconductor anyone found.", prov: "Onnes, Leiden, 1911. He had the Nobel Prize in Physics two years later." };
       }
       if (P < 10) {
@@ -1015,8 +1022,8 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
 
     Au: function (e, P, T) {
       if (P < 0.001) {
-        if (T > e.boil) return { head: "A gold vapour", body: "Boiling at " + cWhole(e.boil) + " degrees Celsius (" + e.boil + " kelvin). Gold vapour deposited on glass is how a low-emissivity window coating is made.", prov: "Boiling point from the atlas dataset." };
-        if (T > e.melt) return { head: "Molten gold", body: "Melting at " + cWhole(e.melt) + " degrees Celsius (" + e.melt + " kelvin). Molten gold is not yellow: it glows the colour of its own temperature, like any hot thing.", prov: "Melting point from the atlas dataset." };
+        if (T > e.boil) return { head: "A gold vapour", body: "Boiling at " + cWhole(e.boil) + " degrees Celsius (" + kFig(e.boil) + " kelvin). Gold vapour deposited on glass is how a low-emissivity window coating is made.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "Molten gold", body: "Melting at " + cWhole(e.melt) + " degrees Celsius (" + kFig(e.melt) + " kelvin). Molten gold is not yellow: it glows the colour of its own temperature, like any hot thing.", prov: "Melting point from the atlas dataset." };
         return { head: "Yellow metal", body: "Face-centred cubic, the most malleable metal there is, and <strong>yellow because of relativity</strong>. Gold absorbs near 2.4 electronvolts, in the blue, so what comes back to your eye is short of blue. Take the relativistic shift away and the absorption moves into the ultraviolet and gold looks like silver.", prov: "Niels Egede Christensen and Bernard Seraphin ran the band structure with and without relativity, Physical Review B, 1971." };
       }
       if (P < 100) return { head: "The measuring stick", body: "Gold stays face-centred cubic and stays metallic, and that reliability is why it is used as the <strong>pressure standard</strong> inside diamond anvil cells: measure how much a gold speck has compressed and you know the pressure. Nearly every other figure on this bench is quoted against a scale like this one.", prov: "Everyday practice in high pressure work; the modern calibration is Fratanduono, Millot and colleagues, Science, 2021." };
@@ -1032,17 +1039,17 @@ body[data-page="beyondtable"] .src-list a { overflow-wrap: anywhere; }
       if (T < 220) return { head: "A solid, both ways", body: "Below minus 53 degrees Celsius (220 kelvin) the calculation gives a solid whether relativity is in it or not. Everything distinctive about oganesson shows up between minus 53 and 52 degrees Celsius (220 to 325 kelvin).", prov: "Odile Smits, Jan-Michael Mewes, Paul Jerabek and Peter Schwerdtfeger, Angewandte Chemie, 2020." };
       if (T < e.melt) return {
         head: "A solid semiconductor",
-        body: "Element 118 sits under radon in group 18, and the column says gas. The calculation says <strong>solid, melting at " + cWhole(e.melt) + " degrees Celsius plus or minus 15</strong> (" + e.melt + " kelvin) and boiling at " + cWhole(e.boil) + " plus or minus 10 (" + e.boil + " kelvin), an unusually wide liquid range of 125 degrees. Its band gap comes out at <strong>1.5 electronvolts</strong> against radon's 7.1, which makes solid oganesson a semiconductor rather than the clear insulator every other noble gas freezes into. Run the same calculation without relativistic terms and the melting point drops to minus 53 degrees Celsius (220 kelvin): a gas in a warm room, exactly as the column predicts.",
+        body: "Element 118 sits under radon in group 18, and the column says gas. The calculation says <strong>solid, melting at " + cWhole(e.melt) + " degrees Celsius plus or minus 15</strong> (" + kFig(e.melt) + " kelvin) and boiling at " + cWhole(e.boil) + " plus or minus 10 (" + kFig(e.boil) + " kelvin), an unusually wide liquid range of 125 degrees. Its band gap comes out at <strong>1.5 electronvolts</strong> against radon's 7.1, which makes solid oganesson a semiconductor rather than the clear insulator every other noble gas freezes into. Run the same calculation without relativistic terms and the melting point drops to minus 53 degrees Celsius (220 kelvin): a gas in a warm room, exactly as the column predicts.",
         prov: "No instrument has held it. Five atoms have ever been made and oganesson-294 lasts about 0.69 milliseconds, so the figures come from parallel tempering Monte Carlo and thermodynamic integration against a coupled-cluster reference. Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020; the band gap from Mewes, Smits, Kresse and Schwerdtfeger, 2019."
       };
-      if (T < e.boil) return { head: "A liquid, if it lasted", body: "Between " + cWhole(e.melt) + " and " + cWhole(e.boil) + " degrees Celsius (" + e.melt + " to " + e.boil + " kelvin) the calculation puts oganesson in a liquid range 125 degrees wide, which is a striking figure for a noble gas: argon's liquid range is under 4 degrees.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020." };
-      return { head: "A vapour, at last", body: "Above " + cWhole(e.boil) + " degrees Celsius plus or minus 10 (" + e.boil + " kelvin) the calculation finally gives oganesson the gas its column promised, about 239 degrees later than radon manages it.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020. No instrument has held it: five atoms have ever been made." };
+      if (T < e.boil) return { head: "A liquid, if it lasted", body: "Between " + cWhole(e.melt) + " and " + cWhole(e.boil) + " degrees Celsius (" + kFig(e.melt) + " to " + kFig(e.boil) + " kelvin) the calculation puts oganesson in a liquid range 125 degrees wide, which is a striking figure for a noble gas: argon's liquid range is under 4 degrees.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020." };
+      return { head: "A vapour, at last", body: "Above " + cWhole(e.boil) + " degrees Celsius plus or minus 10 (" + kFig(e.boil) + " kelvin) the calculation finally gives oganesson the gas its column promised, about 239 degrees later than radon manages it.", prov: "Smits, Mewes, Jerabek and Schwerdtfeger, Angewandte Chemie, 2020. No instrument has held it: five atoms have ever been made." };
     },
 
     Al: function (e, P, T) {
       if (P < 0.001) {
-        if (T > e.boil) return { head: "A vapour", body: "Boiling at " + cWhole(e.boil) + " degrees Celsius (" + e.boil + " kelvin). Vapour-deposited aluminium is the reflective layer on the back of most telescope mirrors.", prov: "Boiling point from the atlas dataset." };
-        if (T > e.melt) return { head: "Molten aluminium", body: "Melting at " + cWhole(e.melt) + " degrees Celsius (" + e.melt + " kelvin), which is why a drink can is cheap to recycle and a steel one is not.", prov: "Melting point from the atlas dataset." };
+        if (T > e.boil) return { head: "A vapour", body: "Boiling at " + cWhole(e.boil) + " degrees Celsius (" + kFig(e.boil) + " kelvin). Vapour-deposited aluminium is the reflective layer on the back of most telescope mirrors.", prov: "Boiling point from the atlas dataset." };
+        if (T > e.melt) return { head: "Molten aluminium", body: "Melting at " + cWhole(e.melt) + " degrees Celsius (" + kFig(e.melt) + " kelvin), which is why a drink can is cheap to recycle and a steel one is not.", prov: "Melting point from the atlas dataset." };
         return { head: "A light metal", body: "Face-centred cubic, the most abundant metal in Earth's crust at " + fmt(e.abundCrust) + " parts per million, and wearing a skin of its own oxide a few nanometres thick that stops the rest corroding. Window frames, foil, aeroplanes.", prov: "Crust abundance from the atlas dataset." };
       }
       if (P < 216) return { head: "Still cubic, getting dense", body: "Aluminium keeps its ordinary packing over an enormous pressure range, which makes it a favourite test material for compression experiments: you know what you started with.", prov: "X-ray diffraction in diamond anvil cells and in ramp compression." };
