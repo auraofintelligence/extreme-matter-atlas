@@ -122,7 +122,7 @@
   if (footer) {
     var link = function (p) { return '<li><a href="' + p.href + '">' + p.label + "</a></li>"; };
     var footLinks =
-      '<li class="foot-head">The measured shelf</li>' + MAIN.map(link).join("") +
+      '<li class="foot-head">Start here</li>' + MAIN.map(link).join("") +
       WINGS.map(function (w) {
         return '<li class="foot-head">' + w.label + "</li>" + inWing(w.id).map(link).join("");
       }).join("");
