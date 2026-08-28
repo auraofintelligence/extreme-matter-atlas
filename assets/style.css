@@ -659,3 +659,4 @@ a.page-turn-slot:hover {
 }
 body[data-page="beyondtable"] { --accent: #a78bfa; --accent2: #22d3ee; }
 body[data-page="outofphase"]  { --accent: #67e8f9; --accent2: #f0abfc; }
+body[data-page="tesla"]       { --accent: #fde047; --accent2: #38bdf8; }
