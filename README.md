@@ -6,6 +6,35 @@
 
 # Extreme Matter Atlas
 
+<!-- github-organisation:start -->
+
+## Project links and history
+
+- First substantive build: 27 August 2026.
+- GitHub repository: [extreme-matter-atlas](https://github.com/auraofintelligence/extreme-matter-atlas).
+- Public site: [visit the public site](https://auraofintelligence.github.io/extreme-matter-atlas/).
+
+## Related public projects
+
+Each link below reflects an evidenced family, lineage or direct connection. This project has 9 relevant public connections.
+
+### Extreme materials and local hardware research
+
+- [aura-direct-hardware](https://github.com/auraofintelligence/aura-direct-hardware) - [public page](https://auraofintelligence.github.io/aura-direct-hardware/) - shared research architecture.
+- [aura-spatial-perception](https://github.com/auraofintelligence/aura-spatial-perception) - [public page](https://auraofintelligence.github.io/aura-spatial-perception/) - shared research architecture.
+- [fractal-aura](https://github.com/auraofintelligence/fractal-aura) - [public page](https://auraofintelligence.github.io/fractal-aura/) - shared research architecture.
+- [mineral-moonshots](https://github.com/auraofintelligence/mineral-moonshots) - [public page](https://auraofintelligence.github.io/mineral-moonshots/) - shared research architecture.
+
+### Space-weather and cosmic research tools
+
+- [gods-eye-view](https://github.com/auraofintelligence/gods-eye-view) - [public page](https://www.spatialintelligence.ai/) - shared research architecture.
+- [micronova-and-excursions](https://github.com/auraofintelligence/micronova-and-excursions) - [public page](https://auraofintelligence.github.io/micronova-and-excursions/) - shared research architecture.
+- [space-weather-news](https://github.com/auraofintelligence/space-weather-news) - [public page](https://auraofintelligence.github.io/space-weather-news/) - shared research architecture.
+- [strange-but-true-cosmic-nexus](https://github.com/auraofintelligence/strange-but-true-cosmic-nexus) - [public page](https://auraofintelligence.github.io/strange-but-true-cosmic-nexus/) - shared research architecture.
+- [virtual-solar-swarm](https://github.com/auraofintelligence/virtual-solar-swarm) - [public page](https://auraofintelligence.github.io/virtual-solar-swarm/) - shared research architecture.
+
+<!-- github-organisation:end -->
+
 > 🤝🔷 **A Luke × Claude build.** Created by **Luke Nathan Hayes** (`auraofintelligence`)
 > and **Claude (Fable 5)**, Anthropic, on **27 August 2026**. _Not a Codex build._
 
