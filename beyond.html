@@ -159,6 +159,12 @@ body[data-page="beyond"] .mrungs li.pay p { color: var(--ink); }
 body[data-page="beyond"] .mfoot { margin-top: 18px; }
 body[data-page="beyond"] .src-list a { overflow-wrap: anywhere; }
 </style>
+<style id="network-portrait-style">
+.network-portrait-shell{width:min(100%,360px);margin:1.1rem auto;background:#10091b;border:1px solid #75618c;border-radius:14px;overflow:hidden}
+.network-portrait-video,video[src*="/assets/protopian-portraits/"],video:has(source[src*="/assets/protopian-portraits/"]){display:block!important;width:100%!important;max-width:360px!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:9/16!important;object-fit:contain!important;margin-inline:auto!important;background:#08050e;border:0}
+.network-portrait-shell p{margin:.55rem .8rem;font-size:.86rem;line-height:1.45}.network-portrait-shell a{color:#e0c5ff;text-decoration:underline}
+.phone:has(source[src*="/assets/protopian-portraits/"]),:is(.phone-frame,.phone-screen,.song-frame,.phone-video-wrap,.phone-embed,.video-embed,.phone):has(video[src*="/assets/protopian-portraits/"]),:is(.phone-frame,.phone-screen,.song-frame,.phone-video-wrap,.phone-embed,.video-embed,.phone):has(video[src*="/assets/protopian-portraits/"]),:is(.phone-frame,.phone-screen,.song-frame,.phone-video-wrap,.phone-embed,.video-embed):has(.network-portrait-video){height:auto!important;aspect-ratio:auto!important;min-height:0!important;max-width:380px;margin-inline:auto;overflow:hidden}
+</style>
 </head>
 <body data-page="beyond">
 <div id="site-header"></div>
@@ -191,10 +197,9 @@ body[data-page="beyond"] .src-list a { overflow-wrap: anywhere; }
       <h2>A short <span class="hue">film</span></h2>
       <p>Four minutes, one idea, and the phrase this whole approach is named after.</p>
       <div class="canvas-frame film">
-        <video id="anthem" controls preload="metadata" playsinline>
-          <source src="media/we-go-beyond.mp4" type="video/mp4">
-          Your browser cannot play this file. <a href="media/we-go-beyond.mp4">Open it directly</a>.
-        </video>
+        <section class="network-portrait-shell" data-protopian-key="20" aria-label="We Go Beyond (He Him), current portrait lyric video">
+<video class="network-portrait-video" controls playsinline preload="none" width="720" height="1280" poster="https://auraofintelligence.github.io/i-C-infinity-music-universe/assets/protopian-portraits/we-go-beyond-male-portrait-cover-v1.jpg" aria-label="We Go Beyond (He Him) by i C. infinity"><source src="https://auraofintelligence.github.io/i-C-infinity-music-universe/assets/protopian-portraits/we-go-beyond-male-portrait-web-v1.mp4" type="video/mp4"><a href="https://auraofintelligence.github.io/i-C-infinity-music-universe/assets/protopian-portraits/we-go-beyond-male-portrait-web-v1.mp4">Open portrait video</a></video>
+<p><a href="https://auraofintelligence.github.io/i-C-infinity-music-universe/assets/protopian-portraits/we-go-beyond-male-portrait-web-v1.mp4">Open current portrait lyric video</a></p></section>
         <p class="film-cap">
           <span><b>WE GO BEYOND</b> &middot; music by Luke Nathan Hayes</span>
           <span>press play when you like</span>
